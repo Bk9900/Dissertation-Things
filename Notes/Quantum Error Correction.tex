@@ -24,7 +24,344 @@
 \date{2021-22}
 \newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
 \numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
 \begin{document}
 	\maketitle
-	
+	\section{Quantum Mechanics: Conventions and Notation}
+	\begin{itemize}
+		\item We take the three postulates of QM from Nielsen and Chuang:
+		\begin{enumerate}
+			\item Associated to any isolated physical system is a Hilbert space $\mathcal{H}$, known as the \textit{state space} of the system, and the system is described by its \textit{state vector} (or just \textit{state}), which is a \textbf{unit} vector in $\mathcal{H}$
+			\item The evolution of a \textbf{closed} quantum system is described by a \textit{unitary transformation}
+			\item \textit{Quantum measurements} are specified by a collection $\{M_{m}\}$ of \textit{measurement operators} acting on $\mathcal{H}$. The index $m$ refers to the measurement outcomes, and if the system is in state $\ket{\psi}$ initially, the probability $m$ occurs is:
+			$$
+				\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}
+			$$
+			and the state collapses to
+			$$ \label{Measurement postulate}
+				\ket{\psi}\to\frac{M_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}
+			$$
+		\end{enumerate}
+	\end{itemize}
+	\subsection{Projective Measurements}
+	\begin{itemize}
+		\item A \textit{projective measurement} is described by an \textit{observable}/Hermitian operator $M$ acting on $\mathcal{H}$
+		\item $M$ has a spectral decomposition:
+		\begin{equation}
+			M=\sum_{m}mP_{m}
+		\end{equation}
+		where $m$ are the (real) eigenvalues of $M$ and $P_{m}$ is the projector onto the corresponding eigenspace
+		\item Note $\sum_{m}P_{m}=1$
+		\item This means the outcomes are indexed by $m$, and the info in postulate (3) reduces to
+		$$
+			\mathbb{P}(m)=\braket{\psi|P_{m}|\psi}\quad\text{and}\quad \ket{\psi}\to\frac{P_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}
+		$$
+		\item The \textit{expectation} of $M$ on state $\ket{\psi}$ in a probabilistic sense reduces to
+		\begin{equation}
+			\mathbb{E}(M)=\braket{M}_{\psi}=\braket{\psi|M|\psi}
+		\end{equation}
+		\item \textbf{Notation:} usually just list the projectors as $\{P_{m}\}$ so $\sum_{m}P_{m}=1$ and $P_{m}P_{n}=\delta_{mn}P_{m}$
+		\item Also sometimes say `measure in basis $\ket{m}$', which just means `perform projective measurement with projectors $P_{m}=\ket{m}\bra{m}$
+		\item Often refer to \textit{positive operator-valued measurements (POVMs)}, which we define here
+		\item Suppose we do a measurement with operators $\{M_{m}\}$ on system in state $\ket{\psi}$, so $\mathbb{P}(m)=\ket{\psi|M_{m}^{\dagger}M_{m}|\psi}$
+		\item Define \textit{POVM elements} $E_{m}=M^{\dagger}_{m}M_{m}$; then $\sum_{m}E_{m}=1$ and $\mathbb{P}(m)=\braket{\psi|E_{m}|\psi}$
+		\item Since $E_{m}$ are sufficient to describe the outcomes, we call the set $\{E_{m}\}$ a POVM
+	\end{itemize}
+	\subsection{Density Operator Formalism}
+	\begin{itemize}
+		\item \textbf{Motivation:} nice and easy to talk about subsystems of a composite system, systems where we don't know the state precisely, statistical mechanics
+		\item Consider a system which is in a state from the set $\{\ket{\psi_{i}}\}$, with the probability of being in state $i$ given by $p_{i}$
+		\item The set $\{\ket{\psi_{i}},p_{i}\}$ is called an \textit{ensemble of pure states}
+		\item The \textit{density operator/matrix} for this system is defined as
+		\begin{equation} \label{Density operator}
+			\rho=\sum_{i}p_{i}\ket{\psi_{i}}\bra{\psi_{i}}
+		\end{equation}
+		\item Clearly the states $\ket{\psi_{i}}$ uniquely define $\rho$ and vice-versa, so postulate (1) is unchanged
+		\item For postulate 2, we see that if $U$ governs evolution of states, $\rho$ evolves as
+		\begin{equation} \label{Density operator evolution}
+			\rho=\sum_{i}p_{i}\ketbras{\psi_{i}}\xrightarrow{U}\sum_{i}p_{i}U\ketbras{\psi_{i}}U^{\dagger}=U\rho U^{\dagger}
+		\end{equation}
+		\item For describing measurements, suppose we have measurement given by measurement operators $\{M_{m}\}$
+		\item If we were initially in $\ket{\psi_{i}}$, probabilities are
+		$$
+			\mathbb{P}(m|i)=\braket{\psi_{i}|M_{m}^{\dagger}M_{m}|\psi_{i}}=\text{Tr}\left(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}}\right)
+		$$
+		\item Therefore, the probability of obtaining $m$ outright on $\rho$ is
+		\begin{equation} \label{Density op measurement outcomes}
+			\mathbb{P}(m)=\sum_{i}\mathbb{P}(m|i)p_{i}=\text{Tr}(M_{m}^{\dagger}M_{m}\rho)
+		\end{equation}
+		and after a bit of algebra, we find $\rho$ collapses to
+		$$
+			\rho\to \rho_{m}=\frac{M_{m}\rho M_{m}^{\dagger}}{\text{Tr}(M_{m}^{\dagger}M_{m}\rho)}
+		$$
+		\item If we know the state of a system is certainly $\ket{\psi}$, the system is in a \textit{pure state} and $\rho=\ketbras{\psi}$; otherwise we have a \textit{mixed state}
+		\item We have criteria $\text{Tr}(\rho^{2})=1$ for pure states and $\text{Tr}(\rho^{2})<1$ for mixed states
+		\item \textbf{Theorem:} an operator $\rho$ is a density operator for some system iff
+		\begin{enumerate}
+			\item $\text{Tr}(\rho)=1$
+			\item $\rho$ is a positive operator
+		\end{enumerate}
+		\item \textbf{Theorem:} ensembles $\{\ket{\psi}\}$ and $\{\ket{\phi_{i}}\}$ generate the same density operator iff
+		$$
+			\ket{\psi_{i}}=\sum_{j}U_{ij}\ket{\phi_{j}}
+		$$
+		where $U$ is a unitary operator
+	\end{itemize}
+	\section{Noise and Error Correction}
+	\subsection{Markov Processes and Classical Noise}
+	\begin{itemize}
+		\item Consider the classical bit-flip process; the environment contains magnetic fields which can cause a bit to `flip' with probability $p$
+		\item To figure out $p$, we need a model both for the distribution of magnetic fields in the environment, and one for how they interact with bits
+		\item This is a common thing: need a model for both the environment and for the system-environment interaction
+		\item To be concrete, suppose $p_{0}$ and $p_{1}$ are the initial probabilities for the bit to be a $0$ and a $1$, and $q_{0}$ and $q_{1}$ are the probabilities after flipping
+		\item Denote the initial state of the bit as $A$ and the final state as $B$; then
+		$$
+			\mathbb{P}(B=b)=\sum_{a}\mathbb{P}(B=b\,|\,A=a)\mathbb{P}(A=a)
+		$$
+		\item The probabilities $\mathbb{P}(B=b\,|\,A=a)$ are called \textit{transition probabilities}; the above equation can also be written
+		$$
+			\begin{pmatrix}q_{0}\\q_{1}\end{pmatrix}=\begin{pmatrix}1-p&p\\p&1-p\end{pmatrix}\begin{pmatrix}p_{0}\\p_{1}\end{pmatrix}
+		$$
+		\item If some further noise occurs after the initial bit-flip, we can model this as being \textbf{independent} of the first flip - this is called \textit{Markovicity}, and we can model the total noise process as a \textit{Markov process}
+		\item For a single-state process, we therefore have that output probabilities $\mathbf{q}$ are related to input probabilities $\mathbf{p}$ by
+		\begin{equation}
+			\mathbf{q}=E\mathbf{p}
+		\end{equation}
+		where $E$ is a matrix of transition probabilities called the \textit{evolution matrix}
+		\item This means the final state of the system is \textbf{linearly} related to the initial state
+		\item We need $E\mathbf{p}$ to be a valid probability distribution, so this gives us some conditions on $E$:
+		\begin{itemize}
+			\item All entries of $E$ are non-negative, so $E$ is positive
+			\item All columns of $E$ sum to 1, called \textit{completeness}
+		\end{itemize}
+		\item This is all classical, but there are quantum analogues
+	\end{itemize}
+	\subsection{Quantum Operations}
+	\begin{itemize}
+		\item \textbf{Not to be confused with operators!!}
+		\item Similar to (2.1) for evolution of classical states, quantum states transform as
+		\begin{equation} \label{Quantum operation}
+			\rho'=\mathcal{E}(\rho)
+		\end{equation}
+		where $\mathcal{E}$ is called a \textit{quantum operation}
+		\item Simple examples: for time-evolution governed by $U$, $\mathcal{E}(\rho)=U\rho U^{\dagger}$, for measurements $\mathcal{E}_{m}(\rho)=M_{m}\rho M_{m}^{\dagger}$
+	\end{itemize}
+	\subsubsection{Closed and Open Systems}
+	\begin{itemize}
+		\item \textit{Closed} quantum systems can be thought of as being isolated, and not interacting with an environment; evolution is governed by a unitary operation
+		\item \textit{Open} systems are thought of as arising from an interaction between a system of interest and an environment, together forming a closed system
+		\item For an open system, this means the final state $\mathcal{E}(\rho)$ may not be unitarily related to the initial state
+		\item Suppose the system-environment is initially in $\rho\otimes\rho_{\text{env}}$; then, the operation for evolving $\rho$ alone is found by taking a partial trace:
+		\begin{equation} \label{Operation for open system}
+			\mathcal{E}(\rho)=\text{Tr}_{\text{env}}\left[U(\rho\otimes\rho_{\text{env}})U^{\dagger}\right]
+		\end{equation}
+	\end{itemize}
+	\subsubsection{Operator-Sum Representation}
+	\begin{itemize}
+		\item \textbf{Motivation:} restate (2.3) in terms of operators on the principal Hilbert space only
+		\item Suppose $\ket{e_{k}}$ is an orthonormal basis for $\mathcal{H}_{\text{env}}$, and initially $\rho_{\text{env}}=\ketbras{e_{0}}$
+		\item Then:
+		\begin{equation} \label{Operator sum} 
+			\mathcal{E}(\rho)=\sum_{k}\bra{e_{k}}U\left[\rho\otimes\ketbras{e_{0}}\right]U^{\dagger}\ket{e_{k}}=\sum_{k}E_{k}\rho E_{k}^{\dagger}
+		\end{equation} 
+		where $E_{k}=\braket{e_{K}|U|e_{0}}$ are operators on $\mathcal{H}$ only
+		\item This defines the \textit{operator-sum representation} of $\mathcal{E}$, and $\{E_{k}\}$ are the \textit{operation elements} of $\mathcal{E}$
+		\item Since $\text{Tr}(\mathcal{E}(\rho))=1$, it follows that
+		$$
+			\sum_{k}E_{k}^{\dagger}E_{k}=1
+		$$
+		which is satisfied by \textit{trace-preserving operation}
+		\item This is \textbf{very} useful, since we can talk about the operation without referring to properties of the environment
+		\item This representation is \textbf{not} unique
+		\item \textbf{Theorem: (Unitary Freedom)} Suppose $\{E_{1},\ldots,E_{m}\}$ and $\{F_{1},\ldots,F_{n}\}$ are operation elements of operations $\mathcal{E}$ and $\mathcal{F}$ respectively. Append zero operators to the shorter list so $m=n$. Then, $\mathcal{E}=\mathcal{F}$ iff $E_{i}=\sum_{j}u_{ij}F_{j}$ where $u$ is a $m\times m$ unitary matrix
+	\end{itemize}
+	\subsubsection{Axiomatisation and Properties}
+	\begin{itemize}
+		\item Quantum operations can be defined axiomatically
+		\item A quantum operation $\mathcal{E}$ is a map from the set of density operators on an input space $\mathcal{H}_{1}$ to an output $\mathcal{H}_{2}$, satisfying the following properties:
+		\begin{enumerate}
+			\item $\text{Tr}(\mathcal{E}(\rho))$ is the probability the process $\mathcal{E}$ occurs when $\rho$ is the initial state. This means $0\leq\text{Tr}(\mathcal{E}(\rho))\leq 1$ $\forall \rho$
+			\item $\mathcal{E}$ is convex-linear; that is, for real numbers/probabilities $\{p_{i}\}$
+			\begin{equation}
+				\mathcal{E}\left(\sum_{i}p_{i}\rho_{i}\right)=\sum_{i}p_{i}\mathcal{E}(\rho_{i})
+			\end{equation}
+			\item $\mathcal{E}$ is completely positive; so for any positive operator $A$, $\mathcal{E}(A)$ must also be positive. More generally, if we introduce auxillary system $R$, $(\mathcal{I}\otimes\mathcal{E})(A)$ is positive for any positive $A$ on combined system $R\otimes\mathcal{H}_{1}$
+		\end{enumerate}
+		\item We also have the following theorem:
+		\item \textbf{Theorem:} $\mathcal{E}$ satisfies the above axioms iff
+		\begin{equation} \label{Axiomatisation of operations check}
+			\mathcal{E}(\rho)=\sum_{i}E_{i}\rho E_{i}^{\dagger}
+		\end{equation}
+		for some set of operators $\{E_{i}\}$ mapping $\mathcal{H}_{1}\to\mathcal{H}_{2}$, and $\sum_{i}E_{i}^{\dagger}E_{i}\leq 1$
+	\end{itemize}
+	\subsection{Error Correction}
+	\subsubsection{Examples}
+	\begin{itemize}
+		\item Two main examples: \textit{bit-flip correction} and \textit{Shor code}
+		\item \textbf{Bit-flip:}
+		\begin{itemize}
+			\item Suppose Alice sends qubit $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob across a noisy channel, which has probability $p$ of `flipping' each qubit; that is
+			$$
+				\ket{0}\mapsto\ket{1}\quad\text{and}\quad\ket{1}\mapsto\ket{0}
+			$$
+			\item Equivalently, the channel has probability $p$ to send $X\ket{\psi}$
+			\item However, we can protect against this noise by sending three qubits instead, \textit{encoding} as
+			\begin{equation}
+				\begin{aligned}
+					\ket{0}&\to\ket{0_{L}}=\ket{000}\\
+					\ket{1}&\to\ket{1_{L}}=\ket{111}
+				\end{aligned}
+			\end{equation}
+			\item Bob then receives the three-qubit state, with some qubits possibly flipped
+			\item He then has to perform \textit{error-detection/syndrome diagnosis}: a measurement to detect if an error occurred and if so, on which qubit it occurred to
+			\item The relevant 4 projectors for this measurement are:
+			\begin{equation}
+				\begin{aligned}
+					P_{0}&=\ketbras{000}+\ketbras{111}&\quad&\text{(no error)}\\
+					P_{1}&=\ketbras{100}+\ketbras{011}&\quad&\text{(qubit 1 flipped)}\\
+					P_{2}&=\ketbras{010}+\ketbras{101}&\quad&\text{(qubit 2 flipped)}\\
+					P_{3}&=\ketbras{001}+\ketbras{110}&\quad&\text{(qubit 3 flipped)}
+				\end{aligned}
+			\end{equation}
+			\item Note that the outcome of the relevant measurements is 1 if the corresponding error condition is met, and the measurement also does not change the state of the three qubits
+			\item Upon getting our measurement result, we just apply $X$ to the relevant qubit if an error occurred to get back our original state
+			\item This error-correction procedure works perfectly so long as one or fewer errors occur: this happens with probability $(1-p)^{3}+3p(1-p)^{2}=1-3p^{2}+2p^{3}$, and the probability we cannot correct the error is therefore $3p^{2}-2p^{3}$
+			\item For $p<1/2$ we therefore have increased reliability
+			\item In the operation language above, the action of the bit-flip channel can be written
+			\begin{equation}
+				\mathcal{E}(\rho)=(1-p)\rho+pX\rho X
+			\end{equation}
+		\end{itemize}
+		\item Before looking at the Shor code, we note another important basic error: the \textit{phase-flip} 
+		\item This is similar to the bit-flip, except the relative phase of $\ket{0}$ and $\ket{1}$ are flipped; that is, with probability $p$ we have
+		\begin{equation}
+			\ket{\psi}=a\ket{0}+b\ket{1}\mapsto a\ket{0}-b\ket{1}
+		\end{equation}
+		\item This is easy to correct for: we just move to the $\ket{\pm}$ basis and perform the same procedure as in the bit-flip case
+		\item The action of the phase-flip channel is:
+		\begin{equation}
+			\mathcal{E}(\rho)=(1-p)\rho+pZ\rho Z
+		\end{equation}
+		\item \textbf{The Shor code:}
+		\begin{itemize}
+			\item The initial motivation is to correct for both phase and bit-flips
+			\item To do this, we first encode our qubit via the phase-flip machinery: $\ket{0}\to\ket{+++}$ and $\ket{1}\to \ket{---}$
+			\item Then, we encode each of our new three qubits via the bit-flip code: $\ket{+}\to\frac{1}{\sqrt{2}}(\ket{000}+\ket{111})$ and $\ket{-}\to\frac{1}{\sqrt{2}}(\ket{000}-\ket{111})$
+			\item The final result is a nine qubit code, with logical qubits
+			\begin{equation}
+				\begin{aligned}
+					\ket{0}&\to\ket{0_{L}}=\frac{1}{2\sqrt{2}}\left(\ket{000}+\ket{111}\right)\left(\ket{000}+\ket{111}\right)\left(\ket{000}+\ket{111}\right)\\
+					\ket{1}&\to\ket{1_{L}}=\frac{1}{2\sqrt{2}}\left(\ket{000}-\ket{111}\right)\left(\ket{000}-\ket{111}\right)\left(\ket{000}-\ket{111}\right)
+				\end{aligned}
+			\end{equation}
+			\item This hierarchical way of encoding qubits is called \textit{concatenation} 
+			\item It turns out that the Shor code can correct \textbf{arbitrary} single-qubit errors
+			\item To see why, suppose the encoded qubit is initially $\ket{\psi}=\alpha\ket{0_{L}}+\beta\ket{1_L}$, and consider the operator-sum representation of an arbitrary error $\mathcal{E}$ with elements $\{E_{i}\}$
+			\item After the noise acts, the state is now
+			$$
+				\mathcal{E}(\ketbras{\psi})=\sum_{i}E_{i}\ketbras{\psi}E_{i}^{\dagger}
+			$$
+			\item Let's focus on the single term $E_{i}\ketbras{\psi}E_{i}^{\dagger}$
+			\item Any single-qubit operator is a $2\times 2$ Hermitian matrix, so as an operator on qubit 1 only, it can be expanded in the basis of Hermitian matrices $\{I,X,Z,Y=iXZ\}$:
+			\begin{equation}
+				E_{i}=e_{i0}I+e_{i1}X_{1}+e_{i2}Z_{2}+e_{i3}X_{1}Z_{1}
+			\end{equation}
+			\item Therefore, the unnormalised state $E_{i}\ket{\psi}$ is a superposition of $\ket{\psi},X_{1}\ket{\psi}, Z_{1}\ket{\psi},X_{1}Z_{1}\ket{\psi}$
+			\item Measuring the error syndrome collapses this superposition into one of the 4 states, and thus we can reverse the error by performing the appropriate inversion
+			\item The same is true for all other errors, so error correction results in $\ket{\psi}$ being recovered, even though the first qubit error was arbitrary
+			\item This is \textbf{very} powerful: we can correct a continuous spectrum of errors by just correcting the bit-flip, phase-flip, and combined bit/phase-flip
+		\end{itemize}
+	\end{itemize}
+	\subsubsection{Generalities}
+	\begin{itemize}
+		\item General procedure: states $\ket{\psi}\in\mathcal{H}$ encoded by unitary operation into a \textit{quantum error-correcting code}, which is a subspace $\mathcal{H}_{\text{code}}$ of a larger Hilbert space
+		\item Often refer to the \textit{projector into the code space} $P_{\text{code}}$ or $P_{c}$
+		\item After encoding, the state is subjected to noise, a \textit{syndrome measurement} is performed to diagnose what type of error occurred, and then a \textit{recovery operation} is performed to obtain the original state
+		\item Different errors correspond to \textbf{orthogonal} subspaces of the full Hilbert space so they can be distinguished
+		\item In the general theory, we make no assumptions about a two-stage detection-recovery method: just assume noise is given by operation $\mathcal{E}$ and error-correction done by operation $\mathcal{R}$
+		\item For error-correction to be successful, we require that for any state $\rho$ supported in $\mathcal{H}_{\text{code}}$:
+		\begin{equation} \label{Successful EC}
+			(\mathcal{R}\circ\mathcal{E})(\rho)\propto \rho
+		\end{equation}
+		\item The proportionality rather than equals means that we include non-trace-preserving operations in $\mathcal{E}$
+		\item \textbf{Theorem: (Quantum Error-Correction Conditions)} Let $\mathcal{H}_{\text{code}}$ be a quantum code, and $P_{c}$ be the projector onto it. Suppose $\mathcal{E}$ is a quantum operation with elements $\{E_{i}\}$; an error-correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\mathcal{H}_{\text{code}}$ exists iff
+		\begin{equation} \label{QEC conditions}
+			P_{c}E_{i}^{\dagger}E_{j}P_{c}=\alpha_{ij}P_{c}
+		\end{equation}
+		where $\alpha$ is a complex Hermitian matrix
+		\item The set $\{E_{i}\}$ are called the \textit{errors}, and if $\mathcal{R}$ exists we say that they are a \textit{correctable set of errors}
+		\item In general, we don't know the form of the noise, but we can adapt the quantum error correction conditions to find a whole class of noises which a code $\mathcal{H}_{c}$ and correction operation $\mathcal{R}$ can correct for
+		\item \textbf{Theorem:} Suppose $\mathcal{H}_{c}$ is a quantum code, and $\mathcal{R}$ is the full error-correction operation correcting $\mathcal{E}$ with elements $\{E_{i}\}$. Then, $\mathcal{R}$ also corrects for $\mathcal{F}$ with elements $\{F_{j}\}=\left\{\sum_{i}m_{ji}E_{i}\right\}$ for complex matrix $m$ on $\mathcal{H}_{c}$
+		\item This theorem means we can talk about a class of errors $\{E_{i}\}$ which are \textit{correctable} rather than a class of error processes $\mathcal{E}$
+		\item This is useful: if (for example) we can find a process satisfying
+		$$
+			P_{c}\sigma_{i}^{1}\sigma_{j}^{1}P_{c}=\alpha_{ij}P_{c}
+		$$
+		for the Pauli matrices, then we can correct for arbitrary single-qubit errors since any single qubit operation can be described by having operation elements given by the Pauli matrices
+		\item The Shor code can do this!
+	\end{itemize}
+	\subsection{Link to Harlow 3.1}
+	\begin{itemize}
+		\item Harlow's first theorem is as follows, with the language changed a bit:
+	\end{itemize}
+	Suppose we encode a state into a code subspace $\mathcal{H}_{\text{code}}\subseteq \mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$, where the subsystem $\overline{A}$ may be erased. Define $\{\ket{\tilde{i}}\}$ to be an orthonormal basis of $\mathcal{H}_{\text{code}}$, and further define the state $\ket{\phi}=\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{\tilde{i}}_{A\overline{A}}$, where $\{\ket{i}_{R}\}$ is an orthonormal basis for auxillary system $R$ with $|R|=\dim{\mathcal{H}_{\text{code}}}$. The following 4 statements are then equivalent:
+	\begin{enumerate}
+		\item $|R|\leq |A|$, and if we write $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$, where $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists unitary $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\overline{A}}\in\mathcal{H}_{A_{2}\overline{A}}$ such that
+		\begin{equation}
+			\ket{\tilde{i}}=U_{A}\left(\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}\right)
+		\end{equation}
+		where $\{\ket{i}_{A_{1}}\}$ is an orthonormal basis for $\mathcal{H}_{A_{1}}$
+		\item For any operator $\tilde{O}$ acting within $\mathcal{H}_{\text{code}}$, $\exists O_{A}$ on $\mathcal{H}_{A}$ such that for all $\ket{\tilde{\psi}}\in\mathcal{H}_{\text{code}}$:
+		\begin{equation}
+			\begin{aligned}
+				O_{A}\ket{\tilde{\psi}}&=\tilde{O}\ket{\tilde{\psi}}\\
+				O_{A}^{\dagger}\ket{\tilde{\psi}}&=\tilde{O}^{\dagger}\ket{\tilde{\psi}}
+			\end{aligned}
+		\end{equation}
+		\item For any operator $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$, we have:
+		\begin{equation}
+			P_{\text{code}}X_{\overline{A}}P_{\text{code}}\propto P_{\text{code}}
+		\end{equation}
+		\item On the state $\ket{\phi}$, we have:
+		\begin{equation}
+			\rho_{R\overline{A}}(\phi)=\rho_{R}(\phi)\otimes \rho_{\overline{A}}(\phi)
+		\end{equation}
+	\end{enumerate}
+	\begin{itemize}
+		\item What's the intuition behind all these?
+		\item Let's start with (3): if this holds, then straightforwardly so too do the quantum error correction conditions
+		\item 
+%		\item For concreteness, say $\dim{\mathcal{H}_{A}}=a$ and $\dim{\mathcal{H}_{\overline{A}}}=\overline{a}$, so $\dim{\mathcal{H}}=a\overline{a}$; also say that $\dim{\mathcal{H}_{\text{code}}}=c\leq a\overline{a}$
+%		\item We can represent any state $\rho$ with support in $\mathcal{H}_{\text{code}}$ as an $a\overline{a}\times a\overline{a}$ matrix on $\mathcal{H}$
+%		\item The action of the quantum erasure channel (which may erase $\overline{A}$) is then given by
+%		$$
+%			\mathcal{E}(\rho)=(1-p)\rho+p\,\text{Tr}_{\overline{A}}(\rho)
+%		$$
+%		\item Define $\{\ket{a}\}$ and $\{\ket{\overline{a}}\}$ as orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\overline{A}}$ respectively; then
+%		$$
+%			\mathcal{E}(\rho)=(1-p)\rho+p\sum_{\overline{a}}\braket{\overline{a}|\rho|\overline{a}}
+%		$$
+%		\item Therefore, the operation elements of $\mathcal{E}$ are:
+%		$$
+%			E_{0}=\sqrt{1-p}I_{A\overline{A}},\quad E_{a}=\sqrt{p}(I_{A}\otimes \bra{\overline{a}})
+%		$$
+%		\item We can then compute:
+%		$$
+%		\begin{aligned}
+%			E_{0}^{\dagger}E_{0}&=(1-p)I_{A\overline{A}}\\
+%			E_{a}^{\dagger}E_{a}&=p\left(I_{A}\otimes\ketbras{\overline{a}}\right)\\
+%			E_{0}^{\dagger}E_{a}&=\sqrt{p(1-p)}\left(I_{A}\otimes\bra{\overline{a}}\right)=\sqrt{1-p}E_{a}\\
+%			E_{a}^{\dagger}E_{b}&=p\left(I_{A}\otimes\ketbra{\overline{a}}{\overline{b}}\right)
+%		\end{aligned}
+%		$$
+%		\item Since $\{\ket{\tilde{i}}\}$ is an orthonormal basis of $\mathcal{H}_{\text{code}}$, we can write $P_{\text{code}}=\sum_{\tilde{i}}\ketbras{\tilde{i}}$; checking the error correction conditions, we then find:
+%		$$
+%		\begin{aligned}
+%			P_{\text{code}}E_{0}^{\dagger}E_{0}P_{\text{code}}&=(1-p)P_{\text{code}}\\
+%			P_{\text{code}}E_{a}^{\dagger}E_{a}P_{\text{code}}&=p
+%		\end{aligned}
+%		$$
+	\end{itemize}
 \end{document}

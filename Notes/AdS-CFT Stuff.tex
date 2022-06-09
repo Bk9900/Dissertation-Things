@@ -1,0 +1,177 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{AdS/CFT Holography Stuff - Notes}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\begin{document}
+	\maketitle
+	\section{Some GR}
+	\begin{itemize}
+		\item This is \textbf{not} a full intro to GR, just the machinery we need to understand holographic error correction
+		\item We take a \textit{spacetime} to be a non-flat $D$-dimensional pseudo-Riemannian manifold $M$; it has coordinates $\{x^{\mu}\}_{\mu=0}^{D-1}$, and the \textit{line element} is defined through the metric $g_{\mu\nu}$ via
+		\begin{equation}
+			ds^{2}=g_{\mu\nu}dx^{\mu}dx^{\nu}
+		\end{equation}
+		\item At any point $p\in M$, the metric is a matrix/rank 2 tensor, and when $g_{\mu\nu}=\delta_{\mu\nu}$ we just have flat Euclidean space, which has line element
+		$$
+			ds^{2}_{\text{Euc}}=(dx^{0})^{2}+\ldots+(dx^{D-1})^{2}\equiv dx_{\mu}dx^{\mu}
+		$$
+		\item In GR, usually one metric element $g_{aa}<0$, which we call \textit{timelike}; when this is true, we say $M$ is \textit{Lorentzian}
+		\item For example, the SR line element is
+		\begin{equation}
+			ds^{2}_{\text{SR}}=-(dx^{0})^{2}+\ldots+(dx^{D-1})^{2}=dx_{\mu}dx^{\mu}
+		\end{equation}
+		\item The line element allows us to calculate the length of a curve $\gamma(\lambda)=x^{\mu}(\lambda)$ parametrised by lambda by the standard arc length integral formula:
+		\begin{equation}
+			|\gamma|\equiv\int_{0}^{1}d\lambda\,\sqrt{ds^{2}}=\int_{0}^{1}d\lambda\,\sqrt{g_{\mu\nu}\frac{dx^{\mu}(\lambda)}{d\lambda}\frac{dx^{\nu}(\lambda)}{d\lambda}}
+		\end{equation}
+		\item We can consider e.g. the set of all curves connecting two points - individual curves are coordinate dependent, but the whole set depends on the global geometry and choice of point only
+		\item This means any quantity we can compute given the data of the set is coordinate independent; a really common quantity is the distance between two points
+		\item For Euclidean/Riemannian manifolds, we can compute the length of the shortest curve connecting two points - for Lorentzian manifolds, we can add zig-zags in the timelike direction to shorten the curve
+		\item So to generalise, we need to find the length of \textbf{extremal} rather than minimal curves
+		\item To find these curves (or \textit{geodesics}), we do some standard calculus of variations, and find stationary points of the functional (1.3) viewed as a functional of $\gamma$
+		\item The solution is given by the Euler-Lagrange equations with the action $ds=\sqrt{ds^{2}}$
+		\item These are called the \textit{geodesic equations} in this context
+		\item The resultant curves in GR are those traced out by freely-falling/non-accelerating observers
+		\item In Lorentzian manifolds, the geodesic distance between points gives a \textit{causal structure} on the manifold: we can classify all pairs of points by the labels \textit{timelike}, \textit{spacelike}, and \textit{null}
+		\item These correspond to positive, negative, and zero geodesic distance
+		\item When two points are timelike separated, we call the geodesic distance between them the \textit{proper time} between them
+		\item Causal structure is a global property of the manifold, and is independent of how we parametrise the metric
+		\item All of this can be generalised to higher-dimensions, and considering surfaces/volumes etc.
+		\item Instead of (1.3), we have some higher-dimensional integral which we can just vary again to find extremal surfaces/volumes etc.
+		\item For ease, we work in 2 spacelike and 1 timelike dimension - $D=2+1$
+		\item This explains the notation in the \textit{Ryu-Takayanagi formula} (the main thing we want to understand):
+		\begin{equation}
+			S_{A}(\rho)=\frac{1}{4G_{N}}\min_{\gamma_{A}}{Area(\gamma_{A})}
+		\end{equation}
+		\item $A$ is a subregion of a spatial slice of the boundary $\partial M$ - a dimension $D-2$ (\textit{codimension} 2) object, and the minimisation is over areas of extremal dimension $D-2$ in the bulk spacetime that touch the boundary at the edge of $A$
+		\item Our universe has $D=4=3+1$, so $A$ would be 2D in this case, but in $D=3=2+1$, $D-2=1$ so the boundary is diffeomorphic to a circle, $A$ is a subset of the circle, and the relevant extremal objects are curves labelled as $\gamma_{A}$
+		\item Nonetheless, we call the operator computing their length an \textit{area operator} because in a general spacetime the invariant objects have codimension 2
+	\end{itemize}
+	\subsection{Einstein Equations}
+	\begin{itemize}
+		\item GR relates the geometry of $M$ to the matter living inside it via the \textit{Einstein field equations}, which read
+		\begin{equation}
+			G_{\mu\nu}=8\pi G_{N}T_{\mu\nu}
+		\end{equation}
+		\item What are all these objects? Well:
+		\begin{itemize}
+			\item $G_{\mu\nu}$ is the \textit{Einstein curvature tensor}, defined via $G_{\mu\nu}=R_{\mu\nu}-\frac{1}{2}g_{\mu\nu}R$ where $R_{\mu\nu}$ is the Ricci tensor and $R$ is the Ricci scalar
+			\item $T_{\mu\nu}$ is the \textit{stress-energy tensor}. In a particular coordinate basis, we interpret $T_{00}$ as the energy density (or flux of 0-momentum/energy across surfaces of constant time), $T_{0i}$ as energy flux across surfaces $x^{i}=$ constant, $T^{i0}$ as momentum density in the $x^{i}$ direction, and $T^{ij}$ as the flux of $x^{i}$ momentum across surfaces of constant $x^{j}$
+			\item $G_{N}$ is just Newton's gravitational constant
+		\end{itemize}
+		\item Note these are $D^{2}$ equations if we range over $\mu,\,\nu$, but we have symmetry under $\mu\leftrightarrow\nu$, so there are only $D(D-1)/2$ truly independent equations
+		\item We often write the Einstein equations as an initial value problem: if we know the metric, its derivatives, and $T_{\mu\nu}$ at a particular point in time, we can use the field equations to calculate the metric at a later time
+	\end{itemize}
+	\subsection{Diffeomorphism Invariance}
+	\begin{itemize}
+		\item There is not a 1:1 correspondence between metrics and geometries - several metrics may describe the same geometry
+		\item This is broadly familiar: in Newtonian physics, we can choose any frame of reference/coordinate system etc. and we can tell that two seemingly different frames give rise to the same physics
+		\item Similarly in SR, physics is invariant under Lorentz transformations
+		\item So in GR, to answer the question of whether two metrics describe the same geometries, we should compute invariants and see whether they match in the two different situations
+		\item These invariants are the proper distances along geodesics, which are to do with the causal structure of the metric
+		\item Two metrics with the same causal structure are \textit{diffeomorphic}
+		\item A slightly different viewpoint is that the metric doesn't only contain physical info about a spacetime, it also contains redundant info that doesn't matter to an observer
+		\item These are known as \textit{degrees of gauge freedom}
+		\item When we go from a metric to the physics (geodesics), we `gauge out' the redundant info and leave only the physical ones
+		\item Two metrics are \textit{gauge equivalent} if they're related by a gauge transformation or diffeomorphism
+		\item We refer to \textit{gauge orbits}, which are equivalence classes of gauge equivalent metrics
+		\item We \textit{gauge fix} by specifying information restricting the gauge orbit to a subset of metrics
+		\item If only one metric remains, we have fully fixed the gauge
+		\item Not all gauge transformations preserve all `physical' information, which is a particular issue when considering metrics on manifolds with boundaries
+		\item For intuition, think about electrodynamics: the behaviour of charged particles is governed by Maxwell's equations, but the $E$ and $B$ fields are not gauge invariant, only certain combinations (e.g. $E^{2}+B^{2}$) are
+		\item Analogously to the Einstein equations, Maxwell's equations are differential equations so their solution in a bounded region depends on the boundary conditions
+		\item The boundary conditions represent an additional set of physical information, so the set of gauge transformations preserving all physical quantities will be smaller than if we didn't worry about boundary conditions
+		\item The same issue still occurs even if the boundary is at infinity
+		\item We ask whether the gauge transformation has any effect at infinity or if it is distinguishable from the identity at infinity
+		\item If it just looks like the identity, we call it a \textit{small gauge transformation}, and keep in mind that \textit{large} gauge transformations are physical but small ones are not
+		\item In GR, a small gauge transformation of the metric takes $g_{\mu\nu}\mapsto g_{\mu\nu}+\delta g_{\mu\nu}$, where $\lim_{x^{\mu}\to 0}\delta g_{\mu\nu}(x^{\mu})=0$, but a large gauge transformation can (for example) change the total invariant mass contained within some region
+		\item An easy way to gauge fix in GR is to fix a time direction on the manifold, or identify points on the same `spatial slice' at fixed time
+		\item In 4 spacetime dimensions, this is called a 3+1 \textit{decomposition} or a \textit{foliation} of the spacetime into spatial slices
+		\item When the spacetime has a boundary, some foliations will coincide on the boundary and others will not - only those which do coincide describe the same physics
+		\item The RT formula applies to spacetimes with a spatial boundary
+		\item Invariant quantities are those which are unchanged by small diffeomorphisms, leaving the boundary unchanged
+		\item The invariant quantities of interest for the RT formula are areas of surfaces which end on the boundary - in 2+1 dimensions, these are geodesics which are between points on the boundary
+	\end{itemize}
+	\subsection{Quantum Gravity}
+	\begin{itemize}
+		\item GR is classical - given enough data to describe a situation at an initial time, we can use the theory to find a description at a later or earlier time
+		\item Quantum mechanics is similar - given a Hamiltonian and initial wave function, we can evolve in time by the Schrodinger equation
+		\item For sensible Hamiltonians, the expectation values of observables evolve smoothly, but when measuring an observable itself, we project onto one of its eigenstates - only by repeated measurements do we have access to the expectation value
+		\item Finding a full theory of quantum gravity is \textbf{really} hard, but we can say some things with confidence
+		\item In the quantum theory of a point particle, the classical observables are operators which measure position, velocity etc.
+		\item The classical observables of a field theory are similarly the operators which measure field values and their derivatives
+		\item For a gravitational theory, the classical observables then are those which when we apply then to a state on a classical geometry measure the metric, stress tensor etc.
+		\item This means that at worst, we expect the Einstein equations to be the classical limit of some non-classical theory
+		\item Loosely, this means we should schematically have an operator equation looking like
+		\begin{equation}
+			\hat{G}_{\mu\nu}``="8\pi G_{N}\hat{T}_{\mu\nu}
+		\end{equation}
+		where the hats denote operators
+		\item What this really means is that for classical states $\ket{\Psi}$ which are simultaneous eigenstates of both operators, we have
+		\begin{equation}
+			\hat{G}_{\mu\nu}\ket{\Psi}=G_{\mu\nu}\ket{\Psi}=8\pi G_{N}\hat{T}_{\mu\nu}\ket{\Psi}=8\pi G_{N}T_{\mu\nu}\ket{\Psi}
+		\end{equation}
+		\item This automatically implies
+		\begin{equation}
+			\braket{\hat{G}_{\mu\nu}}_{\Psi}=8\pi G_{N}\braket{\hat{T}_{\mu\nu}}_{\Psi}
+		\end{equation}
+		\item To move away from classical/exact eigenstates, we have two options:
+		\begin{enumerate}
+			\item Use perturbation theory to examine what happens if we measure operators on states close to classical states
+			\item We can use the linearity of QM to discuss \textit{superpositions} of separate geometries
+		\end{enumerate}
+		\item There's a slight issue with the second: linearity of QM only applies to states in a fixed Hilbert space
+		\item For example, for the quantum mechanical theory of a single particle in a potential, we have a position operator on this Hilbert space and we know how it acts on position eigenstates and general states written in the position basis, but it does \textbf{not} tell us how to act on single particle states in a different potential
+		\item To answer this, we could e.g. couple the particle to an external field, so the original potential is recovered for a fixed state of the field
+		\item In this new, larger Hilbert space, we can talk about a superposition of a particle in one potential with a particle in a different potential
+		\item To do this, we need to understand how to embed the original Hilbert space into the larger one
+		\item This is (finally) where \textit{holography} comes in
+	\end{itemize}
+	\subsection{Holography}
+	\begin{itemize}
+		\item A holographic theory is one where a gravitational theory can be described using a non-gravitational one `at the boundary' in some sense
+		\item These theories can be used to describe superpositions of states describing different geometries
+		\item Annoyingly, all our best-known holographic theories have \textit{negative} curvature, whereas our universe seemingly has \textit{positive} curvature
+		\item We therefore can't just interpret our universe as a state in a holographic Hilbert space
+	\end{itemize}
+	\subsubsection{The Holographic Dictionary}
+	\begin{itemize}
+		\item The main objects in a quantum theory are states and observables
+		\item When a state describes a spatial slice of a classical spacetime geometry satisfying the Einstein equations, it is an eigenstate of some specific operators, with eigenvalues corresponding to diffeomorphism-invariant quantities
+		\item We can then compute the expectations of these operators on states close to the classical ones, and linearity then allows us to find the expectations on superpositions of near-classical states
+		\item In \textit{anti-de Sitter (AdS)} geometries (negative curvature) in $D$ dimensions, the expectation values of all these operators can alternatively be computed using operators in a non-gravitational $D-1$ dimensional theory
+		\item One major result is that there is an exact dictionary for matching operators in the gravitational theory at points near the AdS boundary to operators in the boundary theory, and a precise way of integrating over points on the boundary to reconstruct operators deeper in the bulk
+		\item There's two important properties of these boundary theories:
+		\begin{enumerate}
+			\item This type of correspondence makes sense only if the boundary theory has the same symmetries as the gravitational one at its boundary. These are the small gauge symmetries of diffeomorphisms which leave the boundary at spatial infinity unchanged - for the metric describing hyperbolic space, the group of transformations which do this is the \textit{conformal group}, and so we have conformal field theories (CFTs)
+			\item Hyperbolic metrics have a natural length scale - the \textit{anti-de Sitter length} - and so too do Einstein's equations, the Planck scale. The ratio of these two scales is a dimensionless number which also appears on the boundary CFT as the number of fields in the theory. In spacetimes which look classical, the ratio needs to be very large - loosely, it's the ratio between cosmological and quantum gravitational scales
+		\end{enumerate}
+		\item As a result of this second point, boundary CFTs that can describe classical-like geometries have a huge number of fields, and are often referred to as large-$N$ CFTs
+		\item 
+	\end{itemize}
+\end{document}
