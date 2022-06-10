@@ -302,66 +302,48 @@
 		for the Pauli matrices, then we can correct for arbitrary single-qubit errors since any single qubit operation can be described by having operation elements given by the Pauli matrices
 		\item The Shor code can do this!
 	\end{itemize}
-	\subsection{Link to Harlow 3.1}
+	\subsection{Quantum Erasure}
 	\begin{itemize}
-		\item Harlow's first theorem is as follows, with the language changed a bit:
-	\end{itemize}
-	Suppose we encode a state into a code subspace $\mathcal{H}_{\text{code}}\subseteq \mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$, where the subsystem $\overline{A}$ may be erased. Define $\{\ket{\tilde{i}}\}$ to be an orthonormal basis of $\mathcal{H}_{\text{code}}$, and further define the state $\ket{\phi}=\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{\tilde{i}}_{A\overline{A}}$, where $\{\ket{i}_{R}\}$ is an orthonormal basis for auxillary system $R$ with $|R|=\dim{\mathcal{H}_{\text{code}}}$. The following 4 statements are then equivalent:
-	\begin{enumerate}
-		\item $|R|\leq |A|$, and if we write $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$, where $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists unitary $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\overline{A}}\in\mathcal{H}_{A_{2}\overline{A}}$ such that
+		\item One class of error which is particularly relevant to Harlow is \textit{quantum erasure correction}
+		\item This is defined as the channel `erasing' a subsystem of the transmitted state, i.e. losing access to a \textbf{known} subsystem 
+		\item To formalise this, suppose $\mathcal{H}_{\text{code}}\subseteq \mathcal{H}$ where $\mathcal{H}$ has a tensor product structure $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$
+		\item Then, the operation 
 		\begin{equation}
-			\ket{\tilde{i}}=U_{A}\left(\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}\right)
+			\mathcal{E}(\rho)=(1-p)\rho+p\text{Tr}_{\overline{A}}(\rho)\otimes\ketbras{e}
 		\end{equation}
-		where $\{\ket{i}_{A_{1}}\}$ is an orthonormal basis for $\mathcal{H}_{A_{1}}$
-		\item For any operator $\tilde{O}$ acting within $\mathcal{H}_{\text{code}}$, $\exists O_{A}$ on $\mathcal{H}_{A}$ such that for all $\ket{\tilde{\psi}}\in\mathcal{H}_{\text{code}}$:
+		where $\ket{e}$ is a state orthogonal to $\mathcal{H}$ living in the Hilbert space $\mathcal{H}_{E}=\mathcal{H}\otimes\text{span}(\ket{e})$ - think of this as being a `flag' for erasure
+		\item If we set $\{\ket{a}\}$ and $\{\ket{\overline{a}}\}$ to be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\overline{A}}$ respectively, we can rewrite this explicitly as
+		\begin{equation}
+			\mathcal{E}(\rho)=(1-p)\rho+p\sum_{\overline{a}}\ket{e}\braket{\overline{a}|\rho|\overline{a}}\bra{e}
+		\end{equation}
+		from which we can read off operation elements
 		\begin{equation}
 			\begin{aligned}
-				O_{A}\ket{\tilde{\psi}}&=\tilde{O}\ket{\tilde{\psi}}\\
-				O_{A}^{\dagger}\ket{\tilde{\psi}}&=\tilde{O}^{\dagger}\ket{\tilde{\psi}}
+				E_{0}&=\sqrt{1-p}\left(\sum_{a}\ket{a}_{E}\bra{a}_{A}+\sum_{\overline{a}}\ket{\overline{a}}_{E}\bra{\overline{a}}_{\overline{A}}\right)\\
+				E_{\overline{a}}&=\sqrt{p}\ket{e}_{E}\bra{\overline{a}}_{\overline{A}}
 			\end{aligned}
 		\end{equation}
-		\item For any operator $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$, we have:
+		\item Note that $\mathcal{E}\,:\,\mathcal{H}\to\mathcal{H}_{E}$, so the output space has one extra dimension
+		\item We now want to see what the error correction conditions (2.15) reduce to; the first step to do this is calculating:
 		\begin{equation}
-			P_{\text{code}}X_{\overline{A}}P_{\text{code}}\propto P_{\text{code}}
+			\begin{aligned}
+				E_{0}^{\dagger}E_{0}&=(1-p)I_{\mathcal{H}}\\
+				E_{\overline{a}}^{\dagger}E_{\overline{b}}&=p\ket{\overline{a}}_{\overline{A}}\bra{\overline{b}}_{\overline{A}}\\
+				E_{0}^{\dagger}E_{\overline{a}}&=E_{\overline{a}}^{\dagger}E_{0}=0
+			\end{aligned}
 		\end{equation}
-		\item On the state $\ket{\phi}$, we have:
+		\item (2.15) then becomes trivial for $E_{0}^{\dagger}E_{0}$ and `cross-terms' $E_{0}^{\dagger}E_{\overline{a}}$ etc., and the only non-trivial condition is
 		\begin{equation}
-			\rho_{R\overline{A}}(\phi)=\rho_{R}(\phi)\otimes \rho_{\overline{A}}(\phi)
+			p\Pc\ketbra{\overline{a}}{\overline{b}}\Pc=\alpha_{\overline{a}\overline{b}}\Pc 
 		\end{equation}
-	\end{enumerate}
-	\begin{itemize}
-		\item What's the intuition behind all these?
-		\item Let's start with (3): if this holds, then straightforwardly so too do the quantum error correction conditions
-		\item 
-%		\item For concreteness, say $\dim{\mathcal{H}_{A}}=a$ and $\dim{\mathcal{H}_{\overline{A}}}=\overline{a}$, so $\dim{\mathcal{H}}=a\overline{a}$; also say that $\dim{\mathcal{H}_{\text{code}}}=c\leq a\overline{a}$
-%		\item We can represent any state $\rho$ with support in $\mathcal{H}_{\text{code}}$ as an $a\overline{a}\times a\overline{a}$ matrix on $\mathcal{H}$
-%		\item The action of the quantum erasure channel (which may erase $\overline{A}$) is then given by
-%		$$
-%			\mathcal{E}(\rho)=(1-p)\rho+p\,\text{Tr}_{\overline{A}}(\rho)
-%		$$
-%		\item Define $\{\ket{a}\}$ and $\{\ket{\overline{a}}\}$ as orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\overline{A}}$ respectively; then
-%		$$
-%			\mathcal{E}(\rho)=(1-p)\rho+p\sum_{\overline{a}}\braket{\overline{a}|\rho|\overline{a}}
-%		$$
-%		\item Therefore, the operation elements of $\mathcal{E}$ are:
-%		$$
-%			E_{0}=\sqrt{1-p}I_{A\overline{A}},\quad E_{a}=\sqrt{p}(I_{A}\otimes \bra{\overline{a}})
-%		$$
-%		\item We can then compute:
-%		$$
-%		\begin{aligned}
-%			E_{0}^{\dagger}E_{0}&=(1-p)I_{A\overline{A}}\\
-%			E_{a}^{\dagger}E_{a}&=p\left(I_{A}\otimes\ketbras{\overline{a}}\right)\\
-%			E_{0}^{\dagger}E_{a}&=\sqrt{p(1-p)}\left(I_{A}\otimes\bra{\overline{a}}\right)=\sqrt{1-p}E_{a}\\
-%			E_{a}^{\dagger}E_{b}&=p\left(I_{A}\otimes\ketbra{\overline{a}}{\overline{b}}\right)
-%		\end{aligned}
-%		$$
-%		\item Since $\{\ket{\tilde{i}}\}$ is an orthonormal basis of $\mathcal{H}_{\text{code}}$, we can write $P_{\text{code}}=\sum_{\tilde{i}}\ketbras{\tilde{i}}$; checking the error correction conditions, we then find:
-%		$$
-%		\begin{aligned}
-%			P_{\text{code}}E_{0}^{\dagger}E_{0}P_{\text{code}}&=(1-p)P_{\text{code}}\\
-%			P_{\text{code}}E_{a}^{\dagger}E_{a}P_{\text{code}}&=p
-%		\end{aligned}
-%		$$
+		or, more simply
+		\begin{equation}
+			\Pc\ketbra{\overline{a}}{\overline{b}}\Pc\propto\Pc
+		\end{equation}
+		\item This has a very relevant implication to Harlow: any operator $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$ can be decomposed as $X_{\overline{A}}=\sum_{\overline{a},\overline{b}}x_{\overline{a},\overline{b}}\ketbra{\overline{a}}{\overline{b}}$, so if (2.21) holds, then for any such $X_{\overline{A}}$ we must have
+		\begin{equation}
+			\Pc X_{\overline{A}}\Pc\propto\Pc
+		\end{equation}
+		\item \textbf{This is exactly (3.3) of Harlow}, establishing its necessity for the correctability of erasure of $\overline{A}$
 	\end{itemize}
 \end{document}

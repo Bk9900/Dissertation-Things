@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  7 JUN 2022 17:11
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  9 JUN 2022 17:18
  restricted system commands enabled.
 **"Quantum Error Correction.tex"
 ("./Quantum Error Correction.tex"
@@ -1000,7 +1000,7 @@ Overfull \hbox (27.5387pt too wide) in paragraph at lines 271--272
 ] ; X[]Z[] []$ 
  []
 
-[6] [7] [8] ("./Quantum Error Correction.aux")
+[6] [7] [8] [9] ("./Quantum Error Correction.aux")
 Package rerunfilecheck Info: File `"Quantum Error Correction".out' has not chan
 ged.
 (rerunfilecheck)             Checksum: <no file>.
@@ -1009,35 +1009,33 @@ ged.
 Here is how much of LuaTeX's memory you used:
  27544 strings out of 477742
  125016,953878 words of node,token memory allocated
- 792 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 8 sub_mlist, 1 glyph, 75 attribute,
- 53 glue_spec, 75 attribute_list, 2 write nodes
-   avail lists: 1:10,2:812,3:243,4:90,5:446,6:54,7:6259,8:81,9:681,10:5,11:427
+ 760 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 73 attribute, 53 glue_spec
+, 73 attribute_list, 2 write nodes
+   avail lists: 1:10,2:816,3:251,4:90,5:454,6:54,7:6259,8:81,9:820,10:5,11:427
  47146 multiletter control sequences out of 65536+600000
  86 fonts using 5239871 bytes
- 99i,11n,98p,616b,477s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 99i,11n,98p,586b,477s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/U
 sers/nebka/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}<C:/Users
 /nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
 C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex
 10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cmextra/cmex8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/pub
-lic/amsfonts/cm/cmmi12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/
-fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/nebka/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nebka/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nebka/AppData/Loc
-al/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nebka/App
-Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/ne
-bka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/neb
-ka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/nebka
-/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/nebka/A
-ppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/nebka/AppD
-ata/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/nebka/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Quantum Error Correction.pdf (8 pages, 276775 bytes).
+/cm/cmmi12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+amsfonts/cm/cmmi8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmr12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX
+/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Program
+s/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/
+Programs/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/nebka/AppData/Local/P
+rograms/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/nebka/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/nebka/AppData/Local/Progr
+ams/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/nebka/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/nebka/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Quantum Error Correction.pdf (9 pages, 262107 bytes).
 
-PDF statistics: 201 PDF objects out of 1000 (max. 8388607)
+PDF statistics: 196 PDF objects out of 1000 (max. 8388607)
  58 named destinations out of 1000 (max. 131072)
  120 words of extra memory for PDF output out of 10000 (max. 100000000)
 

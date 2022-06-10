@@ -172,6 +172,69 @@
 			\item Hyperbolic metrics have a natural length scale - the \textit{anti-de Sitter length} - and so too do Einstein's equations, the Planck scale. The ratio of these two scales is a dimensionless number which also appears on the boundary CFT as the number of fields in the theory. In spacetimes which look classical, the ratio needs to be very large - loosely, it's the ratio between cosmological and quantum gravitational scales
 		\end{enumerate}
 		\item As a result of this second point, boundary CFTs that can describe classical-like geometries have a huge number of fields, and are often referred to as large-$N$ CFTs
-		\item 
+		\item It can be shown that in conformal theories, the larger the number of fields, the stronger they couple to each other: so when used to describe classical geometries, the AdS/CFT correspondence relates gravity in asymptotically AdS spacetimes to the behaviour of strongly-coupled CFTs
+		\item This may seem like mere coincidence, but there's a few reasons why this is an exciting correspondence:
+		\begin{itemize}
+			\item Some quantities are more easily calculated in a gravitational theory than a non-gravitational one and vice versa; for example, the RT formula exploits this. It's easy to compute the areas of extremal curves from the metric, but to compute the entropy of a CFT state is non-trivial
+			\item We can freely compute the expectations of states which \textbf{aren't} close to classical - ones which do not even remotely solve the Einstein equations. These states still live in the same Hilbert space as the near-classical states
+		\end{itemize}
+	\end{itemize}
+	\subsection{The Ryu-Takayanagi (RT) Formula}
+	\begin{itemize}
+		\item Let's return to the RT formula (1.4): this is specifically the version that applies to a holographic state dual to a classical geometry
+		\begin{equation}
+			S_{A}(\rho)=\frac{1}{4G_{N}}\min_{\gamma_{A}}{Area(\gamma_{A})}
+		\end{equation}
+		\item We now know what the RHS means: we can find geodesics/extremal surfaces from the metric, and consider those which hit the boundary at precisely the edge of the boundary region $A$
+		\item If there are multiple such geodesics, we simply choose the one with smallest area
+		\item The LHS refers to the boundary CFT
+		\item The state $\rho$ is in the Hilbert space of a large-$N$ CFT, with $N$ related to $G_{N}$ as discussed above, and $S_{A}$ is the entanglement entropy of it on $A$
+		\item More generally, the RT formula is
+		\begin{equation}
+			S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\text{Tr}(L\rho)
+		\end{equation}
+		which applies to states with entanglement in the bulk and superpositions of geometries
+		\item Here, $L$ is an operator in the quantum-gravitational Hilbert space, with eigenstates dual to classical geometries and eigenvalues being the areas of the minimal surfaces which meet the boundary subregion
+		\item There are many states which live on the same curved spacetime, but the bulk entanglement term identifies which equivalence class of these states is described by $\rho$
+		\item This means neither the LHS or RHS of (1.10) are the expectation value of some observable, but the difference between the boundary and bulk entropies \textbf{is}
+		\item It turns out $L$ can be obtained given access either to the reduced state in $A$ or its complement $\overline{A}$
+	\end{itemize}
+	\subsection{The Causal and Entanglement Wedges}
+	\begin{itemize}
+		\item We want to know which operators in the bulk can be reconstructed given access to a specific boundary region
+		\item Due to the causal structure of Lorentzian manifolds, only those parts of the boundary which are causally related to a point or region of the bulk can affect an operator there
+		\item This is formalised by the notion of the \textit{causal wedge} (see notes page 23 for diagram)
+		\item On a time-slice of the boundary, choose a spatial sub-region $A$: the causal wedge $\mathcal{C}[A]$ of $A$ is the bulk region bounded by both the boundary domain of dependence of $A$ and the set of bulk geodesics which start and end on it
+		\item It's often useful to not work with the full causal wedge, but some particular spatial slice within it
+		\item If the RT surface is spacelike, all spatial slices in the causal wedge end on the RT surface itself but they hit the boundary at different times
+		\item It's usually most convenient to choose a spatial slice intersecting the boundary at $A$ itself
+		\item If the spacetime is static (for example), we can pick a spatial slice extending between $A$ and its RT surface, which by causality contains all info needed to reproduce the whole causal wedge (see notes page 24 for diagram)
+		\item We know that given access to the entropy of a CFT subregion we can use the RT formula to work out the area of the relevant extremal surface
+		\item We expect that if we know the full reduced density matrix in addition to just the entropy, we can construct e.g. the entire RT surface, and we can also use this info to construct the RT surfaces of smaller bits of the subregion - we should be able to find the metric everywhere in the part of the bulk between the boundary region and the RT surface
+		\item This is formalised by the concept of the \textit{entanglement wedge} $\mathcal{E}[A]$: this is the domain of dependence of the bulk region bounded by $A$ and by the RT surface of $A$
+		\item The entanglement wedge is determined by the RT surface, which has area equal to the von Neumann entropy of the boundary theory in $A$, hence entanglement
+		\item Under the assumption the bulk is a `sensible' geometry, $\mathcal{C}[A]\subseteq\mathcal{E}[A]$
+		\item For a pure boundary state, the RT surface of $A$ is the same as that of $\overline{A}$: the operator $L$ which gives its area is both in the set of operators on $A$ and on $\overline{A}$
+		\item Causality says that all operators in one of these sets commutes with all operators in the other, so $L$ is in the centre of $A$
+		\item One example is the identity operator, but in general, when there is some gauge symmetry in the bulk, there will be non-trivial elements in the centre
+		\item The non-triviality of the area operator tells us the bulk is gravitational, and hence has diffeomorphism invariance
+	\end{itemize}
+	\subsection{Complementary Recovery and Radial Commutativity}
+	\begin{itemize}
+		\item If we divide the boundary into two regions, an operator acting at a particular bulk point must lie in the causal wedge of at least one of the regions, and only in the causal wedge of both when the point is in the RT surface
+		\item This is \textit{complementary recovery}: given a subregion, we can reconstruct \textbf{all} operators in the causal wedge but none outside it
+		\item What happens if we allow the boundary $A$ to vary but the bulk operator remains fixed?
+		\item In general, the operator is in the causal wedge of multiple regions, so if we had access to a boundary region large enough that lots of its subregions can reconstruct the operator, knowledge of the operator is redundantly encoded in the state: we don't need the full state on $A$ to reconstruct it
+		\item We say the state exhibits \textit{subregion duality}, in which many subregions can reconstruct the same operator
+		\item If we erase a piece of the boundary which is much smaller than $A$, almost every bulk operator can still be exactly reconstructed - see the link to error correction?
+		\item For non-pathological spacetimes, the RT surfaces of small subregions don't extend very far into the bulk: we need large regions to penetrate deeply
+		\item If a bulk operator is outside a subregion's causal wedge, that means it commutes with every operator in the wedge
+		\item In particular, it commutes with operators acting on the boundary itself
+		\item Every boundary operator acting on a point in the boundary lives inside the causal wedge of any boundary subregion containing that point; in particular, it lives inside the causal wedge of an arbitrarily small subregion around the point
+		\item Therefore, any bulk operator living away from the boundary must commute with all boundary operators acting at single points on the boundary: this is called \textit{radial commutativity}
+		\item CFTs admit an \textit{operator product expansion}: the product of operators acting at multiple points can be written as a sum of local operators acting at single points
+		\item Each of these local operators must therefore commute with the bulk operator - therefore, a bulk operator commutes with every operator in the boundary theory
+		\item This paradox only arises if we treat bulk operators and boundary operators as having the same Hilbert space, but in fact the bulk space is encoded into the CFT space
+		\item We therefore must map the bulk into the boundary using an isometry $V$
 	\end{itemize}
 \end{document}

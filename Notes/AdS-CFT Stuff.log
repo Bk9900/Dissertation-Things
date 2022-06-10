@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  8 JUN 2022 17:02
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  10 JUN 2022 11:14
  restricted system commands enabled.
 **"AdS-CFT Stuff.tex"
 ("./AdS-CFT Stuff.tex"
@@ -992,19 +992,19 @@ File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 
 
 {C:/Users/nebka/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
-[3] [4] [5] [6] ("./AdS-CFT Stuff.aux")
+[3] [4] [5] [6] [7] [8] [9] ("./AdS-CFT Stuff.aux")
 Package rerunfilecheck Info: File `"AdS-CFT Stuff".out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
 )
 
 Here is how much of LuaTeX's memory you used:
- 27492 strings out of 477742
+ 27505 strings out of 477742
  125016,953878 words of node,token memory allocated
- 578 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 26 attribute,
- 53 glue_spec, 26 attribute_list, 2 write nodes
-   avail lists: 1:10,2:576,3:239,4:95,5:510,6:49,7:6721,8:48,9:558,10:8,11:455
- 47127 multiletter control sequences out of 65536+600000
+ 594 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 30 attribute,
+ 53 glue_spec, 30 attribute_list, 2 write nodes
+   avail lists: 1:10,2:568,3:239,4:95,5:514,6:49,7:7144,8:48,9:558,10:8,11:530
+ 47132 multiletter control sequences out of 65536+600000
  86 fonts using 5239871 bytes
  99i,6n,98p,575b,424s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/U
@@ -1023,9 +1023,9 @@ ograms/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/nebka/AppData/Local/Prog
 rams/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/nebka/AppData/Local/Progra
 ms/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/nebka/AppData/Local/Programs/
 MiKTeX/fonts/type1/public/lm/lmri12.pfb>
-Output written on AdS-CFT Stuff.pdf (6 pages, 229705 bytes).
+Output written on AdS-CFT Stuff.pdf (9 pages, 246746 bytes).
 
-PDF statistics: 121 PDF objects out of 1000 (max. 8388607)
- 25 named destinations out of 1000 (max. 131072)
- 48 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 155 PDF objects out of 1000 (max. 8388607)
+ 33 named destinations out of 1000 (max. 131072)
+ 88 words of extra memory for PDF output out of 10000 (max. 100000000)
 
