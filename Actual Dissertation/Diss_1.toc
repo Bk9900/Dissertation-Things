@@ -1,0 +1,24 @@
+\contentsline {subsubsection}{Example\nobreakspace {}3: a very mathematical project}{iv}{section*.3}%
+\contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Background}{3}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Quantum Mechanics}{3}{section.2.1}%
+\contentsline {subsection}{\numberline {2.1.1}Postulates}{3}{subsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.1.2}Measurements}{4}{subsection.2.1.2}%
+\contentsline {subsection}{\numberline {2.1.3}Density Operators}{6}{subsection.2.1.3}%
+\contentsline {section}{\numberline {2.2}The more difficult bits}{7}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Hard bits}{7}{subsection.2.2.1}%
+\contentsline {subsection}{\numberline {2.2.2}Even harder bits}{8}{subsection.2.2.2}%
+\contentsline {subsubsection}{Numbering}{8}{section*.7}%
+\contentsline {paragraph}{More on numbering:}{9}{section*.8}%
+\contentsline {chapter}{\numberline {3}Design and/or development (of my project)}{10}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Another Chapter Title}{12}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Number of Chapters}{12}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Results and Analysis}{13}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Some results}{13}{section.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}More results}{13}{subsection.5.1.1}%
+\contentsline {section}{\numberline {5.2}Discussion of your results}{14}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Conclusions}{16}{chapter.6}%
+\contentsline {chapter}{\numberline {A}Stuff that's too detailed}{17}{appendix.A}%
+\contentsline {section}{\numberline {A.1}{\rm B\kern -.05em{\sc i\kern -.025em b}\kern -.08em T\kern -.1667em\lower .7ex\hbox {E}\kern -.125emX}}{17}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Producing your documents using \texttt {pdflatex}}{18}{section.A.2}%
+\contentsline {chapter}{\numberline {B}Stuff that won't be read by anyone}{20}{appendix.B}%

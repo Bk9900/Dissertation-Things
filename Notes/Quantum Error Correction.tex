@@ -307,34 +307,26 @@
 		\item One class of error which is particularly relevant to Harlow is \textit{quantum erasure correction}
 		\item This is defined as the channel `erasing' a subsystem of the transmitted state, i.e. losing access to a \textbf{known} subsystem 
 		\item To formalise this, suppose $\mathcal{H}_{\text{code}}\subseteq \mathcal{H}$ where $\mathcal{H}$ has a tensor product structure $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$
-		\item Then, the operation 
+		\item Then, the operation
 		\begin{equation}
-			\mathcal{E}(\rho)=(1-p)\rho+p\text{Tr}_{\overline{A}}(\rho)\otimes\ketbras{e}
+			\mathcal{E}(\rho)=\text{Tr}_{\overline{A}}(\rho)
 		\end{equation}
-		where $\ket{e}$ is a state orthogonal to $\mathcal{H}$ living in the Hilbert space $\mathcal{H}_{E}=\mathcal{H}\otimes\text{span}(\ket{e})$ - think of this as being a `flag' for erasure
+		`erases' the $\overline{A}$ subsystem with certainty
 		\item If we set $\{\ket{a}\}$ and $\{\ket{\overline{a}}\}$ to be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\overline{A}}$ respectively, we can rewrite this explicitly as
 		\begin{equation}
-			\mathcal{E}(\rho)=(1-p)\rho+p\sum_{\overline{a}}\ket{e}\braket{\overline{a}|\rho|\overline{a}}\bra{e}
+			\mathcal{E}(\rho)=\sum_{\overline{a}}\braket{\overline{a}|\rho|\overline{a}}
 		\end{equation}
 		from which we can read off operation elements
 		\begin{equation}
-			\begin{aligned}
-				E_{0}&=\sqrt{1-p}\left(\sum_{a}\ket{a}_{E}\bra{a}_{A}+\sum_{\overline{a}}\ket{\overline{a}}_{E}\bra{\overline{a}}_{\overline{A}}\right)\\
-				E_{\overline{a}}&=\sqrt{p}\ket{e}_{E}\bra{\overline{a}}_{\overline{A}}
-			\end{aligned}
+			E_{\overline{a}}=I_{A}\otimes\bra{\overline{a}}=\sum_{a}\ketbras{a}\otimes\bra{\overline{a}}
 		\end{equation}
-		\item Note that $\mathcal{E}\,:\,\mathcal{H}\to\mathcal{H}_{E}$, so the output space has one extra dimension
 		\item We now want to see what the error correction conditions (2.15) reduce to; the first step to do this is calculating:
 		\begin{equation}
-			\begin{aligned}
-				E_{0}^{\dagger}E_{0}&=(1-p)I_{\mathcal{H}}\\
-				E_{\overline{a}}^{\dagger}E_{\overline{b}}&=p\ket{\overline{a}}_{\overline{A}}\bra{\overline{b}}_{\overline{A}}\\
-				E_{0}^{\dagger}E_{\overline{a}}&=E_{\overline{a}}^{\dagger}E_{0}=0
-			\end{aligned}
+			E_{\overline{a}}^{\dagger}E_{\overline{b}}=I_{A}\otimes\ketbra{\overline{a}}{\overline{b}}
 		\end{equation}
-		\item (2.15) then becomes trivial for $E_{0}^{\dagger}E_{0}$ and `cross-terms' $E_{0}^{\dagger}E_{\overline{a}}$ etc., and the only non-trivial condition is
+		\item (2.15) therefore reduces to
 		\begin{equation}
-			p\Pc\ketbra{\overline{a}}{\overline{b}}\Pc=\alpha_{\overline{a}\overline{b}}\Pc 
+			\Pc\ketbra{\overline{a}}{\overline{b}}\Pc=\alpha_{\overline{a}\overline{b}}\Pc 
 		\end{equation}
 		or, more simply
 		\begin{equation}
@@ -345,5 +337,121 @@
 			\Pc X_{\overline{A}}\Pc\propto\Pc
 		\end{equation}
 		\item \textbf{This is exactly (3.3) of Harlow}, establishing its necessity for the correctability of erasure of $\overline{A}$
+	\end{itemize}
+	\subsection{Harlow Toy Model}
+	\begin{itemize}
+		\item Suppose Alice wishes to send the \textbf{qutrit} 
+		$$
+			\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
+		$$
+		to Bob
+		\item Suppose also that the channel erases the third qubit with probability $p$
+		\item An encoding which can protect for this is $\mathcal{H}_{\text{code}}=\text{Span}\{\ket{0_{L}},\ket{1_{L}},\ket{2_{L}}\}$, where
+		$$
+			\begin{aligned}
+				\ket{0_{L}}&=\frac{1}{\sqrt{3}}(\ket{000}+\ket{111}+\ket{222})\\
+				\ket{1_{L}}&=\frac{1}{\sqrt{3}}(\ket{012}+\ket{120}+\ket{201})\\
+				\ket{2_{L}}&=\frac{1}{\sqrt{3}}(\ket{021}+\ket{102}+\ket{210})
+			\end{aligned}
+		$$
+		\item Suppose an erasure occurs, so Bob only has access to the first two qubits; he can indeed recover the original state
+		\item Define a unitary operator on the first two qubits via
+		$$
+			U_{12}=\ketbras{00}+\ketbra{01}{11}+\ketbra{02}{22}+\ketbra{12}{01}+\ketbra{10}{12}+\ketbra{11}{20}+\ketbra{21}{02}+\ketbra{22}{10}+\ketbra{20}{21}
+		$$
+		i.e. $U_{12}$ does nothing to $\ket{00}$, and permutes the remaining 8 basis states as
+		$$
+			\ket{11}\to\ket{01}\to\ket{12}\to\ket{10}\to\ket{22}\to\ket{02}\to\ket{21}\to\ket{20}\to\ket{11}
+		$$
+		\item A bit of computation then shows that
+		$$
+			(U_{12}\otimes I_{3})\ket{i_{L}}=\ket{i}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22})
+		$$
+		\item Clearly this explicitly shows state recovery is possible, since
+		$$
+			(U_{12}\otimes I_{3})\ket{\psi_{L}}=\ket{\psi}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22})
+		$$
+		\item We can equivalently frame the correctability in terms of operators
+		\item Say $O$ acts on the original Hilbert space as
+		$$
+			O\ket{i}=\sum_{j}(O)_{ji}\ket{j}
+		$$
+		\item We can always find a logical operator $O_{L}$ acting on $\mathcal{H}_{\text{code}}$ which has the same action as $O$; that is
+		$$
+			O_{L}\ket{i_{L}}=\sum_{j}(O)_{ji}\ket{j_{L}}
+		$$
+		\item For our scenario, it's easy enough to just set
+		$$
+			O_{12}=U_{12}^{\dagger}OU_{12}
+		$$
+		where $O$ acts on the first qubit only; then
+		$$
+			O_{12}\ket{i_{L}}=\sum_{j}(O)_{ji}\ket{j_{L}}
+		$$
+		\item $O_{12}$ is in some sense an $O_{L}$ which has support only on the firs two qubits
+	\end{itemize}
+	\subsection{Harlow 3.1}
+	\begin{itemize}
+		\item Before relating the toy model to Harlow 3.1, we need the concepts of the \textit{Schmidt decomposition} and \textit{purifications}
+		\item Suppose $\ket{\psi}$ is a pure state of composite system $AB$, so $\ket{\psi}\in\mathcal{H}_{A}\otimes\mathcal{H}_{B}$; then we can choose orthonormal bases $\{\ket{i_{A}}\}$ and $\{\ket{i_{B}}\}$ such that
+		\begin{equation}
+			\ket{\psi}=\sum_{i}\lambda_{i}\ket{i_{A}}\ket{i_{B}}
+		\end{equation}
+		where $\sum_{i}\lambda_{i}^{2}=1$ are the \textit{Schmidt coefficients}
+		\item For purification, suppose we have a state $\rho_{A}$ of system $A$
+		\item We can introduce an ancillary system $R$ and define a pure state $\ket{AR}$ on composite system $AR$ such that $\rho_{A}=\text{Tr}_{R}(\ketbras{AR})$; $\ket{AR}$ is a purification of $\rho_{A}$
+		\item Harlow (3.1) states that, if $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$ and $\mathcal{H}_{\text{code}}\subseteq\mathcal{H}$ has orthonormal basis $\{\ket{i_{L}}\}$, we can decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ and erasure of $\overline{A}$ is correctable if there exists a unitary transformation $U_{A}$ on $\mathcal{H}_A$ and a state $\ket{\chi}_{A_{2}\overline{A}}\in\mathcal{H}_{A_{2}\overline{A}}$ such that
+		\begin{equation}
+			\ket{i_{L}}=U_{A}(\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}})
+		\end{equation}
+		where $\ket{i}_{A_{1}}$ is an o.n. basis for $\mathcal{H}_{A_{1}}$
+		\item To interpret this, we essentially take $A_{1}$ to be the initial system to be protected pre-encoding (so in the toy model, $\mathcal{H}_{A_{1}}=\mathcal{H}_{3}$)
+	\end{itemize}
+	\section{Quantum Secret Sharing}
+	\begin{itemize}
+		\item Reference: https://arxiv.org/pdf/quant-ph/9901025.pdf\#page=5\&zoom=100,0,0
+		\item Suppose we want to share a secret amongst $n$ people such that no single person has any knowledge of the secret, but any $k$ of them together can reconstruct the secret perfectly - we also require that $k-1$ or fewer of them together have \textbf{no} information about the secret
+		\item This is called a $(k,n)$ \textit{threshold scheme} in the classical case
+		\item In the quantum case, the secret is an arbitrary unknown quantum state
+		\item We define a $(k,n)$ \textit{quantum threshold scheme} (with $k\leq n$) as a method which encodes an arbitrary secret (given but not necessarily explicitly known) quantum state into $n$ shares such that
+		\begin{enumerate}
+			\item From $k$ or more shares, the state can be perfectly reconstructed
+			\item From $k-1$ or fewer shares, no information \textbf{at all} can be deduced about the secret state
+		\end{enumerate}
+		\item Formally, this means that the reduced density matrix of $k-1$ shared (with the remaining $n-k+1$ shares traced out) is independent of the value of the secret
+		\item Harlow's toy model can be viewed as a (2,3) quantum threshold code: the secret is an arbitrary qutrit which is encoded into three qutrits, and each qutrit is taken as a share as
+		\begin{equation}
+			\alpha\ket{0}+\beta\ket{1}+\gamma\ket{2}\to\frac{1}{\sqrt{3}}\bigg[\alpha(\ket{000}+\ket{111}+\ket{222})+\beta(\ket{012}+\ket{120}+\ket{201})+\gamma(\ket{021}+\ket{102}+\ket{210})\bigg]
+		\end{equation}
+		\item From any single share, we cannot deduce any info about the secret state since each individual qutrit is always maximally mixed
+		\item Given two shares though, we can simply add the value of the first share to the second, then the second to the first (all mod 3) (or alternatively just apply $U_{ij}$), which gives us the state
+		\begin{equation}
+			(\alpha\ket{0}+\beta\ket{1}+\gamma\ket{2})\frac{1}{\sqrt{3}}(\ket{00}+\ket{12}+\ket{21})
+		\end{equation}
+		\item This is slightly different to Harlow's version, which has $\ket{\chi}\propto\ket{00}+\ket{11}+\ket{22}$ vs $\ket{\chi}\propto\ket{00}+\ket{12}+\ket{21}$
+		\item What they both have in common though is non-zero entanglement; that is, consider the two density matrices for the (2,3) systems in both cases:
+		\begin{equation}
+			\begin{aligned}
+				\rho^{1}_{23}&=\frac{1}{3}(\ketbras{00}+\ketbras{12}+\ketbras{21}+\ketbra{00}{12}+\ketbra{12}{00}+\ketbra{00}{21}+\ketbra{21}{00}\\&\qquad+ \ketbra{12}{21}+\ketbra{21}{12})\\
+				\rho^{2}_{23}&=\frac{1}{3}(\ketbras{00}+\ketbras{11}+\ketbras{22}+\ketbra{00}{11}+\ketbra{11}{00}+\ketbra{00}{22}+\ketbra{22}{00}\\&\qquad+ \ketbra{11}{22}+\ketbra{22}{11})
+			\end{aligned}
+		\end{equation}
+		\item Tracing out the 2 subsystem yields
+		\begin{equation}
+			\begin{aligned}
+				\rho_{3}^{1}&=\frac{1}{3}(\ketbras{0}+\ketbras{1}+\ketbras{2})\\
+				\rho_{3}^{2}&=\frac{1}{3}(\ketbras{0}+\ketbras{1}+\ketbras{2})
+			\end{aligned}
+		\end{equation}
+		and so both have von Neumann entropy
+		\begin{equation}
+			S(\rho_{3})=\log 3
+		\end{equation}
+		\item This non-zero entanglement of $\ket{\chi}$ is necessary for the code to function robustly
+		\item Say that instead $\ket{\chi}$ was a product state; then the encoding could be written as
+		\begin{equation}
+			\ket{\psi_{L}}=U_{12}(\ket{\psi}_{1}\otimes\ket{\chi}_{2}\otimes\ket{\tilde{\chi}}_{3})=U_{12}(\ket{\psi}_{1}\otimes\ket{\chi}_{2})\otimes\ket{\tilde{\chi}}_{3}
+		\end{equation}
+		\item This means that for any encoded state $\ket{\psi_{L}}$, the third qutrit would just be in the pure state $\ket{\tilde{\chi}}_{3}$, so would give no additional information about the encoded state $\ket{\psi_{L}}$ which the second qutrit would not have on its own
 	\end{itemize}
 \end{document}
