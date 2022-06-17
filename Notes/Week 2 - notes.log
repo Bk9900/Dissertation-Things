@@ -1,7 +1,7 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  17 JUN 2022 11:39
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  17 JUN 2022 11:48
  restricted system commands enabled.
-**"AdS-CFT Stuff.tex"
-("./AdS-CFT Stuff.tex"
+**"Week 2 - notes.tex"
+("./Week 2 - notes.tex"
 LaTeX2e <2021-11-15> patch level 1
 Lua module: luaotfload 2022-03-18 3.21 Lua based OpenType font support
 Lua module: lualibs 2021-05-20 2.74 ConTeXt Lua standard libraries.
@@ -819,6 +819,36 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 )
 \Hy@SectionHShift=\skip52
 )
+(C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2022/02/07 v1.28a mathematical typesetting tools
+(C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/tools/calc.sty
+Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count311
+\calc@Bcount=\count312
+\calc@Adimen=\dimen288
+\calc@Bdimen=\dimen289
+\calc@Askip=\skip53
+\calc@Bskip=\skip54
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count313
+\calc@Cskip=\skip55
+)
+(C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2021/03/18 v1.4 programming setup (MH)
+)
+\g_MT_multlinerow_int=\count314
+\l_MT_multwidth_dim=\dimen290
+\origjot=\skip56
+\l_MT_shortvdotswithinadjustabove_dim=\dimen291
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen292
+\l_MT_above_intertext_sep=\dimen293
+\l_MT_below_intertext_sep=\dimen294
+\l_MT_above_shortintertext_sep=\dimen295
+\l_MT_below_shortintertext_sep=\dimen296
+\xmathstrut@box=\box72
+\xmathstrut@dim=\dimen297
+)
 *geometry* verbose mode - [ newgeometry ] result:
 * driver: 
 * paper: a4paper
@@ -855,51 +885,51 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/l3backend/l3backend-lua
 tex.def
 File: l3backend-luatex.def 2022-04-20 L3 backend support: PDF output (LuaTeX)
-\l__color_backend_stack_int=\count311
-\l__pdf_internal_box=\box72
-) ("./AdS-CFT Stuff.aux")
-\openout1 = AdS-CFT Stuff.aux
+\l__color_backend_stack_int=\count315
+\l__pdf_internal_box=\box73
+) ("./Week 2 - notes.aux")
+\openout1 = Week 2 - notes.aux
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
 LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 3
-0.
+1.
 
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
 
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/context/base/mkii/supp-pdf.mk
 ii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count312
-\scratchdimen=\dimen288
-\scratchbox=\box73
-\nofMPsegments=\count313
-\nofMParguments=\count314
+\scratchcounter=\count316
+\scratchdimen=\dimen298
+\scratchbox=\box74
+\nofMPsegments=\count317
+\nofMParguments=\count318
 \everyMPshowfont=\toks45
-\MPscratchCnt=\count315
-\MPscratchDim=\dimen289
-\MPnumerator=\count316
-\makeMPintoPDFobject=\count317
+\MPscratchCnt=\count319
+\MPscratchDim=\dimen299
+\MPnumerator=\count320
+\makeMPintoPDFobject=\count321
 \everyMPtoPDFconversion=\toks46
 )
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/epstopdf-pkg/epstopdf-b
@@ -949,12 +979,12 @@ File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 
 Package tikz-feynman Warning: Consider loading TikZ-Feynman with \usepackage[co
 mpat=1.1.0]{tikz-feynman} so that you can be warned if TikZ-Feynman changes. on
- input line 30.
+ input line 31.
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring OFF on input line 30.
+Package hyperref Info: Link coloring OFF on input line 31.
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/hyperref/nameref.sty
 Package: nameref 2022-05-13 v2.48 Cross-referencing by name of section
 
@@ -965,67 +995,92 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 lestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count318
-) ("./AdS-CFT Stuff.out") ("./AdS-CFT Stuff.out")
+\c@section@level=\count322
+) ("./Week 2 - notes.out") ("./Week 2 - notes.out")
 \@outlinefile=\write4
 
-\openout4 = AdS-CFT Stuff.out
-LaTeX Font Info:    Trying to load font information for U+msa on input line 32.
+\openout4 = Week 2 - notes.out
+LaTeX Font Info:    Trying to load font information for U+msa on input line 33.
 
 
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 32.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 33.
 
 
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 32
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 33
 .
 
 (C:/Users/nebka/AppData/Local/Programs/MiKTeX/tex/latex/jknappen/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
+Overfull \hbox (3.99657pt too wide) in paragraph at lines 39--40
+[]\T1/lmr/m/n/12 https://arxiv.org/pdf/quant-ph/9901025.pdf#page=5&zoom=100,0,0 (Quan-tum se-
+ []
+
 [1
 
 
 {C:/Users/nebka/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2]
-[3] [4] [5] [6] [7] [8] [9] ("./AdS-CFT Stuff.aux")
-Package rerunfilecheck Info: File `"AdS-CFT Stuff".out' has not changed.
+[3] [4] [5]
+Overfull \hbox (19.12695pt too wide) in paragraph at lines 223--224
+[]\T1/lmr/m/n/12 Ap-ply-ing the Hadamard to each qubit in turn, the re-sul-tant state is sta-bilised by $[]$,
+ []
+
+[6] [7] [8]
+Overfull \hbox (0.53778pt too wide) in paragraph at lines 321--322
+[]\T1/lmr/m/n/12 By in-spec-tion, ev-ery pos-si-ble prod-uct of two el-e-ments 
+from the set of er-rors $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 I; X[]; X[]; X[]\OM
+S/cmsy/m/n/12 g$
+ []
+
+[9] [10] [11] [12] [13] [14] [15] ("./Week 2 - notes.aux")
+Package rerunfilecheck Info: File `"Week 2 - notes".out' has not changed.
 (rerunfilecheck)             Checksum: <no file>.
 )
 
 Here is how much of LuaTeX's memory you used:
- 27505 strings out of 477742
+ 28199 strings out of 477742
  125016,953878 words of node,token memory allocated
- 594 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 2 sub_mlist, 1 glyph, 30 attribute,
- 53 glue_spec, 30 attribute_list, 2 write nodes
-   avail lists: 1:10,2:568,3:239,4:95,5:514,6:49,7:7144,8:48,9:558,10:8,11:530
- 47132 multiletter control sequences out of 65536+600000
+ 991 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 127 attribute, 56 glue_spe
+c, 127 attribute_list, 2 write nodes
+   avail lists: 1:11,2:724,3:232,4:98,5:481,6:55,7:6509,8:79,9:1164,10:5,11:390
+ 47733 multiletter control sequences out of 65536+600000
  86 fonts using 5239871 bytes
- 99i,6n,98p,575b,424s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 99i,11n,98p,576b,477s stack positions out of 10000i,1000n,20000p,200000b,80000s
 {C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ec.enc}{C:/U
 sers/nebka/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/lm/lm-ts1.enc}<C:/Users
-/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><
-C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi
-12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmmi6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
-msfonts/cm/cmmi8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmr12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/
-type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Programs
-/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/P
-rograms/MiKTeX/fonts/type1/public/lm/lmbx12.pfb><C:/Users/nebka/AppData/Local/Pr
-ograms/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/nebka/AppData/Local/Prog
-rams/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/nebka/AppData/Local/Progra
-ms/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C:/Users/nebka/AppData/Local/Programs/
-MiKTeX/fonts/type1/public/lm/lmri12.pfb>
-Output written on AdS-CFT Stuff.pdf (9 pages, 246746 bytes).
+/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><
+C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx
+8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
+cm/cmex10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/cmextra/cmex8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/
+fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/nebka/AppData/Local/Programs/
+MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nebka/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/nebka/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nebka/App
+Data/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/neb
+ka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/U
+sers/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pf
+b><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
+msy8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmb
+x12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr1
+2.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.
+pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr6.pfb
+><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr8.pfb><C
+:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:
+/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/m
+sam10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfo
+nts/symbols/msbm10.pfb>
+Output written on Week 2 - notes.pdf (15 pages, 380936 bytes).
 
-PDF statistics: 155 PDF objects out of 1000 (max. 8388607)
- 33 named destinations out of 1000 (max. 131072)
- 88 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 290 PDF objects out of 1000 (max. 8388607)
+ 99 named destinations out of 1000 (max. 131072)
+ 128 words of extra memory for PDF output out of 10000 (max. 100000000)
 
