@@ -1,0 +1,487 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{Quantum Error Correction - Notes}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newcommand{\ntr}{\hat{\text{Tr}}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}
+\begin{document}
+	\maketitle
+	\section{von Neumann Algebras}
+	\newcommand{\lops}{\mathcal{L}(\mathcal{H})}
+	\begin{itemize}
+		\item At some point, we will need the theory of \textit{von Neumann algebras}, finite dimensional ones only
+		\item Let's go through this
+		\item Suppose $\mathcal{H}$ is a finite-dimensional Hilbert space, and denote the set of linear operators on $\mathcal{H}$ as $\lops$
+		\item We denote the identity on $\mathcal{H}$ as $I\in\lops$
+		\begin{definition}[von Neumann algebra]
+			A \textbf{von Neumann algebra} on $\mathcal{H}$ is a set $M\subseteq\lops$ such that:
+			\begin{itemize}
+				\item $\forall \lambda\in\mathbb{C},\;\lambda I\in M$
+				\item $\forall x\in M,\,x^{\dagger}\in M$
+				\item $\forall x,\,y\in M,\; xy\in M$
+				\item $\forall x,\,y\in M,\; x+y\in M$
+			\end{itemize}
+		\end{definition}
+		\item Essentially: a von Neumann algebra on $\mathcal{H}$ is a set of linear operators which is closed under Hermitian conjugation, addition, multiplication, and contains all scalar multiples of the identity
+		\item We note that this definition is only true for \textit{finite dimensional} von Neumann algebras
+		\item The `true' definition is topological, but reduces to this above definition when $\mathcal{H}$ is finite dimensional, and this is the only case we need 
+		\item Any von Neumann algebra induces two `natural' associated algebras:
+		\begin{definition}[Commutant]
+			Given von Neumann algebra $M$ on $\mathcal{H}$, the \textbf{commutant} of $M$, denoted $M'$, is
+			\begin{equation}
+				M'\equiv\left\{y\in\lops\,|\,xy=yx,\,\forall x\in M\right\}
+			\end{equation}
+		\end{definition}
+		\begin{definition}[Center]
+			Given von Neumann algebra $M$ on $\mathcal{H}$, the \textbf{center} of $M$, denoted $Z_{M}$, is
+			\begin{equation}
+				Z_{M}\equiv M\cap M'
+			\end{equation}
+		\end{definition}
+		\item Basically, the commutant $M'$ is the set of all linear operators which commute with the von Neumann algebra $M$, and the center $Z_{M}$ is the subset of these which are themselves in $M$
+		\item These are easily checked to be von Neumann algebras themselves
+	\end{itemize}
+	\subsection{Projections and Partial Isometries}
+	\begin{itemize}
+		\item Two recurrent classes of linear operators are the projections and partial isometries
+		\begin{definition}[Projection]
+			A linear map $p\in\lops$ is called a \textbf{projection} if $p^{\dagger}=p$ and $p^{2}=p$
+		\end{definition}
+		\begin{definition}[Partial Isometry]
+			A linear map $a\in\lops$ is called a \textbf{partial isometry} if $a^{\dagger}a=p$, where $P$ is a projection
+		\end{definition}
+		\item Projections meet our usual intuition of projections, and partial isometries are isometries (distance preserving transformations) on the orthogonal complement to their kernel (sometimes called the \textit{initial subspace})
+		\item Projections always have a subspace $p\mathcal{H}$ on which they act identically, and they annihilate the orthogonal complement $(1-p)\mathcal{H}$ (i.e. $\ker{p}=(1-p)\mathcal{H}$)
+		\item Partial isometries are characterised by the following theorem:
+		\begin{theorem}
+			Suppose $a\in\lops$ is a partial isometry, so $a^{\dagger}a=p$ for some projection $p\in\lops$. Then, $a^{\dagger}$ is also a partial isometry, obeying $aa^{\dagger}=q$ where $q\in\lops$ is also a projection, and there exists a unitary $u\in\lops$ such that $q=upu^{\dagger}$. This means $p$ and $q$ have equal rank, and we can in fact choose $u$ such that $a=up$.
+		\end{theorem}
+		\begin{proof}
+			We first show $a^{\dagger}$ is indeed a partial isometry. First, note that any $\ket{v}\in (1-p)\mathcal{H}$ is also annihilated by $a$, since 
+			\begin{equation} 
+				\lVert a\ket{v}\rVert^{2} =\braket{v|a^{\dagger}a|v}=\braket{v|p|v}=0 \implies a\ket{v}=0
+			\end{equation} 
+			We can represent $a$ in block-matrix form according to the direct sum representation $\mathcal{H}=p\mathcal{H}\oplus(1-p)\mathcal{H}$ as
+			\begin{equation}
+				a=\begin{pNiceMatrix}[columns-width=4mm]
+					\Block{2-2}<\large>{A} && \Block{2-2}<\large>{\boldsymbol{0}} &\\
+					&&&\\
+					\Block{2-2}<\large>{B} && \Block{2-2}<\large>{\boldsymbol{0}} &\\
+					&&&
+				\end{pNiceMatrix}
+			\end{equation}
+			where only the first column can be non-zero. Computing $a^{\dagger}a=p$, the upper-left block must act identically on $p\mathcal{H}$, so we find $A^{\dagger}A+B^{\dagger}B=I_{p\mathcal{H}}$. From this block representation, we can easily compute $(aa^{\dagger})^{2}=aa^{\dagger}$, so $a^{\dagger}$ is a partial isometry and $q=aa^{\dagger}$ is a projection.\\
+			To see that $p$ and $q$ have equal rank, we first note that for any $\ket{v}\in p\mathcal{H}$:
+			\begin{equation}
+				qa\ket{v}=aa^{\dagger}a\ket{v}=ap\ket{v}=a\ket{v}\implies \ket{v}\in q\mathcal{H}
+			\end{equation}
+			We also find that for all $\ket{v_{1}},\ket{v_{2}}\in p\mathcal{H}$, we have:
+			\begin{equation}
+				\braket{v_{1}|a^{\dagger}a|v_{2}}=\braket{v_{1}|p|v_{2}}=\braket{v_{1}|v_{2}}
+			\end{equation}
+			So, if we choose $\ket{v_{i}}$ to be an orthonormal basis of $p\mathcal{H}$, then the vectors $a\ket{v_{i}}$ are orthonormal too and are in $q\mathcal{H}$. Therefore $\dim{p\mathcal{H}}\leq\dim{q\mathcal{H}}$. Repeating this argument for $q\mathcal{H}$ and $a^{\dagger}$, we find too that $\dim{p\mathcal{H}}\leq\dim{q\mathcal{H}}$, so $\dim{p\mathcal{H}}=\dim{q\mathcal{H}}$, and hence $p$ and $q$ must have equal rank.\\
+			Any two projections of equal rank are always unitarily equivalent, so we therefore must have $q=upu^{\dagger}$ for a unitary $u\in\lops$. We can also choose $u$ such that $u\ket{v}=a\ket{v}$ for any $\ket{v}\in p\mathcal{H}$ (\textbf{why??}), which gives us $a=up$. 
+		\end{proof}
+		\item If projections $p$ and $q$ are related by some partial isometry $a$ in this way, we say $p$ and $q$ are \textit{equivalent}, and write $p\sim q$ (this is indeed an equivalence relation between projections)
+		\item Partial isometries also pop up in the polar decomposition:
+		\begin{theorem}[Polar Decomposition]
+			Suppose $x\in\lops$. Then there exists non-negative matrix $|x|$ and partial isometry $a$ such that $x=a|x|$, where $a^{\dagger}a=p$ projects onto the orthogonal complement $\ker{x}^{\perp}$. Moreover, $a$ and $|x|$ are both unique.
+		\end{theorem}
+		\begin{proof}
+			First, define $|x|\equiv\sqrt{x^{\dagger}x}$ (i.e. $|x|^{2}=x^{\dagger}x$), which is clearly non-negative. Note that 
+			\begin{equation} 
+				|x|\ket{v}=0\iff\braket{v||x|^{2}|v}=\braket{v|x^{\dagger}x|v}=0\iff x\ket{v}=0
+			\end{equation}
+			for $\ket{v}\in\mathcal{H}$, so $\ker{x}=\ker{|x|}$. Now, $|x|$ is invertible on $\ker{|x|}^{\perp}=\ker{x}^{\perp}\equiv p\mathcal{H}$ for some projection onto this subspace; so define $a\equiv x\left(|x|^{-1}\oplus 0_{\ker{x}}\right)$, and compute
+			\begin{equation}
+				a^{\dagger}a=\left(|x|^{-1}\oplus 0_{\ker{x}}\right)|x|^{2}\left(|x|^{-1}\oplus 0_{\ker{x}}\right)=I_{p\mathcal{H}}\oplus 0_{(1-p)\mathcal{H}}=p
+			\end{equation}
+			Note that $x=a|x|$ implies $x^{\dagger}x=|x|a^{\dagger}a|x|=|x|p|x|=|x|^{2}$, so $|x|$ is unique. Also, if $a'|x|=a|x|$, if we right-multiply by $\left(|x|^{-1}\oplus 0_{\ker{x}}\right)$ we find $a=a'$, so $a$ is also unique. 
+		\end{proof}
+	\end{itemize}
+	\subsection{The Bicommutant Theorem}
+	\begin{itemize}
+		\item This is arguably the single most important result about von Neumann algebras
+		\begin{theorem}
+			For any von Neumann algebra $M$ on $\mathcal{H}$, we have $M''\equiv(M')'=M$
+		\end{theorem}
+		\item Before proving this, note the subtlety: $M''\supseteq M$ by definition, but $M''\subseteq M$ isn't immediate as there may be operators commuting with everything in $M'$ which are outside $M$, so this is what we need to show
+		\begin{proof}
+			This proof relies on a `doubling' trick. Instead of considering the action of $M$ on $\mathcal{H}$, we extend $M$ to a new von Neumann algebra $I\otimes M$ on $\mathcal{H}\otimes \mathcal{H}$.\\
+			Denote $\dim{\mathcal{H}}=n$; then elements of $\mathcal{L}(\mathcal{H}\otimes\mathcal{H})$ can be viewed as $n\times n$ block matrices, where each block is itself $n\times n$. Elements of $I\otimes M$ are block diagonal in this representation, with each diagonal block being the same $x\in M$:
+			\begin{equation}
+				I\otimes x=\begin{pmatrix}
+					x&0&\dots&0\\
+					0&\ddots&&\vdots\\
+					\vdots&&\ddots&0\\
+					0&\dots&0&x
+				\end{pmatrix}
+			\end{equation}
+			In other words, we are doing a block decomposition based on the fact that $\mathcal{H}\otimes\mathcal{H}\cong \oplus_{i=1}^{n}\mathcal{H}_{i}$. To find the commutant, consider an arbitrary element $y\in\mathcal{L}(\mathcal{H}\otimes \mathcal{H})$, where each block is an arbitrary element $y_{ij}\in \lops$. Left and right-multiplying by the matrix $I\otimes x$ shows that in order for $y\in(I\otimes M)'$, we need each individual block $y_{ij}$ to commute with $x$, so since $x$ is arbitrary we must have $y_{ij}\in M'$. This determines the commutant to be the set of all block matrices with all blocks being arbitrary elements of $M'$.\\
+			Now consider those elements of $(I\otimes M)'$ where all blocks are zero except for one, which is taken to be the identity. Any element of $(I\otimes M)''$ must certainly commute with all these elements, and some matrix multiplication confirms that such an operator much have the same element $z\in M''$ on each diagonal block with all other blocks zero. This defines the bicommutant $(I\otimes M)''$.\\
+			Now, consider an arbitrary vector $\ket{v}\in \mathcal{H}\otimes\mathcal{H}$, and the subspace $V\subseteq\mathcal{H}\otimes\mathcal{H}$ defined by $V\equiv(I\otimes M)\ket{v}$. We claim that the projection $p_{V}$ onto $V$ commutes with all elements of $I\otimes M$. To see this, first note that $V$ is invariant under the action of $I\otimes M$. This implies that for all $x\in I\otimes M$, $p_{V}xp_{V}=xp_{V}$. Fix such an $x$; since $x^{\dagger}\in I\otimes M$, we have $p_{V}x^{\dagger}p_{V}=x^{\dagger}p_{V}$ too, so taking adjoints we find that $p_{V}x=xp_{V}$ for all $x\in I\otimes M$.\\
+			Therefore $p_{V}$ commutes with everything in $(I\otimes M)''$, which implies that any element of $(I\otimes M)''$ with $z\in M''$ on the diagonal blocks must also preserve $V$. This means that its action on $\ket{v}$ must be equivalent to the action of some element of $I\otimes M$ with $x\in M$ on the diagonal blocks. Now if we choose a basis $\ket{v_{i}}$ of $\mathcal{H}$ and set $\ket{v}=\oplus_{i}\ket{v_{i}}$, we find that $z=x$ and hence that $M''\subseteq M$. Since $M\subseteq M''$ by definition, we must have $M''=M$.
+		\end{proof}
+		\item Note that we \textbf{need} the identity axiom for this proof to be valid, else we may not have $\ket{v}\in V$ and so we could not conclude that $z\ket{v}\in V$
+	\end{itemize}
+	\subsection{Properties of von Neumann Algebras}
+	\begin{itemize}
+		\item We now state and prove some basic properties of von Neumann algebras
+		\begin{proposition}
+			Suppose $x\in M$ is Hermitian. Then, the projections onto the eigenspaces of $x$ are also in $M$. Also, if $f\,:\,D\to \mathbb{C}$ with $D\subseteq \mathbb{R}$ is an arbitrary function, and all eigenvalues of $x$ are in $D$, then $f(x)\in M$.
+		\end{proposition}
+		\begin{proof}
+			Since any $y\in M'$ commutes with $x$, we must have that all eigenprojectors commute with all such $y$. This means that the projectors are in $M''= M$ by the bicommutant theorem. Once we have all the projectors $p_{i}$ corresponding to eigenvalues $\lambda_{i}$, we can decompose $x=\sum_{i}\lambda_{i}p_{i}$ which allows us to define $f(x)=\sum_{i}f(\lambda_{i})p_{i}$, which is clearly in $M$. 
+		\end{proof}
+		\begin{proposition}
+			Any $x\in M$ can be written as a linear combination of at most 4 unitary elements of $M$.
+		\end{proposition}
+		\begin{proof}
+			First, note that $x\in M$ can be written as a linear combination of two Hermitian elements of $M$ via
+			\begin{equation}
+				x=\frac{x+x^{\dagger}}{2}+i\frac{x-x^{\dagger}}{2i}
+			\end{equation}
+			so we just need to show that Hermitian operators can be written as a linear combination of two unitaries. Suppose then that $x^{\dagger}=x$. We can rescale $x$ so that its largest eigenvalue has magnitude less than 1, in which case we can write
+			\begin{equation}
+				x=\frac{1}{2}\left(x+i\sqrt{1-x^{2}}\right)+\frac{1}{2}\left(x-i\sqrt{1-x^{2}}\right)
+			\end{equation}
+			The operators $x\pm i\sqrt{1-x^{2}}$ are unitary, and by prop. 1 they are in $M$ too. 
+		\end{proof}
+		\begin{proposition}
+			Suppose $p\in M$ is a projection. Then $pMp$ defines a von Neumann algebra on $p\mathcal{H}$, and its commutant on $p\mathcal{H}$ is $M'p$.
+		\end{proposition}
+		\begin{proof}
+			$pMp$ can be easily (but tediously) checked to be a von Neumann algebra satisfying the axioms. To show that $M'p$ is the commutant, we can abuse the bicommutant theorem and just show that $pMp=(M'p)'$. Suppose that $x\in \mathcal{L}(p\mathcal{H})$ commutes with $yp$ for all $y\in M'$. If we define $x_{0}\equiv x\oplus 0_{(1-p)\mathcal{H}}$, then clearly $x=px_{0}p$. To check that $x_{0}\in M$, we again use the bicommutant theorem - if $x_{0}$ commutes with all $y\in M'$, then it will be in $M''=M$. But $x_{0}y=x_{0}py=x_{0}yp=ypx_{0}=yx_{0}$, so we are done. 
+		\end{proof}
+		\begin{proposition}
+			Suppose $x\in M$, and that it has unique polar decomposition $x=a|x|$. Then $a$ and $|x|$ are both in $M$ too.
+		\end{proposition}
+		\begin{proof}
+			$|x|=\sqrt{x^{\dagger}x}\in M$ by prop. 1. To show $a\in M$, we show that it commutes with $M'$, and hence is in $M$ by the bicommutant theorem. By prop. 2, it suffices to show $a$ commutes with any unitary element $u\in M'$. First, note that $u(a|x|)=(a|x|)u=au|x|$ since $x=a|x|$ and $|x|$ are both in $M$. But then by theorem 1.2, the projection $a^{\dagger}a$ onto the orthogonal complement $\ker{x}^{\perp}=\ker{|x|}^{\perp}$ is also in $M$. This therefore means that $(au)^{\dagger}(au)=u^{\dagger}(a^{\dagger}a)u=a^{\dagger}au^{\dagger}u=a^{\dagger}a=a^{\dagger}u^{\dagger}ua=(ua)^{\dagger}(ua)$, so by uniqueness of the polar decomposition of $ua|x|$, we have $ua=au$. 
+		\end{proof}
+	\end{itemize}
+	\subsection{Factors}
+	\begin{itemize} 
+		\item A special type of von Neumann algebras are \textit{factors}
+		\begin{definition}[Factor]
+			A von Neumann algebra $M$ on $\mathcal{H}$ is called a \textbf{factor} if its center $Z_{M}\equiv M\cap M'$ contains only scalar multiples of the identity $I$.
+		\end{definition}
+		\item Factors have a special role, and they have some nice properties:
+		\begin{proposition}
+			Suppose $M$ is a factor, and $p$ and $q$ are nonzero projectors in $M$. Then there exists a unitary $u\in M$ such that $puq\neq 0$.
+		\end{proposition}
+		\begin{proof}
+			The proof is by contradiction. Suppose that $puq=0$ for all unitaries $u\in M$. Then we also have that $u^{\dagger}puq=0$ for all unitaries. So define a new projection $r$ which annihilates only those vectors in $\cap_{u\in M}\ker{u^{\dagger}pu}$ (i.e. $\ker{r}=\cap_{u\in M}\ker{u^{\dagger}pu}$). We note two things:
+			\begin{itemize}
+				\item Any vector in $q\mathcal{H}$ is annihilated by $u^{\dagger}pu$, and so is also annihilated by $r$, so $r$ is not the identity.
+				\item Since $p\neq0\implies u^{\dagger}pu\neq0$, $r$ is non-zero too.
+			\end{itemize}
+			Also note that $\ker{r}$ is preserved by the action of any unitary $\hat{u}$. To see this, suppose $\ket{v}\in \cap_{u\in M}\ker{u^{\dagger}pu}$; then:
+			\begin{equation}
+				u^{\dagger}pu\ket{v}=0\;\forall u\in M\implies \hat{u}u^{\dagger}pu\hat{u}^{\dagger}\hat{u}\ket{v}=0\;\forall u\in M
+			\end{equation}
+			But if we have a complete set of unitaries $\{u\}$, then the set $\{u\hat{u}\}$ for fixed $\hat{u}$ is just a relabelling and is also the same complete set of unitaries (\textbf{can I prove this? Is there a neater way of expressing this argument?}). Therefore $\hat{u}$ preserves $\ker{r}$ as claimed. But this means $r$ commutes with all unitaries $\hat{u}$ (since $\hat{u}$ acts within $\ker{r}$, and $r$ is the identity on $\text{dom}\,{r}$), and thus with everything in $M$. $r$ is itself also in $M$ since it commutes with everything in $M'$. To see this, note that for fixed $x\in M'$ and arbitrary $\ket{v}\in\cap_{u\in M}\ker{u^{\dagger}pu}$, $xu^{\dagger}pu\ket{v}=u^{\dagger}pux\ket{v}=0$ for all $u$, since $x$ commutes with $u^{\dagger}pu\in M$. Therefore, $rx\ket{v}=xr\ket{v}=0$, and so $r$ commutes with $x$. $r$ is therefore a non-trivial element of $Z_{M}$, which contradicts $M$ being a factor. 
+		\end{proof}
+		\item Before presenting the next property, we introduce a (partial) ordering on projections
+		\item For projections $p$ and $q$, if $p\mathcal{H}\subseteq q\mathcal{H}$ (or equivalently, $\ker{p}\supseteq\ker{q}$), we say $p\leq q$
+		\item Note in particular that if $p\mathcal{H}\perp q\mathcal{H}$, then we can't compare $p$ and $q$ with this ordering
+		\begin{proposition}
+			Suppose $M$ is a factor, and $p$ and $q$ are non-zero projectors in $M$. Then, there exists a partial isometry $a$ such that $a^{\dagger}a\leq q$ and $aa^{\dagger}\leq p$.
+		\end{proposition}
+		\begin{proof}
+			Define $x\equiv puq$, with $u\in M$ a unitary chosen so $x\neq 0$. By the polar decomposition, we have $x=a|x|$, and note that $\ker{a}=\ker{|x|}$. If $\ket{v}\in \ker{q}$, then $puq\ket{v}=x\ket{v}=a|x|\ket{v}=0$, so $\ket{v}\in \ker{|x|}=\ker{a}$, which means $a^{\dagger}a\leq q$. Also, $qu^{\dagger}p=|x|a^{\dagger}$, if $\ket{v}$ is annihilated by $p$ it must also be annihilated by $|x|a^{\dagger}$. From thm. 1.1, we know that $a^{\dagger}=a^{\dagger}aw^{\dagger}$, where $w$ is a unitary that maps $\ker{|x|}$ to $\ker{a^{\dagger}}$, so $|x|a^{\dagger}\ket{v}=0\implies a^{\dagger}\ket{v}=0$, so $aa^{\dagger}\leq p$.
+		\end{proof}
+		\item We now introduce a special type of projection
+		\begin{definition}[Minimal Projection]
+			Suppose $M$ is a von Neumann algebra on $\mathcal{H}$, and $p$ is a non-zero projection. We say $p$ is a \textbf{minimal projection} if for any projection $q\in M$, we have $q\leq p$ iff $q=0$ or $q=p$.
+		\end{definition}
+		\item Since $\mathcal{H}$ is finite dimensional, minimal projections must always exist in any von Neumann algebra
+		\item To see this, suppose we have a non-zero, non-minimal projection $p$
+		\item We can find a non-zero projection $q$ of smaller rank such that $q\leq p$
+		\item If $q$ is non-minimal, we can repeat this, and since any projection of rank 1 is necessarily minimal, this procedure always finds a minimal projection
+		\item Minimal projections are characterised by the following:
+		\begin{theorem}
+			Suppose $M$ is a von Neumann algebra on $\mathcal{H}$, and $p$ is a minimal projection. Then $pMp=\mathbb{C}p$.
+		\end{theorem}
+		\begin{proof}
+			$pMp$ always contains $\mathbb{C}p$ trivially. If it contains any other operators, then by prop. 1 it has a non-trivial projection $q$. But such a $q$ contradicts $p$ being minimal. 
+		\end{proof}
+		\item Minimal projections existing is a consequence of $\mathcal{H}$ being finite dimensional
+		\item In the infinite dimensional case, factors containing a minimal projection are called \textit{type I}, while those that don't are called \textit{type II/III}
+	\end{itemize}
+	\subsection{Classification of Finite Dimensional von Neumann Algebras}
+	\begin{itemize}
+		\item We are now in a position to classify all von Neumann algebras on finite dimensional Hilbert spaces
+		\item The trickiest step is classifying factors - we start with this
+		\begin{theorem}[Factor Classification]
+			Suppose $M$ is a factor on $\mathcal{H}$. Then there exists a tensor factorisation $\mathcal{H}=\mathcal{H}\otimes\mathcal{\overline{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\overline{A}}$, and moreover $M'=I_{A}\otimes\mathcal{L}_{\mathcal{H}_{\overline{A}}}$
+		\end{theorem}
+		\begin{proof}
+			Let $\{p_{1},p_{2},\ldots\}$ be a maximal set of minimal projections, satisfying $p_{i}p_{j}=0$ for $i\neq j$. Such a set always exists since we can take any single minimal projection and then keep adding more until we can no longer do so. Our first claim is that $\sum_{i}p_{i}=I$. Define
+			\begin{equation}
+				q=1-\sum_{i}p_{i}
+			\end{equation}
+			and note that $q$ is itself a projector, with $qp_{i}=p_{i}q=0$ for all $i$. Assume $q\neq 0$. Since our set is maximal, $q$ is not itself minimal, but we can generate a minimal projector by finding a non-zero projection $\hat{q}$ of smaller rank with $\hat{q}\leq q$ as described above, repeating this process until we have a new minimal projector. $\hat{q}$ is not in our set of $p_{i}$'s since its domain is mutually orthogonal to them all, which contradicts maximality. Hence $q=0$, and $I=\sum_{i}p_{i}$.\\
+			For each $i$, we have a partial isometry $a_{i}$ satisfying $a_{i}^{\dagger}a_{i}\leq p_{i}$ and $a_{i}a_{i}^{\dagger}\leq p_{1}$. By minimality, we must have $a_{i}^{\dagger}a_{i}=p_{i}$ and $a_{i}a_{i}^{\dagger}=p_{1}$. However, theorem 1.1 tells us that all the projectors are unitarily equivalent, and so have equal rank. Since $I=\sum_{i}p_{i}$ has full rank equal to $\dim{\mathcal{H}}$, this rank must divide $\dim{\mathcal{H}}$.\\
+			Moreover, since $I=\sum_{i}p_{i}$, we have $x=\sum_{i,j}p_{i}xp_{j}$ for any $x\in M$. We now note 
+			\begin{equation}
+				p_{i}xp_{j}=p_{i}^{2}xp_{j}^{2}=a_{i}^{\dagger}a_{i}a_{i}^{\dagger}a_{i}xa_{j}^{\dagger}a_{j}a_{j}^{\dagger}a_{j}=a_{i}^{\dagger}p_{1}a_{i}xa_{j}^{\dagger}p_{1}a_{i}
+			\end{equation}
+			Since $p_{1}$ is minimal, we have by theorem 1.4 that there exist complex coefficients $\lambda_{ij}\in\mathbb{C}$ such that $p_{1}a_{i}xa_{j}^{\dagger}p_{1}=\lambda_{ij}p_{1}$. Recalling that $a_{i}$ maps $p_{i}\mathcal{H}\to p_{1}\mathcal{H}$, we have:
+			\begin{equation}
+				p_{i}xp_{j}=\lambda_{ij}a_{i}^{\dagger}p_{1}a_{j}=\lambda_{ij}a_{i}^{\dagger}a_{j}
+			\end{equation}
+			and so finally, $x=\sum_{ij}\lambda_{ij}a_{i}^{\dagger}a_{j}$. This means that $M$ is generated by the $a_{i}$'s.\\
+			We now identify the algebra generated like this. Since $I=\sum_{i}p_{i}$, we have $\mathcal{H}=\oplus_{i}p_{i}\mathcal{H}$. We can therefore define a tensor product structure $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$ by taking $\mathcal{L}(\mathcal{H}_{A})\otimes I_{\overline{A}}$ to be the block matrices where each block is an arbitrary multiple of the identity, and $I_{A}\otimes\mathcal{L}(\mathcal{H}_{\overline{A}})$ to be the set of block diagonal matrices with the same element of $\mathcal{L}(\mathcal{H}_{\overline{A}})$ in each diagonal block. We can choose a basis within each block so that $a_{i}$ is represented as a block matrix with the identity in the $(1,i)$th block, with zeros elsewhere. Then, $a_{i}^{\dagger}a_{j}$ has the identity in the $(i,j)$th block with zeros elsewhere. These matrices clearly generate $\mathcal{L}(\mathcal{H}_{A})\otimes I_{\overline{A}}$, which is thus $M$. It's not hard to verify that $M'=I_{A}\otimes\mathcal{H}(\mathcal{L}_{\overline{A}})$. 
+		\end{proof}
+		\item Note that this theorem justifies why they're called `factors' - if a Hilbert space admits a factor, it factorises
+		\item Let's now consider the general case where $M$ is not necessarily a factor
+		\item The basic logic is that since all elements of the center $Z_{M}$ mutually commute, we can simultaneously diagonalise them in some basis
+		\item By prop. 1, this means there is a family of mutually orthogonal projections $p_{\alpha}\in Z_{M}$ such that $Z_{M}$ is equivalent to the set of operators $\sum_{\alpha}\lambda_{\alpha}p_{\alpha}$
+		\item We then have the following proposition:
+		\begin{proposition}
+			Suppose $M$ is a von Neumann algebra, with center $Z_{M}$ spanned by mutually orthogonal projections $p_{\alpha}$. Then for all $\alpha$, $p_{\alpha}Mp_{\alpha}$ is a factor on $p_{\alpha}\mathcal{H}$. Also, if $\alpha\neq \beta$, then $p_{\alpha}Mp_{\beta}=0$.
+		\end{proposition}
+		\begin{proof}
+			Suppose $p_{\alpha}Mp_{\alpha}$ had a non-trivial central element $c$. Then, $c\oplus 0_{(1-p_{\alpha})\mathcal{H}}$ is not in the span of the $p_{\alpha}$s, but they span $Z_{M}$ so no such $c$ can exist, and so $p_{\alpha}Mp_{\alpha}$ is a factor. Moreover, if $\alpha\neq\beta$, then $p_{\alpha}Mp_{\beta}=Mp_{\alpha}p_{\beta}=0$.
+		\end{proof}
+		\item What this proposition basically says is that if we decompose $\mathcal{H}=\oplus_{\alpha}p_{\alpha}\mathcal{H}$, then every element of $M$ is block diagonal, and each diagonal block is itself a factor algebra
+		\item Together with theorem 1.5, this implies the full classification of von Neumann algebras:
+		\begin{theorem}[Classification of von Neumann Algebras]
+			Suppose $M$ is a von Neumann algebra on finite dimensional Hilbert space $\mathcal{H}$. Then, we have a block decomposition $\mathcal{H}=\oplus_{\alpha}\left(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\overline{A}_{\alpha}}\right)$ in terms of which $M$ and $M'$ are block diagonal, with decompositions $M=\oplus_{\alpha}\left(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\overline{A}_{\alpha}}\right)$ and $M'=\oplus_{\alpha}\left(I_{A_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\overline{A}_{\alpha}})\right)$.
+		\end{theorem}
+		\item Note the abuse of notation: if we have a block diagonal operator $x$ with diagonal blocks $x_{\alpha}$, then we can just write $x=\oplus_{\alpha}x_{\alpha}$
+		\item This theorem actually has an infinite dimensional analogue, but classifying factors is much trickier so we ignore it for now - infinite dimensional von Neumann algebras only really come up in QFT, and quantum computing is strictly quantum mechanical
+	\end{itemize}
+	\subsection{Entropy}
+	\subsubsection{States}
+	\begin{itemize}
+		\item So far, we've looked at von Neumann algebras as subsets of $\lops$
+		\item In QM, hermitian operators correspond to observables, but we need to introduce states in order to do physics
+		\begin{definition}[States]
+			A linear operator $\rho\in\lops$ is called a \textbf{state} on $\lops$ if it is hermitian, non-negative, and has $\text{Tr}(\rho)=1$.
+		\end{definition}
+		\item Any state $\rho$ has a canonical linear action $\mathbb{E}_{\rho}$ on $\lops$
+		\begin{definition}[Expectation]
+			For any hermitian $x\in\lops$, the \textbf{expectation value of} $x$ \textbf{in the state} $\rho$ is
+			\begin{equation}
+				\mathbb{E}_{\rho}(x)=\text{Tr}(\rho x)
+			\end{equation}
+		\end{definition}
+		\item This can more generally be defined as a linear action on any $x\in\lops$
+		\item In more mathematical presentations of this, states are often \textit{defined} as linear, non-negative maps on $\lops$ obeying $\mathbb{E}_{\rho}(I)=1$, but this is needlessly abstract for us
+		\item Sometimes, one is interested only in observables which are elements of a von Neumann algebra $M$
+		\item A generic state $\rho$ will not necessarily be in $M$, and will often contain more information than necessary to compute expectation values of elements in $M$
+		\item The following theorem gives a way to discard this additional information:
+		\begin{theorem}
+			Suppose $M$ is a von Neumann algebra on $\mathcal{H}$, and $\rho$ is a state on $\mathcal{H}$. Then, there exists a unique state $\rho_{M}\in M$ such that $\mathbb{E}_{\rho}(x)=\mathbb{E}_{\rho_M}(x)$ for all $x\in M$.
+		\end{theorem}
+		\begin{proof}
+			The basic point is to define
+			\begin{equation}
+				\rho_{M}\equiv\int_{u\in M'}du\,u\rho u^{\dagger}
+			\end{equation}
+			where the integration is over the set of unitary elements $u\in M'$, using the invariant Haar measure $du$ on this compact group. To see the unitary subgroup is indeed compact, recall that the unitary group is compact in general so any Cauchy convergent sequence of unitaries $u_{n}\in M'$ will converge to some unitary $u$, and by continuity of the commutator the limit $u$ will also be in $M'$.\\
+			Defined this way, $\rho_{M}$ is clearly:
+			\begin{itemize}
+				\item Hermitian, $\rho_{M}^{\dagger}=\rho_{M}$.
+				\item Non-negative.
+				\item Has trace one, $\text{Tr}(\rho_{M})=\text{Tr}(u\rho u^{\dagger})=1$.
+			\end{itemize}
+			so is indeed a state. To show $\rho_{M}\in M$, we show that it commutes with any unitary $v\in M'$, and thus is in $M''=M$ by the bicommutant theorem and the fact that von Neumann algebras are spanned by their unitary elements. So fix some unitary $v\in M'$. Then we have
+			\begin{equation}
+				v\rho_{M}=\int_{u\in M'}du\,vu\rho u^{\dagger}=\int_{u'\in M'}du'\,u'\rho u'^{\dagger}v=\rho_{M}v
+			\end{equation}
+			where in the second equality we set $u'=vu\implies du'=vdu$, and use invariance of the measure.\\
+			The last thing to do is to show $\rho_{M}$ is unique. Suppose there existed $\rho_{M}'\neq\rho_{M}$ obeying all the results of the theorem. Then, we must have $\text{Tr}((\rho_{M}-\rho_{M}')x)=0$ for all $x\in M$. But if we take $x=\rho_{M}-\rho_{M}'$, we get $\text{Tr}(\rho_{M}-\rho_{M}')^{2}=0$, which implies $\rho_{M}=\rho_{M}'$.
+		\end{proof}
+		\item This theorem essentially tells us that to compute expectations in $M$, we can always replace any state by an element of $M$
+		\item Let's consider the case where $M$ is a factor as an example - what is $\rho_{M}$?
+		\item By theorem 1.5, we know there exists a factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes \mathcal{H}_{\overline{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\overline{A}}$
+		\item If we define the reduced state
+		\begin{equation}
+			\rho_{A}\equiv \text{Tr}_{\overline{A}}(\rho)
+		\end{equation}
+		then the operator
+		\begin{equation}
+			\rho_{M}\equiv \rho_{A}\otimes\frac{I_{\overline{A}}}{|\overline{A}|}
+		\end{equation}
+		obeys the results of theorem 1.7
+		\item By uniqueness, the $\rho_{M}$ defined here must be equivalent to (1.17)
+		\item We can do the same procedure for a more general $M$ which isn't necessarily a factor
+		\item We know that there's a decomposition 
+		\begin{equation}
+			\mathcal{H}=\oplus_{\alpha}\left(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\overline{A}_{\alpha}}\right)
+		\end{equation}
+		in terms of which 
+		\begin{equation}
+			M=\oplus_{\alpha}\left(\mathcal{L}\left(\mathcal{H}_{A_{\alpha}}\right)\otimes I_{\overline{A}_{\alpha}}\right)
+		\end{equation}
+		\item Any state $\rho$ can be written in block form wrt (1.21), and only blocks on the $\alpha$ diagonal contribute to expectations of $M$
+		\item On each diagonal block, we can define
+		\begin{equation}
+			p_{\alpha}\rho_{A_{\alpha}}\equiv \text{Tr}_{\overline{A}}(\rho_{\alpha\alpha})
+		\end{equation}
+		where $p_{\alpha}$ is a positive number chosen so $\text{Tr}_{A_{\alpha}}(\rho_{A_{\alpha}})=1$
+		\item The condition $\text{Tr}(\rho)=1$ implies that $\sum_{\alpha}p_{\alpha}=1$
+		\item We can then finally define the block diagonal state
+		\begin{equation}
+			\rho_{M}\equiv\oplus_{\alpha}\left(p_{\alpha}\rho_{A_{\alpha}}\otimes\frac{I_{\overline{A}_{\alpha}}}{|\overline{A}_{\alpha}|}\right)
+		\end{equation}
+		which again obeys theorem 1.7
+	\end{itemize}
+	\subsubsection{Example}
+	\begin{itemize}
+		\item As an example for a simple case of a factor algebra, consider $\mathcal{H}=\mathcal{H}_{2}\otimes\mathcal{H}_{2}$, so $M=\mathcal{L}(\mathcal{H}_{2})\otimes I_{2}$ is a factor
+		\item In other words, an arbitrary $x\in M$ looks like
+		\begin{equation}
+			x=\begin{pmatrix}x_{11}&0&x_{12}&0\\0&x_{11}&0&x_{12}\\x_{21}&0&x_{22}&0\\0&x_{21}&0&x_{22}\end{pmatrix}
+		\end{equation}
+		\item Consider the state defined by
+		\begin{equation}
+			\rho=\begin{pmatrix}
+				1/2&1/4&0&1/4\\1/4&1/4&0&0\\0&0&0&0\\1/4&0&0&1/4
+			\end{pmatrix}
+		\end{equation}
+		which gives $\mathbb{E}_{\rho}(x)=\frac{3}{4}x_{11}+\frac{1}{4}x_{22}$
+		\item Following the procedure, we calculate the reduced state:
+		\begin{equation}
+			\rho_{A}=\begin{pmatrix}
+				3/4&0\\0&1/4
+			\end{pmatrix}
+		\end{equation}
+		and so 
+		\begin{equation}
+			\rho_{M}=\begin{pmatrix}
+				3/8&0&0&0\\0&3/8&0&0\\0&0&1/8&0\\0&0&0&1/8
+			\end{pmatrix}
+		\end{equation}
+		from which it is easy to find that $\mathbb{E}_{\rho_{M}}(x)=\frac{3}{4}x_{11}+\frac{1}{4}x_{22}$ as expected
+	\end{itemize}
+	\subsection{Modified Trace and Entropy}
+	\begin{itemize}
+		\item From (1.20), we see that $\rho_{M}$ is closely related to $\rho_{A}$, and $\rho_{A}$ is what is used to define the von Neumann entropy of $\rho$ on system $A$/factor $M$ via $S(\rho_{A})=-\text{Tr}_{A}(\rho_{A}\log{\rho_{A}})$
+		\item This gives a natural generalisation for the entropy of a state $\rho$ on an arbitrary von Neumann algebra $M$:
+		\begin{equation}
+			S(\rho,M)\equiv-\sum_{\alpha}\text{Tr}_{A_{\alpha}}\left(p_{\alpha}\rho_{A_{\alpha}}\log(p_{\alpha}\rho_{A_{\alpha}})\right)=-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\rho_{A_{\alpha}})
+		\end{equation}
+		\item Let's arrive at this entropy from a more abstract perspective
+		\item It would be ideal to extract this entropy directly from the state $\rho_{M}$, but there's some issues
+		\item For example, suppose we just set the entropy of $\rho$ on $M$ to be $S(\rho_{M})$; even when $M$ is a factor, then
+		\begin{equation}
+			S(\rho_{M})=-\text{Tr}(\rho_{M}\log{\rho_{M}})=-\text{Tr}\left(\rho_{A}\otimes\frac{I_{\overline{A}}}{|\overline{A}|}\right)\log\left(\rho_{A}\otimes\frac{I_{\overline{A}}}{|\overline{A}|}\right)=S(\rho_{A})+\log|\overline{A}|
+		\end{equation}
+		which disagrees with what we'd want by $\log|\overline{A}|$
+		\item In the general case, the disagreement is $\sum_{\alpha}p_{\alpha}\log|\overline{A}_{\alpha}|$
+		\item The issue stems from $\rho_{M}$ being supported on the full Hilbert space; we haven't taken the partial trace, so the entropy from the $|\overline{A}_{\alpha}|$ system is contributing
+		\item One way to deal with this is to introduce a \textit{modified trace}
+		\item For a von Neumman algebra $M$ on $\mathcal{H}$, the trace of a minimal projection is usually not one itself
+		\item For example, if $M$ is a factor, then any minimal projection has the form $\ketbras{v}_{A}\otimes I_{\overline{A}}$, which has trace $|\overline{A}|$
+		\item The entropy of this state on $\mathcal{H}_{A}$ is clearly 0, which can be seen by just tracing out $\overline{A}$ - but can we see this from a perspective more inherent to $M$ rather than the underlying systems?
+		\item One canonical way to do this is to define a \textit{normalised trace} on $M$, so $\hat{\text{Tr}}p=1$ for any minimal projection $p\in M$; this means 
+		\begin{equation}
+			\ntr\equiv\frac{1}{|\overline{A}|}\text{Tr}
+		\end{equation}
+		\item If we further define
+		\begin{equation}
+			\hat{\rho}_{M}\equiv |\overline{A}|\rho_{M}
+		\end{equation}
+		then for any $x\in M$, we have
+		\begin{equation}
+			\mathbb{E}_{\rho}(x)=\text{Tr}\rho x=\text{Tr}\rho_{M}x=\ntr\hat{\rho}_{M}x
+		\end{equation}
+		\item From (1.20), we can then define the entropy $S(\rho,M)$ by using the normalised trace and normalised $\hat{\rho}_{M}$:
+		\begin{equation}
+			S(\rho,M)\equiv-\ntr\hat{\rho}_{M}\log\hat{\rho}_{M}=-\text{Tr}_{A}\rho_{A}\log\rho_{A}=S(\rho_{A})
+		\end{equation}
+		which gives an `intrinsic' definition of the entropy of $\rho$ on a factor $M$
+		\item It is just the expectation value of the operator $-\log\hat{\rho}_{M}$ in the state $\rho_{M}$
+		\item In the case where $M$ is not a factor, it's a bit trickier
+		\item We just define a normalised trace $\ntr$ again so that $\ntr{p}=1$ for any minimal projection $p\in M$; however, this time it turns out that $\ntr$ is \textbf{not} proportional to $\text{Tr}$
+		\item We are only interested in defining $\ntr$ for elements of $M$; recalling the block decomposition (1.21), no elements of $M$ mix between different blocks, so we can normalise the trace independently in each block without breaking the usual defining characteristic property of trace that $\ntr{xy}=\ntr{yx},\;\forall x,y\in M$
+		\item We can then just define $\ntr$ as the unique linear operation on $M$ such that $\ntr{xy}=\ntr{yx},\;\forall x,y\in M$, which also gives $\ntr{p}=1$ for any minimal projection $p$
+		\item Explicitly in terms of decompositions (1.21) and (1.22), if $x\in M$ has representation
+		\begin{equation}
+			x=\oplus_{\alpha}\left(x_{\alpha}\otimes I_{\overline{A}_{\alpha}}\right)
+		\end{equation}
+		then
+		\begin{equation}
+			\ntr{x}=\sum_{\alpha}\ntr_{\alpha}\left(x_{\alpha}\otimes I_{\overline{A}_{\alpha}}\right)=\sum_{\alpha}\text{Tr}_{A_{\alpha}}x_{\alpha}
+		\end{equation}
+		\item Moreover, given any $\rho_{M}\in M$, we can introduce $\hat{\rho}_{M}$ again defined so that for any $x\in M$, we have
+		\begin{equation}
+			\mathbb{E}_{\rho}(x)=\text{Tr}\rho x=\text{Tr}\rho_{M}x=\ntr\hat{\rho}_{M}x
+		\end{equation}
+		\item Explicitly, from (1.24) we have
+		\begin{equation}
+			\hat{\rho}_{M}=\oplus_{\alpha}\left(p_{\alpha}\rho_{A_{\alpha}}\otimes I_{\overline{A}_{\alpha}}\right)
+		\end{equation}
+		\item At long last, we can define the entropy of $\rho$ on algebra $M$ by
+		\begin{equation}
+			S(\rho,M)\equiv-\ntr\hat{\rho}_{M}\log\hat{\rho}_{M}
+		\end{equation}
+		which can be shown to be equivalent to (1.29)
+	\end{itemize}
+	\subsection{Properties of Entropy}
+	\begin{itemize}
+		\item For ease of reference, the entropy of $\rho$ on $M$ is
+		\begin{equation}
+			S(\rho,M)\equiv-\sum_{\alpha}\text{Tr}_{A_{\alpha}}\left(p_{\alpha}\rho_{A_{\alpha}}\log(p_{\alpha}\rho_{A_{\alpha}})\right)=-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\rho_{A_{\alpha}})
+		\end{equation}
+		\item Schematically, this has a `classical' piece given by the Shannon entropy of the probability distribution $p_{\alpha}$ for the center $Z_{M}$, and a `quantum' piece given by the weighted average of the von Neumann entropy of each block over this distribution
+		\item It has the following properties:
+		\begin{itemize}
+			\item $S(\rho,M)=S(u\rho u^{\dagger},M)$ for any unitary $u\in M$
+			\item $S(\rho,M)\geq 0$, with equality iff $\rho_{M}$ is a minimal projection
+			\item $S(\rho,M)\leq\log\left(\ntr I\right)=\log\left(\sum_{\alpha}|A_{\alpha}|\right)$, with equality iff $\rho_{A_{\alpha}}=I_{A_{\alpha}}/|A_{\alpha}|$ and $p_{\alpha}=|A_{\alpha}|/\sum_{\beta}|A_{\beta}|$
+			\item $S\left(\sum_{i}\lambda_{i}\rho_{i}\right)\geq\sum_{i}\lambda_{i}S(\rho_{i})$, where the $\rho_{i}$ are any set of states and $\sum_{i}\lambda_{i}=1$
+			\item If $\rho$ is pure, then $S(\rho,M)=S(\rho,M')$
+		\end{itemize}
+		\item We also have an analogous definition for relative entropy
+		\begin{definition}[Relative Entropy]
+			Given two states $\rho,\sigma\in M$, the \textbf{relative entropy} between them is
+			\begin{equation}
+				\begin{aligned}
+					S(\rho|\sigma,M)&\equiv\ntr\left(\hat{\rho}_{M}\log\hat{\rho}_{M}-\hat{\rho}_{M}\log\hat{\sigma}_{M}\right)\\&=-S(\rho,M)+\mathbb{E}_{\rho}(-\log\hat{\sigma}_{M})\\&=\sum_{\alpha}p_{\alpha}^{\{\rho\}}\log\frac{p_{\alpha}^{\{\rho\}}}{p_{\alpha}^{\{\sigma\}}}+\sum_{\alpha}p_{\alpha}^{\{\rho\}}S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}})
+				\end{aligned}
+			\end{equation}
+			\item This again has a classical contribution which measures the distinguishability of distributions $p_{\alpha}^{\{\rho\}}$ and $p_{\alpha}^{\{\sigma\}}$ on the center $Z_{M}$, and a quantum piece averaging the relative entropy on each block
+			\item As usual, $S(\rho|\sigma,M)\geq 0$ with equality iff $\rho_{M}=\sigma_{M}$
+		\end{definition}
+	\end{itemize}
+\end{document}

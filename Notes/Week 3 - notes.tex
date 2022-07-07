@@ -1,0 +1,238 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{Quantum Error Correction - Notes}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newtheorem{innercustomthm}{Proof}
+\newenvironment{customthm}[1]
+{\renewcommand\theinnercustomthm{#1}\innercustomthm}
+{\endinnercustomthm}
+\begin{document}
+	\maketitle
+	\section{Week 3: Harlow Thm. 1, More Toy Model}
+	\subsection{Schmidt Decomposition and Purification}
+	\begin{itemize}
+		\item Before going through the theorem, let's remind ourselves of the \textit{Schmidt decomposition} and \textit{state purification}
+		\item These concepts are important in Harlow's proof
+		\newtheorem{theorem}{Theorem}
+		\begin{theorem}
+			Suppose $\ket{\psi}$ is a pure state of a composite system $AB$. Then, there exist orthonormal states $\ket{i_{A}}$ of $A$ and $\ket{i_{B}}$ of $B$ such that
+			\begin{equation}
+				\ket{\psi}=\sum_{i}\lambda_{i}\ket{i_{A}}\ket{i_{B}}
+			\end{equation}
+			where the $\lambda_{i}$ are non-negative real numbers satisfying $\sum_{i}\lambda^{2}_{i}=1$, called Schmidt coefficients.
+		\end{theorem}
+		\item The proof of this is just linear algebra, invoking the \textit{singular value decomposition}
+		\item Why is this useful?
+		\item Consider pure state $\ket{\psi}$ of $AB$ as in (1.1)
+		\item By the Schmidt decomposition, $\rho_{A}=\sum_{i}\lambda_{i}^{2}\ketbras{i_{A}}$ and $\rho_{B}=\sum_{i}\lambda_{i}^{2}\ketbras{i_{B}}$, so the eigenvalues of $\rho_{A}$ and of $\rho_{B}$ are identical, and both $\lambda_{i}^{2}$
+		\item This is immediate from the decomposition, and eigenvalues are important
+		\item The bases $\ket{i_{A}}$ and $\ket{i_{B}}$ are called \textit{Schmidt bases} for $A$ and $B$
+		\item The number of $\lambda_{i}\neq 0$ is called the \textit{Schmidt number} for $\ket{\psi}$, which in some sense quantifies the entanglement between $A$ and $B$
+		\item Note that the Schmidt number is preserved under unitaries on $A$ or $B$ alone
+		\item A state $\ket{\psi}$ of $AB$ is a product state iff it has Schmidt number 1; this allows us to easily prove that $\ket{\psi}$ is a product state iff $\rho_{A}$ and $\rho_{B}$ are pure
+		\item We now come to purification
+		\begin{theorem}
+			Suppose $\rho_{A}$ is a state of system $A$. Introduce a new system $R$, and \textbf{define} a pure state $\ket{AR}$ for the joint system such that $\rho_{A}=\text{Tr}_{R}\left(\ketbras{AR}\right)$. This is called a purification, and we say $\ket{AR}$ purifies $\rho_{A}$.
+		\end{theorem}
+		\item This allows us to associate pure states with mixed states
+		\item System $R$ is called a \textit{reference system}, and it has no direct physical significance
+		\item Purification can be done to any state, and we prove this
+		\newtheorem{proof}{Proof}
+		\begin{proof}
+			Suppose $\rho_{A}$ has an orthonormal decomposition
+			\begin{equation}
+				\rho_{A}=\sum_{i}p_{i}\ketbras{i_{A}}
+			\end{equation}
+			Introduce a system $R$ with the same state space as $A$, and orthonormal basis $\ket{i_{R}}$. Define a pure state for the combined system as
+			\begin{equation}
+				\ket{AR}\equiv\sum_{i}\sqrt{p_{i}}\ket{i_{A}}\ket{i_{R}}
+			\end{equation}
+			We now calculate the reduced density operator for $A$ corresponding to $\ket{AR}$:
+			\begin{equation}
+				\begin{aligned}
+					\text{Tr}_{R}\left(\ketbras{AR}\right)&=\sum_{ij}\sqrt{p_{i}p_{j}}\ketbra{i_{A}}{j_{A}}\text{Tr}\left(\ketbra{i_{R}}{j_{R}}\right)\\&=\sum_{ij}\sqrt{p_{i}p_{j}}\ketbra{i_{A}}{j_{A}}\delta_{ij}\\
+					&=\sum_{i}p_{i}\ketbras{i_{A}}\\&=\rho_{A}
+				\end{aligned}
+			\end{equation}
+			and so $\ket{AR}$ is a purification of $\rho_{A}$.
+		\end{proof}
+		\item Note the link between Schmidt decompositions and purification: the process purifying a mixed state of $A$ is to define a pure state who's Schmidt basis for $A$ is just the basis in which the mixed state is diagonal, with the Schmidt coefficients being the square roots of the eigenvalues of the density operator to be purified
+	\end{itemize}
+	\subsection{Theorem 1}
+	\begin{itemize}
+		\item Let's start by stating Harlow's first theorem in the notation we've been using so far
+	\end{itemize}
+	\begin{theorem}
+		Suppose $\mathcal{H}$ is a finite-dimensional Hilbert space, factorising as a tensor product $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$. Suppose $\Hcode\subseteq\mathcal{H}$ is a subspace. Then, the following 4 statements are equivalent:
+		\begin{enumerate}
+			\item For any operator $O_{L}$ with support on $\Hcode$, there exists an operator $O_{A}$ with support on $\mathcal{H}_{A}$ such that for all $\ket{\psi_{L}}\in\Hcode$, we have
+			\begin{equation}
+				\begin{aligned}
+					O_{A}\ket{\psi_{L}}&=O_{L}\ket{\psi_{L}}\\
+					O_{A}^{\dagger}\ket{\psi_{L}}&=O_{L}^{\dagger}\ket{\psi_{L}}
+				\end{aligned}
+			\end{equation}
+			\item For any operator $X_{\overline{A}}$ with support on $\mathcal{H}_{\overline{A}}$, we have
+			\begin{equation}
+				\Pc X_{\overline{A}}\Pc\propto\Pc
+			\end{equation}
+			where $\Pc$ is the projector onto $\Hcode$, and the constant of proportionality is a complex number.
+			\item Introduce an auxiliary/reference system $R$ with dimensionality $|R|=|\Hcode|$. Choose orthonormal bases $\{\ket{i_{L}}_{A\overline{A}}\}$ and $\{\ket{i}_{R}\}$ of $\Hcode$ and $R$ respectively. Then, the state
+			\begin{equation}
+				\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\sum_{i_{L}}\ket{i_{L}}_{R}\ket{i_{L}}_{A\overline{A}}
+			\end{equation}
+			satisfies
+			\begin{equation}
+				\rho_{R\overline{A}}(\phi)=\rho_{R}(\phi)\otimes\rho_{\overline{A}}(\phi)
+			\end{equation}
+			\item $|R|\leq|A|$, and decomposing $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ (by long division), where $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\overline{A}}\in\mathcal{H}_{A_{2}\overline{A}}$ such that
+			\begin{equation}
+				\ket{i_{L}}_{A\overline{A}}=U_{A}\left(\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}\right)
+			\end{equation}
+			where $\{\ket{i}_{A_{1}}\}$ is an orthonormal basis of $\mathcal{H}_{A_{1}}$.
+		\end{enumerate}
+	\end{theorem}
+	\begin{itemize}
+		\item Before going through the proof, what do all these mean?
+		\item We think of $A$ as the subsystem preserved by erasure, and $\overline{A}$ as the erased subsystem
+		\item We also think of $A_{1}$ as the system in which the initial state we wish to protect lies in
+		\item Point 1 states that any logical operator on $\Hcode$ can be equivalently represented by an operator on $A$ only; an operator on the code space can be represented by one acting on the system $A$ acting equivalently
+		\item Point 2 states that performing a projective measurement on \textit{any} operator on the erased subsystem $\overline{A}$ cannot itself disturb the encoded information; no measurement on $\overline{A}$ can tell us anything about the encoded information
+		\item Point 3 states that operators on the reference system $R$ and operators on the erased subsystem $\overline{A}$ are not correlated
+		\item Point 4 simply states that a unitary operator exists that can transform between the $A_{1}$ and the full $A\overline{A}$ systems, as in the toy model; this is essentially the statement that recoverability is possible
+		\item We can visualise point 4 by a circuit diagram:
+		\begin{figure}[H] 
+			\centering
+			\scalebox{1.2}{%
+				\begin{quantikz}
+					\lstick{$\ket{\psi_{L}}$} & \qw & \gate[wires = 2]{U_{A}} & \qw \rstick{$A_{1}$}\\
+					\makeebit{$\ket{\chi}$} & \qw & & \qw \rstick{$A_{2}$} \\
+					& \qw & \qw & \qw \rstick{$\overline{A}$}
+			\end{quantikz}}
+		\end{figure}
+		\item The proof is basic linear algebra
+		\newcommand{\Xabar}{X_{\overline{A}}}
+		\begin{proof}
+			\begin{itemize}
+				\item $(1)\implies (2)$: This is by contradiction. Suppose there was an $X_{\overline{A}}$ such that $\Pc X_{\overline{A}}\Pc$ was not proportional to $\Pc$. Schur's lemma in this context states that the only non-trivial operators commuting with all other operators on $\Hcode$ are scalar multiples of the identity. Therefore, there must be an operator $O_{L}$ on $\Hcode$ and a state $\ket{\psi_{L}}\in\Hcode$ such that $\braket{\psi_{L}|[\Pc X_{\overline{A}}\Pc,O_{L}]|\psi_{L}}=\braket{\psi_{L}|[X_{\overline{A}},O_{L}]|\psi_{L}}\neq 0$. But such an $O_{L}$ cannot have a representation $O_{A}$ on $\mathcal{H}_{A}$ since this would automatically commute with $X_{\overline{A}}$, which contradicts (1).
+				\item $(2)\implies (3)$: Consider arbitrary operators $O_{R}$ on $\mathcal{H}_{R}$ and $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$. We rewrite (2) as
+				\begin{equation}
+					\begin{aligned}
+						\Pc\Xabar\Pc&=\sum_{ij}\ketbras{i_{L}}_{A\overline{A}}\Xabar\ketbras{j_{L}}_{A\overline{A}}\\&=\lambda\sum_{i}\ketbras{i_{L}}_{A\overline{A}}
+					\end{aligned}
+				\end{equation}
+				which implies $\braket{i_{L}|\Xabar|j_{L}}_{A\overline{A}}=\lambda\delta_{ij}$. However, note that
+				\begin{equation}
+					\begin{aligned}
+						\braket{\phi|\Xabar|\phi}&=\frac{1}{|R|}\sum_{ij}\bra{i}_{R}\braket{i_{L}|\Xabar|j_{L}}_{A\overline{A}}\ket{j}_{R}\\&=\frac{1}{|R|}\lambda\sum_{i}\braket{i|i}_{R}\\&=\lambda
+					\end{aligned}
+				\end{equation}
+				Therefore, we must have $\Pc\Xabar\Pc=\braket{\phi|\Xabar|\phi}\Pc$. But this implies
+				\begin{equation}
+					\begin{aligned}
+						\braket{\phi|\Xabar O_{R}|\phi}&=\braket{\phi|O_{R}\Pc\Xabar\Pc|\phi}\\&=\braket{\phi|\Xabar|\phi}\braket{\phi|O_{R}|\phi}
+					\end{aligned}
+				\end{equation}
+				where the first equality comes from noting that $\Pc\ket{\phi}=\ket{\phi}$, and that $\Pc$ commutes with $O_{R}$. Therefore, so long as $\ket{\phi}$ has no non-vanishing connected (?) correlation functions for any such $O_{R}$ and $\Xabar$, then $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$, where $\rho_{R}[\phi]$ is the reduced density matrix $\text{Tr}_{A\overline{A}}(\ketbras{\phi})$ etc.
+				\item $(3)\implies (4)$: First, note that by definition, $\ket{\phi}$ is a purification of $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$. Also, note that
+				\begin{equation}
+					\rho_{R}[\phi]=\text{Tr}_{A\overline{A}}\left(\frac{1}{|R|}\sum_{ij}\ketbra{i}{j}_{R}\ketbra{i_{L}}{j_{L}}_{A\overline{A}}\right)=\frac{1}{|R|}\sum_{i}\ketbras{i}_{R}=\frac{1}{|R|}I
+				\end{equation}
+				so $\ket{\phi}$ maximally entangles $R$ with $A$ (or $\overline{A}$), and $\rho_{R}[\phi]=I/|R|$ is the maximally mixed state. This means that (3) becomes
+				\begin{equation}
+					\rho_{R\overline{A}}[\phi]=\frac{I_{R}}{|R|}\otimes\rho_{\overline{A}}[\phi]
+				\end{equation}
+				Let's now perform long division on $A$. Say $k$ is the largest integer such that $|A|=k|R|+r$. Since the $R$ and $\overline{A}$ registers are unentangled in (1.14), we can factorise $\mathcal{H}_{A}=\left(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}}\right)\oplus\mathcal{H}_{A_{3}}$ such that $|A_{1}|=|R|$, $|A_{2}|=k$, and $|A_{3}|=r$.\\
+				We now define the following two states:
+				\begin{equation}
+					\ket{\Psi}_{RA_{1}}=\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i}_{A_{1}},\qquad\ket{\chi}_{A_{2}\overline{A}}=\sum_{j}\sqrt{p_{j}}\ket{j}_{A_{2}}\ket{j}_{\overline{A}}
+				\end{equation}
+				and note that the state
+				\begin{equation}
+					\ket{\phi'}=\ket{\Psi}_{RA_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}
+				\end{equation}
+				purifies $\rho_{R\overline{A}}[\phi]$ on $A_{1}A_{2}$:
+				\begin{equation}
+					\begin{aligned}
+						\text{Tr}_{A_{1}A_{2}}\left(\ketbras{\Psi}_{RA_{1}}\otimes\ketbras{\chi}_{A_{2}\overline{A}}\right)&=\text{Tr}_{A_{1}}\left(\ketbras{\Psi}_{RA_{1}}\right)\text{Tr}_{A_{2}}\left(\ketbras{\chi}_{A_{2}\overline{A}}\right)\\&=\rho_{R}[\Phi]\otimes\rho_{\overline{A}}[\phi]
+					\end{aligned}
+				\end{equation}
+				where $\ket{\Psi}_{RA_{1}}$ purifies $\rho_{R}[\phi]$ on $A_{1}$, and $\ket{\chi}_{A_{2}\overline{A}}$ purifies $\rho_{\overline{A}}[\phi]$ on $A_{2}$. In a purification, the dimension of the purifying system $A$ needs to be at least as big as the rank of the state being purified, so we therefore have $|A_{1}|=|R|$ (since $\rho_{R}[\phi]$ is maximally mixed), and $\text{Rank}\left(\rho_{\overline{A}}[\phi]\right)\leq|A_{2}|$.\\
+				However, purifications are unitarily equivalent on the purifying system - $A$ in our case - so there exists unitary $U_{A}$ on $A$ taking $\ket{\phi}=U_{A}\ket{\phi'}$. Overall, we therefore have:
+				\begin{equation}
+					\begin{aligned}
+						\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i_{L}}_{A\overline{A}}&=U_{A}\left(\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}\right)\\
+						\implies \ket{i_{L}}_{A\overline{A}}&=U_{A}\left(\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}\right)
+					\end{aligned}
+				\end{equation}
+				\item $(4)\implies(1)$: Just define $O_{A}\equiv U_{A}O_{A_{1}}U_{A}^{\dagger}$, where $O_{A_{1}}$ is an operator on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $O_{L}$ does on $\Hcode$. $\blacksquare$
+			\end{itemize}
+		\end{proof}
+		\item One thing this theorem doesn't do is tell us the full set of erasures that can be corrected by a given code subspace
+		\item For example, the toy model could correct for \textit{any} single qutrit erasure, but this isn't immediately obvious from a specific decomposition into $A$ and $\overline{A}$
+		\item In the toy model, this robustness was a consequence of $\ket{\chi}_{23}$ having non-zero entanglement; the same is true here - if $\ket{\chi}_{A_{2}\overline{A}}$ is a product state, then $\overline{A}$ provides no additional information and we can do away with it
+	\end{itemize}
+	\subsection{A Ryu-Takayanagi Formula}
+	\begin{itemize}
+		\item Point (4) has some immediate implications if the erasure of $\overline{A}$ is correctable
+		\item Consider an arbitrary mixed state $\rho^{L}$ on $\Hcode$, and an operator $\rho_{A_{1}}$ on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $\rho^{L}$
+		\item (4) then gives us:
+		\begin{equation}
+			\begin{aligned}
+				\rho^{L}&=U_{A}\left(\rho_{A_{1}}\otimes\ketbras{\chi}_{A_{2}\overline{A}}\right)U_{A}^{\dagger}\\
+				\rho^{L}_{A}&\equiv\text{Tr}_{\overline{A}}\rho^{L}=U_{A}\left(\rho_{A_{1}}\otimes\text{Tr}_{\overline{A}}(\ketbras{\chi})\right)U_{A}^{\dagger}\\
+				\rho^{L}_{\overline{A}}&\equiv \text{Tr}_{A}\rho^{L}=\text{Tr}_{A_{2}}(\ketbras{\chi})
+			\end{aligned}
+		\end{equation}
+		\item If we further denote $\chi_{A_{2}}\equiv\text{Tr}_{\overline{A}}\ketbras{\chi}$ and $\chi_{\overline{A}}=\text{Tr}_{A_{2}}\ketbras{\chi}$, we can rewrite these as
+		\begin{equation}
+			\begin{aligned}
+				\rho_{A}^{L}&=U_{A}\left(\rho_{A_{1}}\otimes\chi_{A_{2}}\right)U_{A}^{\dagger}\\
+				\rho_{\overline{A}}^{L}&=\chi_{\overline{A}}
+			\end{aligned}
+		\end{equation}
+		\item So, calculating the von Neumann entropies, we find
+		\begin{equation}
+			\begin{aligned}
+				S(\rho^{L})&=S(\rho_{A_{1}})+S(\ketbras{\chi})=S(\rho_{A_{1}})\\
+				S(\rho^{L}_{A})&=S(\rho_{A_{1}})+S(\chi_{A_{2}})=S(\rho^{L})+S(\chi_{A_{2}})\\
+				S(\rho_{\overline{A}}^{L})&=S(\chi_{\overline{A}})=-\text{Tr}_{A_{2}}\left[\text{Tr}_{\overline{A}}\left[\ketbras{\chi}\right]\right]=S(\chi_{A_{2}})
+			\end{aligned}
+		\end{equation}
+		\item If we define an `area operator' $\mathcal{L}_{A}\equiv S(\chi_{A_{2}})I_{\text{code}}$, the latter two of these are reminiscent of the Ryu-Takayanagi formula
+		\begin{equation}
+			S(\rho_{A})=\text{Tr}(\rho\mathcal{L}_{A})+S_{bulk}(\rho_{\mathcal{E}_{A}})
+		\end{equation}
+		\item The `area term' arises from the non-zero entanglement in $\ket{\chi}$
+	\end{itemize}
+\end{document}
