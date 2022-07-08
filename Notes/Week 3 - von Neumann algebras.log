@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  7 JUL 2022 11:26
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  7 JUL 2022 11:52
  restricted system commands enabled.
 **"Week 3 - von Neumann algebras.tex"
 ("./Week 3 - von Neumann algebras.tex"
@@ -1261,7 +1261,7 @@ Here is how much of LuaTeX's memory you used:
  862 words of node memory still in use:
    6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 1 glyph, 91 attribute, 59 glue_spec
 , 91 attribute_list, 2 write nodes
-   avail lists: 1:12,2:1803,3:853,4:128,5:683,6:66,7:7714,8:89,9:898,10:10,11:47
+   avail lists: 1:12,2:1803,3:853,4:137,5:683,6:71,7:7714,8:89,9:898,10:10,11:47
 9
  53345 multiletter control sequences out of 65536+600000
  86 fonts using 5239871 bytes
@@ -1284,7 +1284,7 @@ ppData/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr12.pfb><C:/Users/nebka/App
 Data/Local/Programs/MiKTeX/fonts/type1/public/lm/lmr17.pfb><C:/Users/nebka/AppDa
 ta/Local/Programs/MiKTeX/fonts/type1/public/lm/lmri12.pfb><C:/Users/nebka/AppDat
 a/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Week 3 - von Neumann algebras.pdf (12 pages, 294560 bytes).
+Output written on Week 3 - von Neumann algebras.pdf (12 pages, 295679 bytes).
 
 PDF statistics: 237 PDF objects out of 1000 (max. 8388607)
  89 named destinations out of 1000 (max. 131072)

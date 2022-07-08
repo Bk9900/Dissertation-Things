@@ -1,0 +1,237 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{von Neumann Algebras - No Proofs}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newcommand{\ntr}{\hat{\text{Tr}}}
+\newcommand{\gen}[1]{\braket{#1}_{vN}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\newtheorem{proposition}{Proposition}
+\begin{document}
+	\maketitle
+	\section{Finite-Dimensional von Neumann Algebras}
+	\begin{itemize}
+		\item A finite-dimensional von Neumann algebra is defined as follows
+		\begin{definition}[von Neumann Algebras]
+			Let $\mathcal{L}(\mathcal{H})$ be the set of linear operators over a finite-dimensional (complex) Hilbert space $\mathcal{H}$. A \textbf{von Neumann algebra} is a subset $M\subseteq\mathcal{L}(\mathcal{H})$ which is closed under:
+			\begin{itemize}
+				\item Addition: if $x,y\in M$, then $x+y\in M$
+				\item Multiplication: if $x,y\in M$, then $xy\in M$
+				\item Scalar multiplication: if $x\in M$ and $\lambda\in \mathbb{C}$, then $\lambda x\in M$
+				\item Complex conjugation: if $x\in M$, then $x^{\dagger}\in M$
+			\end{itemize}
+			and moreover, there is an identity element $I\in M$ such that for all $x\in M$, $Ix=x$.
+		\end{definition}
+		\item von Neumann algebras are often defined through their \textit{generators}, where we write $M=\braket{x,y,\ldots}_{vN}$
+		\item For example, if $x,y,z$ are the Pauli matrices, $\gen{z}$ is the set of $2\times 2$ diagonal matrices, $\gen{z,x}=\mathcal{L}(\mathbb{C}^{2})$
+		\item Any von Neumann algebra induces two other fundamental related algebras:
+		\begin{definition}[Commutant]
+			Given a von Neumann algebra $M\subseteq\mathcal{L}(\mathcal{H})$, the \textbf{commutant} $M'$ is
+			\begin{equation}
+				M'\equiv\left\{y\in\mathcal{L}(\mathcal{H})\,|\,\forall x\in M, \,xy=yx\right\}
+			\end{equation}
+		\end{definition}
+		\begin{definition}[Center]
+			Given a von Neumann algebra $M\subseteq\mathcal{L}(\mathcal{H})$, the \textbf{center} $Z_{M}$ is 
+			\begin{equation}
+				Z_{M}\equiv M\cap M'
+			\end{equation}
+		\end{definition}
+		\item In other words, the commutant $M'$ is the algebra of operators commuting with all operators in $M$, and the center is those elements of $M'$ which are themselves in $M$
+		\item The commutant $M'$ obeys the von Neumann bicommutant theorem:
+		\begin{theorem}[Bicommutant]
+			For any von Neumann algebra $M\subseteq\mathcal{L}(\mathcal{H})$, we have
+			\begin{equation}
+				M''\equiv(M')'=M
+			\end{equation}
+		\end{theorem}
+		\item Another important object is \textit{factors}
+		\begin{definition}[Factor]
+			A von Neumann algebra $M\subseteq\mathcal{L}(\mathcal{H})$ is called a \textbf{factor} if its center $Z_{M}$ contains only scalar multiples of the identity; that is, the center satisfies
+			\begin{equation}
+				Z_{M}=\gen{I}\equiv\left\{\lambda I\,|\,\lambda\in\mathbb{C}\right\}
+			\end{equation}
+		\end{definition}
+	\end{itemize}
+	\subsection{Classification of von Neumann Algebras}
+	\begin{itemize}
+		\item The following theorem shows that any von Neumann algebra can be decomposed as a direct sum of factors 
+		\begin{theorem}[von Neumann Classification]
+			Suppose $M$ is a von Neumann algebra on finite-dimensional $\mathcal{H}$. Then, there exists a block decomposition of $\mathcal{H}$ of the form:
+			\begin{equation}
+				\mathcal{H}=\left[\oplus_{\alpha}\left(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\overline{A}_{\alpha}}\right)\right]\oplus\mathcal{H}_{0}
+			\end{equation}
+			such that the von Neumann algebra $M$ and its related algebras have decompositions of the form
+			\begin{equation}
+				\begin{aligned}
+					M&=\left[\oplus_{\alpha}\left(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\overline{A}_{\alpha}}\right)\right]\oplus 0\\
+					M'&=\left[\oplus_{\alpha}\left(I_{A_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\overline{A}_{\alpha}})\right)\right]\oplus 0\\
+					Z_{M}&=\oplus_{\alpha}\left(\lambda_{\alpha}I_{A_{\alpha}}\otimes I_{\overline{A}_{\alpha}}\right)
+				\end{aligned}
+			\end{equation}
+			where $\mathcal{H}_{0}$ is the kernel of $M$ on $\mathcal{H}$, and $0$ is the zero operator.
+		\end{theorem}
+		\item Fore ease of notation, we usually drop the null space and zero operator notation
+		\item A decomposition of this form is known as the \textit{Wedderburn decomposition}
+		\item Note the use of $\mathcal{H}_{A_{\alpha}}$ as opposed to the simpler $\mathcal{H}_{\alpha}$: this is to ensure consistency of notation for some uses
+	\end{itemize}
+	\subsection{Examples}
+	\begin{itemize}
+		\item We now present some examples of this theorem in action
+		\begin{example}
+			The von Neumann algebra over $\mathcal{H}=\mathbb{C}^{2}$ with Wedderburn decomposition
+			\begin{equation}
+				M=\mathcal{L}(\mathbb{C}^{2})\otimes 1=\mathcal{L}(\mathbb{C}^{2})=\begin{pmatrix}
+					a&b\\c&d
+				\end{pmatrix}
+			\end{equation}
+			where $a,b,c,d\in\mathbb{C}$ is a factor. The commutant is seen to be $M'=\gen{I}$.
+		\end{example}
+		\item The next example gives a factor algebra that's strictly contained in $\mathcal{L}(\mathcal{H})$
+		\begin{example}
+			The von Neumann algebra over $\mathcal{H}=\mathbb{C}^{4}$ with Wedderburn decomposition
+			\begin{equation}
+				M=\mathcal{L}(\mathbb{C}^{2})\otimes I=\begin{pmatrix}a&0&b&0\\0&a&0&b\\c&0&d&0\\0&c&0&d\end{pmatrix}
+			\end{equation}
+			where $a,b,c,d\in\mathbb{C}$ is a factor. The commutant is $M'=I\otimes\mathcal{L}(\mathbb{C}^{2})$.
+		\end{example}
+		\item The next two examples are \textbf{not} factors
+		\item The first is a fully diagonal algebra, and thus describes a classical algebra of observables on $\mathcal{H}$, whereas the second is block diagonal so describes a quantum algebra
+		\begin{example}
+			The von Neumann algebra over $\mathcal{H}=\mathbb{C}^{2}$ given by $M=\gen{z}$ where $z$ is the Pauli $z$ matrix has Wedderburn decomposition
+			\begin{equation}
+				M=\gen{z}=\begin{pmatrix}
+					a&0\\0&b
+				\end{pmatrix}
+				=[\mathcal{L}(\mathbb{C})\otimes 1]\otimes [\mathcal{L}(\mathbb{C})\otimes 1]
+			\end{equation}
+			where $a,b\in\mathbb{C}$.
+		\end{example}
+		\begin{example}
+			The von Neumann algebra $M=\gen{zII,IxI,IzI}$ over $\mathcal{H}=\mathbb{C}^{8}$, where $x,y$ are the Pauli matrices, has Wedderburn decomposition
+			\begin{equation}
+				M=\bigoplus_{\alpha=0}^{1}(\mathcal{L}(\mathbb{C}^{2})\otimes I)=\begin{pNiceArray}{cccc|cccc}
+					a&0&b&0&\Block{4-4}{\boldsymbol{0}}&&&\\
+					0&a&0&b&&&&\\
+					c&0&d&0&&&&\\
+					0&c&0&d&&&&\\
+					\hline
+					\Block{4-4}{\boldsymbol{0}}&&&&e&0&f&0\\
+					&&&&0&e&0&f\\
+					&&&&g&0&h&0\\
+					&&&&0&g&0&g
+				\end{pNiceArray}
+			\end{equation}
+			where $a,\ldots,h\in\mathbb{C}$.
+		\end{example}
+	\end{itemize}
+	\subsection{Algebraic States and Entropies}
+	\begin{itemize}
+		\item To do physics, we need states
+		\begin{definition}[State]
+			A quantum \textbf{state} on a Hilbert space $\mathcal{H}$ is a linear operator $\rho\in\mathcal{L}(\mathcal{H})$ which is Hermitian, non-negative, and has $\text{Tr}(\rho)=1$.
+		\end{definition}
+		\item Given a state $\rho$ and some observable $x\in\mathcal{L}(\mathcal{H})$, we can define expectation values
+		\begin{definition}[Expectation]
+			The expectation value of $x$ on $\rho$ is
+			\begin{equation}
+				\mathbb{E}_{\rho}(x)=\text{Tr}(\rho x)
+			\end{equation}
+		\end{definition}
+		\item We often wish to compute expectation values of operators forming a von Neumann algebra $M$
+		\item A generic state $\rho$ may not be in $M$, and so could contain more information than we need to compute expectation values on $M$
+		\item We therefore can define the notion of an \textit{algebraic state}, which is thought of as the state `visible' from an algebra $M$
+		\item We denote the algebraic state of $\rho$ on $M$ by $\rho_{M}$, and the following theorem formalises this
+		\begin{theorem}
+			Let $M$ be a von Neumann algebra on $\mathcal{H}$, and $\rho\in\mathcal{H}$ be a state on $\mathcal{H}$. Then, there exists a unique state $\rho_{M}\in M$ such that
+			\begin{equation}
+				\mathbb{E}_{\rho_{M}}(x)=\mathbb{E}_{\rho}(x)\iff \text{Tr}(\rho_{M}x)=\text{Tr}(\rho x)
+			\end{equation}
+			for all $x\in M$.
+		\end{theorem}
+		\item This means that for these purposes, we can essentially replace $\rho$ by $\rho_{M}$
+		\item The algebraic state is a generalisation of a reduced density matrix for an algebra which may not be a factor
+		\item Given algebra $M$ and state $\rho$, we can work out $\rho_{M}$ explicitly
+		\item We know that we can decompose the Hilbert space $\mathcal{H}$ and algebra $M$ as
+		\begin{equation}
+			\begin{aligned}
+				\mathcal{H}&=\left[\oplus_{\alpha}\left(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\overline{A}_{\alpha}}\right)\right]\\
+				M&=\left[\oplus_{\alpha}\left(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\overline{A}_{\alpha}}\right)\right]
+			\end{aligned}
+		\end{equation}
+		\item Let $\{\ket{\alpha,i,j}\}$ be an orthonormal basis for $\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\overline{A}_{\alpha}}$ which is compatible with $M$; that is, $\alpha$ enumerates the diagonal block we are in, and within each block we have $\ket{\alpha,i,j}=\ket{i_{\alpha}}_{A_{\alpha}}\otimes\ket{j_{\alpha}}_{\overline{A}_{\alpha}}$
+		\item Any state $\rho$ can then be written in terms of this Hilbert space decomposition as
+		\begin{equation}
+			\rho=\sum_{\alpha,\alpha'}\sum_{i,j}\sum_{i',j'}\rho[\alpha,\alpha']_{i,j,i',j'}\ket{\alpha,i,j}\bra{\alpha',i',j'}
+		\end{equation}
+		where $\{\ket{\alpha,i,k}\}$ is a basis for the $\alpha$ block
+		\item For the purposes of computing expectation values of $M$ only the blocks which are diagonal in $\alpha$ will give non-zero contribution to the trace, we have that $\rho[\alpha,\alpha']=0$ for $\alpha\neq\alpha'$, so we just write $\rho[\alpha]\equiv\rho[\alpha,\alpha]$
+		\item For computational purposes, we then define the blocks of $\rho$ which are diagonal in $\alpha$ via
+		\begin{equation}
+			\rho_{A_{\alpha}}\equiv\frac{1}{p_{\alpha}}\text{Tr}_{\overline{A}_{\alpha}}(\rho[\alpha])
+		\end{equation}
+		where $p_{\alpha}\equiv\sum_{i,j}\rho[\alpha,\alpha]_{i,j,i,j}$ is a normalisation constant so $\text{Tr}_{A_{\alpha}}(\rho_{A_{\alpha}})=1$
+		\item In this notation, $\rho_{M}$ is given by
+		\begin{equation}
+			\rho_{M}\equiv\oplus_{\alpha}\left(p_{\alpha}\rho_{A_{\alpha}}\otimes\frac{I_{\overline{A}_{\alpha}}}{|I_{\overline{A}_{\alpha}}|}\right)
+		\end{equation}
+		\item In this form, we can see that when $M$ is a factor, the von Neumann entropy of $\rho_{M}$ is equivalent to the entropy of the reduced state $\rho_{A}=\text{Tr}_{\overline{A}}(\rho)$
+		\item This suggests the generalisation of von Neumann entropy for a state $\rho$ on a von Neumann algebra $M$:
+		\begin{definition}[Algebraic Entropy]
+			Let $\rho$ be a state on a von Neumann algebra $M$. The \textbf{algebraic entropy} of $\rho$ on $M$ is given by
+			\begin{equation}
+				S(\rho,M)\equiv-\sum_{\alpha}\text{Tr}_{A_{\alpha}}(p_{\alpha}\rho_{A_{\alpha}}\log(p_{\alpha}\rho_{A_{\alpha}}))=-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\rho_{A_{\alpha}})
+			\end{equation}
+			where $S(\rho_{A_{\alpha}})\equiv -\text{Tr}_{A}(\rho_{A}\log{\rho_{A_{\alpha}}})$ is the von Neumann entropy of the reduced state $\rho_{A_{\alpha}}$.
+		\end{definition}
+		\begin{example}
+			Consider the von Neumann algebra of example (1.4): $M=\gen{zII,IxI,IzI}$. This algebra has two diagonal blocks denoted by $\alpha=0,1$. Consider the 3-qubit GHZ state $\ket{\Psi}=2^{-1/2}(\ket{000}+\ket{111})$. We compute:
+			\begin{equation}
+				\rho_{A_{0}}=\begin{pmatrix}
+					1&0\\0&0
+				\end{pmatrix},\quad \rho_{A_{1}}=\begin{pmatrix}
+				0&0\\0&1
+			\end{pmatrix}
+			\end{equation}
+			and $p_{0}=p_{1}=1/2$. The algebraic entropy of the state is then
+			\begin{equation}
+				S(\ketbras{\Psi},M)=1
+			\end{equation}
+		\end{example}
+	\end{itemize}
+\end{document}
