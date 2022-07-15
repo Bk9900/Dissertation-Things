@@ -1,0 +1,124 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{Week 4 - Notes}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newcommand{\ntr}{\hat{\text{Tr}}}
+\newcommand{\gen}[1]{\braket{#1}_{vN}}
+\newcommand{\ol}[1]{\overline{#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\newtheorem{proposition}{Proposition}
+\begin{document}
+	\maketitle
+	\section{Harlow Second Theorem}
+	\begin{itemize}
+		\item Harlow's 2nd theorem generalise erasure correction that allows $A$ to access only \textit{partial} information about the encoded state
+		\item He calls this `subsystem quantum erasure correction'
+		\item The rough idea is to consider a code subspace which itself factorises as $\Hcode=\mathcal{H}_{a}\otimes\mathcal{H}_{\overline{a}}$ and then only ask for recovery of the state of $\mathcal{H}_{a}$
+		\begin{theorem}[Subsystem Error Correction]
+			Suppose $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$, and $\Hcode=\mathcal{H}_{a}\otimes\mathcal{H}_{\overline{a}}$ is a subspace of $\mathcal{H}$. Choose orthonormal bases $\ket{i_{a}}$ of $\mathcal{H}_{a}$ and $\ket{\overline{i}_{\overline{a}}}$ of $\mathcal{H}_{\overline{a}}$. Then, the following 4 statements are equivalent:
+			\begin{enumerate}
+				\item For any operator $O_{a}$ acting on $\mathcal{H}_{a}$, there exists an operator $O_{A}$ with an equivalent action; that is, for any $\ket{\psi_{L}}\in\Hcode$, we have
+				\begin{equation}
+					\begin{aligned}
+						O_{A}\ket{\psi_{L}}&=O_{a}\ket{\psi_{L}}\\
+						O^{\dagger}_{A}\ket{\psi_{L}}&=O_{a}^{\dagger}\ket{\psi_{L}}
+					\end{aligned}
+				\end{equation}
+				\item For any operator $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$, we have
+				\begin{equation}
+					\Pc X_{\overline{A}}\Pc=(I_{a}\otimes X_{\overline{a}})\Pc
+				\end{equation}
+				where $X_{\overline{a}}$ is an operator on $\mathcal{H}_{\overline{a}}$
+				\item Define two auxiliary systems $R$ and $\overline{R}$ with $\mathcal{H}_{R}=\mathcal{H}_{a}$ and $\mathcal{H}_{\overline{R}}=\mathcal{H}_{\overline{a}}$. Define the state $\ket{\phi}=\frac{1}{\sqrt{|R||\overline{R}|}}\sum_{i,j}\ket{i}_{R}\ket{\ol{j}}_{\overline{R}}\ket{i_{a}\ol{j}_{\ol{a}}}_{A\ol{A}}$. Then, in the state $\ket{\phi}$ we have
+				\begin{equation}
+					\rho_{R\ol{R}\ol{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\ol{R}\ol{A}}[\phi]
+				\end{equation}
+				\item $|a|\leq |A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}|=|a|$ and $|A_{3}|<|a|$, there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a set of orthonormal states $\ket{\chi_{j}}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that
+				\begin{equation}
+					\ket{i_{a}\ol{j}_{\ol{a}}}=U_{A}(\ket{i}_{A_{1}}\otimes\ket{\chi_{j}}_{A_{2}\ol{A}})
+				\end{equation}
+				where $\ket{i}_{A_{1}}$ is an orthonormal basis for $\mathcal{H}_{A_{1}}$.
+			\end{enumerate}
+		\end{theorem}
+		\item The proof is similar to before, but we still go through it for completeness since Harlow does not
+		\begin{proof}
+			$(1)\implies(2)$: Contradiction again. Suppose there was an $X_{\ol{A}}$ such that $\Pc X_{\ol{A}}\Pc\neq(I_{a}\otimes X_{\ol{a}})\Pc$ for any operator $X_{\ol{a}}$. Schur's lemma then implies that there must be an operator $O_{a}$ on $\mathcal{H}_{a}$ which does not commute with $X_{\ol{A}}$ and a state $\ket{\psi_{L}}\in\Hcode$ such that 
+			\begin{equation}
+				\braket{\psi_{L}|[\Pc X_{\ol{A}}\Pc,O_{a}]|\psi_{L}}=\braket{\psi_{L}|[X_{\ol{A}},O_{a}]|\psi_{L}}\neq 0
+			\end{equation}
+			But such an $O_{a}$ cannot have a representation $O_{A}$ on $\mathcal{H}_{A}$ since it would then commute with $X_{\ol{A}}$, which contradicts (1).\\
+			$(2)\implies(3)$: First, note that (2) implies
+			\begin{equation}
+				\braket{i_{a}\overline{i}_{\overline{a}}|X_{\overline{A}}|j_{a}\overline{j}_{\overline{a}}}=\braket{i_{a}\overline{i}_{\overline{a}}|\Pc X_{\overline{A}}\Pc|j_{a}\overline{j}_{\overline{a}}}=\braket{i_{a}\overline{i}_{\overline{a}}|I_{a}\otimes X_{\overline{a}}|j_{a}\overline{j}_{\overline{a}}}=\delta_{ij}\braket{\overline{i}_{\overline{a}}|X_{\overline{a}}|\overline{j}_{\overline{a}}}
+			\end{equation}
+			and so, for arbitrary operators $O_{R}$ and $O_{\overline{R}}$ on $\mathcal{H}_{R}$ and $\mathcal{H}_{\overline{R}}$ respectively, we have
+			\begin{equation}
+				\begin{aligned}
+					\braket{\phi|O_{R}O_{\overline{R}}X_{\overline{A}}|\phi}&=\frac{1}{|R||\overline{R}|}\braket{i|O_{R}|j}_{R}\braket{\overline{i}|O_{\overline{R}}|\overline{j}}_{\overline{R}}\braket{i_{a}\overline{i}_{\overline{a}}|X_{\overline{A}}|j_{a}\overline{j}_{\overline{a}}}_{A\overline{A}}\\
+					&=\frac{1}{|R||\overline{R}|}\braket{i|O_{R}|i}_{R}\braket{\overline{i}|O_{\overline{R}}|\overline{j}}\braket{\overline{i}_{\overline{a}}|X_{\overline{a}}|\overline{j}_{\overline{a}}}_{A\overline{A}}
+				\end{aligned}
+			\end{equation}
+			However, also note that
+			\begin{equation}
+				\braket{\phi|O_{R}|\phi}=\frac{1}{|R|}\braket{i|O_{R}|i}_{R}
+			\end{equation}
+			and
+			\begin{equation}
+				\begin{aligned}
+					\braket{\phi|O_{\overline{R}}X_{\overline{A}}|\phi}&=\frac{1}{|\overline{R}|}\braket{\overline{i}|O_{\overline{R}}|\overline{j}}_{\overline{R}}\braket{\overline{i}_{\overline{a}}|X_{\overline{a}}|\overline{j}_{\overline{a}}}_{A\overline{A}}
+				\end{aligned}
+			\end{equation}
+			which together mean that
+			\begin{equation}
+				\braket{\phi|O_{R}O_{\overline{R}}X_{\overline{A}}|\phi}=\braket{\phi|O_{R}|\phi}\braket{\phi|O_{\overline{R}}X_{\overline{A}}|\phi}
+			\end{equation}
+			and so provided $\ket{\phi}$ has no non-vanishing connected correlators for any such $O_{R},\,O_{\overline{R}},\,X_{\overline{A}}$, then 
+			\begin{equation}
+				\rho_{R\overline{R}\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{R}\overline{A}}[\phi]
+			\end{equation}
+			as required.\\
+			$(3)\implies (4)$: First, note that $\ket{\phi}$ is a purification of $\rho_{R\overline{R}\overline{A}}[\phi]$ by definition. Moreover, $\ket{\phi}$ maximally entangles $R$ with $\overline{R}\overline{A}$, so $\rho_{R}[\phi]=I_{R}/|R|$, and (3) becomes
+			\begin{equation}
+				\rho_{R\ol{R}\ol{A}}[\phi]=\frac{I_{R}}{|R|}\otimes\rho_{\ol{R}\ol{A}}[\phi]
+			\end{equation}
+			(basically same)
+		\end{proof}
+		
+	\end{itemize}
+\end{document}

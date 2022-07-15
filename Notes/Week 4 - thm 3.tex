@@ -1,0 +1,385 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{Week 4 - Harlow 3 in Pollack Language}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newcommand{\ntr}{\hat{\text{Tr}}}
+\newcommand{\gen}[1]{\braket{#1}_{vN}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\mdef}{V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\overline{A}})V}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\newtheorem{proposition}{Proposition}
+\begin{document}
+	\maketitle
+	\section{von Neumann Algebras - Relevant Bits}
+	\begin{itemize}
+		\item The von Neumann classification theorem tells us that for any von Neumann algebra $M$ on $\Hcode$, we have a decomposition
+		\begin{equation}
+			\Hcode=\oplus_{\alpha}(\mathcal{H}_{a_{\alpha}}\otimes\mathcal{H}_{\overline{a}_{\alpha}})
+		\end{equation}
+		where $M$ is given by the set of all operators $\tilde{O}$ which are block diagonal in $\alpha$, and that within each block they act as $\tilde{O}_{a_{\alpha}}\otimes I_{\overline{a}_{\alpha}}$
+		\item In matrix form:
+		\begin{equation}
+			\tilde{O}=\begin{pmatrix}
+				\tilde{O}_{a_{1}}\otimes I_{\overline{a}_{1}}&0&\dots\\0&\tilde{O}_{a_{2}}\otimes I_{\ol{a}_{2}}&\dots\\\vdots&\vdots&\ddots
+			\end{pmatrix}
+		\end{equation}
+		for any $\tilde{O}\in M$
+		\item The \textit{commutant} of $M$, denoted $M'$, is the set of all operators which commute with $M$, which are block-diagonal of the form
+		\begin{equation}
+			\tilde{O}'=\begin{pmatrix}
+				I_{a_{1}}\otimes\tilde{O}'_{\ol{a}_{1}}&0&\dots\\0&I_{a_{2}}\otimes\tilde{O}'_{\ol{a}_{2}}\dots\\\vdots&\vdots&\ddots
+			\end{pmatrix}
+		\end{equation}
+		\item The \textit{center} $Z_{M}\equiv M\cap M'$ consists of operators of the form
+		\begin{equation}
+			\tilde{\Lambda}=\begin{pmatrix}\lambda_{1}(I_{a_{1}}\otimes I_{\ol{a}_{1}})&0&\dots\\0&\lambda_{2}(I_{a_{2}}\otimes I_{\ol{a}_{2}})&\dots\\\vdots&\vdots&\ddots\end{pmatrix}
+		\end{equation}
+		where the $\lambda_{\alpha}\in\mathbb{C}$
+		\item When $M$ is the set of all operators on a tensor factor, $Z_{M}$ is trivial and $M$ is called a \textit{factor}
+		\item Harlow introduces orthonormal bases $\ket{\widetilde{\alpha,i}}$ and $\ket{\widetilde{\alpha,\ol{i}}}$ for $\mathcal{H}_{a_{\alpha}}$ and $\mathcal{H}_{\ol{a}_{\alpha}}$ respectively
+		\item This gives us an orthonormal basis for the full $\Hcode$ space:
+		\begin{equation}
+			\ket{\widetilde{\alpha,i\ol{i}}}\equiv\ket{\widetilde{\alpha,i}}\otimes\ket{\widetilde{\alpha,\ol{i}}}
+		\end{equation}
+		\item Given state $\tilde{\rho}$ and von Neumann algebra $M$ on $\Hcode$, we can define an algebraic entropy for $\tilde{\rho}$ on $M$ which reduces to standard von Neumann entropy when $M$ is a factor
+		\item We first define
+		\begin{equation}
+			p_{\alpha}\tilde{\rho}_{a_{\alpha}}\equiv\text{Tr}_{\ol{a}_{\alpha}}\tilde{\rho}_{\alpha\alpha}
+		\end{equation}
+		where $\tilde{\rho}_{\alpha\alpha}$ are the diagonal blocks of $\tilde{\rho}$, and $p_{\alpha}\in[0,1]$ chosen so $\text{Tr}_{a_{\alpha}}\tilde{\rho}_{a_{\alpha}}=1$
+		\item This further implies $\sum_{\alpha} p_{\alpha}=1$
+		\item We then define algebraic entropy as
+		\begin{equation}
+			S(\tilde{\rho},M)\equiv -\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\tilde{\rho}_{\alpha})
+		\end{equation}
+		\item We similarly define the entropy of $\tilde{\rho}$ on $M'$ via
+		\begin{equation}
+			p_{\alpha}\tilde{\rho}_{\ol{a}_{\alpha}}\equiv\text{Tr}_{a_{\alpha}}\tilde{\rho}_{\alpha\alpha}
+		\end{equation}
+		and then
+		\begin{equation}
+			S(\tilde{\rho},M')\equiv-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\tilde{\rho}_{\ol{a}_{\alpha}})
+		\end{equation}
+	\end{itemize}
+	\subsection{Harlow Theorem 3}
+	\begin{itemize}
+		\item This is Harlow's most general theorem on error correction
+		\begin{theorem}
+			Suppose $\mathcal{H}$ is a finite dimensional Hilbert space, which has a tensor product structure $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and suppose $\Hcode\subseteq\mathcal{H}$ is a subspace on which we have a von Neumann algebra $M$. Set $\ket{\widetilde{\alpha,i\ol{i}}}$ to be an orthonormal basis of $\Hcode$ which is compatible with the block decomposition induced by $M$. Also define $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,\ol{i}}\ket{\alpha,i\ol{i}}_{R}\ket{\widetilde{\alpha, i\ol{i}}}_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\Hcode$. Then, the following 4 statements are equivalent:
+			\begin{enumerate}
+				\item For any operator $\tilde{O}\in M$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ with an equivalent action on $\Hcode$; that is, for any $\ket{\tilde{\psi}}\in\Hcode$, we have
+				\begin{equation}
+					\begin{aligned}
+						O_{A}\ket{\tilde{\psi}}&=\tilde{O}\ket{\tilde{\psi}}\\
+						O_{A}^{\dagger}\ket{\tilde{\psi}}&=\tilde{O}^{\dagger}\ket{\tilde{\psi}}
+					\end{aligned}
+				\end{equation}
+				\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
+				\begin{equation}
+					\Pc X_{\ol{A}}\Pc=X'\Pc
+				\end{equation}
+				where $X'\in M'$, and $\Pc$ is the projector onto $\Hcode$.
+				\item For any $\tilde{O}\in M$, we have
+				\begin{equation}
+					[O_{R},\rho_{R\ol{A}}(\phi)]=0
+				\end{equation}
+				where $O_{R}$ is the unique operator on $\mathcal{H}_{R}$ such that
+				\begin{equation}
+					\begin{aligned}
+						O_{R}\ket{\phi}&=\tilde{O}\ket{\phi}\\
+						O_{R}^{\dagger}\ket{\phi}&=\tilde{O}^{\dagger}\ket{\phi}
+					\end{aligned}
+				\end{equation}
+				which acts with the same matrix elements on $R$ as $\tilde{O}^{T}$ does on $\Hcode$.
+				\item $\sum_{\alpha}|\mathcal{H}_{a_{\alpha}}|\leq|\mathcal{H}_{A}|$, and we can decompose 
+				\begin{equation} 
+					\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}
+				\end{equation}
+				with $|A_{1}^{\alpha}|=|a_{\alpha}|$, and there exists a unitary $U_{A}$ on $\mathcal{H}_{A}$ and sets of orthonormal states $\ket{\chi_{\alpha,\ol{i}}}_{A_{2}^{\alpha}\ol{A}}\in\mathcal{H}_{A_{2}^{\alpha}\ol{A}}$ such that
+				\begin{equation}
+					\ket{\widetilde{\alpha,i\ol{i}}}=U_{A}\bigg(\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,\ol{i}}}_{A_{2}^{\alpha}\ol{A}}\bigg)
+				\end{equation}
+				where $\ket{\alpha,i}_{A_{1}^{\alpha}}$ is an orthonormal basis for $\mathcal{H}_{A_{1}^{\alpha}}$.
+			\end{enumerate}
+		\end{theorem}
+		\item This theorem characterises how well a code subspace can correct a subalgebra $M$ for the erasure of $\ol{A}$
+		\item It reduces to subsystem correction if $M$ is a factor, and to standard correction of $M=\mathcal{L}(\Hcode)$
+		\begin{proof}
+			$(1)\implies(2)$: Suppose for sake of contradiction that $\Pc X_{\ol{A}}\Pc=x'\Pc$ where $x'$ is an operator on $\Hcode$ but is not in $M'$. Then there must exist an $\tilde{O}\in M$ and a state $\ket{\tilde{\psi}}\in\Hcode$ such that
+			\begin{equation}
+				\braket{\tilde{\psi}|[x',\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[X_{\ol{A}},\tilde{O}]|\tilde{\psi}}\neq 0
+			\end{equation}
+			but such an $\tilde{O}$ cannot have a corresponding $O_{A}$ as such an $O_{A}$ would automatically commute with $X_{\ol{A}}$.\\
+			$(2)\implies (3)$: Say $\tilde{O}\in M$, and $X_{\ol{A}}$ and $Y_{R}$ are arbitrary operators on $\mathcal{H}_{\ol{A}}$ and $\mathcal{H}_{R}$ respectively. We then have:
+			\begin{equation}
+				\begin{aligned}
+					\text{Tr}_{R\ol{A}}\left(O_{R}\rho_{R\ol{A}}(\phi)X_{\ol{A}}Y_{R}\right)&=\braket{\phi|X_{\ol{A}}Y_{R}O_{R}|\phi}\\&=\braket{\phi|X_{\ol{A}}Y_{R}\tilde{O}|\phi}\\&=\braket{\phi|\tilde{O}X_{\ol{A}}Y_{R}|\phi}\\&=\braket{\phi|O_{R}X_{\ol{A}}Y_{R}|\phi}\\&=\text{Tr}_{R\ol{A}}(\rho_{R\ol{A}}(\phi)O_{R}X_{\ol{A}}Y_{R})
+				\end{aligned}
+			\end{equation}
+			where the first equality is due to a small calculation, the second is by definition of $O_R$, the third is by the fact that $X_{\ol{A}}$ commutes with $\tilde{O}$ by (3), and the last is just a calculation. This can only hold for arbitrary $X_{\ol{A}}$ and $Y_{R}$ if $[O_{R},\rho_{R\ol{A}}(\phi)]=0$.\\
+			$(3)\implies (4)$: Our basis $\ket{\alpha,i\ol{i}}_{R}$ for $\mathcal{H}_{R}$ gives a decomposition for $\mathcal{H}_{R\ol{A}}\equiv\mathcal{H}_{R}\otimes\mathcal{H}_{\ol{A}}$ as
+			\begin{equation}
+				\mathcal{H}_{R\ol{A}}=\oplus_{\alpha}\left(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}}\otimes\mathcal{H}_{\ol{A}}\right)
+			\end{equation}
+			From (3), we know that $[O_{R},\rho_{R\ol{A}}(\phi)]=0$ for all such $O_{R}$ as defined. This means that the reduced state of $\rho_{R\ol{A}}(\phi)$ on $R$ alone must be $I_{R}/|R|$. We therefore have
+			\begin{equation}
+				\rho_{R\ol{A}}(\phi)=\oplus_{\alpha}\left[\frac{|R_{\alpha}||\ol{R}_{\alpha}|}{|R|}\left(\frac{I_{R_{\alpha}}}{|R_{\alpha}|}\otimes\rho_{\ol{R}_{\alpha}\ol{A}}\right)\right]
+			\end{equation}
+			for some state $\rho_{\ol{R}_{\alpha}\ol{A}}$, with the coefficient out the front to ensure this is a valid state satisfying $\text{Tr}_{R\ol{A}}(\rho_{R\ol{A}}(\phi))=1$. Moreover, since $\rho_{R}=I_{R}/|R|$, we must have $\text{Tr}_{\ol{A}}(\rho_{\ol{R}_{\alpha}\ol{A}})=I_{\ol{R}_{\alpha}}/|\ol{R}_{\alpha}|$.\\
+			Now, since $\ket{\phi}$ purifies $\rho_{R\ol{A}}$ on $A$, and in a purification the dimension of the purifying system is necessarily as big as the rank of the state being purified (cf Schmidt decomposition), so denoting the rank of $\rho_{\ol{R}_{\alpha}\ol{A}}$ as $|\rho_{\ol{R}_{\alpha}\ol{A}}|$, we have
+			\begin{equation}
+				\sum_{\alpha}|R_{\alpha}||\rho_{\ol{R}_{\alpha}\ol{A}}|\leq |A|
+			\end{equation}
+			This means we can indeed decompose
+			\begin{equation}
+				\mathcal{H}_{A}=\oplus_{\alpha}\left(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}}\right)\oplus\mathcal{H}_{A_{3}}
+			\end{equation}
+			where $|A_{1}^{\alpha}|=|R_{\alpha}|=|a_{\alpha}|$ and $|A_{2}^{\alpha}|\geq|\rho_{\ol{R}_{\alpha}\ol{A}}|$. For each $\alpha$, we can therefore purify $\rho_{\ol{R}_{\alpha}\ol{A}}$ on $A_{2}^{\alpha}$, and since $\text{Tr}_{\ol{A}}(\rho_{\ol{R}_{\alpha}\ol{A}})=I_{\ol{R}_{\alpha}}/|\ol{R}_{\alpha}|$, this purification looks like
+			\begin{equation}
+				\ket{\psi_{\alpha}}_{\ol{R}_{\alpha}A_{2}^{\alpha}\ol{A}}=\frac{1}{\sqrt{|\ol{R}_{\alpha}|}}\sum_{\ol{i}}\ket{\alpha,\ol{i}}_{\ol{R}_{\alpha}}\ket{\chi_{\alpha,\ol{i}}}_{A_{2}^{\alpha}\ol{A}}
+			\end{equation}
+			where the $\ket{\chi_{\alpha,\ol{i}}}$s are mutually orthonormal on $A_{2}^{\alpha}\ol{A}$. This means a purification for $\rho_{R\ol{A}}$ on the full $A$ system is
+			\begin{equation}
+				\ket{\phi'}=\sum_{\alpha,i\ol{i}}\frac{1}{\sqrt{|R_{\alpha}|}}\ket{\alpha,i}_{R_{\alpha}}\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\psi_{\alpha}}_{\ol{R}_{\alpha}A_{2}^{\alpha}\ol{A}}=\frac{1}{\sqrt{|R|}}\sum_{\alpha,i\ol{i}}\ket{\alpha,i\ol{i}}_{R}\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\chi_{\alpha,\ol{i}}}_{A_{2}^{\alpha}\ol{A}}
+			\end{equation}
+			and since $\ket{\phi}$ and $\ket{\phi'}$ are two purifications of $\rho_{R\ol{A}}$ on $A$, they must differ by some unitary $U_{A}$.\\
+			$(4)\implies (1)$: Just define
+			\begin{equation}
+				O_{A}\equiv U_{A}(\oplus_{\alpha}(O_{A_{1}^{\alpha}}\otimes I_{A_{2}^{\alpha}}))U_{A}^{\dagger}
+			\end{equation}
+			where $O_{A_{1}^{\alpha}}$ acts on $\mathcal{H}_{A_{1}^{\alpha}}$ in the same way as $\tilde{O}_{a_{\alpha}}$ from (1.2) does on $\mathcal{H}_{a_{\alpha}}$.
+		\end{proof}
+		\item Harlow defines a \textit{subalgebra code with complementary recovery} as one where not only can we represent any element of $M$ on $A$ as in $(1)$, but we can also represent any element of $M'$ on $\ol{A}$
+		\item Equivalence of (1) and (4) then tells us that
+		\begin{equation}
+			\ket{\widetilde{\alpha,i\ol{i}}}=U_{A}U_{\ol{A}}\bigg(\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\alpha,\ol{i}}_{\ol{A}_{1}^{\alpha}}\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\bigg)
+		\end{equation}
+		where we've decomposed
+		\begin{equation}
+			\mathcal{H}_{\ol{A}}=\oplus_{\alpha}\bigg(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}}\bigg)\oplus\mathcal{H}_{\ol{A}_{3}}
+		\end{equation}
+		where $|\ol{A}_{1}^{\alpha}|=|\ol{a}_{\alpha}|$
+	\end{itemize}
+	\subsection{RT Formula Stuff}
+	\begin{itemize}
+		\item Consider arbitrary encoded state $\tilde{\rho}$ in a subalgebra code with complementary recovery on $A$ and $\ol{A}$
+		\item Recall that in order to define an algebraic entropy of $\tilde{\rho}$ on $M$, we considered the diagonal blocks $\tilde{\rho}_{\alpha\alpha}$ of $\tilde{\rho}$ and defined
+		\begin{equation}
+			p_{\alpha}\tilde{\rho}_{a_{\alpha}}\equiv\text{Tr}_{\ol{a}_{\alpha}}\tilde{\rho}_{\alpha\alpha}
+		\end{equation}
+		so that
+		\begin{equation}
+			S(\tilde{\rho},M)\equiv-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\tilde{\rho}_{a_{\alpha}})
+		\end{equation}
+		\item Now, consider (1.25): we can rewrite it as
+		\begin{equation}
+			\ket{\widetilde{\alpha,i\ol{i}}}=\ket{\widetilde{\alpha,i}}_{a_{\alpha}}\otimes\ket{\widetilde{\alpha,\ol{i}}}_{\ol{a}_{\alpha}}=U_{A}U_{\ol{A}}\bigg(\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\alpha,\ol{i}}_{\ol{A}_{1}^{\alpha}}\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\bigg)
+		\end{equation}
+		\item So, if we define $\rho_{A_{1}^{\alpha}}$ and $\rho_{\ol{A}_{1}^{\alpha}}$ to have the same matrix elements on $\mathcal{H}_{A_{1}^{\alpha}}$ and $\mathcal{H}_{\ol{A}_{1}^{\alpha}}$ as $\tilde{\rho}_{a_{\alpha}}$ and $\tilde{\rho}_{\ol{a}_{\alpha}}$ do on $\mathcal{H}_{a_{\alpha}}$ and $\mathcal{H}_{\ol{a}_{\alpha}}$, we see that for arbitrary $\tilde{\rho}$ with diagonal blocks $\tilde{\rho}_{\alpha\alpha}$, we have
+		\begin{equation}
+			\tilde{\rho}_{\alpha\alpha}=p_{\alpha}\tilde{\rho}_{a_{\alpha}}\otimes\tilde{\rho}_{\ol{a}_{\alpha}}=U_{A}U_{\ol{A}}\bigg(p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\rho_{A_{2}^{\alpha}}\otimes \ketbras{\chi_{\alpha}}\bigg)U_{\ol{A}}^{\dagger}U_{A}^{\dagger}
+		\end{equation}
+		\item We therefore obtain reduced density matrices on $A$ and $\ol{A}$ as
+		\begin{equation}
+			\begin{aligned}
+				\tilde{\rho}_{A}&\equiv\text{Tr}_{\ol{A}}\tilde{\rho}=U_{A}\bigg(\oplus_{\alpha}(p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\chi_{A_{2}^{\alpha}})\bigg)U_{A}^{\dagger}\\
+				\tilde{\rho}_{\ol{A}}&\equiv\text{Tr}_{A}\tilde{\rho}=U_{\ol{A}}\bigg(\oplus_{\alpha}(p_{\alpha}\rho_{\ol{A}_{1}^{\alpha}}\otimes\chi_{\ol{A}_{2}^{\alpha}})\bigg)U_{\ol{A}}^{\dagger}
+			\end{aligned}
+		\end{equation}
+		where $\chi_{A_{2}^{\alpha}}=\text{Tr}_{\ol{A}_{2}^{\alpha}}\ketbras{\chi_{\alpha}}$ etc
+		\item So, defining area operator
+		\begin{equation}
+			\mathcal{L}_{A}\equiv\oplus_{\alpha}S(\chi_{A_{2}^{\alpha}})I_{a_{\alpha}\ol{a}_{\alpha}}
+		\end{equation}
+		we find Ryu-Takayanagi formulae
+		\begin{equation}
+			\begin{aligned}
+				S(\tilde{\rho}_{A})&=\text{Tr}\tilde{\rho}\mathcal{L}_{A}+S(\tilde{\rho},M)\\
+				S(\tilde{\rho}_{\ol{A}})&=\text{Tr}\tilde{\rho}\mathcal{L}_{A}+S(\tilde{\rho},M')
+			\end{aligned}
+		\end{equation}
+		\item Note that the area operator is now non-trivial, since $S(\chi_{A_{2}^{\alpha}})$ can take different values for different $\alpha$
+		\item Moreover, $\mathcal{L}_{A}$ is clearly in $Z_{M}$
+		\item Harlow also shows that obeying RT formulae in this way also implies complementary recovery, so in some sense complementary recovery and this `two-sided RT formula' for $A$ and $\ol{A}$ are equivalent
+		\item Pollack shows that the existence of complementary recovery determines the von Neumann algebra $M$ uniquely - so why don't we do away with $M$?
+		\item He suggests the possibility of a `one-sided RT formula' obeyed by $A$ but not $\ol{A}$ - is this mathematically possible?
+		\item Might give this a go lol
+	\end{itemize}
+	\section{The Pollack Way}
+	\subsection{Complementary Recovery}
+	\begin{itemize}
+		\item Harlow thinks of quantum erasure correction in terms of a subspace $\Hcode\subseteq\mathcal{H}$; Pollack et al. work instead in terms of a \textit{logical space} $\mathcal{H}_{L}$ which is thought of as being separate from $\mathcal{H}$ with the same dimensionality as $\Hcode$
+		\item An \textit{encoding isometry} $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ then takes logical states and encodes them in the physical Hilbert space
+		\item The image of $V$ is $\Hcode$
+		\item We intuitively think of this as fixing a basis for $\Hcode$ as $\Hcode$ is invariant under the action $V\to VU_{L}$ for some unitary $U_{L}$ on $\mathcal{H}_{L}$
+		\item This view makes the notion of the center of a von Neumann algebra on $\mathcal{H}_{L}$ simpler to understand, and in constructing explicit examples it is easier to write down $V$ rather than $\Hcode$
+		\item In holography, there are two properties that are relevant for an RT formula: the subregion $A$ which determines entropy $S_{A}$ and the visible bulk degrees of freedom which determine the entropy $S_{\text{bulk},A}$
+		\item The visible degrees of freedom are denoted by a von Neumann algebra $M$, and clearly $(V,A,M)$ are related, so we establish the following nomenclature
+		\begin{definition}[Correctable and Private Algebra]
+			Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry $V$ for some quantum error correcting code, and $A$ is a subregion of $\mathcal{H}$ inducing the factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. A von Neumann algebra $M\subseteq\mathcal{L}(\mathcal{H}_{L})$ is said to be:
+			\begin{itemize}
+				\item \textbf{Correctable} from $A$ with respect to $V$ if $M\subseteq V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{A})V$; for every $O_{L}\in M$ there exists an $O_{A}\in\mathcal{L}(\mathcal{H}_{A})$ such that $O_{L}=V^{\dagger}(O_{A}\otimes I_{\ol{A}})V$.
+				\item \textbf{Private} from $A$ with respect to $V$ if $V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V\subseteq M'$; for every $O_{A}\in\mathcal{L}(\mathcal{H}_{A})$, $V^{\dagger}(O_{A}\otimes I_{\ol{A}})V$ commutes with every operator in $M$.
+			\end{itemize}
+		\end{definition}
+		\item Intuitively: think of $M$ being correctable from $A$ if every operator in $M$ maps to a non-trivial operator on the tensor factor $A$ only, and private from $A$ if the preimage of any operator in $A$ commutes with all of $M$
+		\item If $M$ is correctable, then it is a set of logical operators which can be performed on the encoded state given access to $A$ only
+		\item A hermitian element of $M$ then corresponds to an observable on $\mathcal{H}_{L}$ which can be measured from $A$ - $M$ tells about which parts of a logical state can be recovered from knowledge of $A$ only
+		\item Conversely, if $M$ is private then the observables in $M$ tell us which parts of a logical state are invisible from $A$
+		\item We then can talk about \textit{complementary recovery} in this language
+		\begin{definition}
+			A code with encoding isometry $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$, a subregion of the physical Hilbert space $A$, and a von Neumann algebra $M\subseteq\mathcal{L}(\mathcal{H}_{L})$, together taken as a triplet $(V,A,M)$ exhibit \textbf{complementary recovery} if:
+			\begin{itemize}
+				\item $M$ is correctable from $A$ with respect to $V$: $M\subseteq V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$
+				\item $M'$ is correctable from $\ol{A}$ with respect to $V$: $M'\subseteq V^{\dagger}(I_{A}\otimes \mathcal{L}(\mathcal{H}_{\ol{A}}))V$.
+			\end{itemize}
+		\end{definition}
+		\item So far, this doesn't restrict the form $M$ can take very much: note that if $N\subset M$ is a subalgebra and $M$ is correctable, then so too is $N$
+		\item It would therefore seem logical that if $(V,A,M)$ has complementary recovery, then so too does $(V,A,N)$
+		\item We actually find that complementary recovery is so restrictive on $M$ that it gets determined uniquely, and such subalgebras $N$ do not exhibit complementary recovery
+		\item This is important for holography because the von Neumann algebra $M$ is important in the RT formula: it tells us how to define the entropy of the bulk degrees of freedom visible from $A$ $S_{\text{bulk},A}$ via an algebraic entropy $S(M,A)$
+		\item For this to make sense, $M$ needs to be uniquely determined by $V$ and the subregion $A$
+		\item To show this, Pollack quotes the following result:
+		\begin{theorem}[Correctability $\leftrightarrow$ Privacy]
+			A von Neumann algebra $M$ is correctable from $A$ with respect to $V$ if and only if $M$ is private from $\ol{A}$ with respect to $V$.
+		\end{theorem}
+		\item The proof of this is quite straightforward
+		\begin{proof}
+			$(\implies)$: Suppose $\exists O_{\ol{A}}\in \mathcal{L}(\mathcal{H}_{\ol{A}})$ such that $V^{\dagger}(I_{A}\otimes I_{\ol{A}})V$ doesn't commute with some $O_{L}\in M$. But since $M$ is correctable from $A$, we know $\exists O_{A}\in\mathcal{L}(\mathcal{H}_{A})$ such that $O_{L}=V^{\dagger}(O_{A}\otimes I_{\ol{A}})V$, which clearly does commute with $V^{\dagger}(I_{A}\otimes I_{\ol{A}})V$, so such an $O_{\ol{A}}$ cannot exist and thus $M$ is private from $\ol{A}$ with respect to $V$.\\
+			$(\impliedby)$: We know that for all $O_{\ol{A}}\in\mathcal{L}(\mathcal{H}_{\ol{A}})$, $V^{\dagger}(I_{A}\otimes O_{\ol{A}})V$ commutes with all $O_{L}\in M$. But this is only true for arbitrary $O_{L}$ and $O_{\ol{A}}$ if $O_{L}$ can be written as $O_{L}=V^{\dagger}(O_{A}\otimes I_{\ol{A}})V$ by Schur's lemma, which is just the definition of $M$ being correctable on $A$ with respect to $V$.
+		\end{proof}
+		\item This lemma essentially shows that for erasures, correctability is in some sense complementary to privacy: correctability on $A$ implies that $\ol{A}$ is erased
+		\item Pollack says that informally, a subsystem $B$ of a Hilbert space $\mathcal{H}=A\otimes B$ is private if it completely decoheres after the action of a quantum channel
+		\item Pollack now proves that the von Neumann algebra $M$ defined by complementary recovery is in fact unique
+		\begin{theorem}[Uniqueness of complementary von Neumann algebra]
+			Suppose $V$ is an encoding isometry and $A$ is a subregion inducing $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Let $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ be the image of operators on $\mathcal{H}_{A}$ projected onto $\mathcal{H}_{L}$. If $M$ is a von Neumann algebra, then is is the unique von Neumann algebra satisfying complementary recovery on $V$ and $A$. If $M$ is not a von Neumann algebra, then no von Neumann algebra satisfying complementary recovery exists.
+		\end{theorem}
+		\begin{proof}
+			The theorem essentially has two conditions:
+			\begin{itemize}
+				\item \textbf{Existence}: If $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ is a von Neumann algebra, then $(V,A,M)$ have complementary recovery.
+				\item \textbf{Uniqueness}: If $N\subseteq V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ is a von Neumann algebra, then $(V,A,N)$ do not have complementary recovery.
+			\end{itemize}
+			which we prove in turn.\\
+			\textbf{Existence}: Assume $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ is a von Neumann algebra, so the commutant $M'$ is well defined. The first condition of complementary recovery ($M$ is correctable on $A$ with respect to $V$) is trivial by definition of $M$. Also note that by the bicommutant theorem:
+			\begin{equation}
+				\mdef\subseteq M=M''
+			\end{equation}
+			so by definition of privacy, $M'$ is private from $A$ with respect to $V$. So by theorem (2.1), $M'$ is correctable from $\ol{A}$ with respect to $V$, which is the second condition for complementary recovery.\\
+			\textbf{Uniqueness}: Suppose $N\subsetneq\mdef$ is a von Neumann algebra which is correctable from $A$ but not equal to the full set of correctable operators. For sake of contradiction, assume $(V,A,N)$ have complementary recovery. By the second condition of complementary recovery, $N'$ is correctable from $\ol{A}$ with respect to $V$, so by theorem (2.1), $N'$ is private from $A$ with respect to $V$. This means:
+			\begin{equation}
+				\mdef\subseteq N''=N
+			\end{equation}
+			by the bicommutant theorem, and so we have
+			\begin{equation}
+				N\subsetneq \mdef\subseteq N
+			\end{equation}
+			which is a contradiction since $N\subseteq N$ is a tautology, so such an $N$ cannot exist.
+		\end{proof}
+		\item Complementarity seems like a natural property for quantum error correcting codes to have
+		\item It turns out that complementary recovery implies an RT formula, which is surprising
+		\item The fact that von Neumann algebras with complementary recovery can fail to exist is quite non-trivial - to this end, we give an example of a code without complementary recovery
+		\begin{example}
+			We let the physical space be that of two qubits: $\mathcal{H}=\mathcal{H}_{2}\otimes\mathcal{H}_{2}$, and let the logical space be a qutrit $\mathcal{H}_{L}=\text{span}(\ket{0},\ket{1},\ket{2})$. We denote the first qubit of $\mathcal{H}$ by $A$, and then give encoding isometry
+			\begin{equation}
+				V=\ketbra{00}{0}+\ketbra{01}{1}+\ketbra{10}{2}
+			\end{equation}
+			The set of correctable operators is then
+			\begin{equation}
+				\mdef=\begin{pmatrix}
+					a&b&0\\c&d&0\\0&0&a
+				\end{pmatrix}
+			\end{equation}
+			where $a,b,c,d\in\mathbb{C}$. This set itself is not closed under multiplication, so cannot be a von Neumann algebra, so we take $M$ to be the largest von Neumann algebra contained within $\mdef$, which is given by
+			\begin{equation}
+				M=\begin{pmatrix}
+					a&0&0\\0&d&0\\0&0&a
+				\end{pmatrix}
+			\end{equation}
+			$(V,A,M)$ satisfy the first condition of complementary recovery ($M$ is correctable from $A$ with respect to $V$), but not the second ($M'$ is correctable from $\ol{A}$ with respect to $V$), since
+			\begin{equation}
+				\begin{pmatrix}
+					a&0&b\\0&d&0\\c&0&e
+				\end{pmatrix}
+				=M'\nsubseteq V^{\dagger}(I_{A}\otimes\mathcal{L}(\mathcal{H}_{\ol{A}}))V=\begin{pmatrix}
+					a&0&b\\0&a&0\\c&0&e
+				\end{pmatrix}
+			\end{equation}
+			If we had chosen $M$ to be a smaller subalgebra, then $M'$ would be larger and in particular would contain the above. But since $M'$ is already not contained in the relevant object, there cannot exist a von Neumann algebra with complementary recovery.
+		\end{example}
+	\end{itemize}
+	\subsection{The RT Formula and Properties}
+	\begin{itemize}
+		\item In the language we have so far, we can \textit{define} what an RT formula is, with no reference to holography
+		\begin{definition}[RT Formula]
+			Say $V$ is an encoding isometry, $A$ is a subregion, and $M$ is a von Neumann algebra on $\mathcal{H}_{L}$. We say $(V,A,M)$ has an \textbf{RT formula} if there exists an \textbf{area operator} $L\in\mathcal{L}(\mathcal{H}_{L})$ such that for any state $\rho$ with support on $\mathcal{H}_{L}$, we have:
+			\begin{equation}
+				S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))=S(M,\rho)+\text{Tr}(\rho L)
+			\end{equation}
+			If $L\propto I$, we say $(V,A,M)$ has a trivial RT formula.
+		\end{definition}
+		\item The existence of an RT formula in a code is closely connected to complementary recovery
+		\item Recalling that a von Neumann algebra implies a Wedderburn decomposition on the Hilbert space it acts on ($\mathcal{H}=\oplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}})$), Pollack finds that when a von Neumann algebra is correctable from $A$ with respect to $V$, then the Hilbert space $\mathcal{H}_{A}$ also decomposes, where the decomposition of this and of $\mathcal{H}_{L}$ are related
+		\item This is formalised by the following lemma - note the similarity to Harlow 3
+		\begin{theorem}
+			Suppose $V\;:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $A$ is a subregion inducing $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $M$ is a von Neumann algebra on $\mathcal{H}_{L}$ which is correctable from $A$ with respect to $V$.\\
+			Suppose $M$ induces the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$, so that 
+			\begin{equation}
+				M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{L_{\alpha}})\otimes I_{\ol{L}_{\alpha}})
+			\end{equation}
+			Set $\{\ket{\alpha,i,j}\}$ to be an orthonormal basis of $\mathcal{H}_{L}$ which is compatible with $M$, so $\alpha$ enumerates the diagonal blocks and within each block we have $\ket{\alpha,i,j}=\ket{i_{\alpha}}_{L_{\alpha}}\otimes\ket{j_{\alpha}}_{\ol{L}_{\alpha}}$ where $\{\ket{i_{\alpha}}_{L_{\alpha}}\}$ and $\{\ket{j_{\alpha}}_{\ol{L}_{\alpha}}\}$ are orthonormal bases for $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ respectively.\\
+			Then, there exists a factorisation $\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}$ and a unitary $U_{A}$ on $\mathcal{H}_{A}$ such that the state $(U_{A}\otimes I_{\ol{A}})V\ket{\alpha,i,j}$ factorises as
+			\begin{equation}
+				(U_{A}\otimes I_{\ol{A}})V\ket{\alpha,i,j}=\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}
+			\end{equation}
+			where $\ket{\psi_{\alpha,i}}$ is independent of $j$ and $\ket{\chi_{\alpha,j}}$ is independent of $i$.
+		\end{theorem}
+		\item Note that this is essentially Harlow 3 in the language of Pollack, and this theorem specifically says $(1)\implies(4)$
+		\item To see why this is true, recall the first condition of Harlow's: for any operator $\tilde{O}$ on $M$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ with the same action on $\Hcode$, so for any $\ket{\tilde{\psi}}\in\Hcode$, we have $O_{A}\ket{\tilde{\psi}}=\tilde{O}\ket{\tilde{\psi}}$
+		\item This is just the statement that $M$ is correctable from $A$ with respect to $V$!
+		\item Indeed, if $M$ is correctable from $A$ with respect to $V$, then for every $O_{L}\in M$ there is a corresponding $O_{A}\in\mathcal{L}(\mathcal{H}_{A})$ such that $O_{L}=V^{\dagger}(O_{A}\otimes I_{\ol{A}})V$
+		\item Therefore, for any $\ket{\psi}\in\mathcal{H}_{L}$ and corresponding $V\ket{\psi}\in V(\mathcal{H}_{L})$, we clearly have:
+		\begin{equation}
+			(O_{A}\otimes I_{\ol{A}})V\ket{\psi}=(VO_{L}V^{\dagger})(V\ket{\psi})=O_{L}\ket{\psi}
+		\end{equation}
+		which is just Harlow's second condition as claimed
+		\item The proof therefore straightforwardly adapts
+		\item The next thing Pollack does is show that complementary recovery implies a `two-sided RT formula'; that is, $(V,A,M)$ and $(V,\ol{A},M')$ have an RT formula with the same area operator
+	\end{itemize}
+\end{document}
