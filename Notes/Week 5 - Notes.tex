@@ -1,0 +1,210 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{geometry}
+\usepackage{mathrsfs}
+\usepackage{braket}
+\usepackage{simpler-wick}
+\usepackage{simplewick}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usepackage{tikz-feynman}
+\usepackage{subcaption}
+\usepackage{bm}
+\usepackage{slashed}
+\usepackage{tensor}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
+%\usepackage{pst-node}
+%\usepackage{auto-pst-pdf}
+\title{Week 5 - Notes}
+\author{Ben Karsberg}
+\date{2021-22}
+\newgeometry{vmargin={15mm}, hmargin={20mm,20mm}}
+\numberwithin{equation}{section}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newcommand{\ntr}{\hat{\text{Tr}}}
+\newcommand{\gen}[1]{\braket{#1}_{vN}}
+\newcommand{\ol}[1]{\overline{#1}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\newtheorem{proposition}{Proposition}
+\begin{document}
+	\maketitle
+	\section{Harlow Shows that RT $\implies$ Complementary Recovery}
+	\begin{itemize}
+		\item The first thing to consider is a small variation in the entropy:
+		\begin{equation}
+			\begin{aligned}
+				\delta S(\tilde{\rho},M)&=S(\tilde{\rho}+\delta\tilde{\rho},M)-S(\tilde{\rho},M)\\&=-\hat{\text{Tr}}\left(\left(\hat{\tilde{\rho}}_{M}+\delta\hat{\tilde{\rho}}_{M}\right)\log\left(\hat{\tilde{\rho}}_{M}+\delta\hat{\tilde{\rho}}_{M}\right)\right)+\hat{\text{Tr}}\left(\hat{\tilde{\rho}}_{M}\log{\hat{\tilde{\rho}}_{M}}\right)\\&=-\hat{\text{Tr}}\left(\hat{\tilde{\rho}}_{M}\left(\log{\hat{\tilde{\rho}}_{M}}+\hat{\tilde{\rho}}_{M}^{-1}\delta\hat{\tilde{\rho}}_{M}\right)\right)-\hat{\text{Tr}}\left(\delta\hat{\tilde{\rho}}_{M}\log{\hat{\tilde{\rho}}_{M}}\right)+\hat{\text{Tr}}\left(\hat{\tilde{\rho}}_{M}\log\hat{\tilde{\rho}}_{M}\right)+\mathcal{O}\left(\delta\hat{\tilde{\rho}}_{M}^{2}\right)\\&=-\hat{\text{Tr}}\left(\delta\hat{\tilde{\rho}}_{M}\right)-\hat{\text{Tr}}\left(\delta\hat{\tilde{\rho}}_{M}\log\hat{\tilde{\rho}}_{M}\right)+\mathcal{O}\left(\delta\hat{\tilde{\rho}}_{M}^{2}\right)\\&=-\text{Tr}\left(\delta\tilde{\rho}\log\left(\tilde{\rho}_{A}\otimes I_{\overline{A}}\right)\right)+\mathcal{O}\left(\delta\tilde{\rho}^{2}\right)\\&=-\text{Tr}\left(\delta\tilde{\rho}\log\tilde{\rho}_{A}\right)+\mathcal{O}\left(\delta\tilde{\rho}^{2}\right)
+			\end{aligned}
+		\end{equation}
+		using that $\text{Tr}(\delta\tilde{\rho})=0$ and the standard $\log$ expansion
+		\item We can play the same game more generally if we take the variation $\delta\tilde{\rho}$ about a state $\sigma$:
+		\begin{equation}
+			S(\tilde{\sigma}+\delta\tilde{\rho},M)-S(\tilde{\sigma},M)=-\text{Tr}\left(\delta\tilde{\rho}\log\tilde{\sigma}_{A}\right)
+		\end{equation}
+		\item A similar calculation shows
+		\begin{equation}
+			\delta S(\tilde{\rho})=-\text{Tr}(\delta\tilde{\rho}\log\tilde{\rho})\implies S(\tilde{\sigma}+\delta\tilde{\rho})
+			-S(\tilde{\sigma})=-\text{Tr}\left(\delta\tilde{\rho}\log\tilde{\sigma}\right)
+		\end{equation}
+		\item Recall the RT formula on $A$:
+		\begin{equation}
+			S(\tilde{\rho}_{A})=\text{Tr}\tilde{\rho}\mathcal{L}_{A}+S(\tilde{\rho},M)
+		\end{equation}
+		\item So, taking the variation $\delta{\tilde{\rho}}$ on $\tilde{\sigma}$, we get
+		\begin{equation}
+			\begin{aligned}
+				S(\tilde{\sigma}_{A}+\delta\tilde{\rho}_{A})-S(\tilde{\sigma}_{A})&=\text{Tr}\left((\tilde{\sigma}+\delta\tilde{\rho})\mathcal{L}_{A}\right)-\text{Tr}\left(\tilde{\sigma}\mathcal{L}_{A}\right)+S(\tilde{\sigma}+\delta\tilde{\rho},M)-S(\tilde{\sigma},M)\\\implies -\text{Tr}\left(\delta\tilde{\rho}_{A}\log\tilde{\sigma}_{A}\right)&=\text{Tr}\left(\delta\tilde{\rho}\left(\mathcal{L}_{A}-\log\tilde{\sigma}\right)\right)
+			\end{aligned}
+		\end{equation}
+		to linear order
+		\item Since both sides are linear in $\delta\tilde{\rho}$, we can integrate over all such variations on both sides, giving us
+		\begin{equation}
+			-\text{Tr}\left(\tilde{\rho}_{A}\log\tilde{\sigma}_{A}\right)=\text{Tr}\left(\tilde{\rho}\left(\mathcal{L}_{A}-\log\tilde{\sigma}_{A}\right)\right)
+		\end{equation}
+		\item We can now calculate relative entropies as:
+		\begin{equation}
+			\begin{aligned}
+				S(\tilde{\rho}_{A}|\tilde{\sigma}_{A})&=\text{Tr}\left(\tilde{\rho}_{A}\log\tilde{\rho}_{A}\right)-\text{Tr}\left(\tilde{\rho}_{A}\log\tilde{\sigma}_{A}\right)\\&=-S(\tilde{\rho}_{A})+\text{Tr}\left(\tilde{\rho}(\mathcal{L}_{A}-\log\tilde{\sigma}_{A})\right)\\&=-S(\tilde{\rho}_{A})+S(\tilde{\rho}_{A})-S(\tilde{\rho},M)-\text{Tr}\left(\tilde{\rho}\log\tilde{\sigma}_{A}\right)\\&=-S(\tilde{\rho},M)-\hat{\text{Tr}}\left(\tilde{\rho}_{M}\log\tilde{\sigma}_{M}\right)\\&=S(\tilde{\rho}|\tilde{\sigma},M)
+			\end{aligned}
+		\end{equation}
+		\item A similar argument on $\overline{A}$ shows that
+		\begin{equation}
+			S(\tilde{\rho}_{\ol{A}}|\tilde{\sigma}_{\ol{A}})=S(\tilde{\rho}|\tilde{\sigma},M')
+		\end{equation}
+		\item These two between them imply the second condition of Harlow 5.1
+		\item Consider a state $\ket{\tilde{\psi}}\in\Hcode$, an operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, and an operator $\tilde{O}\in M$
+		\item Since $M$ is spanned by its Hermitian elements, we take $\tilde{O}$ to be Hermitian
+		\item We now consider
+		\begin{equation}
+			\braket{\tilde{\psi}|e^{-i\lambda\tilde{O}}X_{\ol{A}}e^{i\lambda\tilde{O}}|\tilde{\psi}}=\braket{\tilde{\psi}|e^{-i\lambda\tilde{O}}\Pc X_{\ol{A}}\Pc e^{i\lambda\tilde{O}}|\tilde{\psi}}
+		\end{equation}
+		since $\tilde{O}\ket{\tilde{\psi}}=\Pc\tilde{O}\Pc\Pc\ket{\tilde{\psi}}=\Pc\tilde{O}\ket{\tilde{\psi}}$
+		\item Consider the states
+		\begin{equation}
+			\ket{\tilde{\psi}(\lambda)}\equiv e^{i\lambda\tilde{O}}\ket{\tilde{\psi}}
+		\end{equation}
+		and note that for any $\tilde{O}'\in M'$, the expectation $\braket{\tilde{\psi}(\lambda)|\tilde{O}'|\tilde{\psi}(\lambda)}$ is independent of $\lambda$
+		\item Recalling that for any state $\rho$, there is a unique state $\rho_{M'}\in M'$ such that $\mathbb{E}_{\rho}(x')=\mathbb{E}_{\rho_{M'}}(x')$ for any $x'\in M'$, this means that the states $\tilde{\psi}(\lambda)_{M'}$ corresponding to  $\tilde{\psi}(\lambda)=\ketbras{\tilde{\psi}(\lambda)}$ on $M'$ are independent of $\lambda$ too
+		\item So, for any two $\lambda,\lambda'$, $\tilde{\psi}(\lambda)_{M'}=\tilde{\psi}(\lambda')_{M'}$, which means
+		\begin{equation}
+			S(\tilde{\psi}(\lambda)|\tilde{\psi}(\lambda'),M')=0
+		\end{equation}
+		\item So from (1.8):
+		\begin{equation}
+			0=S(\tilde{\psi}(\lambda)|\tilde{\psi}(\lambda'),M')=S(\tilde{\psi}(\lambda)_{\ol{A}}|\tilde{\psi}(\lambda')_{\ol{A}})
+		\end{equation}
+		and so $\text{Tr}_{A}\left(\ketbras{\tilde{\psi}(\lambda)}\right)$ is independent of $\lambda$ too
+		\item This can only hold if $\ket{\tilde{\psi}(\lambda)}$ itself is independent of $\lambda$
+		\item Now return to (1.9); since this is therefore independent of $\lambda$, its first variation with respect to $\lambda$ must vanish
+		\item Therefore:
+		\begin{equation}
+			\delta\braket{\tilde{\psi}|e^{-i\lambda\tilde{O}}\Pc X_{\ol{A}}\Pc e^{i\lambda\tilde{O}}|\tilde{\psi}}\propto\braket{\tilde{\psi}|[\Pc X_{\ol{A}}\Pc,\tilde{O}]|\tilde{\psi}}=0
+		\end{equation}
+		which just implies $\Pc X_{\ol{A}}\Pc =X'\Pc$ for some $X'\in M'$, which is just the second condition as claimed
+		\item Since we can repeat this argument with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we get that a two sided RT formula implies complementary recovery
+	\end{itemize}
+	\section{Pollack 4.8}
+	\begin{itemize}
+		\item We jump straight in with Pollack's theorem 4.8
+		\begin{theorem}
+			Consider an encoding isometry $V$, a subregion $A$, and a von Neumann algebra $M$ so that $(V,A,M)$ have complementary recovery. Then $(V,A,M)$ and $(V,\ol{A},M')$ both have an RT formula with the same area operator $L$, and $L$ is in the center $Z_{M}$.
+		\end{theorem}
+		\begin{proof}
+			Suppose $M$ induces decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$. Then, we can decompose $M$ and $M'$ together as
+			\begin{equation}
+				M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{L_{\alpha}})\otimes I_{\ol{L}_{\alpha}}),\quad M'=\oplus_{\alpha}(I_{L_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{L}_{\alpha}}))
+			\end{equation}
+			Define $\ket{\alpha,i,j}=\ket{i_{\alpha}}_{L_{\alpha}}\otimes\ket{j_{\alpha}}_{\ol{L}_{\alpha}}$ as the compatible basis for $\mathcal{H}_{L}$. By earlier lemmas, we know there exist factorisations of the form
+			\begin{equation}
+				\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}},\quad\mathcal{H}_{\ol{A}}=\oplus_{\alpha}(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}})\oplus\mathcal{H}_{\ol{A}_{3}}
+			\end{equation}
+			and unitaries $U_{A}$ and $U_{\ol{A}}$ such that
+			\begin{equation}
+				\begin{aligned}
+					(U_{A}\otimes I_{\ol{A}})V\ket{\alpha,i,j}&=\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
+					(I_{A}\otimes U_{\ol{A}})V\ket{\alpha,i,j}&=\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\ol{\psi}_{\alpha,j}}_{\ol{A}_{1}^{\alpha}}
+				\end{aligned}
+			\end{equation}
+			If we apply $(U_{A}\otimes I_{\ol{A}})$ and $(I_{A}\otimes U_{\ol{A}})$ sequentially, we see that
+			\begin{equation}
+				\begin{aligned}
+					(I_{A}\otimes U_{\ol{A}})(U_{A}\otimes I_{A})V\ket{\alpha,i,j}&=\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}\otimes(I_{A_{2}^{\alpha}}\otimes U_{\ol{A}})\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
+					(U_{A}\otimes I_{A})(I_{A}\otimes U_{\ol{A}})V\ket{\alpha,i,j}&=(U_{A}\otimes I_{\ol{A}_{2}^{\alpha}})\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\ol{\psi}_{\alpha,j}}_{\ol{A}_{1}^{\alpha}}
+				\end{aligned}
+			\end{equation}
+			In order for both of these to be true simultaneously, there therefore must exist states $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$ such that $(I_{A_{2}^{\alpha}}\otimes U_{\ol{A}})\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}=\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\ol{\psi}_{\alpha,j}}_{\ol{A}_{1}^{\alpha}}$, which implies
+			\begin{equation}
+				(U_{A}\otimes U_{\ol{A}})V\ket{\alpha,i,j}=\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\ol{\psi}_{\alpha,j}}_{\ol{A}_{1}^{\alpha}}
+			\end{equation}
+			This result will imply the RT formula when we consider a logical operator in this basis. Suppose $\rho$ is a state with support on $\mathcal{H}_{L}$; we will compute $S(M,\rho)$ and $S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))$ and take the difference.\\
+			Recall that instead of considering $S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))$ we might as well consider $S(\text{Tr}_{\ol{A}}(V\rho_{M} V^{\dagger}))$: to see why, set $O_{A}\in \mathcal{L}(\mathcal{H}_{A})$, and compute
+			\begin{equation}
+				\text{Tr}(O_{A}\cdot\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))=\text{Tr}((O_{A}\otimes I_{\ol{A}})\cdot V\rho V^{\dagger})=\text{Tr}(V^{\dagger}(O_{A}\otimes I_{\ol{A}})V\cdot\rho)
+			\end{equation}
+			by cyclicity of the trace. But $V^{\dagger}(O_{A}\otimes I_{\ol{A}})V\in M$, and for any $O\in M$ we have $\text{Tr}(O\rho)=\text{Tr}(O\rho_{M})$, we can just consider $\rho_{M}$ in the above. Since the states $\text{Tr}_{\ol{A}}(V\rho V^{\dagger})$ and $\text{Tr}_{\ol{A}}(V\rho_{M} V^{\dagger})$  for all observables in $M$, they are the same state and so have the same entropy. Acting with a unitary on $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ separately does not change the unitary, we have:
+			\begin{equation}
+				S(\text{Tr}_{\ol{A}}(V\rho_{M} V^{\dagger}))=S(\text{Tr}_{\ol{A}}((U_{A}\otimes U_{\ol{A}})V\rho_{M} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}))
+			\end{equation}
+			The next step is to define isometries $\tilde{V}_{\alpha}\,:\,(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})\to(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}^{\alpha}})$ using the states $\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}$ and $\ket{\ol{\psi}_{\alpha,j}}_{\ol{A}_{1}^{\alpha}}$:
+			\begin{equation}
+				\tilde{V}_{\alpha}\ket{\alpha,i,j}\equiv\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}\otimes\ket{\psi_{\alpha,j}}_{\ol{A}_{1}^{\alpha}}
+			\end{equation}
+			which is certainly an isometry since $\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}$ and the other one are bases for $\mathcal{H}_{A_{1}^{\alpha}}$ and $\mathcal{H}_{\ol{A}_{1}^{\alpha}}$ respectively.\\
+			$\tilde{V}_{\alpha}$ then lets us rewrite (2.5) as
+			\begin{equation}
+				(U_{A}\otimes U_{\ol{A}})V\ket{\alpha,i,j}=\tilde{V}_{\alpha}\ket{\alpha,i,j}\otimes\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}
+			\end{equation}
+			which lets us further simplify $(U_{A}\otimes U_{\ol{A}})V\rho_{M} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}$:
+			\begin{equation}
+				\begin{aligned}
+					&(U_{A}\otimes U_{\ol{A}})V\rho_{M} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger})\\&=\sum_{\alpha}p_{\alpha}\cdot (U_{A}\otimes U_{\ol{A}})V\rho_{A_{\alpha}} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}\\&=\sum_{\alpha}p_{\alpha}\cdot \frac{1}{p_{\alpha}}\sum_{i,j}\sum_{i',j'}\rho[\alpha]_{i,j,i',j'}(U_{A}\otimes U_{\ol{A}})V\ketbra{\alpha,i,j}{\alpha,i',j'} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}\\&=\sum_{\alpha}p_{\alpha}\cdot\frac{1}{p_{\alpha}}\sum_{i,j}\sum_{i',j'}\rho[\alpha]_{i,j,i',j'}\tilde{V}_{\alpha}\ketbra{\alpha,i,j}{\alpha,i',j'}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}\\&=\sum_{p_{\alpha}}\cdot\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}
+				\end{aligned}
+			\end{equation}
+			Each of the states $\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}$ are normalised and act on different blocks, we can compute the entropy as
+			\begin{equation}
+				\begin{aligned}
+					S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))&=-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}))\\&=\sum_{\alpha}p_{\alpha}\log(p_{\alpha}^{-1})+\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}))+\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))
+				\end{aligned}
+			\end{equation}
+			Now, since $\ket{\psi_{\alpha,j}}$ is independent of $i$, we further have that
+			\begin{equation}
+				S(\text{Tr}_{\ol{A}}(\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}))=S(\text{Tr}_{\ol{A}_{1}^{\alpha}}(\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}))=S(\text{Tr}_{\ol{L}_{\alpha}}(\rho_{\alpha}))
+			\end{equation}
+			Now, the first two terms of (2.11) are just $S(\rho,M)$, so we have
+			\begin{equation}
+				S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))-S(\rho,M)=\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))
+			\end{equation}
+			The RHS is linear in $p_{\alpha}$, so must be linear in $\rho$ also. This means there exists an area operator $\mathcal{L}$ such that the RHS can be written as $\text{Tr}(\rho\mathcal{L})$. Explicitly, we define
+			\begin{equation}
+				\begin{aligned}
+					I_{\alpha}&\equiv \sum_{i,j}\ketbras{\alpha,i,j}\\
+					\mathcal{L}&\equiv\sum_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot I_{\alpha}
+				\end{aligned}
+			\end{equation}
+			which gives $\mathcal{L}\in M$, and so $\text{Tr}(\rho\mathcal{L})=\text{Tr}(\rho_{M}\mathcal{L})$, and we can write
+			\begin{equation}
+				\begin{aligned}
+					\text{Tr}(\rho_{M}\mathcal{L})&=\text{Tr}\left(\sum_{\alpha}p_{\alpha}\rho_{\alpha}\cdot\sum_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot I_{\alpha}\right)\\&=\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot \text{Tr}(\rho_{\alpha}I_{\alpha})\\&=S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))-S(\rho,M)
+				\end{aligned}
+			\end{equation}
+			so $(V,A,M)$ satisfy an RT formula with area operator $\mathcal{L}$, and $\mathcal{L}\in M$. We can do the same derivation for $(V,\ol{A},M')$ with $i\leftrightarrow j$, and since $\mathcal{L}\in M'$, $\mathcal{L}\in Z_{M}$ as claimed.
+		\end{proof}
+	\end{itemize}
+\end{document}

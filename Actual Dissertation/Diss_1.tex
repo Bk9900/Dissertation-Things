@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{graphicx}
 \usepackage{geometry}
 \usepackage{mathrsfs}
@@ -12,6 +13,7 @@
 \usepackage{simpler-wick}
 \usepackage{simplewick}
 \usepackage{tikz}
+\usetikzlibrary{quantikz}
 \usepackage{tikz-feynman}
 \usepackage{subcaption}
 \usepackage{bm}
@@ -19,13 +21,32 @@
 \usepackage{tensor}
 \usepackage{hyperref}
 \usepackage{mathtools}
+\usepackage{float}
+\usepackage{nicematrix}
 
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
+\numberwithin{equation}{section}
 \newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
 \newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
 \newcommand{\Pc}{P_{\text{code}}}
+\newcommand{\Hcode}{\mathcal{H}_{\text{code}}}
+\newcommand{\ntr}{\hat{\text{Tr}}}
+\newcommand{\gen}[1]{\braket{#1}_{vN}}
+\newcommand{\ol}[1]{\overline{#1}}
+\newcommand{\tr}{\text{Tr}}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}[section]
+\theoremstyle{theorem}
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{example}
+\newtheorem{example}{Example}[section]
+\newtheorem{proposition}{Proposition}
+\theoremstyle{definition}
+\newtheorem{postulate}{Postulate}
 
 \begin{document}
 
@@ -318,479 +339,677 @@ pages, 30 pages are ok. 50 pages are fine. But it shouldn't be
 much longer than that.
 
 
-\chapter{Background}
+\chapter{Error Correction}
 
-In this chapter, we introduce the necessary theory to understand Harlow's paper \cite{Harlow}. We also describe the conventions and notation used where applicable.
+In this chapter, I will introduce quantum error correction. I will start with some classical preliminaries to build intuition, before moving to the quantum regime. I will discuss the concept of noise, and introduce quantum operations (not be to be confused with operators) in the context of closed and open systems, before moving onto quantum error correction itself. I will follow the presentation of Nielsen and Chuang \cite{NielsenChuang}.
 
-\section{Quantum Mechanics}
+\section{Classical Noise}
+\subsection{The Classical Bit-Flip}
+To begin, we consider a classical example of error correction, called the \textit{bit-flip code} to build up some intuition. Suppose Alice wishes to send Bob a bit string - a sequence of 0s and 1s - wirelessly. However, phone signals, radio waves, and all sorts of radiation permeate the air and these may interact with the transmitted bit string, causing some 0s to `flip' to 1s and vice versa. This is known as \textit{noise}. We model this as a constant probability $p$ for an individual bit to flip before it reaches Bob, and $1-p$ for the bit to remain the same. Schematically, the process looks like:
 
-Quantum information and computation is founded on the principles of quantum mechanics. The description of quantum mechanics we will use largely follows that of Nielsen and Chuang \cite{NielsenChuang}. We assume familiarity with linear algebra, and the Dirac `bra-ket' notation for vectors in a Hilbert space, however a more detailed exposition of these can be found in the appendix \textbf{(DO THIS)}.
+FIGURE
 
-\subsection{Postulates}\label{posts}
-
-Quantum mechanics has three defining postulates, which connect the abstract mathematics to physical phenomena. These are:
-
-\newtheorem{postulate}{Postulate}
-
-\begin{postulate}
-	Any isolated physical system has an associated Hilbert space $\mathcal{H}$ called the \textit{state space} of the system. The system is described in full by its \textit{state vector} (or state) $\ket{\psi}\in\mathcal{H}$, which is a unit vector in the state space.
-\end{postulate}
-
-\begin{postulate}
-	The evolution in time of a closed quantum system is described by a unitary transformation. That is, the state $\ket{\psi}$ at time $t$ is related to the state $\ket{\psi'}$ at $t'$ by a unitary operator $U(t,t')$ which is a function of $t$ and $t'$ only such that
+To figure out what $p$ is, we need a model for the distribution of electromagnetic radiation in the environment, and a model for how this radiation interacts with Alice's transmitted bits. This basic idea - having a model for both the environment and the system/environment interaction - is the basic starting point for analysing any classical or quantum error process. Let's suppose that $p_{0}$ and $p_{1}$ are the initial probabilities that a bit is a 0 or a 1 respectively, and $q_{0}$ and $q_{1}$ are the corresponding probabilities at the end of the process, after being subjected to noise. If we denote the initial state of an individual bit as $A$ and the final state as $B$, then we have
+\begin{equation}
+	\mathbb{P}(B=b)=\sum_{a=0}^{1}\mathbb{P}(B=b\,|\,A=a)\mathbb{P}(A=a)
+\end{equation}
+which can be rewritten in matrix form as
+\begin{equation}
+	\begin{pmatrix}
+		q_{0}\\q_{1}
+	\end{pmatrix}=\begin{pmatrix}1-p&p\\p&1-p\end{pmatrix}\begin{pmatrix}
+	p_{0}\\p_{1}
+\end{pmatrix}.
+\end{equation}
+The quantities $\mathbb{P}(B=b\,|\,A=a)$ are called \textit{transition probabilities}. If further noise occurs after an initial bit-flip, we can model this as being independent of the first flip; this independence is called \textit{markovicity}, and the total noise process is a \textit{Markov process}.\\
+More generally, for a single-state process such as this, we have that the vector of output probabilities $\mathbf{q}$ is related to the vector of input probabilities $\mathbf{p}$ by some matrix $E$ via
+\begin{equation}
+	\mathbf{q}=E\mathbf{p}
+\end{equation}
+where $E$ is known as an \textit{evolution matrix}. Since $E\mathbf{p}$ is a probability distribution, we can instantly extract some conditions on $E$:
+\begin{enumerate}
+	\item All entries of $E$ must be non-negative, so $E$ is a positive matrix,
+	\item All columns of $E$ sum to 1, called \textit{completeness}.
+\end{enumerate}
+\section{Quantum Noise}
+The basic classical model presented above can be extended to the quantum world. To do so, we need to introduce the theory of \textit{quantum operations}, which can be used to describe the evolution of quantum systems in a vastly more general way than simple unitary evolution. They can describe evolution under quantum noise and Markov processes in particular, so have special importance for our purposes.\\
+Similar to the classical evolution of probabilities (2.0.3), we want a quantum state $\rho$ to evolve as
+\begin{equation}
+	\rho'=\mathcal{E}(\rho).
+\end{equation}
+$\mathcal{E}$ is a quantum operation. A simple example of this is unitary time-evolution, which would be $\mathcal{E}(\rho)=U\rho U^{\dagger}$. We can think of this unitary evolution as a box which takes a state $\rho$ as an input, and outputs $U\rho U^{\dagger}$. A \textit{closed} quantum system is one which evolves like this, but many more realistic systems are \textit{open}, which we think of as arising from the interaction between a \textit{principal system} of interest and an environment, together forming a closed system. In open systems, a state $\rho$ in the principal system evolving as $\mathcal{E}(\rho)$ may not be a unitary evolution.\\
+To be more explicit, suppose the total system-environment system is in the product state $\rho\otimes\rho_{\text{env}}$; then, the total product state evolves under the action of a unitary transformation, so the quantum operation governing the evolution of $\rho$ alone can be found by taking a trace over the environment:
+\begin{equation}
+	\mathcal{E}(\rho)=\text{Tr}_{\text{env}}\left[U(\rho\otimes\rho_{\text{env}})U^{\dagger}\right].
+\end{equation}
+One immediate issue with this definition of quantum operations is that we have to express evolution of the principal system in terms of operators on the environment. How can we rectify this?
+\subsection{Operator-Sum Representation}
+Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that initially, the environment is in the state $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite (??) as
+\begin{equation}
+	\mathcal{E}(\rho)=\sum_{k}\bra{e_{k}}U\left[\rho\otimes\ketbras{e_{0}}\right]U^{\dagger}\ket{e_{k}}\equiv\sum_{k}E_{k}\rho E_{k}^{\dagger}
+\end{equation}
+where it is implicit that $E_{k}=\braket{e_{k}|U|e_{0}}$. These are operators on $\mathcal{H}$ only, so fix our issue! This defines the \textit{operator-sum representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called \textit{operation elements}.\\
+The operation elements have a completeness property; since $\mathcal{E}(\rho)$ is itself a density operator, we must have $\text{Tr}(\mathcal{E}(\rho))=1$, meaning that
+\begin{equation}
+	1=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}\right)=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}E_{k}\right)
+\end{equation}
+holds for all $\rho$, which further implies
+\begin{equation}
+	\sum_{k}E_{k}^{\dagger}E_{k}=I.
+\end{equation}
+If this equation is satisfied, $\mathcal{E}$ is called a \textit{trace-preserving operation}. We assume all operations from here on out to be trace-preserving, unless stated otherwise.\\
+The operator-sum representation of a quantum operation is not unique. The following theorem characterises this, stated without proof.
+\begin{theorem}[Unitary freedom in the operator-sum representation]
+	Suppose $\{E_{1},\ldots,E_{m}\}$ and $\{F_{1},\ldots,F_{n}\}$ are operation elements of operations $\mathcal{E}$ and $\mathcal{F}$ respectively. Append zero operators to the shorter list of elements to ensure $m=n$. Then, $\mathcal{E}=\mathcal{F}$ if and only if $E_{i}=\sum_{j}u_{ij}F_{j}$, where $u_{ij}$ are the elements of an $m\times m$ unitary matrix.
+\end{theorem}
+\subsection{Axiomatisation}
+We can define quantum operations from a purely axiomatic, mathematical perspective, with no reference to an environment at all. Denoting the set of density operators on a Hilbert space $\mathcal{H}$ as $\mathcal{B}(\mathcal{H})$ (note that this notation is often used to denote the set of all operators on a space, rather than \textbf{density} operators), a map $\mathcal{E}\,:\,\mathcal{B}(\mathcal{H}_{1})\to\mathcal{B}(\mathcal{H}_{2})$ is called a quantum operation if it satisfies:
+\begin{enumerate}
+	\item $\text{Tr}(\mathcal{E}(\rho))$ is the probability that the process represented by $\mathcal{E}$ occurs, so $0\leq\text{Tr}(\mathcal{E}(\rho))\leq 1$.
+	\item $\mathcal{E}$ is \textit{convex-linear}; that is, for a set of probabilities $\{p_{i}\}$ and density matrices $\{\rho_{i}\}$, we have
 	\begin{equation}
-		\ket{\psi'}=U(t,t')\ket{\psi}
+		\mathcal{E}\left(\sum_{i}p_{i}\rho_{i}\right)=\sum_{i}p_{i}\mathcal{E}(\rho_{i}).
 	\end{equation}
-\end{postulate}
-
-\begin{postulate}
-	Quantum measurements are described by a collection $\{M_{m}\}$ of measurement operators, which act on the state space of the system being measured. The possible measurement outcomes are indexed by $m$. If the system is in state $\ket{\psi}$ immediately prior to the measurement, then the probability the measurement returns outcome $m$ is
-	\begin{equation} \label{mmtprob}
-		\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}
-	\end{equation}
-	and the state of the system immediately after the measurement is
-	\begin{equation}\label{mmtcol}
-		\frac{M_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}
-	\end{equation}
-	The measurement operators also satisfy the completeness condition
+	\item $\mathcal{E}$ is a completely positive map; so for any positive operator $A$, $\mathcal{E}(A)$ is also a positive operator. More generally, if we introduce an auxiliary system $R$, $(I_{R}\otimes \mathcal{E})(B)$ is positive for any positive operator $B$ on $R\otimes\mathcal{H}_{1}$.
+\end{enumerate} 
+We can in fact show that any map $\mathcal{E}$ satisfying these properties has an operator-sum representation, which is formalised by the following theorem, again stated without proof:
+\begin{theorem}
+	A map $\mathcal{E}\,:\,\mathcal{B}(\mathcal{H}_{1})\to\mathcal{B}(\mathcal{H}_{2})$ satisfies the above 3 axioms if and only if
 	\begin{equation}
-		\sum_{m}M_{m}^{\dagger}M_{m}=I
+		\mathcal{E}(\rho)=\sum_{i}E_{i}\rho E_{i}^{\dagger}
 	\end{equation}
-\end{postulate}
-\subsection{Measurements}
-An important class of measurements for quantum computing are the \textit{projective measurements}. These are described by an \textit{observable} $M$, which is a Hermitian operator on the state space of the system of interest. If we denote the (real) eigenvalues of $M$ by $m$ and the projector onto the $m$-eigenspace by $P_{m}$, $M$ has a spectral decomposition
+	for some set of operators $E_{i}\,:\,\mathcal{H}_{1}\to\mathcal{H}_{2}$, and $\sum_{i}E_{i}^{\dagger}E_{i}\leq I$.
+\end{theorem}
+\subsection{The Quantum Bit-Flip}
+To show how quantum operations can model noise, we turn back to the bit-flip scenario. This time, Alice wishes to send Bob a qubit $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob, which has density operator
 \begin{equation}
-	M=\sum_{m}mP_{m}
+	\begin{aligned} 
+		\rho&=\ketbras{\psi}\\&=|a|^{2}\ketbras{0}+ab^{*}\ketbra{1}{0}+a^{*}b\ketbra{0}{1}+|b|^{2}\ketbras{1}\\&=\begin{pmatrix}
+			|a|^{2}&ab^{*}\\a^{*}b&|b|^{2}
+		\end{pmatrix}
+	\end{aligned}.
 \end{equation}
-Here, the possible measurement outcomes are indexed by the eigenvalues $m$. The probability of outcome $m$ on measuring state $\ket{\psi}$ reduces to
+The quantum channel she sends the qubit through acts as a bit-flip exactly analogously to the classical case, flipping a $\ket{0}$ to a $\ket{1}$ and vice versa with probability $p$, and doing nothing with probability $1-p$. The operation elements are therefore
 \begin{equation}
-	\mathbb{P}(m)=\braket{\psi|P_{m}|\psi}
+	E_{0}=\sqrt{1-p}\begin{pmatrix}1&0\\0&1\end{pmatrix},\quad E_{1}=\sqrt{p}\begin{pmatrix}0&1\\1&0\end{pmatrix}.
 \end{equation}
-and immediately after a measurement on $\ket{\psi}$ returning outcome $m$, the state collapses to
+This is analogous to (2.0.2) and (2.0.3) in the classical case in a sense, and shows how a quantum operation can model noise. Another simple example is the \textit{phase-flip channel}, which is uniquely quantum. This operation flips the relative phase of the $\ket{0}$ and $\ket{1}$ basis elements; that is, it takes $a\ket{0}+b\ket{1}\to a\ket{0}-b\ket{1}$ with probability $p$, and does nothing with probability $1-p$. This operation has operation elements
 \begin{equation}
-	\frac{P_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}
+	E_{0}=\sqrt{1-p}\begin{pmatrix}1&0\\0&1\end{pmatrix},\quad E_{1}=\sqrt{p}\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
 \end{equation}
-One important quantity to do with measurements is the \textit{expectation} of the measurement on a state. Projective measurements are particularly easy to calculate the expectations of, since
+\section{Error Correction}
+While we've discussed how to model noise and errors, we have yet to look at how Alice and Bob can actually correct for them. Starting with the bit-flip, suppose Alice wishes to send $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob across the bit-flip channel, as stated above. Bob only has a probability of $1-p$ of receiving the transmitted qubit as intended by Alice. How can we improve this?\\
+The process of error correcting starts with Alice \textit{encoding} her initial qubit into a \textit{logical} or \textit{code subspace}. She adjoins two ancillary qubits in the $\ket{0}$ state, and applies two $CNOT$ gates conditioned on the first qubit to the second and third qubit. This has the effect of mapping
 \begin{equation}
 	\begin{aligned}
-		\mathbb{E}_{\psi}(M)\coloneqq\braket{M}_{\psi}&=\sum_{m}m\mathbb{P}_{\psi}(m)\\&=\sum_{m}m\braket{\psi|P_{m}|\psi}\\&=\bra{\psi}\left(\sum_{m}P_{m}\right)\ket{\psi}\\&=\braket{\psi|M|\psi}
+		\ket{0}&\to\ket{0_{L}}\equiv\ket{000}\\
+		\ket{1}&\to\ket{1_{L}}\equiv\ket{111}.
 	\end{aligned}
 \end{equation}
-Rather than describe a projective measurement directly by the corresponding observable, we usually just list the projectors $\{P_{m}\}$, where $\sum_{m}P_{m}=I$ and $P_{m}P_{n}=\delta_{mn}P_{m}$ is understood. If our state space has a specific orthonormal basis $\{\ket{m}\}$, we also often say `measure in the $\{\ket{m}\}$ basis', which refers to a projective measurement with projectors $P_{m}=\ketbras{m}$.\\
-Often, the post-measurement state of a system is not of interest to us; we may only care about the outcome probabilities, for example. For cases such as these, the formalism of \textit{positive operator-valued measurements (POVMs)} is particularly useful. Suppose we perform a measurement with operators $\{M_{m}\}$ on state $\ket{\psi}$, so outcome probabilities are just given by \ref{mmtprob}, $\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}$. Define \textit{POVM elements} by
+So overall, the original qubit is mapped as
 \begin{equation}
-	E_{m}\coloneqq M_{m}^{\dagger}M_{m}
+	\ket{\psi}=a\ket{0}+b\ket{1}\to\ket{\psi_{L}}=a\ket{000}+b\ket{111}.
 \end{equation}
-and note that the $E_{m}$ are positive operators, $\sum_{m}E_{m}=I$, and $\mathbb{P}(m)=\braket{\psi|E_{m}|\psi}$. Since $\{E_{m}\}$ are sufficient to describe the full set of outcome probabilities, we usually just refer to a POVM by the set $\{E_{m}\}$.\\
-In fact, this description of POVMs works in the other logical direction. If $\{E_{m}\}$ is an arbitrary set of positive operators satisfying $\sum_{m}E_{m}=I$, then there exists a set of measurement operators $\{M_{m}\}$ defining a measurement described by the POVM elements $\{E_{m}\}$. Set $M_{m}\coloneqq \sqrt{E_{m}}$; then $\sum_{m}M_{m}^{\dagger}M_{m}=\sum_{m}E_{m}=I$, establishing the claim. Therefore, we can \textbf{define} a POVM axiomatically as any set of operators $\{E_{m}\}$ satisfying:
-\begin{enumerate}
-	\item Each operator $E_{m}$ is positive.
-	\item The completeness relation $\sum_{m}E_{m}=I$ is satisfied.
-\end{enumerate}
-Note that the second of these just expresses that probabilities must sum to 1.
-\subsection{Density Operators}
-The language of \textit{density operators} provides a neat way to talk about subsystems of a composite quantum system, which is particularly relevant for our purposes. It also finds use in describing systems where we do not know the state with certainty, and in statistical mechanics. Consider the scenario where our system is in one of the states $\{\ket{\psi}_{i}\}$ indexed by $i$ with corresponding probabilities $\{p_{i}\}$. The set of pairs $\{(\ket{\psi_{i}},p_{i})\}$ is called an \textit{ensemble of pure states}. The density operator for such an ensemble is then defined to be
+This is then sent to Bob across the bit-flip channel. The three qubits that Bob receives may have suffered a bit-flip, but he needs to determine both whether this occurred, and if so, on which qubit it occurred on. This is called \textit{error detection} or sometimes \textit{syndrome diagnosis}. To do this, he performs a projective measurement with projectors
 \begin{equation}
-	\rho\coloneqq\sum_{i}p_{i}\ketbras{\psi_{i}}
+	\begin{aligned}
+		P_{0}&=\ketbras{000}+\ketbras{111}&\quad&\text{(no error)}\\
+		P_{1}&=\ketbras{100}+\ketbras{011}&\quad&\text{(qubit 1 flipped)}\\
+		P_{2}&=\ketbras{010}+\ketbras{101}&\quad&\text{(qubit 2 flipped)}\\
+		P_{3}&=\ketbras{001}+\ketbras{110}&\quad&\text{(qubit 3 flipped)}.
+	\end{aligned}
+\end{equation}
+To see why these correspond to the errors stated in brackets, consider the case where only the first qubit flips, so Bob receives
+\begin{equation}
+	\ket{\psi_{E}}\equiv a\ket{100}+b\ket{011}.
+\end{equation}
+Note that $\braket{\psi_{E}|P_{1}|\psi_{E}}=1$, so the outcome of the measurement is 1 with certainty. Moreover, $P_{1}\ket{\psi_{E}}=\ket{\psi_{E}}$, so the syndrome measurement does not change the state. Bob now knows with certainty that a bit-flip occurred on the first qubit, so can apply an $X$ gate to the first qubit to flip it back, and recover the original qubit by measuring off the ancillary qubits.\\
+This procedure works perfectly so long as only one qubit flips; this occurs with probability $(1-p)^{3}+3p(1-p)^{2}=1-3p^{2}+2p^{3}$, so the probability Bob cannot correct the error is $3p^{2}-2p^{3}$. Since $3p^{2}-2p^{3}\leq p\implies p\leq 1/2$, we have increased reliability so long as $p\leq 1/2$.
+
+\subsection{Generalities}
+While simple, the bit-flip code provides an example of features common to all error correcting procedures. In general, a state $\ket{\psi}$ is encoded by an isometry (usually consisting of adjoining on some ancillary state and applying a unitary operator) into a code subspace $\Hcode$ of some larger Hilbert space $\mathcal{H}$. In the bit-flip code for example, $\Hcode=\text{span}\{\ket{0_{L}},\ket{1_{L}}\}$. We will often refer to the \textit{code space projector}, denoted $\Pc$. After encoding, the state is subjected to noise, and then a syndrome measurement is performed to diagnose the type of error which occurred (if any), and then a recovery operation is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished.\\
+In the general theory of error correction, no assumptions are made about the full recovery procedure - in particular, we do not assume it is necessarily a two-stage detection-recovery process. We just assume that the noise is modelled by an operation $\mathcal{E}$, and the correction is performed by an operation $\mathcal{R}$. For error correction to be deemed successful, we require that for any state $\rho$ with support on $\Hcode$, we have
+\begin{equation}
+	(\mathcal{R}\circ\mathcal{E})(\rho)\propto\rho,
+\end{equation}
+where we have a proportionality constant rather than equality to account for the possibility that the relevant operations may not be trace-preserving.\\
+Not all noise is correctable. This is characterised by the \textit{quantum error correction conditions}, which can be stated as the following theorem:
+\begin{theorem}[Quantum error-correction conditions]
+	Let $\Hcode$ be a quantum code, and $\Pc$ the projector onto it. Suppose $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
+	\begin{equation}
+		\Pc E_{i}^{\dagger}E_{j}\Pc=\alpha_{ij}\Pc
+	\end{equation}
+	where $\alpha_{ij}$ are the elements of a complex hermitian matrix.
+\end{theorem}
+The proof of this theorem can be found in appendix B. The set $\{E_{i}\}$ are called the \textit{errors}, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
+In general, we may not know the form of the noise precisely, but the error correction conditions can be adapted to characterise an equivalence class of noise which a code $\Hcode$ and correction operation $\mathcal{R}$ can correct for.
+\begin{theorem}
+	Suppose $\Hcode$ is a quantum error correction code, and $\mathcal{R}$ is the full error-correcting operation correcting $\mathcal{E}$ with errors $\{E_{i}\}$. Then, $\mathcal{R}$ corrects for $\mathcal{F}$ with errors $\{F_{i}\}$ if
+	\begin{equation}
+		F_{i}=\sum_{i}m_{ij}E_{j}
+	\end{equation}
+	for all $i$, and $m_{ij}$ are some the elements of a complex matrix $m$ on $\Hcode$.
+\end{theorem}
+This is a useful statement, as we can talk about a class of errors $\{E_{i}\}$ which are correctable rather than a class of noises $\mathcal{E}$. For example, if we can find a process satisfying
+\begin{equation}
+	\Pc \sigma_{i}^{1}\sigma_{j}^{1}\Pc=\alpha_{ij}\Pc
+\end{equation}
+for the Pauli matrices, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be the Pauli matrices. A code called the Shor code can do this, for example.
+\subsection{Quantum Erasure}
+One particularly important class of errors which are relevant for us is that of \textit{quantum erasure}. This is defined as the channel acting to erase a \textbf{known} subsystem of the transmitted state. Formally, we suppose that $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. The erasure channel (which is non-trace-preserving) can then be modelled by
+\begin{equation}
+	\mathcal{E}(\rho)=\text{Tr}_{\ol{A}}(\rho),
 \end{equation} 
-Clearly, the case where we \textbf{do} know a system is in state $\ket{\psi}$ with certainty is just a special case of this with one state $\ket{\psi}$ in the ensemble, and corresponding probability $p=1$. In this case, the density operator would be $\rho=\ketbras{\psi}$.\\
-The postulates \ref{posts} can be re-expressed in the language of density operators. Before doing this explicitly, we derive and present some properties of density operators. First, consider a system with evolution governed by unitary $U$. If the system was initially in $\ket{\psi_{i}}$ with probability $p_{i}$, after evolution it is in $U\ket{\psi_{i}}$ with the probability unchanged. Therefore, the density operator evolves as
+for any $\rho$ with support on $\mathcal{H}$, which erases the $\ol{A}$ system with certainty. This representation is not unique; indeed, erasure can be more loosely defined as simply erasing all information within the subsystem (for example, the decoherence channel in the case of a single qubit), so we no longer have any access to it. To extract the operation elements, we define $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ to be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite (??) as
 \begin{equation}
-	\rho=\sum_{i}p_{i}\ketbras{\psi_{i}}\xrightarrow{U}\sum_{i}p_{i}U\ketbras{\psi_{i}}U^{\dagger}=U\rho U^{\dagger}
+	\mathcal{E}(\rho)=\sum_{\ol{a}}\braket{\ol{a}|\rho|\ol{a}},
 \end{equation}
-Considering measurements, suppose we perform a measurement with operators $\{M_{m}\}$. If the initial state of the system was $\ket{\psi_{i}}$, then the probability of outcome $m$ (conditioned on $i$) is
+from which we can read off operation elements
 \begin{equation}
-	\mathbb{P}(m|i)=\braket{\psi_{i}|M_{m}^{\dagger}M_{m}|\psi_{i}}=\text{Tr}(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}})
+	E_{\ol{a}}\equiv I_{A}\otimes\bra{\ol{a}}=\sum_{a}\ketbras{a}\otimes\bra{\ol{a}}.
 \end{equation}
-where the trace is taken over the entire state space of the system. The law of total probability then implies that the probability of outcome $m$ on the full ensemble $\{(\ket{\psi_{i}},p_{i})\}$ is
+The natural question to ask is what the quantum error correction conditions reduce to for erasures. To work this out, we can compute
 \begin{equation}
-	\mathbb{P}(m)=\sum_{i}\mathbb{P}(m|i)p_{i}=\sum_{i}p_{i}\text{Tr}(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}})=\text{Tr}(M_{m}^{\dagger}M_{m}\rho)
+	E_{\ol{a}}^{\dagger}E_{\ol{b}}=(I_{A}\otimes\ket{\ol{a}})(I_{A}\otimes\bra{\ol{b}})=I_{A}\otimes\ketbra{\ol{a}}{\ol{b}},
 \end{equation}
-Immediately after a measurement on $\ket{\psi_{i}}$ returning outcome $m$, the state has form given by \ref{mmtcol}. A bit of algebra then shows that the density operator of the full ensemble immediately after the measurement is
+and so (2.3.6) then reduces to
 \begin{equation}
-	\rho_{m}=\frac{M_{m}\rho M_{m}^{\dagger}}{\mathbb{P}(m)}`
+	\Pc\ketbra{\ol{a}}{\ol{b}}\Pc=\alpha_{\ol{a}\ol{b}}\Pc
 \end{equation}
-
-\textbf{(FINISH THIS)}
-
-\section{Quantum Error Correction}
-The need for and purpose of error correction is best illustrated with a simple example in the classical case. We then generalise to the quantum realm
-
-\subsection{Hard bits}
-You might want to include another equation or three here:
-
+where we drop the $I_{A}$ for notational simplicity since the $\ket{\ol{a}}$s do not have any action on the $A$ subsystem. Even more simply, we can just write
 \begin{equation}
-  \delta N_{\nu} = (\delta N_{\nu})_{ex} + (\delta N_{\nu})_{au} 
-  \label{equation:delsplit2}
-  % note that the label is optional but allows you to refer to this
-  % equation later.
+	\Pc\ketbra{\ol{a}}{\ol{b}}\propto\Pc.
 \end{equation}
-
-Almost the same equation again.
-
+This will have an important implication when we come to look at \cite{Harlow}. Note that an arbitrary operator $X_{\ol{A}}$ acting on $\mathcal{H}_{\ol{A}}$ can be decomposed in the $\{\ket{\ol{a}}\}$ basis as
 \begin{equation}
-  \delta P_{\nu} = (\delta P_{\nu})_{ex} + (\delta Q_{\nu})_{au} 
-  \label{equation:delsplit3}
-  % note that the label is optional but allows you to refer to this
-  % equation later.
+	X_{\ol{A}}\equiv \sum_{\ol{a},\ol{b}}x_{\ol{a},\ol{b}}\ketbra{\ol{a}}{\ol{b}}
 \end{equation}
-
-You should use a different label for each equation.
-
-Here is a padding paragraph.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas.  Bananas.  More
-bananas.  Yet more bananas.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas.  Bananas.  More
-bananas.  Yet more bananas.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas.  Bananas.  More
-bananas.  Yet more bananas.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas.  Bananas.  More
-bananas.  Yet more bananas.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas.  Bananas.  More
-bananas.  Yet more bananas.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas.  Bananas.  More
-bananas.  Yet more bananas.  Bananas.  More bananas.  Yet more
-bananas.  Bananas.  More bananas.  Yet more bananas. And another
-equation.
-
+for some $x_{\ol{a},\ol{b}}\in\mathbb{C}$. Therefore, if (2.3.14) holds, we have
 \begin{equation}
-  \delta Q_{\nu} = (\delta L_{\nu})_{ex} + (\delta X_{\nu})_{au} 
-  \label{equation:delsplit4}
-  % note that the label is optional but allows you to refer to this
-  % equation later.
+	\Pc X_{\ol{A}}\Pc\propto\Pc.
 \end{equation}
+This will be our starting point for analysing theorem 1 of \cite{Harlow}.
+\subsubsection{An Example}
+As an example of erasure, we present the three-\textit{qutrit} code of \cite{Harlow}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{0},\ket{1},\ket{2}\}$; the qutrit can then be written
+\begin{equation}
+	\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
+\end{equation}
+where $\sum_{i=0}^{2}|a_{i}|^{2}=1$. Suppose Alice wishes to send this qutrit to Bob through a channel which acts to erase 1 of every three transmitted qutrits with certainty. To protect for this, Alice encodes her qutrit into the logical code subspace $\Hcode=\text{span}(\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}})$, defined by
+\begin{equation}
+	\begin{aligned}
+		\ket{\tilde{0}}&=\frac{1}{\sqrt{3}}(\ket{000}+\ket{111}+\ket{222})\\
+		\ket{\tilde{1}}&=\frac{1}{\sqrt{3}}(\ket{012}+\ket{120}+\ket{201})\\
+		\ket{\tilde{2}}&=\frac{1}{\sqrt{3}}(\ket{021}+\ket{102}+\ket{210})
+	\end{aligned}.
+\end{equation}
+Suppose that the erasure acts on the third qutrit. Bob then only has access to the first two qutrits, but he can still recover the original state. Define a unitary operator on the first two qutrits by
+\begin{equation}
+	\begin{aligned}
+		U_{12}\equiv&\ketbras{00}+\ketbra{01}{11}+\ketbra{02}{22}+\ketbra{12}{01}+\ketbra{10}{12}+\ketbra{11}{20}\\&+\ketbra{21}{02}+\ketbra{22}{10}+\ketbra{20}{21},
+	\end{aligned}
+\end{equation}
+which does nothing to $\ket{00}$, and permutes the remaining 8 basis states as
+\begin{equation}
+	\ket{11}\to\ket{01}\to\ket{12}\to\ket{10}\to\ket{22}\to\ket{02}\to\ket{21}\to\ket{20}\to\ket{11}.
+\end{equation}
+We can then compute that
+\begin{equation}
+	(U_{12}\otimes I_{3})\ket{i_{L}}=\ket{i}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22}),
+\end{equation}
+which explicitly shows state recovery is possible given access to only the first two qutrits, since then
+\begin{equation}
+	(U_{12}\otimes I_{3})\ket{\psi_{L}}=\ket{\psi}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22}).
+\end{equation}
+This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to (2.3.19) acting on the remaining two qutrits. This correctability also has an interpretation in terms of operators. Suppose $O$ acts on the initial space of a single qutrit as
+\begin{equation}
+	O\ket{i}=\sum_{j=0}^{2}(O)_{ji}\ket{j}.
+\end{equation}
+We can then find a `logical' $\tilde{O}$ which acts on $\Hcode$ similarly:
+\begin{equation}
+	\tilde{O}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}.
+\end{equation}
+For this example, we can actually find such a logical operator with support on the first two qutrits only:
+\begin{equation}
+	O_{12}\equiv U_{12}^{\dagger}OU_{12}
+\end{equation}
+where we take $O$ to act on the first qutrit only. 
 
-Here is a pudding paragraph.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Apple crumble.  More apple crumble.
-Yet more apple crumble.  Apple crumble.  More apple crumble.
-Yet more apple crumble.  Apple crumble.  More apple crumble.
-Yet more apple crumble.  Apple crumble.  More apple crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Yet more rhubarb crumble.  Rhubarb crumble.  More rhubarb crumble.
-Way too much rhubarb crumble.
+\section{Holography}
+In this section, I will give a brief summary of what constitutes a holographic theory, and how this can be translated to the language of error correction. We also introduce some holographic terminology which we will frequently refer back to. It should be emphasized that the focus of this dissertation is on error correction rather then holography; this exposition will therefore focus on intuition rather than the full details of holography. The goal is to provide some intuition for the concepts of a \textit{Ryu-Takayanagi (RT) formula}, the \textit{causal and entanglement wedges}, \textit{complementary recovery}, and \textit{radial commutativity}.
+\subsection{Quantum Gravity}
+General relativity is inherently classical. If we have enough initial data about a gravitational situation (i.e. the position and velocity of all particles, the electric and magnetic fields everywhere, the stress-energy tensor, and the metric), then Einstein's equations
+\begin{equation}
+	G_{\mu\nu}=8\pi G T_{\mu\nu}
+\end{equation}
+can be used to find a description of the situation at a later time with certainty.\\
+Quantum mechanics, while similar, is non-classical. Given a Hamiltonian and initial wavefunction, the Schrodinger equation governs evolution of the wavefunction in time. We can then recover classical quantities by operating on the wavefunction with the relevant observables; for example, the position or momentum operators. While the expectation values of these observables evolves smoothly, if we actually measure an observable then we project onto one of its eigenstates, and only by repeated measurement of an identical system can we extract the expectation values.\\
+\subsection{The Holographic Dictionary}
+A holographic theory is one in which a gravitational theory is in direct correspondence with a non-gravitational theory on its boundary
+\subsection{The RT Formula}
+The RT formula is one part of the aforementioned holographic dictionary, providing a link between the entanglement entropy of states in the boundary CFT and the geometry of the dual AdS space. The most simple form of the RT formula applies to a CFT state dual to a purely classical geometry:
+\begin{equation}
+	S_{A}(\rho)=\frac{1}{4G}\min_{\gamma_{A}}Area(\gamma_{A}).
+\end{equation}
+On the right hand side, $\gamma_{A}$ refers to a geodesic in the bulk (or extremal surface in higher dimensions) which hits the boundary at the edge of some chosen subregion $A$ of the boundary. We then minimise over all such $\gamma_{A}$, choosing the one with smallest length/area. The left hand side refers to the entanglement entropy in subregion $A$ of a state $\rho$ living in the boundary CFT. This explicitly provides a quantitative entry in the dictionary to compute these entropies in terms of purely bulk geometric quantities.\\
+More generally, the RT formula has an extended form which applies to states which have entanglement in the bulk and superpositions of geometries. This form is
+\begin{equation}
+	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
+\end{equation}
+Here, $\mathcal{L}$ is an operator acting on the quantum-gravitational Hilbert space, with eigenstates dual to classical geometries, and eigenvalues being the areas of the minimal surfaces meeting the boundary subregion $A$. Loosely, there are multiple states living on the same geometry; the `bulk entanglement' term $S_{\text{bulk},A}$ identifies which of these states is described by $\rho$.
+\subsection{The Causal and Entanglement Wedges}
+Lorentzian metrics describing a spacetime have a causal structure, so an operator at a point in the bulk can only be affected by a boundary subregion which can send or receive a signal to said bulk point. Formally, for a boundary subregion $A$, the causal wedge $\mathcal{C}[A]$ is the region of the bulk bounded by the boundary region of dependence on $A$ itself, and the set of bulk geodesics which start and end in this region of dependence. (FIGURE)\\
+It's often convenient to work with a spatial slice within the causal wedge. If the RT surface is spacelike, all spatial slices in the causal wedge end on the RT surface itself, but hit the boundary at different times. In this case, we can choose a spatial slice which intersects the boundary precisely at $A$. In nice situations (for example, a static spacetime), we can pick a spatial slice extending between $A$ and its RT surface, which by causality has all the information we need to reconstruct the full causal wedge. In cases like this, we can draw diagrams suppressing time entirely.\\
+Alternatively, given access to the entropy of a CFT subregion $A$, the RT formula says we can compute the area of the relevant extremal surface. Intuitively, we expect that if we know the full reduced density operator of a CFT state $\rho$ on $A$, we can construct the full RT surface itself. We can then use this information to construct the RT surfaces of smaller parts of the subregion $A$, and so we should be able to find the metric everywhere in the bulk region between $A$ and its RT surface. This idea is formalised by the entanglement wedge $\mathcal{E}[A]$. This is the domain of dependence of the bulk bounded by $A$, and the RT surface of $A$. $\mathcal{E}[A]$ is determined by the RT surface, which has area proportional to the von Neumann entropy of the boundary theory contained in $A$, which motivates the name.\\
+It can be shown that $\mathcal{C}[A]\subseteq\mathcal{E}[A]$. For a pure boundary state, the RT surface of $A$ is the same as the RT surface of $\ol{A}$; the operator $\mathcal{L}$ giving its area is in both the set of operators acting on $A$ and those acting on $\ol{A}$. Causality says that both these sets of operators must mutually commute, so $\mathcal{L}$ must commute with all operators on $A$ and on $\ol{A}$. We say it's in the \textit{centre} of the operators acting on $A$. One example of such an operator is the identity, but if there is a gauge symmetry in the bulk theory, then there will be non-trivial elements of the centre, and the area operator $\mathcal{L}$ will be one of these. Non-triviality of $\mathcal{L}$ therefore tells us that the bulk is gravitational and has diffeomorphism invariance.
+\subsection{Complementary Recovery and Radial Commutativity}
+The causal wedge tells us which operators in the bulk can be reconstructed from information in a boundary region $A$. If we divide the boundary into two disjoint regions, an operator in an arbitrary point in the bulk must be in the causal wedge of one of the two regions, and only lies in both when it the point is on the corresponding RT surface. This is called \textit{complementary recovery}: given a subregion, we can reconstruct all operators in its causal wedge, but none of the operators outside of it.\\
+If instead we allow the region $A$ to vary, a fixed operator in the bulk lies in the causal wedge of many regions. If we than have access to a boundary region with the property that many of its subregions can individually reconstruct the operator, we don't need the full state on such a region to reconstruct it, and there are multiple possibilities for reconstruction. If this is true, we say the full state has \textit{subregion duality}. If we erase a piece of the boundary $A$ which is much smaller than $A$ itself, almost every bulk operator can still be reconstructed - see the analogy to error correction?\\
+The converse to subregion duality is \textit{radial commutativity}. For sensible spacetimes, the RT surface of a small subregion does not penetrate deep into the bulk; we need large subregions to do this. If a bulk operator lies outside the causal wedge of a subregion, it commutes with every operator inside the causal wedge; in particular, those operators which act on the boundary itself. However, every boundary operator acting at a single point at the boundary lives in the causal wedge of any boundary subregion containing the point, including arbitrarily small subregions around the point. So any bulk operator which does not act at the boundary itself must commute with \textbf{every} operator acting at a single boundary point, which is radial commutativity.\\
+This is a problem. In field theories, the operator product expansion states that the product of operators acting at multiple points can be decomposed as a sum of local operators acting only at a single point. Radial commutativity then implies that all of these local operators commutes with the bulk operator - this would mean that any bulk operator commutes with every boundary operator. This conclusion is, however, only true since we treated the bulk Hilbert space as being the same as the boundary CFT Hilbert space. This is not true: the bulk Hilbert space for a given geometry is encoded inside the CFT Hilbert space. The resolution is therefore to map the bulk into the boundary via an isometry.
 
-\subsection{Even harder bits}
+\chapter{Holographic Error Correction}
 
-You might sometimes want to include equations without numbering them.
-\[
-  E=mc^{2}
-\]
-And this might be one of the places where you might want to refer to
-equation (\ref{equation:delsplit}). You will usually need to use the
-\LaTeX\ command twice to make cross-references like this work properly.
-The cross-reference information is stored in the \emph{.aux} file so
-don't delete it.
-
-\subsubsection{Numbering}
-You can keep subdividing but eventually you get to a level where
-numbering stops. This text is in a subsubsection which is not numbered
-by default.
-
-
-\paragraph{More on numbering:}
-
-This text is in a paragraph which is also not numbered by default and
-the ``title'' of the paragraph is not on a separate line.
-If you want to increase the depth to which sections are numbered you
-should see the section on setting the secnumdepth counter in the manual. 
-
-
-\chapter{Design and/or development (of my project)}
-
-This section should be written in standard scientific
-language. Standard techniques in your research field should not be
-written out in detail. In computational projects this section should
-be used to explain the algorithms used and the layout of the
-computational code. A copy of the actual code may be given in the
-appendices if appropriate.
-
-This section should emphasise the philosophy of the approach used and
-detail novel techniques. However please note: this section should not
-be a blow-by-blow account of what you did throughout the project. It
-should not contain large detailed sections about things you tried and
-found to be completely wrong! However, if you find that a technique
-that was expected to work failed, that is a valid result and should be
-included.
-
-Here logical structure is particularly important, and you may find
-that to maintain good structure you may have to present the
-explorations/calculations/computations/whatever in a different order
-from the one in which you carried them out.
-
-
-You might sometimes want to include multiple equations in one place
-\begin{eqnarray}
-  E &=& ma^{2} \\
-  E &=& mb^{2} \\
-  E &=& mc^{2}
-\end{eqnarray}
-You might want to include multiple equations in one place without
-numbering them
-\begin{eqnarray*}
-  E &=& ma^{2} \\
-  E &=& mb^{2} \\
-  E &=& mc^{2}
-\end{eqnarray*}
-You might want to include multiple equations in one place without
-numbering \emph{all} of them
-\begin{eqnarray}
-  E &=& ma^{2} \nonumber \\
-  E &=& mb^{2} \nonumber \\
-  E &=& mc^{2}
-\end{eqnarray}
-
-You might also want to include diagrams.  The example shows the use of
-the special command which allows existing postscript files to be
-included.  You would normally keep your figures separate from the text. 
-These pictures might be images or pdf output from some
-program.
-
-Here, I created a figure which is centred and stretched to 30\% of the
-width of the page \verb+{0.30\hsize}+ and with the height stretched by
-the same amount \verb+{!}+ to preserve the aspect ratio. If you omit
-the extension (ie .eps, .ps or .pdf) on the file name then \LaTeX\ will
-pick up the postscript copy whereas pdflatex will automatically pick
-up the PDF version.
-
-
-\begin{figure}
-
-\begin{center}
-  \resizebox{0.30\hsize}{!}{\includegraphics{crest.pdf}}
-\end{center}
-
-\caption{The coloured version of the University crest. The caption should explain exactly in some detail what is displayed in the table.}
-\label{fig:eucrest}
-
+We now present the first theorem of \cite{Harlow}. This is the most basic, non-general formulation of holographic error correction, characterising what makes a conventional quantum erasure correcting code holographic. 
+\begin{theorem}
+	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$, The following statements are then equivalent:
+	\begin{enumerate}
+		\item $|R|\leq|A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that 
+		\begin{equation}
+			(U_{A}\otimes I_{\ol{A}})V\ket{\tilde{i}}_{A\ol{A}}=\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\ol{A}},
+		\end{equation}
+		where $\ket{i}_{A_{1}}$ is an orthonormal basis for $\mathcal{H}_{A_{1}}$.
+		\item For any operator $\tilde{O}$ acting within $\mathcal{H}_{L}$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+		\begin{equation}
+			\begin{aligned}
+				O_{A}V\ket{\tilde{\psi}}&=V\tilde{O}\ket{\tilde{\psi}}\\
+				O_{A}^{\dagger}V\ket{\tilde{\psi}}&=V\tilde{O}^{\dagger}\ket{\tilde{\psi}}.
+			\end{aligned}
+		\end{equation}
+		\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
+		\begin{equation}
+			P_{L} V^{\dagger}X_{\ol{A}}VP_{L}\propto\Pc
+		\end{equation}
+		where $P_{L}=\sum_{i}\ketbras{\tilde{i}}$ is the projector onto $\mathcal{H}_{L}$.
+		\item In the state $\ket{\phi}$, we have
+		\begin{equation}
+			\rho_{R\ol{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\ol{A}}[\phi].
+		\end{equation}
+	\end{enumerate}
+\end{theorem}
+Before proving this, let's go over some of the intuition behind each statement, and what all the objects in this theorem refer to. $A$ is the subsystem which is preserved by erasure, and $\ol{A}$ is the erased subsystem. Statement 1 just says that we can recover the full state of the code subspace on the system $A_{1}$ by applying some unitary $U_{A}^{\dagger}$; we can recover the state with access to the non-erased subsystem only. We can visualise this by means of a circuit diagram:
+\begin{figure}[H] 
+	\centering
+	\scalebox{1.2}{%
+		\begin{quantikz}
+			\lstick{$\ket{\psi_{L}}$} & \qw & \gate[wires = 2]{U_{A}} & \qw \rstick{$A_{1}$}\\
+			\makeebit{$\ket{\chi}$} & \qw & & \qw \rstick{$A_{2}$} \\
+			& \qw & \qw & \qw \rstick{$\overline{A}$}
+	\end{quantikz}}
 \end{figure}
+Statement 2 says that any logical operator on the code space can be equivalently represented by an operator acting on $A$ only. Statement 3 is just equation (2.3.16); the quantum error correction conditions adapted to erasures. In a more physically intuitive way, this says that performing a measurement of any operator on the erased subsystem cannot disturb the encoded information - a plausible condition for erasure to be correctable. Condition 4 states that operators on the auxiliary system $R$ and operators on the erased subsystem $\ol{A}$ are not correlated. The proof of this theorem is as follows:
+\newcommand{\Xabar}{X_{\overline{A}}}
+\begin{proof}
+	$(1)\implies(2)$: Define $O_{A}\equiv U_{A}^{\dagger}O_{A_{1}}U_{A}$, where $O_{A_{1}}$ is an operator on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $\tilde{O}$ has on $\mathcal{H}_{L}$; that is
+	\begin{equation*}
+		\braket{\tilde{i}|\tilde{O}|\tilde{j}}_{A\ol{A}}=\braket{i|O_{A_{1}}|j}_{A_{1}}
+	\end{equation*}
+	which is always possible since $|A_{1}|=|R|=|\mathcal{H}_{L}|$. (3.0.2) is then immediate.\\
+	$(2)\implies(3)$: This implication is by contradiction. Suppose there was some $X_{\ol{A}}$ such that $P_{L}V^{\dagger} X_{\ol{A}}P_{L} \not\propto P_{L}$. Now, Schur's lemma in this context states that the only non-trivial operators commuting with all other operators on $\mathcal{H}_{L}$ are scalar multiples of the identity. Since $V^{\dagger}X_{\ol{A}}V$ is not the identity, there must be some $\tilde{O}$ on $\mathcal{H}_{L}$ which doesn't commute with $V^{\dagger}X_{\ol{A}}V$, and some $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ such that:
+	\begin{equation}
+		\braket{\tilde{\psi}|[P_{L}V^{\dagger} X_{\ol{A}}P_{L},\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}\neq 0.
+	\end{equation}
+	But such an $\tilde{O}$ cannot have a representation $O_{A}$ on $\mathcal{H}_{A}$ as defined in 2, since this would by definition commute with $X_{\ol{A}}$; if it had such an $O_{A}$, then $\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,V^{\dagger}O_{A}V]|\tilde{\psi}}=\braket{\tilde{\psi}|V^{\dagger}[X_{\ol{A}},O_{A}]V|\tilde{\psi}}=0$, which is a contradiction.\\
+	$(3)\implies (4)$: Consider arbitrary operators $O_{R}$ on $\mathcal{H}_{R}$ and $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$. If we denote the constant of proportionality in (3.0.3) as $\lambda\in\mathbb{C}$, we have
+	\begin{equation}
+		\Pc\Xabar\Pc=\lambda\Pc,
+	\end{equation}
+	so taking the inner product with $\ket{\phi}$:
+	\begin{equation}
+		\braket{\phi|\Pc\Xabar\Pc|\phi}=\braket{\phi|\Xabar|\phi}=\lambda\braket{\phi|\Pc|\phi}=\lambda\braket{\phi|\phi}=\lambda,
+	\end{equation}
+	so $\braket{\phi|\Xabar|\phi}=\lambda$. But this implies
+	\begin{equation}
+		\begin{aligned}
+			\braket{\phi|\Xabar O_{R}|\phi}&=\braket{\phi|\Pc O_{R}\Xabar\Pc|\phi}\\&=\braket{\phi|O_{R}\Pc\Xabar\Pc|\phi}\\&=\braket{\phi|O_{R}\lambda\Pc|\phi}\\&=\braket{\phi|O_{R}|\phi}\braket{\phi|\Xabar|\phi}
+		\end{aligned}
+	\end{equation} 
+	since $\Pc\ket{\phi}=\ket{\phi}$. Therefore, so long as $\braket{\phi|O_{R}|\phi}$ and $\braket{\phi|\Xabar|\phi}$ are non-zero for any such $O_{R}$ and $\Xabar$, we have $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$.\\
+	$(4)\implies (1)$: First, note that by definition, $\ket{\phi}$ is a purification of $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$ on subsystem $A$. Also note that $\ket{\phi}$ maximally entangles $R$ with $A$:
+	\begin{equation}
+		\rho_{R}[\phi]=\text{Tr}_{A\overline{A}}\left(\frac{1}{|R|}\sum_{ij}\ketbra{i}{j}_{R}(V\ketbra{\tilde{i}}{\tilde{j}}V^{\dagger})_{A\overline{A}}\right)=\frac{1}{|R|}\sum_{i}\ketbras{i}_{R}=\frac{I_{R}}{|R|}
+	\end{equation}
+	so $\ket{\phi}$ maximally entangles $R$ with $A$ (or $\overline{A}$) since $\rho_{R}[\phi]=I/|R|$ is the maximally mixed state. This means that (3.0.4) becomes
+	\begin{equation}
+		\rho_{R\overline{A}}[\phi]=\frac{I_{R}}{|R|}\otimes\rho_{\overline{A}}[\phi].
+	\end{equation}
+	Next, we perform long division on $A$. Say $k$ is the largest integer such that $|A|=k|R|+r$, and $r<|R|$. Since the $R$ and $\overline{A}$ registers are separable in (3.0.10), we can indeed factorise $\mathcal{H}_{A}=\left(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}}\right)\oplus\mathcal{H}_{A_{3}}$ such that $|A_{1}|=|R|$, $|A_{2}|=k$, and $|A_{3}|=r$.\\
+	We now define the following two states:
+	\begin{equation}
+		\ket{\Psi}_{RA_{1}}\equiv\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i}_{A_{1}},\qquad\ket{\chi}_{A_{2}\overline{A}}\equiv\sum_{j}\sqrt{p_{j}}\ket{j}_{A_{2}}\ket{j}_{\overline{A}}
+	\end{equation}
+	where $\sum_{j}p_{j}=1$, and $\{\ket{j}_{A_{2}}\}$ and $\{\ket{j}_{\ol{A}}\}$ are bases of $\mathcal{H}_{A_{2}}$ and $\mathcal{H}_{\ol{A}}$ respectively. Note that the state
+	\begin{equation}
+		\ket{\phi'}\equiv\ket{\Psi}_{RA_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}
+	\end{equation}
+	then purifies $\rho_{R\overline{A}}[\phi]$ on $A_{1}A_{2}$:
+	\begin{equation}
+		\begin{aligned}
+			\text{Tr}_{A_{1}A_{2}}\left(\ketbras{\Psi}_{RA_{1}}\otimes\ketbras{\chi}_{A_{2}\overline{A}}\right)&=\text{Tr}_{A_{1}}\left(\ketbras{\Psi}_{RA_{1}}\right)\text{Tr}_{A_{2}}\left(\ketbras{\chi}_{A_{2}\overline{A}}\right)\\&=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi],
+		\end{aligned}
+	\end{equation}
+	since $\ket{\Psi}_{RA_{1}}$ purifies $\rho_{R}[\phi]$ on $A_{1}$, and $\ket{\chi}_{A_{2}\overline{A}}$ purifies $\rho_{\overline{A}}[\phi]$ on $A_{2}$. In a purification, the dimension of the purifying system $A$ needs to be at least as big as the rank of the state being purified, so we therefore have $|A_{1}|=|R|$ (since $\rho_{R}[\phi]$ is maximally mixed), and $\text{rank}\left(\rho_{\overline{A}}[\phi]\right)\leq|A_{2}|$.\\
+	However, purifications are unitarily equivalent on the purifying system - $A$ in our case - so there exists unitary a $U_{A}$ on $\mathcal{H}_{A}$ taking $\ket{\phi}=U_{A}\ket{\phi'}$. Overall, we therefore have:
+	\begin{equation}
+		\begin{aligned}
+			(U_{A}\otimes I_{\ol{A}})\left(\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}(V\ket{\tilde{i}})_{A\overline{A}}\right)&=\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}\\
+			\implies (U_{A}\otimes I_{\ol{A}})V\ket{\tilde{i}}_{A\overline{A}}&=\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\overline{A}}
+		\end{aligned}
+	\end{equation}
+	as claimed.
+\end{proof}
+One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. The three-qutrit example above coincidentally can correct for any single-qutrit erasure, but this may not always be true; we need to apply the theorem to each chosen $\ol{A}$ erasure and see if it works.
+\subsubsection{An RT Formula}
+From condition 1 of theorem 3.0.1, if the erasure of $\ol{A}$ can be corrected, then for any state $\tilde{\rho}$ on $\mathcal{H}_{L}$, we have
+\begin{equation}
+	V\tilde{\rho}V^{\dagger}=U_{A}^{\dagger}(\rho_{A_{1}}\otimes\ketbras{\chi}_{A_{2}\ol{A}})U_{A},
+\end{equation}
+where $\rho_{A_{1}}$ is a density matrix on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $\tilde{\rho}$ has on $\mathcal{H}_{L}$. Moreover, we have for the reduced density matrices:
+\begin{equation}
+	\begin{aligned}
+		\tilde{\rho}_{A}&\equiv\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger})=U_{A}^{\dagger}\left(\rho_{A_{1}}\otimes \tr_{\ol{A}}(\ketbras{\chi})\right)U_{A}\\
+		\tilde{\rho}_{\ol{A}}&\equiv\tr_{A}(V\tilde{\rho}V^{\dagger})=\tr_{A_{2}}(\ketbras{\chi}).
+	\end{aligned}
+\end{equation}
+Defining $\chi_{A_{2}}\equiv\tr_{\ol{A}}\ketbras{\chi}$ and $\chi_{\ol{A}}\equiv\tr_{A_{2}}\ketbras{\chi}$ and calculating the von Neumann entropies, we find
+\begin{equation}
+	\begin{aligned}
+		S(V\tilde{\rho}V^{\dagger})&=S(\rho_{A_{1}})+S(\ketbras{\chi})=S(\rho_{A_{1}})\\
+		S(\tilde{\rho}_{A})&=S(\rho_{A_{1}})+S(\chi_{A_{2}})=S(V\tilde{\rho}V^{\dagger})+S(\chi_{A_{2}})\\
+		S(\tilde{\rho}_{\ol{A}})&=S(\chi_{\ol{A}})=-\tr_{A_{2}}\left[\tr_{\ol{A}}\ketbras{\chi}\right]=S(\chi_{A_{2}}).
+	\end{aligned}
+\end{equation}
+So, if we define `area operator' $\mathcal{L}\equiv S(\chi_{A_{2}})I_{L}$, we can rewrite these as
+\begin{equation}
+	\begin{aligned}
+		S(\tilde{\rho}_{A})&=S(V\tilde{\rho}V^{\dagger})+\tr(\tilde{\rho}\mathcal{L})\\
+		S(\tilde{\rho}_{\ol{A}})&=S(\chi_{A_{2}}),
+	\end{aligned}
+\end{equation}
+which should be reminiscent of the RT formula!\\
+From a holographic point of view though, this is not good. All of the `bulk entropy' term $S(V\tilde{\rho}V^{\dagger})$ appears in $S(\tilde{\rho}_{A})$; it was not symmetric across the $A$ and $\ol{A}$ boundary regions. We therefore need to generalise.
+\subsection{Subsystem Error Correction}
+A straightforward generalisation of theorem 3.0.1 is the so-called \textit{subsystem error correction}, also of \cite{Harlow}. This theorem is as follows.
+\begin{theorem}
+	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$ and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Define orthonormal bases $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{a}$ and $\{\ket{\tilde{j}}\}$ of $\mathcal{H}_{\ol{a}}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R||\ol{R}|}}\sum_{i,j}\ket{i}_{R}\ket{j}_{\ol{R}}V(\ket{\widetilde{ij}})_{A\ol{A}}$ where $R$ and $\ol{R}$ are auxiliary systems with $\mathcal{H}_{R}=\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{R}}=\mathcal{H}_{\ol{a}}$. The following statements are then equivalent:
+	\begin{enumerate}
+		\item $|a|\leq|A$, and if decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$, where $|A_{1}|=|a|$, and $|A_{3}|\leq |a|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a set of orthonormal states $\ket{\chi_{j}}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that
+		\begin{equation}
+			(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{i}_{A_{1}}\otimes\ket{\chi_{j}}_{A_{2}\ol{A}},
+		\end{equation}
+		where $\{\ket{i}_{A_{1}}\}$ is an orthonormal basis of $\mathcal{H}_{A_{1}}$.
+		\item For any operator $\tilde{O}_{a}$ acting within $\mathcal{H}_{a}$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\Hcode$, we have
+		\begin{equation}
+			\begin{aligned}
+				O_{A}V\ket{\tilde{\psi}}&=V\tilde{O}_{a}\ket{\tilde{\psi}}\\
+				O_{A}^{\dagger}V\ket{\tilde{\psi}}&=V\tilde{O}_{a}^{\dagger}\ket{\tilde{\psi}}
+			\end{aligned}.
+		\end{equation}
+		\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{A}$, we have
+		\begin{equation}
+			\Pc VX_{\ol{A}}V^{\dagger}\Pc=(I_{a}\otimes X_{\ol{a}})\Pc,
+		\end{equation}
+		where $\Pc$ is the projector onto the image of $V$; that is, if $P_{L}=\sum_{i,j}\ketbras{\widetilde{ij}}$ is the projector onto $\mathcal{H}_{L}$, then $\Pc=VP_{L}V^{\dagger}$.
+		\item In the state $\ket{\phi}$, we have
+		\begin{equation}
+			\rho_{R\ol{R}\ol{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\ol{R}\ol{A}}[\phi].
+		\end{equation}
+	\end{enumerate}
+\end{theorem}
+The proof of this is virtually identical to that of 3.0.1, only that we must now keep track of the $\mathcal{H}_{a}$ subsystem. Moreover, it is a straightforward special case of a generalisation we go over in (???) - \textit{operator algebra error correction} - so we do not go through the proof.
+\subsubsection{Complementary Recovery}
+In applying this to holography, we also wish to recover arbitrary operators $\tilde{O}_{\ol{a}}$ on $\mathcal{H}_{\ol{a}}$. \cite{Harlow} calls a code having this property a code with \textit{complementary recovery}. Essentially, complementary recovery means that property 1 should also hold for the complementary systems; there should exist a unitary $U_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, a decomposition $\mathcal{H}_{\ol{A}}=(\mathcal{H}_{\ol{A}_{1}}\otimes\mathcal{H}_{\ol{A}_{2}})\oplus\mathcal{H}_{\ol{A}_{3}}$ with $|\ol{A}_{1}|=|\ol{a}|$ and $|\ol{A}_{3}\leq|\ol{a}|$, and a set of orthonormal states $\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}$ such that
+\begin{equation}
+	(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{j}_{\ol{A}_{1}}\otimes\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A},
+\end{equation}
+where $\{\ket{j}_{\ol{A}_{1}}\}$ is an orthonormal basis of $\mathcal{H}_{\ol{A}_{1}}$. If we apply $U_{A}\otimes I_{\ol{A}}$ to this, and $I_{A}\otimes U_{\ol{A}}$ to (3.0.19), we get
+\begin{equation}
+	\begin{aligned}
+		(I_{A}\otimes U_{\ol{A}})(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{i}_{A_{1}}\otimes (I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}\\
+		(U_{A}\otimes I_{\ol{A}_{2}})(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{j}_{\ol{A}_{1}}\otimes (U_{A}\otimes I_{\ol{A}})\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}.
+	\end{aligned}
+\end{equation}
+In order for both of these to be true simultaneously, there must be a state $\ket{\chi}_{A_{2}\ol{A}_{2}}$ such that
+$(I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}=\ket{\chi}_{A_{2}\ol{A}_{2}}\otimes\ket{j}_{\ol{A}_{1}}$, which implies
+\begin{equation}
+	(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{i}_{A_{1}}\ket{j}_{\ol{A}_{1}}\ket{\chi}_{A_{2}\ol{A}_{2}}.
+\end{equation}
+This expression is what allows us to prove an RT formula.
+\subsubsection{An RT Formula}
+Suppose we have a subsystem code with complementary recovery as above. Let $\tilde{\rho}$ be a state on $\mathcal{H}_{L}$; defining $\chi_{A_{2}}\equiv\tr_{\ol{A}_{2}}\ketbras{\chi}$ and $\chi_{\ol{A}_{2}}\equiv\tr_{A_{2}}\ketbras{\chi}$, we now have (analogously to (3.0.15) and (3.0.16)):
+\begin{equation}
+	\begin{aligned}
+		V\tilde{\rho}V^{\dagger}&=U_{A}^{\dagger}U_{\ol{A}}^{\dagger}(\rho_{A_{1}\ol{A}_{1}}\otimes\ketbras{\chi})U_{A}U_{\ol{A}}\\
+		\tilde{\rho}_{A}&\equiv\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger})=U_{A}^{\dagger}(\rho_{A_{1}}\otimes\chi_{A_{2}})U_{A}\\
+		\tilde{\rho}_{\ol{A}}&\equiv\tr_{A}(V\tilde{\rho}V^{\dagger})=U_{\ol{A}}^{\dagger}(\rho_{\ol{A}_{1}}\otimes\chi_{\ol{A}_{2}})U_{\ol{A}}^{\dagger},
+	\end{aligned}
+\end{equation}
+where $\rho_{A_{1}\ol{A}_{1}}$ has the same matrix elements on $\Hcode=V\mathcal{H}_{L}V^{\dagger}$ as $\tilde{\rho}$ does on $\mathcal{H}_{L}$, and $\rho_{A_{1}}$ and $\rho_{\ol{A}_{1}}$ have the same matrix elements as $\tilde{\rho}_{a}$ and $\tilde{\rho}_{\ol{a}}$ do on $\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{a}}$ respectively. We can therefore define two area operators
+\begin{equation}
+	\begin{aligned} 
+		\mathcal{L}_{A}&\equiv S(\chi_{A_{2}})I_{a}\\
+		\mathcal{L}_{\ol{A}}&\equiv S(\chi_{A_{2}})I_{\ol{a}},
+	\end{aligned}
+\end{equation}
+which give us
+\begin{equation}
+	\begin{aligned}
+		S(\tilde{\rho}_{A})&=\tr(\tilde{\rho}_{a}\mathcal{L}_{A})+S(\tilde{\rho}_{a})\\
+		S(\tilde{\rho}_{\ol{A}})&=\tr(\tilde{\rho}_{\ol{a}}\mathcal{L}_{\ol{A}})+S(\tilde{\rho}_{\ol{a}}).
+	\end{aligned}
+\end{equation}
+This gives us two RT formulae with the the information shared between the two systems! In fact, the converse is also true - if (3.0.28) both hold, then so too does condition 2 of the theorem. Since this is a special case of the next theorem anyway, we postpone the proof until then. +
 
-You should find the file crest.pdf on this wiki.
+\chapter{Generalisations of Holographic Error Correction}
+Theorem 3.0.1 can be generalised in multiple ways. Two of the more notable ways are that of \textit{operator-algebra error correction} as presented in \cite{Harlow}, and the generalisation for \textit{non-isometric codes} as in (???). We present these generalisations here, starting with operator algebra error correction. To do this though, we first need some of the theory of finite-dimensional \textit{von Neumann algebras}. We follow the structure of \cite{Harlow} in presenting the main applications here, with detailed results relegated to an appendix.
 
-% note that labels do not need to include a description of the object
-% they are labelling but it can be helpful, eg \label{fig:figurename}.
+\section{von Neumann Algebras}
+\begin{definition}[Finite-dimensional von Neumann algebra]
+	A \textbf{von Neumann algebra} on a finite dimensional Hilbert space $\mathcal{H}$ is any set of linear operators $M\subseteq\mathcal{L}(\mathcal{H})$ satisfying:
+	\begin{itemize}
+		\item Contains all scalar multiples of the identity: $\forall \lambda\in\mathbb{C}$, $\lambda I\in M$, where $I$ is the identity operator.
+		\item Closure under Hermitian conjugation: $\forall x\in M$, $x^{\dagger}\in M$.
+		\item Closure under multiplication: $\forall x,y\in M$, $xy\in M$.
+		\item Closure under addition: $\forall x,y\in M$, $x+y\in M$.
+	\end{itemize}
+\end{definition}
+Note the notation of operators written in lower case rather than upper case as is common. This is because we are treating the operators as elements of an algebra, rather than individual operators in their own right (in some sense). Any von Neumann algebra induces two `natural' associated algebras: the \textit{commutant} and the \textit{centre}.
+\begin{definition}[Commutant]
+	Given a von Neumann algebra $M$ on $\mathcal{H}$, its \textbf{commutant}, denoted $M'$ is the set of all operators on $\mathcal{H}$ which commute with $M$; that is
+	\begin{equation}
+		M'\equiv\{y\in\mathcal{L}(\mathcal{H})\,|\,xy=yx,\,\forall x\in M\}.
+	\end{equation}
+\end{definition}
+\begin{definition}[Centre]
+	Given a von Neumann algebra $M$ on $\mathcal{H}$, its \textbf{centre}, denoted $Z_{M}$ is the set of all operators on $\mathcal{H}$ in both $M$ and $M'$; that is
+	\begin{equation}
+		Z_{M}\equiv M\cap M'.
+	\end{equation}
+\end{definition}
+In classifying von Neumann algebras, there is a special role for algebras which have a centre containing only scalar multiples of the identity. Such an algebra is called a \textit{factor}.
+\begin{definition}[Factor algebra]
+	A von Neumann algebra $M$ on $\mathcal{H}$ is called a \textbf{factor} if $Z_{M}$ contains only scalar multiples of the identity.
+\end{definition}
+In order to apply the theory of von Neumann algebras to error correction, we need two powerful classification theorems. We first classify factor algebras.
+\begin{theorem}
+	Suppose $M$ is a factor on $\mathcal{H}$. Then there exists a tensor factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$ and $M'=I_{A}\otimes\mathcal{L}(\mathcal{H}_{\ol{A}})$.
+\end{theorem}
+In other words, $M$ is the set of all linear operators on the tensor factor $\mathcal{H}_{A}$ of $\mathcal{H}$. For general von Neumann algebras, this classification generalises:
+\begin{theorem}
+	Suppose $M$ is a von Neumann algebra on $\mathcal{H}$. Then there exists a block-decomposition 
+	\begin{equation} 
+		\mathcal{H}=\oplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}})
+	\end{equation}
+	in terms of which $M$ and $M'$ are block-diagonal, with corresponding decompositions
+	\begin{equation}
+		M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\ol{A}_{\alpha}}),\quad M'=\oplus_{\alpha}(I_{A_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{A}_{\alpha}})).
+	\end{equation}
+\end{theorem}
+So far this is all a bit abstract. With a view to linking this to error correction, suppose we have a von Neumann algebra $M$ on $\Hcode$. Then we have a decomposition
+\begin{equation}
+	\Hcode=\oplus_{\alpha}(\mathcal{H}_{a_{\alpha}}\otimes\mathcal{H}_{\ol{a}_{\alpha}})
+\end{equation} 
+such that $M$ is the set of all operators which are block diagonal in $\alpha$, and acts as $\tilde{O}_{a_{\alpha}}\otimes I_{\ol{a}_{\alpha}}$ within each block, where $\tilde{O}_{a_{\alpha}}$ is an arbitrary linear operator on $\mathcal{H}_{a_{\alpha}}$. In matrix form, for some $\tilde{O}\in M$, we can write:
+\begin{equation}
+	\tilde{O}=\begin{pmatrix}
+		\tilde{O}_{a_{1}}\otimes I_{\ol{a}_{1}}&0&\dots\\
+		0&\tilde{O}_{a_{2}}\otimes I_{\ol{a}_{2}}&\dots\\
+		\vdots&\vdots&\ddots
+	\end{pmatrix}.
+\end{equation}
+The commutant similarly consists of operators $\tilde{O}'\in M'$ which have matrix form:
+\begin{equation}
+	\tilde{O}'=\begin{pmatrix}
+		I_{a_{1}}\otimes\tilde{O}'_{\ol{a}_{1}}&0&\dots\\
+		0&I_{a_{2}}\otimes\tilde{O}'_{\ol{a}_{2}}&\dots\\
+		\vdots&\vdots&\ddots
+	\end{pmatrix}.
+\end{equation}
+Also in matrix notation, the centre $Z_{M}$ consists of operators $\tilde{\Lambda}$ of the form:
+\begin{equation}
+	\tilde{\Lambda}=\begin{pmatrix}
+		\lambda_{1}(I_{a_{1}}\otimes I_{\ol{a}_{1}})&0&\dots\\
+		0&\lambda_{2}(I_{a_{2}}\otimes I_{\ol{a}_{2}})&\dots\\
+		\vdots&\vdots&\ddots
+	\end{pmatrix},
+\end{equation}
+where $\lambda_{\alpha}\in\mathbb{C}$. We can also introduce orthonormal bases for $\mathcal{H}_{a_{\alpha}}$ and $\mathcal{H}_{\ol{a}_{\alpha}}$ which are in some sense `compatible' with the decompositions above. We denote these bases $\{\ket{\widetilde{\alpha,i}}\}$ and $\{\ket{\widetilde{\alpha,j}}\}$ respectively, and these induce an orthonormal basis for the full space $\Hcode$, given by
+\begin{equation}
+	\{\ket{\widetilde{\alpha,ij}}\}\equiv\{\ket{\widetilde{\alpha,i}}\otimes\ket{\widetilde{\alpha,j}}\}.
+\end{equation}
+We can also extend the standard definition of von Neumann entropy to that of \textit{von Neumann entropy on a von Neumann algebra}. Suppose we have a state $\tilde{\rho}$ with support on $\Hcode$, which has diagonal blocks $\tilde{\rho}_{\alpha\alpha}$ with respect to the decomposition (4.1.5). We then define
+\begin{equation}
+	p_{\alpha}\tilde{\rho}_{a_{\alpha}}\equiv\text{Tr}_{\ol{a}_{\alpha}}\tilde{\rho}_{\alpha\alpha},
+\end{equation}
+where $p_{\alpha}\in[0,1]$ are probabilities such that $\text{Tr}_{a_{\alpha}}\tilde{\rho}_{a_{\alpha}}=1$, and so $\sum_{\alpha}p_{\alpha}=1$ as expected. We can then give the following definition for the entropy $S(\tilde{\rho},M)$ of $\tilde{\rho}$ on $M$:
+\begin{equation}
+	S(\tilde{\rho},M)\equiv -\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\tilde{\rho}_{a_{\alpha}}).
+\end{equation}
+Note that this definition reduces to the normal von Neumann entropy $S(\tilde{\rho})$ when $M$ is a factor.\\
+We can analogously define entropy of $\tilde{\rho}$ on $M'$. Define
+\begin{equation}
+	p_{\alpha}\tilde{\rho}_{\ol{a}_{\alpha}}\equiv\text{Tr}_{a_{\alpha}}\tilde{\rho}_{\alpha\alpha},
+\end{equation} 
+and then
+\begin{equation}
+	S(\tilde{\rho},M')\equiv-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\tilde{\rho}_{\ol{a}_{\alpha}}).
+\end{equation}
+Intuitively, we view these entropies as consisting of a classical piece, given by the Shannon entropy of the probabilities $p_{\alpha}$ for the centre $Z_{M}$, and a quantum piece given by the von Neumann entropy of each block, averaged over the probabilities.
+\section{Operator-Algebra Error Correction}
+We can now present theorem 5.1 of \cite{Harlow}.
+\begin{theorem}
+	Let $V\,:\,\mathcal{H}_{L}\to \mathcal{H}$ be an encoding isometry with image $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Say we have a von Neumann algebra $M$ on $\mathcal{H}_{L}$. Define orthonormal basis $\{\ket{\widetilde{\alpha,ij}}\}$ of $\mathcal{H}_{L}$ as in (4.1.9), which is compatible with the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{a_{\alpha}}\otimes\mathcal{H}_{\ol{a}_{\alpha}})$ induced by $M$. Let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}(V\ket{\widetilde{\alpha,ij}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
+	\begin{enumerate}
+		\item $\sum_{\alpha}|a_{\alpha}|\leq|A|$, and we can decompose $\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}^{\alpha}|=|a_{\alpha}|$ such that there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and sets of orthonormal states $\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\in\mathcal{H}_{A_{2}^{\alpha}\ol{A}}$ such that
+		\begin{equation}
+			(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{\alpha,ij}}=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}},
+		\end{equation}
+		where $\{\ket{\alpha,i}_{A_{1}^{\alpha}}\}$ is an orthonormal basis for $\mathcal{H}_{A_{1}^{\alpha}}$.
+		\item For any operator $\tilde{O}\in M$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+		\begin{equation}
+			\begin{aligned}
+				O_{A}V\ket{\tilde{\psi}}&=V\tilde{O}\ket{\tilde{\psi}}\\
+				O_{A}^{\dagger}V\ket{\tilde{\psi}}&=V\tilde{O}^{\dagger}\ket{\tilde{\psi}}.
+			\end{aligned}
+		\end{equation}
+		\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
+		\begin{equation}
+			\Pc\Xabar\Pc=VX'V^{\dagger}\Pc,
+		\end{equation}
+		where $X'\in M'$ is an element of the commutant, and $\Pc$ is the image of the projector onto $\mathcal{H}_{L}$ under $V$ (or the projector onto $\Hcode$); that is, if $P_{L}=\sum_{\alpha,i,j}\ketbras{\widetilde{\alpha,i,j}}$, then $\Pc=VP_{L}V^{\dagger}$.
+		\item For any operator $\tilde{O}\in M$, we have
+		\begin{equation}
+			[O_{R},\rho_{R\ol{A}}[\phi]]=0,
+		\end{equation}
+		where $O_{R}$ is the unique operator on $\mathcal{H}_{R}$ such that
+		\begin{equation}
+			\begin{aligned}
+				O_{R}\ket{\phi}&=V\tilde{O}V^{\dagger}\ket{\phi}\\
+				O_{R}^{\dagger}\ket{\phi}&=V\tilde{O}^{\dagger}V^{\dagger}\ket{\phi}.
+			\end{aligned}
+		\end{equation}
+	\end{enumerate}
+\end{theorem}
+Similar to the last theorem, this characterises in some sense `how well' a code subspace can correct a subalgebra $M$ for the erasure of $\ol{A}$. It in fact contains the previous theorem as a special case, reducing to it when $M$ is the full set of linear operators on $\Hcode$.
+\begin{proof}
+	$(1)\implies (2)$: Define $O_{A}\equiv U_{A}^{\dagger}(\oplus_{\alpha}(O_{A_{1}^{\alpha}}\otimes I_{A_{2}^{\alpha}}))U_{A}$, where $O_{A_{1}^{\alpha}}$ is an operator acting on $\mathcal{H}_{A_{1}^{\alpha}}$ in the same way as $\tilde{O}_{a_{\alpha}}$ from (4.1.6) does on $\mathcal{H}_{a_{\alpha}}$. (4.2.3) is then immediate.\\
+	$(2)\implies (3)$: This implication is by contradiction. Suppose that $\Pc X_{\ol{A}}\Pc=Vx'V^{\dagger}\Pc$, where $x'\in\mathcal{L}(\mathcal{H}_{L})$ but $x'\notin M'$. Therefore there must be some operator $\tilde{O}\in M$ which does not commute with $x'$, and so there must be a state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ such that
+	\begin{equation}
+		\braket{\tilde{\psi}|[x',\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}\Pc X_{\ol{A}}\Pc V,\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|V^{\dagger}[X_{\ol{A}},V\tilde{O}V^{\dagger}]V|\tilde{\psi}}\neq 0.
+	\end{equation}
+	However, such an $\tilde{O}$ cannot have a corresponding $O_{A}$ as this would automatically commute with $X_{\ol{A}}$, which contradicts (2).\\
+	$(3)\implies (4)$: Say $\tilde{O}\in M$, and $X_{\ol{A}}$ and $Y_{R}$ are arbitrary operators on $\mathcal{H}_{\ol{A}}$ and $\mathcal{H}_{R}$ respectively. We then have:
+	\begin{equation}
+		\begin{aligned}
+			\tr_{R\ol{A}}(O_{R}\rho_{R\ol{A}}[\phi]X_{\ol{A}}Y_{R})&=\braket{\phi|X_{\ol{A}}Y_{R}O_{R}|\phi}\\&=\braket{\phi|X_{\ol{A}}Y_{R}V\tilde{O}V^{\dagger}|\phi}\\&=\braket{\phi|V\tilde{O}V^{\dagger}X_{\ol{A}}Y_{R}|\phi}\\&=\braket{\phi|O_{R}X_{\ol{A}}Y_{R}|\phi}\\&=\tr_{R\ol{A}}(\rho_{R\ol{A}}[\phi]O_{R}X_{\ol{A}}Y_{R}),
+		\end{aligned}
+	\end{equation}
+	where the first equality is by substituting in the definition of $\rho[\phi]$ and expanding, the second is by definition of $O_{R}$, the third is due to $V\tilde{O}V^{\dagger}$ commuting with $Y_{R}$ trivially and with $X_{\ol{A}}$ by (3), and the last two by similar logic in reverse. This can only hold for arbitrary $X_{\ol{A}}$ and $Y_{R}$ if $[O_{R},\rho_{R\ol{A}}[\phi]]=0$ as claimed.\\
+	$(4)\implies (1)$: Our basis $\{\ket{\widetilde{\alpha,ij}}_{R}\}$ for $\mathcal{H}_{R}$ gives a decomposition
+	\begin{equation}
+		\mathcal{H}_{R}=\oplus_{\alpha}(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}})
+	\end{equation}
+	and so $\mathcal{H}_{R\ol{A}}=\mathcal{H}_{R}\otimes\mathcal{H}_{\ol{A}}$ can be decomposed as
+	\begin{equation}
+		\mathcal{H}_{R\ol{A}}=\oplus_{\alpha}(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}}\otimes\mathcal{H}_{\ol{A}}).
+	\end{equation}
+	From (4), we know that $[O_{R},\rho_{R\ol{A}}[\phi]]=0$ for all $O_{R}$ as defined in (4.2.6). This means that $\rho_{R}[\phi]=I_{R}/|R|$ is the maximally mixed state on $R$. We therefore have that, in terms of the decomposition (4.2.9)
+	\begin{equation}
+		\rho_{R\ol{A}}[\phi]=\oplus_{\alpha}\left[\frac{|R_{\alpha}||\ol{R}_{\alpha}|}{|R|}\left(\frac{I_{R_{\alpha}}}{|R_{\alpha}|}\otimes\rho_{\ol{R}_{\alpha}\ol{A}}\right)\right],
+	\end{equation}
+	for some states $\rho_{\ol{R}_{\alpha}\ol{A}}$. The coefficient out the front can be computed by requiring that $\rho_{R\ol{A}}[\phi]$ is a valid density operator tracing to 1. Since $\rho_{R}[\phi]=I_{R}/|R|$, we must have also that $\tr_{\ol{A}}(\rho_{\ol{R}_{\alpha}\ol{A}})=I_{\ol{R}_{\alpha}}/|\ol{R}_{\alpha}|$.\\
+	By definition, $\ket{\phi}_{RA\ol{A}}$ is a purification of $\rho_{R\ol{A}}[\phi]$ on $A$, and in a purification the dimension of the purifying system is necessarily as big as the rank of the state being purified (this is immediate from the Schmidt decomposition). So, denoting $\text{rank}(\rho_{\ol{R}_{\alpha}\ol{A}})\equiv|\rho_{\ol{R}_{\alpha}\ol{A}}|$, we can write
+	\begin{equation}
+		\sum_{\alpha}|R_{\alpha}||\rho_{\ol{R}_{\alpha}\ol{A}}|\leq|A|.
+	\end{equation}
+	This means that we can indeed decompose
+	\begin{equation}
+		\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}
+	\end{equation}
+	where $|A_{1}^{\alpha}|=|R_{\alpha}|=|a_{\alpha}|$ and $|A_{2}^{\alpha}|\geq|\rho_{\ol{R}_{\alpha}\ol{A}}|$ by long division. For each $\alpha$, we can then purify $\rho_{\ol{R}_{\alpha}\ol{A}}$ on $A_{2}^{\alpha}$; since $\tr_{\ol{A}}(\rho_{\ol{R}_{\alpha}\ol{A}})=I_{\ol{R}_{\alpha}}/|\ol{R}_{\alpha}|$, such a purification has the form
+	\begin{equation}
+		\ket{\psi_{\alpha}}_{\ol{R}_{\alpha}A_{2}^{\alpha}\ol{A}}=\frac{1}{\sqrt{|\ol{R}_{\alpha}|}}\sum_{j}\ket{\alpha,j}_{\ol{R}_{\alpha}}\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}},
+	\end{equation}
+	where the $\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}$ are mutually orthonormal on $A_{2}^{\alpha}\ol{A}$. This means we can write a purification for $\rho_{R\ol{A}}$ on the full $A$ system as
+	\begin{equation}
+		\begin{aligned}
+			\ket{\phi'}&=\sum_{\alpha,i,j}\frac{1}{\sqrt{|R_{\alpha}|}}\ket{\alpha,i}_{R_{\alpha}}\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\psi_{\alpha}}_{\ol{R}_{\alpha}A_{2}^{\alpha}\ol{A}}\\&=\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}.
+		\end{aligned}
+	\end{equation}
+	Finally, since $\ket{\phi}$ and $\ket{\phi'}$ are two different purifications of $\rho_{R\ol{A}}[\phi]$ on $A$, they must differ by the action of some unitary $U_{A}$. We therefore have
+	\begin{equation}
+		\begin{aligned}
+			(U_{A}\otimes I_{\ol{A}})\left(\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}(V\ket{\widetilde{\alpha, ij}})_{A\ol{A}}\right)&=\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}\ket{\alpha,i}_{A_{1}^{\alpha}}\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
+			\implies (U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{\alpha,ij}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}},
+		\end{aligned}
+	\end{equation}
+	which finishes the proof.
+\end{proof}
 
-You can use a label on a figure to refer to it later. The university
-crest is in Figure~(\ref{fig:eucrest}). Note that you should not use
-phrases like ``the figure above'' or ``the following figure'' since
-\LaTeX\ may move the figure relative to the text if it cannot be fitted
-onto the current page.
-
-\chapter{Another Chapter Title}
-\section{Number of Chapters}
-
-You may vary the number of chapters. The Introduction and Background
-Theory chapter are essential, although you may choose a different
-title for the latter. These two introductory chapters are usually
-followed by a chapter on what you did yourself, with a title such as
-Design and Development, although you can choose any title you
-wish. After that, you might to have another chapter, or you may go
-straight to the Results and Conclusions chapter.
-
-After the Introduction, you are free to use any chapter titles you wish.
-
-
-\chapter{Results and Analysis}
-
-This section should detail the obtained results in a clear,
-easy-to-follow manner. It is important to make clear what are original
-results and what are repeats of previous calculations or computations.
-Remember that long tables of numbers are just as boring to read as
-they are to type-in!
-
-Use graphs to present your results wherever practicable.
-
-Results or computations should be presented with uncertainties
-(errors), both statistical and systematic where applicable.
-
-Be selective in what you include: half a dozen \emph{e.g.}~tables that
-contain wrong data you collected while you forgot to switch on the
-computer are not relevant and may mask the correct results.
-
-
-\section{Some results}
-Here are some results.
-
-\subsection{More results}
-When showing results you are likely to use tables and graphs. You can
-create tables easily in \LaTeX.
-
-\begin{table}[h]
-\begin{center}
-\begin{tabular}{||l|c|l||}
-\hline
-\textbf{File names} & \textbf{Satellite} & \textbf{Resolution}\\
-\hline
-  worldr            &  Meteosat          &   5km\\
-  worldg            &  Meteosat          &   5km\\
-  worldb            &  Meteosat          &   5km\\
-\hline
-\end{tabular}
-\end{center}
-\caption{This is a simple table. More complicated tables can have
-  headings which pass over more than one column. The caption should
-  explain exactly in some detail what is displayed in the table.}
-\label{simple_table}
-\end{table}
-
-If you want to produce fancier tables than shown in Table \ref{simple_table}
-refer to the \LaTeX\ manual or ask Madame La Google.
-
-One of the simplest ways to produce simple graphs is to use gnuplot
-which produces \LaTeX\  output. Graph~(\ref{fig:gnu}) was produced using
-gnuplot with output designated as \LaTeX\  so that a \LaTeX\  output file is
-produced which you can include directly or keep separate and refer to
-using the \emph{include} command.
-
-Another approach is to draw simple figures using \emph{xfig} which allows
-you to export diagrams in \LaTeX\  picture format so that the diagram can
-be included directly.
-
-Perhaps the most robust way to include graphs is to convert them to
-PostScript or PDF and include them in the same was as was done in
-Figure~\ref{fig:eucrest} for the University Crest. You can usually do
-this with most packages, including Microsoft ones; one trick for
-producing PostScript is to print to a dummy PostScript printer.
-
-% in practice you would probably keep this in a separate file and use
-% the \include{filename} command to insert it here.
-
-\begin{figure}
-% GNUPLOT: LaTeX picture
-\setlength{\unitlength}{0.240900pt}
-\ifx\plotpoint\undefined\newsavebox{\plotpoint}\fi
-\sbox{\plotpoint}{\rule[-0.200pt]{0.400pt}{0.400pt}}%
-\begin{picture}(1500,1200)(0,0)
-\font\gnuplot=cmr10 at 10pt
-\gnuplot
-\sbox{\plotpoint}{\rule[-0.200pt]{0.400pt}{0.400pt}}%
-\put(220.0,113.0){\rule[-0.200pt]{292.934pt}{0.400pt}}
-\put(220.0,113.0){\rule[-0.200pt]{0.400pt}{245.477pt}}
-\put(220.0,113.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(198,113){\makebox(0,0)[r]{$0$}}
-\put(1416.0,113.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(220.0,317.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(198,317){\makebox(0,0)[r]{$0.2$}}
-\put(1416.0,317.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(220.0,521.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(198,521){\makebox(0,0)[r]{$0.4$}}
-\put(1416.0,521.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(220.0,724.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(198,724){\makebox(0,0)[r]{$0.6$}}
-\put(1416.0,724.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(220.0,928.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(198,928){\makebox(0,0)[r]{$0.8$}}
-\put(1416.0,928.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(220.0,1132.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(198,1132){\makebox(0,0)[r]{$1$}}
-\put(1416.0,1132.0){\rule[-0.200pt]{4.818pt}{0.400pt}}
-\put(220.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(220,68){\makebox(0,0){$0$}}
-\put(220.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(414.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(414,68){\makebox(0,0){$1$}}
-\put(414.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(607.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(607,68){\makebox(0,0){$2$}}
-\put(607.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(801.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(801,68){\makebox(0,0){$3$}}
-\put(801.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(995.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(995,68){\makebox(0,0){$4$}}
-\put(995.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(1188.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(1188,68){\makebox(0,0){$5$}}
-\put(1188.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(1382.0,113.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(1382,68){\makebox(0,0){$6$}}
-\put(1382.0,1112.0){\rule[-0.200pt]{0.400pt}{4.818pt}}
-\put(220.0,113.0){\rule[-0.200pt]{292.934pt}{0.400pt}}
-\put(1436.0,113.0){\rule[-0.200pt]{0.400pt}{245.477pt}}
-\put(220.0,1132.0){\rule[-0.200pt]{292.934pt}{0.400pt}}
-\put(45,622){\makebox(0,0){\shortstack{This is\\the\\$y$ axis}}}
-\put(828,23){\makebox(0,0){This is the $x$ axis}}
-\put(828,1177){\makebox(0,0){This is a plot of $y=sin(x)$}}
-\put(220.0,113.0){\rule[-0.200pt]{0.400pt}{245.477pt}}
-\sbox{\plotpoint}{\rule[-0.500pt]{1.000pt}{1.000pt}}%
-\put(1306,1067){\makebox(0,0)[r]{sin(x)}}
-\multiput(1328,1067)(20.756,0.000){4}{\usebox{\plotpoint}}
-\put(1394,1067){\usebox{\plotpoint}}
-\put(220,113){\usebox{\plotpoint}}
-\multiput(220,113)(3.768,20.411){4}{\usebox{\plotpoint}}
-\multiput(232,178)(4.132,20.340){3}{\usebox{\plotpoint}}
-\multiput(245,242)(3.825,20.400){3}{\usebox{\plotpoint}}
-\multiput(257,306)(3.884,20.389){3}{\usebox{\plotpoint}}
-\multiput(269,369)(3.944,20.377){3}{\usebox{\plotpoint}}
-\multiput(281,431)(4.326,20.300){3}{\usebox{\plotpoint}}
-\multiput(294,492)(4.137,20.339){3}{\usebox{\plotpoint}}
-\multiput(306,551)(4.276,20.310){3}{\usebox{\plotpoint}}
-\multiput(318,608)(4.693,20.218){3}{\usebox{\plotpoint}}
-\multiput(331,664)(4.583,20.243){2}{\usebox{\plotpoint}}
-\multiput(343,717)(4.754,20.204){3}{\usebox{\plotpoint}}
-\multiput(355,768)(5.034,20.136){2}{\usebox{\plotpoint}}
-\multiput(367,816)(5.760,19.940){2}{\usebox{\plotpoint}}
-\multiput(380,861)(5.579,19.992){3}{\usebox{\plotpoint}}
-\put(398.00,923.50){\usebox{\plotpoint}}
-\multiput(404,943)(7.049,19.522){2}{\usebox{\plotpoint}}
-\multiput(417,979)(7.288,19.434){2}{\usebox{\plotpoint}}
-\put(433.18,1021.10){\usebox{\plotpoint}}
-\multiput(441,1040)(8.982,18.712){2}{\usebox{\plotpoint}}
-\put(460.41,1076.97){\usebox{\plotpoint}}
-\put(471.84,1094.28){\usebox{\plotpoint}}
-\put(484.84,1110.41){\usebox{\plotpoint}}
-\put(500.42,1124.01){\usebox{\plotpoint}}
-\multiput(503,1126)(19.159,7.983){0}{\usebox{\plotpoint}}
-\put(519.48,1131.37){\usebox{\plotpoint}}
-\multiput(527,1132)(20.136,-5.034){0}{\usebox{\plotpoint}}
-\put(539.74,1128.60){\usebox{\plotpoint}}
-\put(557.04,1117.38){\usebox{\plotpoint}}
-\put(570.79,1101.95){\usebox{\plotpoint}}
-\put(582.44,1084.80){\usebox{\plotpoint}}
-\put(593.09,1066.99){\usebox{\plotpoint}}
-\multiput(601,1053)(8.430,-18.967){2}{\usebox{\plotpoint}}
-\put(619.18,1010.54){\usebox{\plotpoint}}
-\multiput(625,996)(7.413,-19.387){2}{\usebox{\plotpoint}}
-\multiput(638,962)(6.403,-19.743){2}{\usebox{\plotpoint}}
-\multiput(650,925)(5.830,-19.920){2}{\usebox{\plotpoint}}
-\multiput(662,884)(5.461,-20.024){2}{\usebox{\plotpoint}}
-\multiput(674,840)(5.533,-20.004){2}{\usebox{\plotpoint}}
-\multiput(687,793)(4.937,-20.160){3}{\usebox{\plotpoint}}
-\multiput(699,744)(4.667,-20.224){2}{\usebox{\plotpoint}}
-\multiput(711,692)(4.858,-20.179){3}{\usebox{\plotpoint}}
-\multiput(724,638)(4.276,-20.310){3}{\usebox{\plotpoint}}
-\multiput(736,581)(4.205,-20.325){3}{\usebox{\plotpoint}}
-\multiput(748,523)(4.070,-20.352){3}{\usebox{\plotpoint}}
-\multiput(760,463)(4.326,-20.300){3}{\usebox{\plotpoint}}
-\multiput(773,402)(3.884,-20.389){3}{\usebox{\plotpoint}}
-\multiput(785,339)(3.884,-20.389){3}{\usebox{\plotpoint}}
-\multiput(797,276)(4.070,-20.352){3}{\usebox{\plotpoint}}
-\multiput(810,211)(3.825,-20.400){3}{\usebox{\plotpoint}}
-\multiput(822,147)(3.607,-20.440){2}{\usebox{\plotpoint}}
-\put(828,113){\usebox{\plotpoint}}
-\end{picture}
-\caption{Simple Gnuplot example. The caption should tell the reader
-  what is plotted against what, and explain in some detail the various
-  sets of curves of data points. It shouldn't just say ``plot of
-  results for the purple function in green gauge'' without further explanation.}
-\label{fig:gnu}
-\end{figure}
-
-\section{Discussion of your results}
-
-This section should give a picture of what you have taken out of your
-project and how you can put it into context.
-
-This section should summarise the results obtained, detail conclusions
-reached, suggest future work, and changes that you would make if you
-repeated the project.
+\section{Approximate and Non-Isometric Codes}
+So far, all our theorems have described cases where the error correcting code can perfectly recover information. In real world experiments and quantum computers, this is never truly the case, so we need to be able to talk about \textit{approximate error correction}. In this framework, there are analogous theorems to theorems 3.0.1 and 3.0.2, with the conditions replaced by approximate versions. For example, an approximate version of (3.0.15) is
+\begin{equation}
+	\lVert\tr_{A_{2}\ol{A}}(U_{A}V\tilde{\rho}V^{\dagger})-\tilde{\rho}_{A_{1}}\rVert_{1}\leq\epsilon
+\end{equation}
+for any $\epsilon>0$. Here, $\lVert X\rVert_{1}=\tr\sqrt{X^{\dagger}X}$ is called the \textit{trace norm}.\\
+Approximate error correction behaves quite differently to exact error correction. For example, exact error correction is always impossible if the number of errors is greater than $1/4$ the number of qubits used for encoding, but approximate error correction is still possible as long as the number of errors is less than $1/2$ the number of qubits (CITE).\\
+For erasures, to quantify the difference somewhat, rather than considering the information which is accessible to $\mathcal{H}_{A}$, consider the information which is inaccessible to $\mathcal{H}_{\ol{A}}$. Since the no-cloning and no-deletion theorems are true in quantum computing, these are exactly equivalent - i.e. exact erasure correction is only possible if $\mathcal{H}_{A}$ has access to \textit{all} information about the encoded state, or if $\mathcal{H}_{\ol{A}}$ has access to \textit{no} information about it. More concretely, if we trace out the $A$ subsystem from any encoded state $V\ket{\tilde{\psi}}\in\Hcode$, the resultant state should contain no information about $\ket{\tilde{\psi}}$; for all states $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+\begin{equation}
+	\tr_{A}(V\ketbras{\tilde{\psi}}V^{\dagger})=\omega_{\ol{A}}
+\end{equation} 
+for some \textit{fixed} state $\omega_{\ol{A}}$ which is completely independent of $\ket{\tilde{\psi}}$. While this holds for exact erasure correction, for approximate erasure correction we require that for all $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$
+\begin{equation}
+	\lVert \tr_{A}(V\ketbras{\tilde{\psi}}V^{\dagger})-\omega_{\ol{A}}\rVert_{1}\leq \epsilon.
+\end{equation}
 
 \chapter{Conclusions}
 
@@ -805,109 +1024,311 @@ pages, but not much longer.
 \appendix
 % the appendix command just changes heading styles for appendices.
 
-\chapter{Stuff that's too detailed}
+\chapter{Quantum Mechanics and Information: Background and Conventions}
 
-Appendices should contain all the material which is considered too
-detailed to be included in the main body of the text, but which is
-important enough to be included in the thesis.
-
-Perhaps this is a good place to mention \BibTeX.
-
-You can do references in the simple way explained in the introduction,
-or you can use \BibTeX.
+In this appendix, I outline the background and conventions used for quantum mechanics and quantum information theory throughout this dissertation in detail. I mainly stick to the description of quantum mechanics as given in Nielsen and Chuang's textbook \cite{NielsenChuang} and the notes of David Skinner, and supplement Nielsen and Chuang's description of quantum information and computing with notes by Richard Jozsa and John Preskill.
 
 
-\section{\BibTeX}
-\label{sec:bibtex}
+\section{Quantum Mechanics}
+\label{sec:QM}
 
-It is convenient to use \BibTeX\ to compile your bibliography.  First
-you need to create a .bib file e.g.  you may call it ref.bib Then you
-can put all your references into the file with entries such as
-\begin{verbatim}
-@Book{ob:bornwolf,
-     author = "Born, M and Wolf, E",
-     title  = "Principles of Optics",
-     publisher = "Cambridge University Press",
-     year = 1999,
-     edition = {7th},
-}
+I begin with a discussion of the four defining postulates of quantum mechanics.
 
-@Article{jr:ashkin,
-Author = {A. Ashkin and J.M. Dziedzic and J.E. Bjorkholm and S. Chu},
-Title = "Observation of a single beam gradient force optical tap for 
-dielectric particles",
-Journal = "Optics Letters",
-Volume = 11,
-Pages = "288-290",
-Year = 1986}
+\subsection{State Spaces}
 
-@INPROCEEDINGS{seger,
- author = {J. Seger and H.J. Brockman},
- title = {What is bet-hedging?},
- editors={P.H. Harvey and L. Partridge},
- booktitle = {Oxford Surveys in Evolutionary Biology},
- year={1987},
- page={18},
- publisher={Oxford University Press},
- place={Oxford}}
-\end{verbatim}
-for a book, an article in a journal or an article in a proceedings volume
-respectively.
+\begin{postulate}
+	Any isolated quantum system has an associated Hilbert space $\mathcal{H}$ called the \textit{state space} of the system. The system is fully described by its \textit{state vector} (or just \textit{state}), which is a unit vector $\ket{\psi}\in\mathcal{H}$.
+\end{postulate}
 
-Inside your \LaTeX\ file
-you should include 
-\begin{verbatim}
-\bibliographystyle{unsrt}                      
-and
-\bibliography{ref}
-\end{verbatim}
-The first command determines the reference style, here plain and 
-unsorted. With this referencing style 
-a numerical referencing system (which is now the most
-common in physics literature) is used and the numbering of references
-will be the order in which they appear in the document. Alternatively, 
-you could use
-a customised `style file' but there is no real need.  The second
-command just inputs your .bib file Note that only the references cited
-in the text will appear in the bibliography so you can have spare
-references in your .bib file.
+Note that this just tells us that the state space for a system exists, and not necessarily what the relevant Hilbert space is. The simplest example of a non-trivial system is that of the two-dimensional \textit{qubit}, with state space denoted $\mathcal{H}_{2}$. An orthonormal basis of this space is given by the set $\{\ket{0},\ket{1}\}$, so the state of a qubit can be written
+\begin{equation}
+	\ket{\psi}=a\ket{0}+b\ket{1},\quad a,b\in\mathbb{C}
+\end{equation} 
+with the condition that $\ket{\psi}$ is a unit vector (i.e. $\braket{\psi,\psi}=1$) implying that $|a|^{2}+|b|^{2}=1$. We say that $\ket{\psi}$ is in a \textit{superposition} of $\ket{0}$ and $\ket{1}$, with \textit{amplitudes} $a$ and $b$, which generalises in the obvious way to arbitrary linear combinations of states.
 
+\subsection{Evolution of States}
+\begin{postulate}
+	The evolution in time of a \textit{closed} quantum system is described by a unitary transformation. Explicitly, if $\ket{\psi,t}$ is the state of a system at time $t$, and $\ket{\psi',t'}$ is the state at time $t'$, then the two states are related by some unitary operator $U(t,t')$ depending only on times $t$ and $t'$ such that
+	\begin{equation}
+		\ket{\psi',t'}=U(t,t')\ket{\psi,t}
+	\end{equation}
+\end{postulate}
+Again, this does not tell us which unitary operators describe the dynamics of a real-world system. On a simple system such as a qubit, it turns out that any unitary operator can be realised. For example, the Pauli matrix $X$ which takes $\ket{0}\mapsto\ket{1}$ and $\ket{1}\mapsto\ket{0}$ is a unitary operator on a single qubit which can always be physically implemented. Note that this postulate generalises to the case of continuous time, whereupon evolution is governed by the Schrodinger equation, but this is less relevant for the case of quantum information.
 
-You use the name you have given to an entry (e.g.
-for the book example above the name is ob:bornwolf)
-to cite the relevant article
-by using the cite command in your \LaTeX\ file e.g. 
-\begin{verbatim}
-\cite{ob:bornwolf}
-\end{verbatim}
+\subsection{Measurements}
+\begin{postulate}
+	A measurement of a quantum system is described by a set $\{M_{m}\}$ of \textit{measurement operators}, which act on the state space of the system being measured. The index $m$ labels the possible outcomes of the measurement. If the system is in state $\ket{\psi}$ immediately before the measurement is taken, the probability the measurement returns outcome $m$ is given by
+	\begin{equation}
+		\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}
+	\end{equation}
+	and the state of the system immediately after the measurement is
+	\begin{equation}
+		\frac{M_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}.
+	\end{equation}
+\end{postulate}
+Since probabilities sum to 1, we can also derive that the measurement operators obey the \textit{completeness relation}:
+\begin{equation}
+	1=\sum_{m}\mathbb{P}(m)=\braket{\psi|\sum_{m}M_{m}^{\dagger}M_{m}|\psi},\;\forall \ket{\psi}\iff \sum_{m}M_{m}^{\dagger}M_{m}=I
+\end{equation}
+which is a necessary condition for the measurement operators to obey.
+\subsubsection{Projective Measurements}
+In quantum information, a particularly important class of measurements are the \textit{projective measurements}. These turn out to be exactly equivalent to the more general measurement postulate when augmented with the ability to perform unitary transformations as in postulate 2.
+\begin{definition}[Projective measurement]
+	A projective measurement is described by a Hermitian operator (or \textit{observable}) $M$ acting on the state space of the system being measured. Since $M$ is Hermitian, it has a spectral decomposition
+	\begin{equation}
+		M=\sum_{m}mP_{m}
+	\end{equation}
+	where $m$ indexes the eigenvalues, and $P_{m}$ is the corresponding projector onto the $m$-eigenspace. The possible outcomes of the measurement correspond to the eigenvalues. 
+\end{definition}
+With this definition, we see that the probability of obtaining outcome $m$ on measuring state $\ket{\psi}$ is
+\begin{equation}
+	\mathbb{P}(m)=\braket{\psi|P_{m}|\psi}
+\end{equation}
+and the state immediately after the measurement is
+\begin{equation}
+	\frac{P_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}.
+\end{equation}
+Projective measurements have all sorts of nice properties which general measurements do not. One notable such property is how \textit{expectation values} in a probabilistic sense simplify. If we measure observable $M$ on $\ket{\psi}$, the average outcome is
+\begin{equation}
+	\begin{aligned}
+		\mathbb{E}_{\psi}(M)&\equiv\sum_{m}m\mathbb{P}_{\psi}(m)\\&=\sum_{m}m\braket{\psi|P_{m}|\psi}\\&=\braket{\psi|\sum_{m}mP_{m}|\psi}\\&=\braket{\psi|M|\psi}
+	\end{aligned}
+\end{equation}
+which can simplify many calculations. This is often denoted $\braket{M}_{\psi}\equiv\braket{\psi|M|\psi}$.\\
+In this dissertation, I use the convention where I define a projective measurement by just listing the set of projectors $\{P_{m}\}$ rather than the observable $M$, where it is implicit that $M=\sum_{m}mP_{m}$, $\sum_{m}P_{m}=1$, and $P_{m}P_{n}=\delta_{mn}P_{m}$. I will also say `\textit{perform a measurement in the} $\ket{m}$ \textit{basis}', which refers to projective measurement with projectors $P_{m}=\ketbras{m}$.
+\subsubsection{POVM measurements}
+In quantum mechanics, the post-measurement state is often not particularly relevant; the important item being the outcome probabilities instead, for example where a quantum circuit only performs a measurement at the end of the circuit. \textit{POVM measurements} (standing for `positive operator valued measure') are particularly well-suited for this sort of application. Suppose we perform a measurement $\{M_{m}\}$ on a state $\ket{\psi}$, so $\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}$. If we then define operators
+\begin{equation}
+	E_{m}\equiv M_{m}^{\dagger}M_{m},
+\end{equation}
+then the $E_{m}$ obey $\sum_{m}E_{m}=I$ and $\mathbb{P}(m)=\braket{\psi|E_{m}|\psi}$, and so the set $\{E_{m}\}$ alone is sufficient to determine the outcome probabilities. The operators $E_{m}$ are called \textit{POVM elements} for the measurement, and the set $\{E_{m}\}$ is simply called a POVM. It can be shown that any measurement where the measurement operators and the POVM operators are the same is a projective measurement, and moreover that for any POVM $\{E_{m}\}$, there exists a set of measurement operators $\{M_{m}\}$ describing an equivalent general measurement. 
 
+\subsection{Composite Systems}
+\begin{postulate}
+	The state space of a composite system $AB$ is the \textit{tensor product} of the state spaces of the individual systems $\mathcal{H}_{AB}=\mathcal{H}_{A}\otimes\mathcal{H}_{B}$. More generally, if we have $n$ systems indexed by $i$ each prepared in the state $\ket{\psi_{i}}$, the joint state of the total system is $\ket{\psi}=\ket{\psi_{1}}\otimes\ket{\psi_{2}}\otimes\ldots\otimes\ket{\psi_{n}}$.
+\end{postulate}
+In practice, we often drop the tensor product symbol $\otimes$, and just write (for example) $\ket{\psi}_{A}\otimes\ket{\phi}_{B}\equiv\ket{\psi}_{A}\ket{\phi}_{B}$, where the subscript keeps track of which system each state refers to. We can also talk about the composition of operators. For example, if $O_{A}$ and $O_{B}$ are operators acting on systems $A$ and $B$ individually, the composition $O_{A}\otimes O_{B}$ acts on the joint state $\ket{A}\ket{B}$ as
+\begin{equation}
+	(O_{A}\otimes O_{B})\ket{A}\ket{B}\equiv O_{A}O_{B}\ket{A}\ket{B}=(O_{A}\ket{A})\otimes(O_{B} \ket{B}).
+\end{equation}
+We often wish to express operators and states explicitly in a basis. If $\{\ket{a}\}_{a=1}^{n}$ is an orthonormal basis for system $A$, then any operator $O_{A}$ on $\mathcal{H}_{A}$ can be expressed as
+\begin{equation}
+	O_{A}\equiv \sum_{ab}O_{ab}\ketbra{a}{b}=\begin{pmatrix}
+		O_{11}&\dots&O_{1n}\\
+		\vdots&\ddots&\vdots\\
+		O_{n1}&\dots&O_{nn}
+	\end{pmatrix},\quad O_{ab}\in\mathbb{C}.
+\end{equation}
+The composite operator $O_{A}\otimes O_{B}$ for some operator $O_{B}$ on system $B$ with state space $\mathcal{H}_{B}$ is then the block matrix
+\begin{equation}
+	O_{A}\otimes O_{B}\equiv\begin{pmatrix}
+		O_{11}O_{B}&\dots&O_{1n}O_{B}\\
+		\vdots&\ddots&\vdots\\
+		O_{n1}O_{B}&\dots&O_{nn}O_{B}
+	\end{pmatrix}.
+\end{equation}
+Note that this representation of an operator can be used to represent states as a specific case. 
+\subsection{Density Operators}
+For some cases, the description of a state as being just a unit vector $\ket{\psi}$ is insufficient. This motivates the formalism of \textit{density operators}, which find particular use in talking about subsystems of a composite system, systems which we may not know the state with certainty, and in statistical mechanics. Consider a system which is in the state $\ket{\psi_{i}}$ with probability $p_{i}$. The complete set $\{\ket{\psi_{i}},p_{i}\}$ is known as an \textit{ensemble} of pure states. The density operator for this system is then defined as
+\begin{equation}
+	\rho\equiv\sum_{i}p_{i}\ketbras{\psi_{i}}.
+\end{equation}
+We can reformulate the postulates above in terms of density operators; we use them so frequently, that we do this explicitly.\\
+For postulate 1, we note that the states $\ket{\psi_{i}}$ define a unique $\rho$ and vice versa, so this remains unchanged. Similarly, the fourth postulate also remains unchanged since it does not explicitly refer to states in its statement. Consider postulate 2, and suppose we have a unitary $U$ governing evolution of the system. $\rho$ then evolves as
+\begin{equation}
+	\rho=\sum_{i}p_{i}\ketbras{\psi_{i}}\xrightarrow{U}\sum_{i}p_{i}U\ketbras{\psi_{i}}U^{\dagger}=U\rho U^{\dagger}.
+\end{equation}
+We can similarly reformulate the measurement postulate 3 for density operators. Suppose we perform a measurement with operators $\{M_{m}\}$. If our system happened to initially be in state $\ket{\psi_{i}}$, then the probability of outcome $m$ is
+\begin{equation}
+	\mathbb{P}(m|i)=\braket{\psi_{i}|M^{\dagger}_{m}M_{m}|\psi_{i}}=\text{Tr}(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}})
+\end{equation}
+where the trace is taken over the entire state space. Therefore, the full probability of outcome $m$ is
+\begin{equation}
+	\mathbb{P}(m)=\sum_{i}\mathbb{P}(m|i)p_{i}=\sum_{i}p_{i}\text{Tr}(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}})=\text{Tr}(M_{m}^{\dagger}M_{m}\rho).
+\end{equation}
+What is the density operator $\rho$ immediately after the measurement returning $m$? If the initial state was $\ket{\psi_{i}}$, then we know that immediately after the measurement it is
+\begin{equation}
+	\ket{\psi_{i}^{m}}=\frac{M_{m}\ket{\psi_{i}}}{\sqrt{\mathbb{P}(m|i)}},
+\end{equation}
+and so we now have an ensemble of states $\{\ket{\psi_{i}^{m}},\mathbb{P}(i|m)\}$ immediately post-measurement. Therefore, $\rho$ becomes
+\begin{equation}
+	\rho_{m}\equiv\sum_{i}\mathbb{P}(i|m)\ketbras{\psi_{i}^{m}}.
+\end{equation}
+Probability theory states that $\mathbb{P}(i|m)=\mathbb{P}(m|i)p_{i}/\mathbb{P}(m)$, so we therefore find
+\begin{equation}
+	\rho_{m}=\sum_{i}p_{i}\frac{M_{m}\ketbras{\psi_{i}}M_{m}^{\dagger}}{\text{Tr}(M_{m}^{\dagger}\rho)}=\frac{M_{m}\rho M_{m}^{\dagger}}{\text{Tr}(M_{m}^{\dagger}M_{m}\rho)},
+\end{equation}
+which completes the reformulation.\\
+Density operators can also be axiomatised. Indeed, we can show that an arbitrary operator $\rho$ is a density operator for some system if and only if both:
+\begin{enumerate}
+	\item $\text{Tr}(\rho)=1$
+	\item $\rho$ is a positive operator.
+\end{enumerate}
+Before concluding, I'll introduce some nomenclature which is used to describe states quite often. A system which is known to be in state $\ket{\psi}$ exactly is called a \textit{pure state}, and the density operator is $\rho=\ketbras{\psi}$. If not, the state is said to be \textit{mixed}, and the density operator can be written as in (A.1.14). A sufficient criterion for checking whether a state is pure or mixed is calculating $\text{Tr}(\rho^{2})$; if this is 1, then the state is pure, and if it is less than 1, it is mixed. 
 
-\section{Producing your documents using \texttt{pdflatex}}
-
-To use pdflatex your figures need to be in pdf format.  You can convert almost any image file to pdf using \texttt{convert}.  e.g. \texttt{convert myfigure.png myfigure.pdf}.
-
-The first time you should type:
-\begin{verbatim}
-  pdflatex ProjectReport
-  bibtex ProjectReport
-  pdflatex ProjectReport
-  pdflatex ProjectReport
-\end{verbatim} 
-This first time you run\texttt{pdflatex} it will produce a
-\texttt{ProjectReport.aux}.  The \BibTeX\ command reads in the
-bibliography file and makes the files \texttt{ProjectReport.bbl} and
-\texttt{ProjectReport.blg} files.  These files are read in the next
-\texttt{pdflatex} command, but you'll still have ``undefined
-cross-reference'' errors which are sorted out by the last
-\texttt{pdflatex} command.
-
-Subsequently, you should only need to do one (or two)
-\texttt{pdflatex}s, or \texttt{pdfbibtex} followed by
-\texttt{pdflatex} twice if you change any references.
-
-\vspace{5mm} You may also use plain \texttt{latex} instead of
-\texttt{pdflatex}.  This requires you to use postscript graphics
-instead of pdf.
+\section{Quantum Information and Computation}
+This section will go through the basics of quantum information and computation. We discuss the definitions and conventions used for various distance measures for quantum information (with relevance to approximate error correction), entropy, as well as the basics of the circuit model of quantum computation.
+\subsection{Distance Measures}
+The point of quantum distance measures is to answer the question `how close are two states?'. The two main distance measures are \textit{trace distance} and \textit{fidelity}. For our purposes, only fidelity is important, so we run through its definition and properties.
+\begin{definition}[Fidelity]
+	Given two states (as density operators) $\rho$ and $\sigma$, the \textbf{fidelity} between them is
+	\begin{equation}
+		F(\rho,\sigma)\equiv\tr\sqrt{\rho^{1/2}\sigma\rho^{1/2}},
+	\end{equation}
+	where $(\rho^{1/2})^{2}=\rho$.
+\end{definition}
+While fidelity is not formally a metric, it does give a useful notion of distance between states. Before going through its properties, we note two cases where fidelity simplifies. The first is when $\rho$ and $\sigma$ commute, so can be simultaneously diagonalised; in some basis $\{\ket{i}\}$ of the underlying Hilbert space, we have
+\begin{equation}
+	\rho=\sum_{i}r_{i}\ketbras{i},\quad\sigma=\sum_{i}s_{i}\ketbras{i}.
+\end{equation}
+Then, we can compute the fidelity as
+\begin{equation}
+	\begin{aligned}
+		F(\rho,\sigma)&=\tr\sqrt{\sum_{i}r_{i}s_{i}\ketbras{i}}\\&=\tr\left(\sum_{i}\sqrt{r_{i}s_{i}}\ketbras{i}\right)\\&=\sum_{i}\sqrt{r_{i}s_{i}}.
+	\end{aligned}
+\end{equation}
+The second special case is the fidelity between a pure state $\ket{\psi}$ and arbitrary $\rho$. In this case, we have
+\begin{equation}
+	F(\ket{\psi},\rho)=\tr\sqrt{\ket{\psi}\braket{\psi|\rho|\psi}\bra{\psi}}=\sqrt{\braket{\psi|\rho|\psi}},
+\end{equation}
+so fidelity is just the square root of the overlap between $\ket{\psi}$ and $\rho$.
+\subsubsection{Properties}
+We now present some useful properties of fidelity.
+\begin{proposition}
+	Fidelity is invariant under unitary transformations; that is, for unitary $U$, we have
+	\begin{equation}
+		F(U\rho U^{\dagger},U\sigma U^{\dagger})=F(\rho,\sigma).
+	\end{equation}
+\end{proposition}
+\begin{proof}
+	For any positive operator $A$, we know that $\sqrt{UAU^{\dagger}}=U\sqrt{A}U^{\dagger}$. Density operators are positive, so
+	\begin{equation}
+		\begin{aligned}
+			F(U\rho U^{\dagger},U\sigma U^{\dagger})&=\tr\sqrt{(U\rho U^{\dagger})^{1/2}U\sigma U^{\dagger}(U\rho U^{\dagger})^{1/2}}\\&=\tr\sqrt{U\rho^{1/2}U^{\dagger}U\sigma U^{\dagger}U\rho^{1/2}U^{\dagger}}\\&=\tr\sqrt{U\rho^{1/2}\sigma\rho^{1/2}U^{\dagger}}\\&=\tr U\sqrt{\rho^{1/2}\sigma\rho^{1/2}}U^{\dagger}\\&=F(\rho,\sigma).
+		\end{aligned}
+	\end{equation}
+\end{proof}
+Fidelity can be characterised by a theorem called \textit{Uhlmann's theorem}. Before presenting and proving this, we need two basic lemmas.
+\begin{lemma}
+	Let $A$ be an arbitrary operator, and $U$ a unitary operator. Then
+	\begin{equation}
+		|\tr(AU)|\leq\tr|A|,
+	\end{equation}
+	with equality when $U=V^{\dagger}$, where $A=|A|V$ is the polar decomposition of $A$.
+\end{lemma}
+\begin{proof}
+	Equality is clear under the stated condition. We compute
+	\begin{equation}
+		|\tr(AU)|=|\tr(|A|VU)|=|\tr(|A|^{1/2}|A|^{1/2}VU)|,
+	\end{equation}
+	where we note that the trace term is just the Hilbert-Schmidt inner product $\braket{|A|^{1/2},|A|^{1/2}VU}$. The Cauchy-Schwarz inequality then implies
+	\begin{equation}
+		|\tr(AU)|\leq\sqrt{\tr|A|\tr(U^{\dagger}V^{\dagger}|A|VU)}=\tr|A|
+	\end{equation}
+	as required.
+\end{proof}
+\begin{lemma}
+	Suppose $A$ and $R$ are two quantum systems with the same Hilbert space, with bases $\{\ket{i_{A}}\}$ and $\{\ket{i_{R}}\}$ respectively. Define $\ket{m}=\sum_{i}\ket{i_{R}}\ket{i_{A}}$, and let $P$ be an arbitrary operator on $A$ and $Q$ on $R$. Then
+	\begin{equation}
+		\tr(Q^{\dagger}P)=\braket{m|Q\otimes P|m}
+	\end{equation}
+	where the left hand side refers to matrix multiplication, and the matrix elements are taken with respect to the given bases.
+\end{lemma}
+\begin{proof}
+	We just compute:
+	\begin{equation}
+		\begin{aligned}
+			\tr(Q^{\dagger}P)&=\braket{i_{R}|Q|j_{R}}\braket{i_{A}|P|j_{A}}\\&=\bra{i_{R}}\bra{i_{A}}(Q\otimes P)\ket{j_{R}}\ket{j_{A}}=\braket{m|Q\otimes P|m},
+		\end{aligned}
+	\end{equation}
+	as required, where summation convention is implied.
+\end{proof}
+\begin{theorem}[Uhlmann's Theorem]
+	Suppose $\rho$ and $\sigma$ are states of quantum system $A$. Introduce an auxiliary system $R$ with $\mathcal{H}_{R}=\mathcal{H}_{A}$. Then:
+	\begin{equation}
+		F(\rho,\sigma)=\max_{\ket{\psi},\ket{\phi}}|\braket{\psi|\phi}|,
+	\end{equation}
+	where the maximisation is taken over all purifications $\ket{\psi}$ of $\rho$ and $\ket{\phi}$ of $\sigma$, both into $RA$.
+\end{theorem}
+\begin{proof}
+	Choose orthonormal bases $\{\ket{i_{A}}\}$ and $\{\ket{i_{R}}\}$ of $A$ and $R$. Define $\ket{m}\equiv\sum_{i}\ket{i_{R}}\ket{i_{A}}$, and let $\ket{\psi}$ be an arbitrary purification of $\rho$. The  Schmidt decomposition then implies that there exist some unitary operators $U_{A}$ and $U_{R}$ on $A$ and $R$ respectively such that
+	\begin{equation}
+		\ket{\psi}=(U_{R}\otimes\sqrt{\rho}U_{A})\ket{m}.
+	\end{equation}
+	We have an identical statement for some other unitaries $V_{A}$ and $V_{R}$, and arbitrary purification $\ket{\phi}$ of $\sigma$. Taking an inner product then implies
+	\begin{equation}
+		|\braket{\psi|\phi}|=|\braket{m|(U_{R}^{\dagger}V_{R}\otimes U_{A}^{\dagger}\sqrt{\rho}\sqrt{\sigma}V_{A})|m}|.
+	\end{equation}
+	Using lemma A.2.2, we then have
+	\begin{equation}
+		|\braket{\psi|\phi}|=|\tr(V_{R}^{\dagger}U_{R}U_{A}^{\dagger}\sqrt{\rho}\sqrt{\sigma}V_{A})|.
+	\end{equation}
+	So, defining $U\equiv V_{A}V_{R}^{\dagger}U_{R}U_{A}^{\dagger}$, we have
+	\begin{equation}
+		|\braket{\psi|\phi}|=|\tr(\sqrt{\rho}\sqrt{\sigma}U)|.
+	\end{equation}
+	Then, by lemma A.2.1, we have
+	\begin{equation}
+		|\braket{\psi|\phi}|\leq\tr|\sqrt{\rho}\sqrt{\sigma}|=\tr\sqrt{\rho^{1/2}\sigma\rho^{1/2}}=F(\rho,\sigma).
+	\end{equation}
+	To attain equality, take the polar decomposition $\sqrt{\rho}\sqrt{\sigma}=|\sqrt{\rho}\sqrt{\sigma}|V$, and choose $U_{A}=U_{R}=V_{R}=I$ and $V_{A}=V^{\dagger}$, and we are done.
+\end{proof}
+While Uhlmann's theorem is not particularly useful in a computational sense, it shows us that the fidelity indeed has properties we would expect from a distance measure. It clearly implies symmetry of inputs $F(\rho,\sigma)=F(\sigma,\rho)$, and that it is bounded between 0 and 1, with equality with 1 if $\rho=\sigma$, and equality with 0 if and only if $\rho$ and $\sigma$ are supported on orthogonal subspaces. This would make sense: if two states are orthogonal, they are perfectly distinguishable, so we would expect minimum fidelity between them.\\
+Fidelity is not a metric, but we can turn it into one. To do this, we make the following definition:
+\begin{definition}[Angle]
+	Given two states $\rho$ and $\sigma$, the \textbf{angle} between them is
+	\begin{equation}
+		A(\rho,\sigma)\equiv\arccos F(\rho,\sigma).
+	\end{equation}
+\end{definition}
+The motivation for this comes from the fact that the angle between two points on a sphere is a metric, and Uhlmann's theorem tells us that the fidelity between two states is the maximum possible inner product between purifications of these states. Clearly the angle is non-negative and symmetric in its inputs, and $A(\rho,\sigma)=0\iff\rho=\sigma$. The only property left to show angle is a metric is that it obeys the triangle inequality. To do this, consider three states $\rho$, $\sigma$, and $\tau$. Choose purifications $\ket{\phi}$ of $\sigma$, $\ket{\psi}$ of $\rho$, and $\ket{\gamma}$ of $\tau$ such that
+\begin{equation}
+	\begin{aligned}
+		F(\rho,\sigma)&=\braket{\psi|\phi}\\
+		F(\sigma,\tau)&=\braket{\phi|\gamma},
+	\end{aligned}
+\end{equation}
+and $\braket{\psi|\gamma}$ is real and positive. We have in general for arbitrary vectors that
+\begin{equation}
+	\arccos(\braket{\psi|\gamma})\leq\arccos(\braket{\psi|\phi})+\arccos({\phi|\gamma})=A(\rho,\sigma)+A(\sigma,\tau),
+\end{equation}
+but by Uhlmann's theorem, $F(\rho,\tau)\geq\braket{\psi|\gamma}$. Therefore $A(\rho,\tau)\leq\arccos(\braket{\psi|\gamma})$. Together with (A.2.20), we then get the triangle equality, so angle is indeed a metric.\\
+Fidelity is also monotonic under trace-preserving quantum operations.
+\begin{proposition}
+	Suppose $\mathcal{E}$ is a trace-preserving quantum operation, and $\rho$ and $\sigma$ are states of system $A$. Then
+	\begin{equation}
+		F(\mathcal{E}(\rho),\mathcal{E}(\sigma))\geq F(\rho,\sigma).
+	\end{equation}
+\end{proposition} 
+\begin{proof}
+	Take purifications $\ket{\psi}$ and $\ket{\phi}$ of $\rho$ and $\sigma$ respectively onto a joint system $AR$ such that $F(\rho,\sigma)=|\braket{\psi|\phi}|$. Introduce an environment $E$ for the operation $\mathcal{E}$, which is initially in the state $\ket{0}_{E}$, and take it to interact with $A$ via a unitary operation $U$. $U\ket{\psi}_{RA}\ket{0}_{E}$ is a purification of $\mathcal{E}(\rho)$, and similarly $U\ket{\phi}_{RA}\ket{0}_{E}$ is of $\mathcal{E}(\sigma)$. By Uhlmann's theorem, we therefore have
+	\begin{equation}
+		\begin{aligned}
+			F(\mathcal{E}(\rho),\mathcal{E}(\sigma))&\geq|\bra{\psi}\braket{0|U^{\dagger}U|\phi}\ket{0}|\\&=|\braket{\psi|\phi}|\\&=F(\rho,\sigma)
+		\end{aligned}
+	\end{equation}
+	as claimed.
+\end{proof}
+Our last property of fidelity is strong concavity.
+\begin{theorem}
+	Let $p_{i}$ and $q_{i}$ be probability distributions indexed by $i$, and $\rho_{i}$ and $\sigma_{i}$ density operators also indexed by $i$. Then
+	\begin{equation}
+		F\left(\sum_{i}p_{i}\rho_{i},\sum_{i}q_{i}\sigma_{i}\right)\geq\sum_{i}\sqrt{p_{i}q_{i}}F(\rho_{i},\sigma_{i}).
+	\end{equation}
+\end{theorem}
+\begin{proof}
+	Choose purifications $\ket{\psi_{i}}$ and $\ket{\phi_{i}}$ of $\rho_{i}$ and $\sigma_{i}$ respectively such that $F(\rho_{i},\sigma_{i})=\braket{\psi_{i}|\phi_{i}}$. Introduce an ancillary system which has orthonormal basis $\{\ket{i}\}$, indexed by the same $i$ as everything else. Define
+	\begin{equation}
+		\ket{\psi}\equiv\sum_{i}\sqrt{p_{i}}\ket{\psi_{i}}\ket{i},\quad\ket{\phi}\equiv\sum_{i}\sqrt{q_{i}}\ket{\phi_{i}}\ket{i}.
+	\end{equation}
+	Note that $\ket{\psi}$ purifies $\sum_{i}p_{i}\rho_{i}$ and $\ket{\phi}$ purifies $\sum_{i}q_{i}\sigma_{i}$, so by Uhlmann's theorem:
+	\begin{equation}
+		\begin{aligned}
+			F\left(\sum_{i}p_{i}\rho_{i},\sum_{i}q_{i}\sigma_{i}\right)&\geq|\braket{\psi|\phi}|\\&=\sum_{i}\sqrt{p_{i}q_{i}}\braket{\psi_{i}|\phi_{i}}\\&=\sum_{i}\sqrt{p_{i}q_{i}}F(\rho_{i},\sigma_{i})
+		\end{aligned}
+	\end{equation}
+	as claimed.
+\end{proof}
 
 
 
