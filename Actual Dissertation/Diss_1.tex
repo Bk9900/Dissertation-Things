@@ -267,38 +267,11 @@ three weeks of August working on it full-time.
 \textbf{Acknowledgements}
 \end{center}
 
-\emph{Put your acknowledgements here. Thanking your supervisor for his/her help is standard practice, but it's not compulsory\ldots}
-
-I'd like to thank my supervisor Professor Carole Ann O'Malley for
-making this project possible, and her PhD student Jack O'Bean for his
-patience and his detailed functional explanations of how classical
-symmetries can be broken by quantum effects. Thanks also to Wally Bee
-and Ken Garoo for sending me their hopping-parameter expansions.
-
-Finally, none of this would have been possible without Catriona
-Sutherland's witchcraft.
-
-\bigskip
-
-This document has its origins in the dissertation template for the MSc
-in High Performance Computing, which is apparently descended from a
-template developed by Professor Charles Duncan for MSc students in
-Meteorology. His acknowledgement follows:
-
-\emph{This template has been produced with help from many former
-  students who have shown different ways of doing things. Please make
-  suggestions for further improvements.}
-
-Some parts of this template were lifted unashamedly from the Edinburgh
-MPhys project report guide, with little or no modification. I have no
-idea who wrote the first version of that\ldots
-
-You don't have to use \LaTeX\ for your dissertation. You can use
-Microsoft Word, Apple's Pages, LibreOffice (or similar) if you prefer, but
-it's \emph{much} easier to typeset equations in \LaTeX, and references
-look after themselves. Whatever you use, your dissertation should have
-the same general structure as this one, and it should look similar --
-especially the front page.
+I would like to thank everyone at the University of Edinburgh who supported me through the MSc. program, and without whom I never would have been able to reach this project, let alone complete it.\\
+I would like to extend enormous thanks to my supervisor Joan Simon for his expertise, guidance, and incredible and detailed feedback on all aspects of the project, as well as timely replies to my emails!\\
+I also wish to thank my parents, Liz and Alan, for their continued support and encouragement throughout this year.\\
+Thank you to Joe also - several valuable conversations about various aspects of this project have proved hugely useful.\\
+I would finally like to thank several of my friends: James, Dan, Laurence, Tom, Millie, Louis, Sophie, Simon, and Jacob. Without your continued advice on my anxieties, humour, and just general incredible support, I doubt I'd have had the resilience to complete this MSc. 
 
 \tableofcontents
 \listoftables
@@ -307,54 +280,51 @@ especially the front page.
 \pagenumbering{arabic}
 
 \chapter{Introduction}
-The Introduction should contain a description of your project and the
-problem you are trying to solve. It should start off at a level that
-should be understandable by anyone with a degree in physics, but it
-can become more technical later
-
-Where appropriate you should include references to work that has
-already been done on your topic and anything else which lets you set
-your work in context.
-
-One of the things you will need to do is to ensure that you have a
-suitable list of references.  To do this you should see \cite{ref:lam}
-or some other suitable reference.  Note the format of the citation used
-here is the style favoured in this School.  Here is another
-reference \cite{ref:bloggs} for good measure.
-
-Alternatively, you can use \BibTeX. See later for some details on this.
-
-You will also want to make sure you have no spelling or grammatical
-mistakes. To help identify spelling mistukes you caan use the
-commands \emph{ispell} or \emph{spell} on any Linux/unix machine. See
-the appropriate manual pages. Remember that spelling mistakes are not
-the only errors which can occur. Spelling checkers will not find
-errors which are, in fact, valid words such as \emph{there} for {\em
-  their}, nor will they find repeated repeated words which sometimes
-occur if your concentration is broken when typing. \textbf{There is no
-  substitute for thorough proof reading!}
-
-Your dissertation should be no longer than 15,000 words. In terms of
-pages, 30 pages are ok. 50 pages are fine. But it shouldn't be
-much longer than that.
+Ever since David Deutsch and Richard Josza introduced their famous algorithm \cite{DJ} demonstrating a problem which a quantum computer could solve exponentially faster than a classical computer, quantum computing has been an active area of research. A few years later when Peter Shor described a quantum algorithm to factorise integers in polynomial time \cite{Shor}, it became clear that quantum computers held vast potential; if Shor's algorithm could be implemented with enough qubits, then almost every cryptographic scheme used throughout the World could be broken!\\
+Luckily for anyone relying on cryptographic procedures such as these, qubits are immensely delicate and sensitive to changes in their environment. They are prone to suffering errors and decoherence, irreparably ruining computations. Even to this day, the largest number factorised using Shor's algorithm is 21 \cite{FactorRecord} - far smaller than the huge numbers needed to break cryptographic protocols!\\
+A few years later in 1995, Shor proposed a potential solution: \textit{quantum error correction} \cite{PhysRevA.52.R2493}. The idea was relatively simple - encode one logical qubit in nine physical qubits in such a way that the single qubit was protected from arbitrary errors. Shor's code was quickly improved upon, with a (minimal) five qubit code which could protect against arbitrary single qubit errors being published in 2001 \cite{PhysRevLett.86.5811}.\\
+While quantum computing has in many ways moved on from simple factorisation, error correction remains an active field of research. With the proof of the \textit{quantum threshold theorem} \cite{doi:10.1137/S0097539799359385}\cite{doi:10.1126/science.279.5349.342}\cite{KITAEV20032} which states that a quantum computer with a \textit{physical} error rate below a certain threshold can suppress the \textit{logical} error rate to arbitrarily low levels, quantum error correction is considered by many as the most likely way to build a fully fault-tolerant quantum computer.\\
+Recently, an unexpected link between quantum error correction and the structure of space-time was discovered. The AdS/CFT correspondence in the field of holography (itself a branch of string theory) posits a relationship between quantum gravity in an anti-de Sitter space, and a conformal field theory on the boundary \cite{Maldacena}. In 2015, Ahmed Almheiri, Xi Dong, and Daniel Harlow discovered that in the language of quantum error correction, a certain aspect of AdS/CFT known as \textit{subregion duality} could be elucidated \cite{ADH}. Explicitly, certain error correcting procedures have various properties which can be interpreted naturally in holography. Such codes have come to be known as \textit{holographic error correcting codes}, and they have already provided simple toy models to explore the emergence of space-time. From a quantum error correction perspective, it is also hoped that holography can inspire new error correcting codes to be developed.\\
+The goal of this dissertation is to present the basic theory of holographic error correction in a self-contained way, aimed at those with a background in quantum computing rather than holography. Therefore, the focus will be almost entirely on the quantum information perspective, with any comments on holography being present purely for intuition.\\
+This dissertation is structured as follows. Chapter 2 will present all the relevant background theory in error correction, assuming an understanding of quantum mechanics and quantum computing. Those looking for a more detailed exposition of these topics would be well-advised to read Nielsen and Chuang's textbook \cite{NielsenChuang}. This chapter also contains a brief discussion on the relevant aspects of holography in a somewhat `non-rigourous' way. Chapter 3 will present the main results and proofs of \cite{Harlow} - this paper is the primary reference for holographic error correction in general, presenting the three basic theorems of the field in a self-contained way. We change some of the conventions used by Harlow to be more relevant to quantum computing, describing error correction via an \textit{encoding isometry} rather than a \textit{code subspace} as Harlow does. Chapter 4 presents some generalisations of holographic error correction, including \textit{approximate codes}, \textit{state-specific codes}, and \textit{non-isometric codes}, all adapted from \cite{QMS}. Finally, chapter 5 will present a summary of the project and suggestions as to the future direction of the field.
 
 
-\chapter{Error Correction}
+\chapter{Background Theory}
 
-In this chapter, I will introduce quantum error correction. I will start with some classical preliminaries to build intuition, before moving to the quantum regime. I will discuss the concept of noise, and introduce quantum operations (not be to be confused with operators) in the context of closed and open systems, before moving onto quantum error correction itself. I will follow the presentation of Nielsen and Chuang \cite{NielsenChuang}.
+In this chapter, we present the theory of quantum error correction. We begin with a discussion of the analogous topic in the classical regime to build up some intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}. We then end with a brief discussion on some aspects of holography, adapted from \cite{Pollack}.
 
 \section{Classical Noise}
 \subsection{The Classical Bit-Flip}
-To begin, we consider a classical example of error correction, called the \textit{bit-flip code} to build up some intuition. Suppose Alice wishes to send Bob a bit string - a sequence of 0s and 1s - wirelessly. However, phone signals, radio waves, and all sorts of radiation permeate the air and these may interact with the transmitted bit string, causing some 0s to `flip' to 1s and vice versa. This is known as \textit{noise}. We model this as a constant probability $p$ for an individual bit to flip before it reaches Bob, and $1-p$ for the bit to remain the same. Schematically, the process looks like:
+We begin with a classical example of error correction, called the \textit{bit-flip code} to build up some intuition. Suppose Alice wishes to send Bob a bit string - a sequence of 0s and 1s - across a \textit{channel}, which for now we just think of as the medium the bit string is transmitted across. In theory, this is easy if the channel is perfect, but in practice this almost never holds and the channel is \textit{noisy}, meaning it can introduce errors to the bit-string. In this example, we model the noise as a bit-flip: each transmitted 0 has a fixed probability $p$ of `flipping' from a 0 to a 1 (and a probability $1-p$ of remaining a 0), and vice versa for 1s. Schematically, the channel acts as in \ref{ClassBitFlip}.
 
-FIGURE
+\begin{figure}
+	\centering
+	\scalebox{1.5}{\begin{tikzpicture}
+		\node at (0,2) (0) {$0$};
+		\node at (0,0) (1) {$1$};
+		\node at (4,0) (1s) {$1$};
+		\node at (4,2) (0s) {$0$};
+		\draw [thick,->] (0) -- node [above] {$p$} (0s);
+		\draw [thick,->] (1) -- node [below] {$p$} (1s);
+		\draw [thick,->] (0) -- node [left = 1em] {$1-p$} (1s);
+		\draw [thick,->] (1) -- (0s);
+		%\draw [thick, decorate,
+		decoration = {brace}] (-0.2,-0.2) --  (-0.2,2.2);
+		%\draw [thick, decorate,
+		decoration = {brace}] (4.2,2.2) --  (4.2,-0.2);
+		\node at (-0.5,1) [left] {$\substack{\text{Transmitted}\\\text{bit}}$};
+		\node at (4.5,1) [right] {$\substack{\text{Received}\\\text{bit}}$};
+	\end{tikzpicture}}
+	\caption{A schematic diagram of the action of the classical bit-flip channel. On the left is each bit which is being transmitted through the channel, and on the right is the resultant bit received after transmission. The arrows are labelled by the probability $p$ with which the channel flips each bit.}
+	\label{ClassBitFlip}
+\end{figure}
 
-To figure out what $p$ is, we need a model for the distribution of electromagnetic radiation in the environment, and a model for how this radiation interacts with Alice's transmitted bits. This basic idea - having a model for both the environment and the system/environment interaction - is the basic starting point for analysing any classical or quantum error process. Let's suppose that $p_{0}$ and $p_{1}$ are the initial probabilities that a bit is a 0 or a 1 respectively, and $q_{0}$ and $q_{1}$ are the corresponding probabilities at the end of the process, after being subjected to noise. If we denote the initial state of an individual bit as $A$ and the final state as $B$, then we have
+To figure out what $p$ is in practice, we need e.g. a model for the distribution of electromagnetic radiation in the environment, and a model for how this radiation interacts with Alice's transmitted bits in the channel. This idea - having a model for both the environment and the system/environment interaction - is the starting point for analysing any classical or quantum error process. Let's suppose that the bit-string Alice sends is random (as may be the case for a cryptographic code word), and say $p_{0}$ and $p_{1}$ are the initial probabilities that a transmitted bit is a 0 or a 1 respectively, and $q_{0}$ and $q_{1}$ are the corresponding probabilities that Bob receives a 0 and 1 respectively. Denoting the initial state of an individual bit as $A$ and the final state as $B$, then we have
 \begin{equation}
 	\mathbb{P}(B=b)=\sum_{a=0}^{1}\mathbb{P}(B=b\,|\,A=a)\mathbb{P}(A=a)
 \end{equation}
 which can be rewritten in matrix form as
-\begin{equation}
+\begin{equation}\label{cmat}
 	\begin{pmatrix}
 		q_{0}\\q_{1}
 	\end{pmatrix}=\begin{pmatrix}1-p&p\\p&1-p\end{pmatrix}\begin{pmatrix}
@@ -363,37 +333,39 @@ which can be rewritten in matrix form as
 \end{equation}
 The quantities $\mathbb{P}(B=b\,|\,A=a)$ are called \textit{transition probabilities}. If further noise occurs after an initial bit-flip, we can model this as being independent of the first flip; this independence is called \textit{markovicity}, and the total noise process is a \textit{Markov process}.\\
 More generally, for a single-state process such as this, we have that the vector of output probabilities $\mathbf{q}$ is related to the vector of input probabilities $\mathbf{p}$ by some matrix $E$ via
-\begin{equation}
+\begin{equation} \label{cprob}
 	\mathbf{q}=E\mathbf{p}
 \end{equation}
 where $E$ is known as an \textit{evolution matrix}. Since $E\mathbf{p}$ is a probability distribution, we can instantly extract some conditions on $E$:
 \begin{enumerate}
-	\item All entries of $E$ must be non-negative, so $E$ is a positive matrix,
+	\item All entries of $E$ must be non-negative, so $E$ is a positive matrix.
 	\item All columns of $E$ sum to 1, called \textit{completeness}.
 \end{enumerate}
+While this is a simple example of a noise process, the features and intuition it provides can be generalised to the quantum case.
 \section{Quantum Noise}
-The basic classical model presented above can be extended to the quantum world. To do so, we need to introduce the theory of \textit{quantum operations}, which can be used to describe the evolution of quantum systems in a vastly more general way than simple unitary evolution. They can describe evolution under quantum noise and Markov processes in particular, so have special importance for our purposes.\\
-Similar to the classical evolution of probabilities (2.0.3), we want a quantum state $\rho$ to evolve as
+In this section, we present the formal theory for modelling noise for quantum systems. To do this, we need the notion of \textit{quantum operations} (\textbf{not} operators), which can be used to describe the evolution of more complex quantum systems which may not evolve unitarily. They can describe evolution under the influence of noise, as well as Markov processes, so are of particular interest for our purposes.
+\subsection{Quantum Operations}
+Similar to the classical evolution of probabilities \ref{cprob}, we suppose a quantum state $\rho$ evolves as
 \begin{equation}
 	\rho'=\mathcal{E}(\rho).
 \end{equation}
-$\mathcal{E}$ is a quantum operation. A simple example of this is unitary time-evolution, which would be $\mathcal{E}(\rho)=U\rho U^{\dagger}$. We can think of this unitary evolution as a box which takes a state $\rho$ as an input, and outputs $U\rho U^{\dagger}$. A \textit{closed} quantum system is one which evolves like this, but many more realistic systems are \textit{open}, which we think of as arising from the interaction between a \textit{principal system} of interest and an environment, together forming a closed system. In open systems, a state $\rho$ in the principal system evolving as $\mathcal{E}(\rho)$ may not be a unitary evolution.\\
-To be more explicit, suppose the total system-environment system is in the product state $\rho\otimes\rho_{\text{env}}$; then, the total product state evolves under the action of a unitary transformation, so the quantum operation governing the evolution of $\rho$ alone can be found by taking a trace over the environment:
-\begin{equation}
+$\mathcal{E}$ is a quantum operation. A simple example of this is unitary evolution, where states evolve as $\mathcal{E}(\rho)=U\rho U^{\dagger}$. A \textit{closed} quantum system evolves unitarily like this, but many more realistic systems are \textit{open}, which we think of as arising from the interaction between a principal system of interest and an environment, together forming a closed system. In open systems, a state $\rho$ of the principal system may not evolve unitarily.\\
+To be more explicit, suppose the total system-environment system is initially in the product state $\rho\otimes\rho_{\text{env}}$; then, the full state of the system-environment evolves under the action of a unitary transformation $U$ since it is closed, so the quantum operation governing the evolution of $\rho$ alone can be found by taking a trace over the environment:
+\begin{equation}\label{qop}
 	\mathcal{E}(\rho)=\text{Tr}_{\text{env}}\left[U(\rho\otimes\rho_{\text{env}})U^{\dagger}\right].
 \end{equation}
-One immediate issue with this definition of quantum operations is that we have to express evolution of the principal system in terms of operators on the environment. How can we rectify this?
+This can be taken to \textit{define} a quantum operation. One immediate issue though is that evolution of the principal system is expressed in terms of operators involving the environment. How can we rectify this?
 \subsection{Operator-Sum Representation}
-Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that initially, the environment is in the state $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite (??) as
-\begin{equation}
-	\mathcal{E}(\rho)=\sum_{k}\bra{e_{k}}U\left[\rho\otimes\ketbras{e_{0}}\right]U^{\dagger}\ket{e_{k}}\equiv\sum_{k}E_{k}\rho E_{k}^{\dagger}
+Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that the environment is initially in the state $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite \ref{qop} as
+\begin{equation}\label{opel}
+	\mathcal{E}(\rho)=\sum_{k}\bra{e_{k}}U\Big[\rho\otimes\ketbras{e_{0}}\Big]U^{\dagger}\ket{e_{k}}\equiv\sum_{k}E_{k}\rho E_{k}^{\dagger},
 \end{equation}
-where it is implicit that $E_{k}=\braket{e_{k}|U|e_{0}}$. These are operators on $\mathcal{H}$ only, so fix our issue! This defines the \textit{operator-sum representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called \textit{operation elements}.\\
-The operation elements have a completeness property; since $\mathcal{E}(\rho)$ is itself a density operator, we must have $\text{Tr}(\mathcal{E}(\rho))=1$, meaning that
+where we implicitly define $E_{k}=\braket{e_{k}|U|e_{0}}$. These are operators on the principal system only, so fix our issue! This is called the \textit{operator-sum representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called its \textit{operation elements}.\\
+The operation elements have a completeness property; since $\mathcal{E}(\rho)$ is itself a state expressed as a density matrix, we must have $\text{Tr}(\mathcal{E}(\rho))=1$. Therefore
 \begin{equation}
-	1=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}\right)=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}E_{k}\right)
+	1=\text{Tr}\left(\sum_{k}E_{k}\rho E_{k}^{\dagger}\right)=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}E_{k}\right)
 \end{equation}
-holds for all $\rho$, which further implies
+holds for all states $\rho$, and so
 \begin{equation}
 	\sum_{k}E_{k}^{\dagger}E_{k}=I.
 \end{equation}
@@ -403,42 +375,42 @@ The operator-sum representation of a quantum operation is not unique. The follow
 	Suppose $\{E_{1},\ldots,E_{m}\}$ and $\{F_{1},\ldots,F_{n}\}$ are operation elements of operations $\mathcal{E}$ and $\mathcal{F}$ respectively. Append zero operators to the shorter list of elements to ensure $m=n$. Then, $\mathcal{E}=\mathcal{F}$ if and only if $E_{i}=\sum_{j}u_{ij}F_{j}$, where $u_{ij}$ are the elements of an $m\times m$ unitary matrix.
 \end{theorem}
 \subsection{Axiomatisation}
-We can define quantum operations from a purely axiomatic, mathematical perspective, with no reference to an environment at all. Denoting the set of density operators on a Hilbert space $\mathcal{H}$ as $\mathcal{B}(\mathcal{H})$ (note that this notation is often used to denote the set of all operators on a space, rather than \textbf{density} operators), a map $\mathcal{E}\,:\,\mathcal{B}(\mathcal{H}_{1})\to\mathcal{B}(\mathcal{H}_{2})$ is called a quantum operation if it satisfies:
-\begin{enumerate}
-	\item $\text{Tr}(\mathcal{E}(\rho))$ is the probability that the process represented by $\mathcal{E}$ occurs, so $0\leq\text{Tr}(\mathcal{E}(\rho))\leq 1$.
-	\item $\mathcal{E}$ is \textit{convex-linear}; that is, for a set of probabilities $\{p_{i}\}$ and density matrices $\{\rho_{i}\}$, we have
-	\begin{equation}
-		\mathcal{E}\left(\sum_{i}p_{i}\rho_{i}\right)=\sum_{i}p_{i}\mathcal{E}(\rho_{i}).
-	\end{equation}
-	\item $\mathcal{E}$ is a completely positive map; so for any positive operator $A$, $\mathcal{E}(A)$ is also a positive operator. More generally, if we introduce an auxiliary system $R$, $(I_{R}\otimes \mathcal{E})(B)$ is positive for any positive operator $B$ on $R\otimes\mathcal{H}_{1}$.
-\end{enumerate} 
-We can in fact show that any map $\mathcal{E}$ satisfying these properties has an operator-sum representation, which is formalised by the following theorem, again stated without proof:
+Quantum operations can alternatively be defined axiomatically, with no reference to an environment at all; this is often neater, especially for our purposes. Denoting the set of density operators on a Hilbert space $\mathcal{H}$ as its set of endomorphisms $\text{End}(\mathcal{H})$, we can make the following definition.
+\begin{definition}[Quantum Operation]
+	A map $\mathcal{E}\,:\,\text{End}(\mathcal{H}_{1})\to\text{End}(\mathcal{H}_{2})$ is called a quantum operation if it satisfies:
+	\begin{enumerate}
+		\item $\text{Tr}(\mathcal{E}(\rho))$ is the probability that the process represented by $\mathcal{E}$ occurs, so $0\leq\text{Tr}(\mathcal{E}(\rho))\leq 1$.
+		\item $\mathcal{E}$ is \textit{convex-linear}; that is, for a set of probabilities $\{p_{i}\}$ and density matrices $\{\rho_{i}\}$, we have
+		\begin{equation}
+			\mathcal{E}\left(\sum_{i}p_{i}\rho_{i}\right)=\sum_{i}p_{i}\mathcal{E}(\rho_{i}).
+		\end{equation}
+		\item $\mathcal{E}$ is a completely positive map; so for any positive operator $A$, $\mathcal{E}(A)$ is also a positive operator. More generally, if we introduce an auxiliary system $R$, $(I_{R}\otimes \mathcal{E})(B)$ is positive for any positive operator $B$ on $R\otimes\mathcal{H}_{1}$.
+	\end{enumerate} 
+\end{definition}
+Note that the first property here reduces to $\tr(\mathcal{E}(\rho))=1$ for trace-preserving operations. We can in fact show that any map $\mathcal{E}$ satisfying these properties has an operator-sum representation, which is formalised by the following theorem, again stated without proof:
 \begin{theorem}
-	A map $\mathcal{E}\,:\,\mathcal{B}(\mathcal{H}_{1})\to\mathcal{B}(\mathcal{H}_{2})$ satisfies the above 3 axioms if and only if
+	A map $\mathcal{E}\,:\,\text{End}(\mathcal{H}_{1})\to\text{End}(\mathcal{H}_{2})$ satisfies the above 3 axioms if and only if
 	\begin{equation}
 		\mathcal{E}(\rho)=\sum_{i}E_{i}\rho E_{i}^{\dagger}
 	\end{equation}
 	for some set of operators $E_{i}\,:\,\mathcal{H}_{1}\to\mathcal{H}_{2}$, and $\sum_{i}E_{i}^{\dagger}E_{i}\leq I$.
 \end{theorem}
 \subsection{The Quantum Bit-Flip}
-To show how quantum operations can model noise, we turn back to the bit-flip scenario. This time, Alice wishes to send Bob a qubit $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob, which has density operator
+To show how quantum operations can model noise, we describe the \textit{quantum bit-flip}. This time, Alice wishes to send Bob a qubit $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob, which has density matrix
 \begin{equation}
 	\begin{aligned} 
-		\rho&=\ketbras{\psi}\\&=|a|^{2}\ketbras{0}+ab^{*}\ketbra{1}{0}+a^{*}b\ketbra{0}{1}+|b|^{2}\ketbras{1}\\&=\begin{pmatrix}
+		\rho_{\psi}&=\ketbras{\psi}\\&=|a|^{2}\ketbras{0}+ab^{*}\ketbra{1}{0}+a^{*}b\ketbra{0}{1}+|b|^{2}\ketbras{1}\\&=\begin{pmatrix}
 			|a|^{2}&ab^{*}\\a^{*}b&|b|^{2}
-		\end{pmatrix}
-	\end{aligned}.
+		\end{pmatrix}.
+	\end{aligned}
 \end{equation}
-The quantum channel she sends the qubit through acts as a bit-flip exactly analogously to the classical case, flipping a $\ket{0}$ to a $\ket{1}$ and vice versa with probability $p$, and doing nothing with probability $1-p$. The operation elements are therefore
+The quantum channel she sends the qubit through analogously to the classical case, flipping a $\ket{0}$ to a $\ket{1}$ and vice versa with probability $p$, and doing nothing with probability $1-p$. Bob therefore receives $a\ket{0}+b\ket{1}$ with probability $1-p$ and $b\ket{0}+a\ket{1}$ with probability $p$. Writing these in density operator form, we can then extract the operation elements \ref{opel} as
 \begin{equation}
 	E_{0}=\sqrt{1-p}\begin{pmatrix}1&0\\0&1\end{pmatrix},\quad E_{1}=\sqrt{p}\begin{pmatrix}0&1\\1&0\end{pmatrix}.
 \end{equation}
-This is analogous to (2.0.2) and (2.0.3) in the classical case in a sense, and shows how a quantum operation can model noise. Another simple example is the \textit{phase-flip channel}, which is uniquely quantum. This operation flips the relative phase of the $\ket{0}$ and $\ket{1}$ basis elements; that is, it takes $a\ket{0}+b\ket{1}\to a\ket{0}-b\ket{1}$ with probability $p$, and does nothing with probability $1-p$. This operation has operation elements
-\begin{equation}
-	E_{0}=\sqrt{1-p}\begin{pmatrix}1&0\\0&1\end{pmatrix},\quad E_{1}=\sqrt{p}\begin{pmatrix}1&0\\0&-1\end{pmatrix}.
-\end{equation}
+This shows how a quantum operation can model noise.
 \section{Error Correction}
-While we've discussed how to model noise and errors, we have yet to look at how Alice and Bob can actually correct for them. Starting with the bit-flip, suppose Alice wishes to send $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob across the bit-flip channel, as stated above. Bob only has a probability of $1-p$ of receiving the transmitted qubit as intended by Alice. How can we improve this?\\
+So far, we have discussed how to model errors and noise. This section describes how to actually correct the noise. Starting with the bit-flip, suppose Alice wishes to send $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob across the bit-flip channel, as stated above. Bob only has a probability of $1-p$ of receiving the transmitted qubit as intended by Alice. How can we improve this?\\
 The process of error correcting starts with Alice \textit{encoding} her initial qubit into a \textit{logical} or \textit{code subspace}. She adjoins two ancillary qubits in the $\ket{0}$ state, and applies two $CNOT$ gates conditioned on the first qubit to the second and third qubit. This has the effect of mapping
 \begin{equation}
 	\begin{aligned}
@@ -450,7 +422,15 @@ So overall, the original qubit is mapped as
 \begin{equation}
 	\ket{\psi}=a\ket{0}+b\ket{1}\to\ket{\psi_{L}}=a\ket{000}+b\ket{111}.
 \end{equation}
-This is then sent to Bob across the bit-flip channel. The three qubits that Bob receives may have suffered a bit-flip, but he needs to determine both whether this occurred, and if so, on which qubit it occurred on. This is called \textit{error detection} or sometimes \textit{syndrome diagnosis}. To do this, he performs a projective measurement with projectors
+This can be written as a quantum circuit:
+\begin{equation}\label{bfv}
+	\scalebox{1.5}{\begin{quantikz}
+	\lstick{$\ket{\psi}$} & \ctrl{1} & \ctrl{2} & \qw\rstick[wires = 3]{$\ket{\psi_{L}}$}\\
+	\lstick{$\ket{0}$} & \targ{} & \qw & \qw\\
+	\lstick{$\ket{0}$} & \qw & \targ{} & \qw 
+	\end{quantikz}}
+\end{equation}
+This is then sent to Bob across the bit-flip channel. The three qubits that Bob receives may have individually suffered a bit-flip, but he needs to determine both whether this occurred, and if so, on which qubit it occurred on. This is called \textit{error detection} or sometimes \textit{syndrome diagnosis}. To do this, he performs a projective measurement with projectors
 \begin{equation}
 	\begin{aligned}
 		P_{0}&=\ketbras{000}+\ketbras{111}&\quad&\text{(no error)}\\
@@ -467,24 +447,24 @@ Note that $\braket{\psi_{E}|P_{1}|\psi_{E}}=1$, so the outcome of the measuremen
 This procedure works perfectly so long as only one qubit flips; this occurs with probability $(1-p)^{3}+3p(1-p)^{2}=1-3p^{2}+2p^{3}$, so the probability Bob cannot correct the error is $3p^{2}-2p^{3}$. Since $3p^{2}-2p^{3}\leq p\implies p\leq 1/2$, we have increased reliability so long as $p\leq 1/2$.
 
 \subsection{Generalities}
-While simple, the bit-flip code provides an example of features common to all error correcting procedures. In general, a state $\ket{\psi}$ is encoded by an isometry (usually consisting of adjoining on some ancillary state and applying a unitary operator) into a code subspace $\Hcode$ of some larger Hilbert space $\mathcal{H}$. In the bit-flip code for example, $\Hcode=\text{span}\{\ket{0_{L}},\ket{1_{L}}\}$. We will often refer to the \textit{code space projector}, denoted $\Pc$. After encoding, the state is subjected to noise, and then a syndrome measurement is performed to diagnose the type of error which occurred (if any), and then a recovery operation is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished.\\
+While simple, the bit-flip code provides an example of features common to all error correcting procedures. In general, a state $\rho\in\text{End}(\mathcal{H}_{L})$ is encoded by an isometry $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$, where the image of the isometry is called a \textit{code subspace} $\Hcode$, which is a subspace of a larger space $\mathcal{H}$. In the bit-flip code for example, $V$ is specified by the quantum circuit \ref{bfv}, and  $\Hcode=\text{span}\{V\ket{0},V\ket{1}\}$. After encoding, the state is subjected to noise (modelled by a quantum channel),  a syndrome measurement is performed to diagnose the type of error which occurred (if any), and then a recovery operation is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished.\\
 In the general theory of error correction, no assumptions are made about the full recovery procedure - in particular, we do not assume it is necessarily a two-stage detection-recovery process. We just assume that the noise is modelled by an operation $\mathcal{E}$, and the correction is performed by an operation $\mathcal{R}$. For error correction to be deemed successful, we require that for any state $\rho$ with support on $\Hcode$, we have
 \begin{equation}
 	(\mathcal{R}\circ\mathcal{E})(\rho)\propto\rho,
 \end{equation}
-where we have a proportionality constant rather than equality to account for the possibility that the relevant operations may not be trace-preserving.\\
-Not all noise is correctable. This is characterised by the \textit{quantum error correction conditions}, which can be stated as the following theorem:
-\begin{theorem}[Quantum error-correction conditions]
-	Let $\Hcode$ be a quantum code, and $\Pc$ the projector onto it. Suppose $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
-	\begin{equation}
+where we have a proportionality constant rather than equality to account for the possibility that the noise may not be trace-preserving.\\
+Not all errors are correctable. This is characterised by the \textit{quantum error correction conditions}, which can be stated as the following theorem:
+\begin{theorem}[Quantum error-correction conditions]\label{QECC}
+	Let $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, and $\Pc$ the projector onto its image $\Hcode$. Suppose $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
+	\begin{equation}\label{QECC1}
 		\Pc E_{i}^{\dagger}E_{j}\Pc=\alpha_{ij}\Pc
 	\end{equation}
 	where $\alpha_{ij}$ are the elements of a complex hermitian matrix.
 \end{theorem}
-The proof of this theorem can be found in appendix B. The set $\{E_{i}\}$ are called the \textit{errors}, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
+The set $\{E_{i}\}$ are called the \textit{errors}, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
 In general, we may not know the form of the noise precisely, but the error correction conditions can be adapted to characterise an equivalence class of noise which a code $\Hcode$ and correction operation $\mathcal{R}$ can correct for.
 \begin{theorem}
-	Suppose $\Hcode$ is a quantum error correction code, and $\mathcal{R}$ is the full error-correcting operation correcting $\mathcal{E}$ with errors $\{E_{i}\}$. Then, $\mathcal{R}$ corrects for $\mathcal{F}$ with errors $\{F_{i}\}$ if
+	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry with image $\Hcode$, and $\mathcal{R}$ is the full error-correcting operation correcting $\mathcal{E}$ with errors $\{E_{i}\}$. Then, $\mathcal{R}$ corrects for $\mathcal{F}$ with errors $\{F_{i}\}$ if
 	\begin{equation}
 		F_{i}=\sum_{i}m_{ij}E_{j}
 	\end{equation}
@@ -494,13 +474,13 @@ This is a useful statement, as we can talk about a class of errors $\{E_{i}\}$ w
 \begin{equation}
 	\Pc \sigma_{i}^{1}\sigma_{j}^{1}\Pc=\alpha_{ij}\Pc
 \end{equation}
-for the Pauli matrices, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be the Pauli matrices. A code called the Shor code can do this, for example.
+for the Pauli matrices, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be proportional to the Pauli matrices. Shor's code \cite{PhysRevA.52.R2493} can do this, for example.
 \subsection{Quantum Erasure}
 One particularly important class of errors which are relevant for us is that of \textit{quantum erasure}. This is defined as the channel acting to erase a \textbf{known} subsystem of the transmitted state. Formally, we suppose that $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. The erasure channel (which is non-trace-preserving) can then be modelled by
-\begin{equation}
+\begin{equation}\label{qerasure}
 	\mathcal{E}(\rho)=\text{Tr}_{\ol{A}}(\rho),
 \end{equation} 
-for any $\rho$ with support on $\mathcal{H}$, which erases the $\ol{A}$ system with certainty. This representation is not unique; indeed, erasure can be more loosely defined as simply erasing all information within the subsystem (for example, the decoherence channel in the case of a single qubit), so we no longer have any access to it. To extract the operation elements, we define $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ to be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite (??) as
+for any $\rho\in\text{End}(\Hcode)$, which erases the $\ol{A}$ system with certainty. This representation is not unique; indeed, erasure can be more loosely defined as simply erasing all information within the subsystem (for example, the decoherence channel in the case of a single qubit), so we no longer have any access to it. To extract the operation elements, we let $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite \ref{qerasure} as
 \begin{equation}
 	\mathcal{E}(\rho)=\sum_{\ol{a}}\braket{\ol{a}|\rho|\ol{a}},
 \end{equation}
@@ -508,12 +488,12 @@ from which we can read off operation elements
 \begin{equation}
 	E_{\ol{a}}\equiv I_{A}\otimes\bra{\ol{a}}=\sum_{a}\ketbras{a}\otimes\bra{\ol{a}}.
 \end{equation}
-The natural question to ask is what the quantum error correction conditions reduce to for erasures. To work this out, we can compute
+The natural question to ask is what the quantum error correction conditions \ref{QECC} reduce to for erasures. To work this out, we can compute
 \begin{equation}
 	E_{\ol{a}}^{\dagger}E_{\ol{b}}=(I_{A}\otimes\ket{\ol{a}})(I_{A}\otimes\bra{\ol{b}})=I_{A}\otimes\ketbra{\ol{a}}{\ol{b}},
 \end{equation}
-and so (2.3.6) then reduces to
-\begin{equation}
+and so \ref{QECC1} then reduces to
+\begin{equation}\label{Qerc}
 	\Pc\ketbra{\ol{a}}{\ol{b}}\Pc=\alpha_{\ol{a}\ol{b}}\Pc
 \end{equation}
 where we drop the $I_{A}$ for notational simplicity since the $\ket{\ol{a}}$s do not have any action on the $A$ subsystem. Even more simply, we can just write
@@ -524,55 +504,11 @@ This will have an important implication when we come to look at \cite{Harlow}. N
 \begin{equation}
 	X_{\ol{A}}\equiv \sum_{\ol{a},\ol{b}}x_{\ol{a},\ol{b}}\ketbra{\ol{a}}{\ol{b}}
 \end{equation}
-for some $x_{\ol{a},\ol{b}}\in\mathbb{C}$. Therefore, if (2.3.14) holds, we have
+for some $x_{\ol{a},\ol{b}}\in\mathbb{C}$. Therefore, if \ref{Qerc} holds, we have
 \begin{equation}
 	\Pc X_{\ol{A}}\Pc\propto\Pc.
 \end{equation}
-This will be our starting point for analysing theorem 1 of \cite{Harlow}.
-\subsubsection{An Example}
-As an example of erasure, we present the three-\textit{qutrit} code of \cite{Harlow}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{0},\ket{1},\ket{2}\}$; the qutrit can then be written
-\begin{equation}
-	\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
-\end{equation}
-where $\sum_{i=0}^{2}|a_{i}|^{2}=1$. Suppose Alice wishes to send this qutrit to Bob through a channel which acts to erase 1 of every three transmitted qutrits with certainty. To protect for this, Alice encodes her qutrit into the logical code subspace $\Hcode=\text{span}(\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}})$, defined by
-\begin{equation}
-	\begin{aligned}
-		\ket{\tilde{0}}&=\frac{1}{\sqrt{3}}(\ket{000}+\ket{111}+\ket{222})\\
-		\ket{\tilde{1}}&=\frac{1}{\sqrt{3}}(\ket{012}+\ket{120}+\ket{201})\\
-		\ket{\tilde{2}}&=\frac{1}{\sqrt{3}}(\ket{021}+\ket{102}+\ket{210})
-	\end{aligned}.
-\end{equation}
-Suppose that the erasure acts on the third qutrit. Bob then only has access to the first two qutrits, but he can still recover the original state. Define a unitary operator on the first two qutrits by
-\begin{equation}
-	\begin{aligned}
-		U_{12}\equiv&\ketbras{00}+\ketbra{01}{11}+\ketbra{02}{22}+\ketbra{12}{01}+\ketbra{10}{12}+\ketbra{11}{20}\\&+\ketbra{21}{02}+\ketbra{22}{10}+\ketbra{20}{21},
-	\end{aligned}
-\end{equation}
-which does nothing to $\ket{00}$, and permutes the remaining 8 basis states as
-\begin{equation}
-	\ket{11}\to\ket{01}\to\ket{12}\to\ket{10}\to\ket{22}\to\ket{02}\to\ket{21}\to\ket{20}\to\ket{11}.
-\end{equation}
-We can then compute that
-\begin{equation}
-	(U_{12}\otimes I_{3})\ket{i_{L}}=\ket{i}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22}),
-\end{equation}
-which explicitly shows state recovery is possible given access to only the first two qutrits, since then
-\begin{equation}
-	(U_{12}\otimes I_{3})\ket{\psi_{L}}=\ket{\psi}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22}).
-\end{equation}
-This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to (2.3.19) acting on the remaining two qutrits. This correctability also has an interpretation in terms of operators. Suppose $O$ acts on the initial space of a single qutrit as
-\begin{equation}
-	O\ket{i}=\sum_{j=0}^{2}(O)_{ji}\ket{j}.
-\end{equation}
-We can then find a `logical' $\tilde{O}$ which acts on $\Hcode$ similarly:
-\begin{equation}
-	\tilde{O}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}.
-\end{equation}
-For this example, we can actually find such a logical operator with support on the first two qutrits only:
-\begin{equation}
-	O_{12}\equiv U_{12}^{\dagger}OU_{12}
-\end{equation}
-where we take $O$ to act on the first qutrit only. 
+This will be our starting point for building intuition about theorem 1 of \cite{Harlow}.
 
 \section{Holography}
 In this section, I will give a brief summary of what constitutes a holographic theory, and how this can be translated to the language of error correction. We also introduce some holographic terminology which we will frequently refer back to. It should be emphasized that the focus of this dissertation is on error correction rather then holography; this exposition will therefore focus on intuition rather than the full details of holography. The goal is to provide some intuition for the concepts of a \textit{Ryu-Takayanagi (RT) formula}, the \textit{causal and entanglement wedges}, \textit{complementary recovery}, and \textit{radial commutativity}.
@@ -582,20 +518,20 @@ General relativity is inherently classical. If we have enough initial data about
 	G_{\mu\nu}=8\pi G T_{\mu\nu}
 \end{equation}
 can be used to find a description of the situation at a later time with certainty.\\
-Quantum mechanics, while similar, is non-classical. Given a Hamiltonian and initial wavefunction, the Schrodinger equation governs evolution of the wavefunction in time. We can then recover classical quantities by operating on the wavefunction with the relevant observables; for example, the position or momentum operators. While the expectation values of these observables evolves smoothly, if we actually measure an observable then we project onto one of its eigenstates, and only by repeated measurement of an identical system can we extract the expectation values.\\
+Quantum mechanics, while similar, is non-classical. Given a Hamiltonian and initial wavefunction, the Schrodinger equation governs evolution of the wavefunction in time. We can then recover classical quantities by operating on the wavefunction with the relevant observables; for example, the position or momentum operators. While the expectation values of these observables evolves smoothly, if we actually measure an observable then we project onto one of its eigenstates, and only by repeated measurement of an identical system can we extract the expectation values.
 \subsection{The Holographic Dictionary}
-A holographic theory is one in which a gravitational theory is in direct correspondence with a non-gravitational theory on its boundary
+A holographic theory is one in which a gravitational theory is in direct correspondence with a non-gravitational theory on its boundary. The most well-known example of this is the so-called \textit{AdS/CFT correspondence} \cite{Maldacena}, which posits a relation between a certain solution to Einstein's equations called \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its boundary. One major result of this correspondence is that there is a precise \textit{holographic dictionary} which defines how quantities in the boundary CFT `match up' with quantities in the bulk AdS space and vice versa. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula} which defines the correspondence between entropies in the boundary CFT and the area of geodesics in the bulk. This is the principal entry of interest for us, as it has a direct analogue in terms of quantum error correction; a code satisfying an RT formula (in some sense) is said to be a holographic code.
 \subsection{The RT Formula}
-The RT formula is one part of the aforementioned holographic dictionary, providing a link between the entanglement entropy of states in the boundary CFT and the geometry of the dual AdS space. The most simple form of the RT formula applies to a CFT state dual to a purely classical geometry:
+The most simple form of the RT formula applies to a CFT state dual to a purely classical geometry:
 \begin{equation}
 	S_{A}(\rho)=\frac{1}{4G}\min_{\gamma_{A}}Area(\gamma_{A}).
 \end{equation}
-On the right hand side, $\gamma_{A}$ refers to a geodesic in the bulk (or extremal surface in higher dimensions) which hits the boundary at the edge of some chosen subregion $A$ of the boundary. We then minimise over all such $\gamma_{A}$, choosing the one with smallest length/area. The left hand side refers to the entanglement entropy in subregion $A$ of a state $\rho$ living in the boundary CFT. This explicitly provides a quantitative entry in the dictionary to compute these entropies in terms of purely bulk geometric quantities.\\
-More generally, the RT formula has an extended form which applies to states which have entanglement in the bulk and superpositions of geometries. This form is
+On the right hand side, $\gamma_{A}$ refers to a geodesic in the bulk (or extremal surface in higher dimensions) which hits the boundary at the edge of some chosen subregion $A$ of the boundary. We then minimise over all such $\gamma_{A}$, choosing the one with smallest length/area. The left hand side refers to the entanglement entropy in subregion $A$ of a state $\rho$ supported on the Hilbert space of the boundary CFT. This explicitly provides a quantitative entry in the dictionary to compute these entropies in terms of bulk geometric quantities.\\
+More generally, the RT formula has an extended form which applies to bulk superpositions of geometries. This form is
 \begin{equation}
 	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
 \end{equation}
-Here, $\mathcal{L}$ is an operator acting on the quantum-gravitational Hilbert space, with eigenstates dual to classical geometries, and eigenvalues being the areas of the minimal surfaces meeting the boundary subregion $A$. Loosely, there are multiple states living on the same geometry; the `bulk entanglement' term $S_{\text{bulk},A}$ identifies which of these states is described by $\rho$.
+Here, $\mathcal{L}$ is an operator acting on the quantum-gravitational Hilbert space (whatever that may be), with eigenstates dual to classical geometries, and eigenvalues being the areas of the minimal surfaces meeting the boundary subregion $A$. This is quite poorly defined in a sense, as we do not know what a gravitational state actually physically \textit{is}. We therefore view this equation as a \textit{definition} of entropy in the gravitational bulk.
 \subsection{The Causal and Entanglement Wedges}
 Lorentzian metrics describing a spacetime have a causal structure, so an operator at a point in the bulk can only be affected by a boundary subregion which can send or receive a signal to said bulk point. Formally, for a boundary subregion $A$, the causal wedge $\mathcal{C}[A]$ is the region of the bulk bounded by the boundary region of dependence on $A$ itself, and the set of bulk geodesics which start and end in this region of dependence. (FIGURE)\\
 It's often convenient to work with a spatial slice within the causal wedge. If the RT surface is spacelike, all spatial slices in the causal wedge end on the RT surface itself, but hit the boundary at different times. In this case, we can choose a spatial slice which intersects the boundary precisely at $A$. In nice situations (for example, a static spacetime), we can pick a spatial slice extending between $A$ and its RT surface, which by causality has all the information we need to reconstruct the full causal wedge. In cases like this, we can draw diagrams suppressing time entirely.\\
@@ -737,6 +673,50 @@ So, if we define `area operator' $\mathcal{L}\equiv S(\chi_{A_{2}})I_{L}$, we ca
 \end{equation}
 which should be reminiscent of the RT formula!\\
 From a holographic point of view though, this is not good. All of the `bulk entropy' term $S(V\tilde{\rho}V^{\dagger})$ appears in $S(\tilde{\rho}_{A})$; it was not symmetric across the $A$ and $\ol{A}$ boundary regions. We therefore need to generalise.
+\subsubsection{An Example}
+As an example of erasure, we present the three-\textit{qutrit} code of \cite{Harlow}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{0},\ket{1},\ket{2}\}$; the qutrit can then be written
+\begin{equation}
+	\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
+\end{equation}
+where $\sum_{i=0}^{2}|a_{i}|^{2}=1$. Suppose Alice wishes to send this qutrit to Bob through a channel which acts to erase 1 of every three transmitted qutrits with certainty. To protect for this, Alice encodes her qutrit into the logical code subspace $\Hcode=\text{span}(\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}})$, defined by
+\begin{equation}
+	\begin{aligned}
+		\ket{\tilde{0}}&=\frac{1}{\sqrt{3}}(\ket{000}+\ket{111}+\ket{222})\\
+		\ket{\tilde{1}}&=\frac{1}{\sqrt{3}}(\ket{012}+\ket{120}+\ket{201})\\
+		\ket{\tilde{2}}&=\frac{1}{\sqrt{3}}(\ket{021}+\ket{102}+\ket{210})
+	\end{aligned}.
+\end{equation}
+Suppose that the erasure acts on the third qutrit. Bob then only has access to the first two qutrits, but he can still recover the original state. Define a unitary operator on the first two qutrits by
+\begin{equation}
+	\begin{aligned}
+		U_{12}\equiv&\ketbras{00}+\ketbra{01}{11}+\ketbra{02}{22}+\ketbra{12}{01}+\ketbra{10}{12}+\ketbra{11}{20}\\&+\ketbra{21}{02}+\ketbra{22}{10}+\ketbra{20}{21},
+	\end{aligned}
+\end{equation}
+which does nothing to $\ket{00}$, and permutes the remaining 8 basis states as
+\begin{equation}
+	\ket{11}\to\ket{01}\to\ket{12}\to\ket{10}\to\ket{22}\to\ket{02}\to\ket{21}\to\ket{20}\to\ket{11}.
+\end{equation}
+We can then compute that
+\begin{equation}
+	(U_{12}\otimes I_{3})\ket{i_{L}}=\ket{i}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22}),
+\end{equation}
+which explicitly shows state recovery is possible given access to only the first two qutrits, since then
+\begin{equation}
+	(U_{12}\otimes I_{3})\ket{\psi_{L}}=\ket{\psi}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22}).
+\end{equation}
+This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to (2.3.19) acting on the remaining two qutrits. This correctability also has an interpretation in terms of operators. Suppose $O$ acts on the initial space of a single qutrit as
+\begin{equation}
+	O\ket{i}=\sum_{j=0}^{2}(O)_{ji}\ket{j}.
+\end{equation}
+We can then find a `logical' $\tilde{O}$ which acts on $\Hcode$ similarly:
+\begin{equation}
+	\tilde{O}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}.
+\end{equation}
+For this example, we can actually find such a logical operator with support on the first two qutrits only:
+\begin{equation}
+	O_{12}\equiv U_{12}^{\dagger}OU_{12}
+\end{equation}
+where we take $O$ to act on the first qutrit only.
 \subsection{Subsystem Error Correction}
 A straightforward generalisation of theorem 3.0.1 is the so-called \textit{subsystem error correction}, also of \cite{Harlow}. This theorem is as follows.
 \begin{theorem}

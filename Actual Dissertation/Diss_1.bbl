@@ -1,12 +1,65 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
+
+\bibitem{doi:10.1137/S0097539799359385}
+{\sc D.~Aharonov and M.~Ben-Or}, {\em Fault-tolerant quantum computation with
+  constant error rate}, SIAM Journal on Computing, 38 (2008), pp.~1207--1282.
+
+\bibitem{ADH}
+{\sc X.~D. Ahmed~Almheiri and D.~Harlow}, {\em Bulk locality and quantum error
+  correction in ads/cft}, Journal of High Energy Physics, 163 (2015).
+
+\bibitem{QMS}
+{\sc C.~Akers and G.~Penington}, {\em {Quantum minimal surfaces from quantum
+  error correction}}, SciPost Phys., 12 (2022), p.~157.
+
+\bibitem{DJ}
+{\sc D.~Deutsch and R.~Jozsa}, {\em Rapid solution of problems by quantum
+  computation}, Proceedings of the Royal Society London, 439 (1992),
+  pp.~553--558.
 
 \bibitem{Harlow}
 {\sc D.~Harlow}, {\em The {Ryu-Takayanagi} {Formula from Quantum Error
   Correction}}, Communications in Mathematical Physics, 354 (2017),
   pp.~865--912.
 
+\bibitem{Pollack}
+{\sc P.~R. Jason~Pollack and A.~Rocchetto}, {\em Understanding holographic
+  error correction via unique algebras and atomic examples}, Journal of High
+  Energy Physics, 56 (2022).
+
+\bibitem{KITAEV20032}
+{\sc A.~Kitaev}, {\em Fault-tolerant quantum computation by anyons}, Annals of
+  Physics, 303 (2003), pp.~2--30.
+
+\bibitem{PhysRevLett.86.5811}
+{\sc E.~Knill, R.~Laflamme, R.~Martinez, and C.~Negrevergne}, {\em Benchmarking
+  quantum computers: The five-qubit error correcting code}, Phys. Rev. Lett.,
+  86 (2001), pp.~5811--5814.
+
+\bibitem{doi:10.1126/science.279.5349.342}
+{\sc E.~Knill, R.~Laflamme, and W.~H. Zurek}, {\em Resilient quantum
+  computation}, Science, 279 (1998), pp.~342--345.
+
+\bibitem{Maldacena}
+{\sc J.~M. Maldacena}, {\em {The Large N limit of superconformal field theories
+  and supergravity}}, Adv. Theor. Math. Phys., 2 (1998), pp.~231--252.
+
+\bibitem{FactorRecord}
+{\sc L.~A. L. T. e.~a. Martín-López, E.}, {\em Experimental realization of
+  shor's quantum factoring algorithm using qubit recycling}, Nature Photonics,
+  6 (2012), pp.~773--776.
+
 \bibitem{NielsenChuang}
 {\sc M.~A. Nielsen and I.~L. Chuang}, {\em Quantum Computation and Quantum
   Information}, Cambridge University Press, 10th~ed., 2010.
+
+\bibitem{PhysRevA.52.R2493}
+{\sc P.~W. Shor}, {\em Scheme for reducing decoherence in quantum computer
+  memory}, Phys. Rev. A, 52 (1995), pp.~R2493--R2496.
+
+\bibitem{Shor}
+\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Polynomial-time
+  algorithms for prime factorization and discrete logarithms on a quantum
+  computer}, SIAM J. Comput., 26 (1997), p.~1484–1509.
 
 \end{thebibliography}
