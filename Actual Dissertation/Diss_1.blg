@@ -25,45 +25,45 @@ Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." 
 while executing---line 1034 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
 while executing---line 1034 of file siam.bst
-You've used 14 entries,
+You've used 15 entries,
             2030 wiz_defined-function locations,
-            607 strings with 5843 characters,
-and the built_in function-call counts, 4965 in all, are:
-= -- 506
-> -- 158
+            613 strings with 5948 characters,
+and the built_in function-call counts, 5172 in all, are:
+= -- 524
+> -- 165
 < -- 0
-+ -- 64
-- -- 49
-* -- 348
-:= -- 726
-add.period$ -- 14
-call.type$ -- 14
-change.case$ -- 67
++ -- 67
+- -- 51
+* -- 359
+:= -- 760
+add.period$ -- 16
+call.type$ -- 15
+change.case$ -- 71
 chr.to.int$ -- 0
-cite$ -- 14
-duplicate$ -- 259
-empty$ -- 371
-format.name$ -- 49
-if$ -- 1111
+cite$ -- 15
+duplicate$ -- 268
+empty$ -- 393
+format.name$ -- 51
+if$ -- 1155
 int.to.chr$ -- 0
-int.to.str$ -- 14
+int.to.str$ -- 15
 missing$ -- 15
-newline$ -- 45
-num.names$ -- 27
-pop$ -- 48
+newline$ -- 49
+num.names$ -- 29
+pop$ -- 55
 preamble$ -- 1
-purify$ -- 53
+purify$ -- 56
 quote$ -- 0
-skip$ -- 253
+skip$ -- 260
 stack$ -- 0
-substring$ -- 382
-swap$ -- 131
+substring$ -- 387
+swap$ -- 133
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 54
+type$ -- 58
 warning$ -- 0
-while$ -- 50
-width$ -- 16
-write$ -- 126
+while$ -- 52
+width$ -- 17
+write$ -- 135
 (There were 10 error messages)

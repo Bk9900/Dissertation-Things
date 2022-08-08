@@ -27,6 +27,10 @@
   error correction via unique algebras and atomic examples}, Journal of High
   Energy Physics, 56 (2022).
 
+\bibitem{VNA}
+{\sc V.~F.~R. Jones}, {\em Von neumann algebras}.
+\newblock \url{https://math.berkeley.edu/~vfr/VonNeumann2009.pdf}, 2009.
+
 \bibitem{KITAEV20032}
 {\sc A.~Kitaev}, {\em Fault-tolerant quantum computation by anyons}, Annals of
   Physics, 303 (2003), pp.~2--30.
