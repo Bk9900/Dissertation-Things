@@ -25,21 +25,25 @@
 \contentsline {subsection}{\numberline {3.2.1}Complementary Recovery}{25}{subsection.3.2.1}%
 \contentsline {subsection}{\numberline {3.2.2}An RT Formula}{25}{subsection.3.2.2}%
 \contentsline {section}{\numberline {3.3}Operator Algebra Error Correction}{26}{section.3.3}%
-\contentsline {section}{\numberline {3.4}von Neumann Algebras}{26}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Operator-Algebra Error Correction}{29}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Generalisations of Holographic Error Correction}{32}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Approximate and Non-Isometric Codes}{32}{section.4.1}%
-\contentsline {chapter}{\numberline {5}Conclusions}{34}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Quantum Mechanics and Information: Background and Conventions}{35}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Quantum Mechanics}{35}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}State Spaces}{35}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Evolution of States}{36}{subsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.1.3}Measurements}{36}{subsection.A.1.3}%
-\contentsline {subsubsection}{Projective Measurements}{37}{section*.11}%
-\contentsline {subsubsection}{POVM measurements}{38}{section*.12}%
-\contentsline {subsection}{\numberline {A.1.4}Composite Systems}{38}{subsection.A.1.4}%
-\contentsline {subsection}{\numberline {A.1.5}Density Operators}{39}{subsection.A.1.5}%
-\contentsline {section}{\numberline {A.2}Quantum Information and Computation}{40}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Distance Measures}{41}{subsection.A.2.1}%
-\contentsline {subsubsection}{Properties}{41}{section*.13}%
-\contentsline {chapter}{\numberline {B}Stuff that won't be read by anyone}{46}{appendix.B}%
+\contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{26}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{27}{subsection.3.3.2}%
+\contentsline {subsubsection}{Examples}{28}{section*.11}%
+\contentsline {subsection}{\numberline {3.3.3}Algebraic States and Entropy}{29}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{31}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{34}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Generalisations of Holographic Error Correction}{39}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Approximate and Non-Isometric Codes}{39}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Conclusions}{41}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Quantum Mechanics and Information: Background and Conventions}{42}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Quantum Mechanics}{42}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}State Spaces}{42}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Evolution of States}{43}{subsection.A.1.2}%
+\contentsline {subsection}{\numberline {A.1.3}Measurements}{43}{subsection.A.1.3}%
+\contentsline {subsubsection}{Projective Measurements}{44}{section*.12}%
+\contentsline {subsubsection}{POVM measurements}{45}{section*.13}%
+\contentsline {subsection}{\numberline {A.1.4}Composite Systems}{45}{subsection.A.1.4}%
+\contentsline {subsection}{\numberline {A.1.5}Density Operators}{46}{subsection.A.1.5}%
+\contentsline {section}{\numberline {A.2}Quantum Information and Computation}{47}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Distance Measures}{48}{subsection.A.2.1}%
+\contentsline {subsubsection}{Properties}{48}{section*.14}%
+\contentsline {chapter}{\numberline {B}Stuff that won't be read by anyone}{53}{appendix.B}%
