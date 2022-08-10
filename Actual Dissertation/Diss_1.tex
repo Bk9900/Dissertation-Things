@@ -579,7 +579,7 @@ Before proving this, let's go over some of the intuition behind each statement, 
 	\centering
 	\scalebox{1.2}{%
 		\begin{quantikz}
-			\lstick{$\ket{\psi_{L}}$} & \qw & \gate[wires = 2]{U_{A}} & \qw \rstick{$A_{1}$}\\
+			\lstick{$\ket{\psi_{L}}$} & \qw & \gate[wires = 2]{U_{A}^{\dagger}} & \qw \rstick{$A_{1}$}\\
 			\makeebit{$\ket{\chi}$} & \qw & & \qw \rstick{$A_{2}$} \\
 			& \qw & \qw & \qw \rstick{$\overline{A}$}
 	\end{quantikz}}
@@ -659,41 +659,10 @@ We now present the proof of this theorem.
 	\end{equation}
 	as claimed.
 \end{proof}
-One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. It may be that some choices of $\ol{A}$ are not correctable; we need to apply the theorem to each choice in turn and check.
-\subsubsection{An RT Formula}
-We say an encoding isometry $V$ and a choice of subsystem $A$ together has an RT formula if
-\begin{equation}
-	S(\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger}))=S(\tilde{\rho})+\tr(\tilde{\rho}\mathcal{L}),
-\end{equation}
-for any state $\tilde{\rho}\in\text{End}(\mathcal{H}_{L})$, and $\mathcal{L}$ is an operator on $\mathcal{H}_{L}$. It turns out that \textit{any} code obeying the conditions of theorem 3.1 has an RT formula. Indeed, \ref{C1} implies that for any mixed state $\tilde{\rho}$ on $\mathcal{H}_{L}$, we have
-\begin{equation}
-	V\tilde{\rho}V^{\dagger}=U_{A}^{\dagger}(\rho_{A_{1}}\otimes\ketbras{\chi}_{A_{2}\ol{A}})U_{A},
-\end{equation}
-where $\rho_{A_{1}}$ is a density matrix on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $\tilde{\rho}$ has on $\mathcal{H}_{L}$. We can then calculate the reduced density matrices:
-\begin{equation}
-	\begin{aligned}
-		\tilde{\rho}_{A}&\equiv\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger})=U_{A}^{\dagger}\left(\rho_{A_{1}}\otimes \tr_{\ol{A}}(\ketbras{\chi})\right)U_{A}\\
-		\tilde{\rho}_{\ol{A}}&\equiv\tr_{A}(V\tilde{\rho}V^{\dagger})=\tr_{A_{2}}(\ketbras{\chi}).
-	\end{aligned}
-\end{equation}
-Defining $\chi_{A_{2}}\equiv\tr_{\ol{A}}\ketbras{\chi}$ and $\chi_{\ol{A}}\equiv\tr_{A_{2}}\ketbras{\chi}$, we can calculate the von Neumann entropies of these. Noting first that by definition, $S(\rho_{A_{1}})=S(\tilde{\rho})$, we have
-\begin{equation}
-	\begin{aligned}
-		S(\tilde{\rho}_{A})&=S(\rho_{A_{1}})+S(\chi_{A_{2}})=S(\tilde{\rho})+S(\chi_{A_{2}})\\
-		S(\tilde{\rho}_{\ol{A}})&=S(\chi_{\ol{A}})=-\tr_{A_{2}}\left[\tr_{\ol{A}}\ketbras{\chi}\right]=S(\chi_{A_{2}}).
-	\end{aligned}
-\end{equation}
-So, if we define `area operator' $\mathcal{L}\equiv S(\chi_{A_{2}})I_{L}$, we can rewrite these as
-\begin{equation}
-	\begin{aligned}
-		S(\tilde{\rho}_{A})&=S(\tilde{\rho})+\tr(\tilde{\rho}\mathcal{L})\\
-		S(\tilde{\rho}_{\ol{A}})&=\tr(\tilde{\rho}\mathcal{L}),
-	\end{aligned}
-\end{equation}
-which are RT formulae for $A$ and $\ol{A}$ respectively!\\
-From a holographic point of view though, this is not good. All of the `bulk entropy' term $S(\tilde{\rho})$ appears in $S(\tilde{\rho}_{A})$ and not in $S(\tilde{\rho}_{\ol{A}})$. This is fine when the bulk has only a single point, but in more complex examples of holography where the entanglement wedge of $\ol{A}$ is non-trivial, this is not possible. This structure was a consequence of requiring perfect state recovery on $A$; the natural generalisation would therefore be when we can simultaneously recover some information on $A$ and on $\ol{A}$, which the next section describes. We first present an example of conventional erasure correction though - the toy model of \cite{Harlow}.
+One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. It may be that some choices of $\ol{A}$ are not correctable; we need to apply the theorem to each choice in turn and check.\\
+We now present two example of conventional erasure correction.
 \subsubsection{An Example}
-In this model, we refer to \textit{qutrits}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}}\}$. An arbitrary qutrit can then be written
+In this example, we refer to \textit{qutrits}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}}\}$. An arbitrary qutrit can then be written
 \begin{equation}
 	\ket{\tilde{\psi}}=\sum_{i=0}^{2}a_{i}\ket{\tilde{i}}
 \end{equation}
@@ -739,19 +708,7 @@ This is done by just defining
 \begin{equation}
 	O_{12}\equiv U_{12}^{\dagger}\tilde{O}U_{12}
 \end{equation}
-where we take $\tilde{O}$ to act on the first qutrit only.\\
-To explicitly see the RT formula, consider an arbitrary state $\tilde{\rho}$ on the initial logical space of a single qutrit. From \ref{staterec}, we see that
-\begin{equation}
-	V\tilde{\rho}V^{\dagger}=U_{12}^{\dagger}(\tilde{\rho}_{1}\otimes\ketbras{\chi}_{23})U_{12},
-\end{equation}
-where $\tilde{\rho}_{1}$ is a state with the same matrix elements as $\tilde{\rho}$ on the first qutrit of $\Hcode$. So, defining $\tilde{\rho}_{3}\equiv\tr_{12}(V\tilde{\rho}V^{\dagger})$ and $\tilde{\rho}_{12}\equiv\tr_{3}(V\tilde{\rho}V^{\dagger})$, we have
-\begin{equation}
-	\begin{aligned}
-		S(\tilde{\rho}_{3})&=\log{3}\\
-		S(\tilde{\rho}_{12})&=\log{3}+S(\tilde{\rho}),
-	\end{aligned}
-\end{equation}
-which are the RT formulae for this example.
+where we take $\tilde{O}$ to act on the first qutrit only.
 \section{Subsystem Error Correction}
 The generalisation of conventional erasure correction which encompasses situations where we can recover some information on $A$ and some on $\ol{A}$ is called \textit{subsystem error correction}. This is theorem 2 of \cite{Harlow}. This theorem is as follows.
 \begin{theorem}
@@ -781,48 +738,50 @@ The generalisation of conventional erasure correction which encompasses situatio
 	\end{enumerate}
 \end{theorem}
 The proof of this is virtually identical to that of theorem 3.0.1, only that we must now keep track of the $\mathcal{H}_{a}$ subsystem. Moreover, it is a straightforward special case of \textit{operator algebra error correction} in the next section, so we do not go through the proof.
-\subsection{Complementary Recovery}
-In applying this to holography, we also wish to recover arbitrary operators $\tilde{O}_{\ol{a}}$ on $\mathcal{H}_{\ol{a}}$. This is the analogue of \textit{complementary recovery} for error correcting codes. Formally, if there exists a unitary $U_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, a decomposition $\mathcal{H}_{\ol{A}}=(\mathcal{H}_{\ol{A}_{1}}\otimes\mathcal{H}_{\ol{A}_{2}})\oplus\mathcal{H}_{\ol{A}_{3}}$ with $|\ol{A}_{1}|=|\ol{a}|$ and $|\ol{A}_{3}\leq|\ol{a}|$, and a set of orthonormal states $\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}$ such that
-\begin{equation}\label{S5}
-	(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{j}_{\ol{A}_{1}}\otimes\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A},
-\end{equation}
-where $\{\ket{j}_{\ol{A}_{1}}\}$ is an orthonormal basis of $\mathcal{H}_{\ol{A}_{1}}$ in \textit{addition} to \ref{S1}, we say a code has complementary recovery. If we apply $U_{A}\otimes I_{\ol{A}}$ to \ref{S5}, and $I_{A}\otimes U_{\ol{A}}$ to \ref{S1}, we get
-\begin{equation}
-	\begin{aligned}
-		(I_{A}\otimes U_{\ol{A}})(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{i}_{A_{1}}\otimes (I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}\\
-		(U_{A}\otimes I_{\ol{A}_{2}})(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{j}_{\ol{A}_{1}}\otimes (U_{A}\otimes I_{\ol{A}})\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}.
-	\end{aligned}
-\end{equation}
-In order for both of these to be true simultaneously, there must be a state $\ket{\chi}_{A_{2}\ol{A}_{2}}$ such that
-$(I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}=\ket{\chi}_{A_{2}\ol{A}_{2}}\otimes\ket{j}_{\ol{A}_{1}}$, which implies
-\begin{equation}
-	(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{i}_{A_{1}}\ket{j}_{\ol{A}_{1}}\ket{\chi}_{A_{2}\ol{A}_{2}}.
-\end{equation}
-This expression is the starting point for recovering an RT formula for subsystem codes.
-\subsection{An RT Formula}
-Suppose we have a subsystem code with complementary recovery as above. Let $\tilde{\rho}$ be a state on $\mathcal{H}_{L}$; defining $\chi_{A_{2}}\equiv\tr_{\ol{A}_{2}}\ketbras{\chi}$ and $\chi_{\ol{A}_{2}}\equiv\tr_{A_{2}}\ketbras{\chi}$, we now have:
-\begin{equation}
-	\begin{aligned}
-		V\tilde{\rho}V^{\dagger}&=U_{A}^{\dagger}U_{\ol{A}}^{\dagger}(\rho_{A_{1}\ol{A}_{1}}\otimes\ketbras{\chi})U_{A}U_{\ol{A}}\\
-		\tilde{\rho}_{A}&\equiv\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger})=U_{A}^{\dagger}(\rho_{A_{1}}\otimes\chi_{A_{2}})U_{A}\\
-		\tilde{\rho}_{\ol{A}}&\equiv\tr_{A}(V\tilde{\rho}V^{\dagger})=U_{\ol{A}}^{\dagger}(\rho_{\ol{A}_{1}}\otimes\chi_{\ol{A}_{2}})U_{\ol{A}}^{\dagger},
-	\end{aligned}
-\end{equation}
-where $\rho_{A_{1}\ol{A}_{1}}$ has the same matrix elements on $\Hcode=V\mathcal{H}_{L}V^{\dagger}$ as $\tilde{\rho}$ does on $\mathcal{H}_{L}$, and $\rho_{A_{1}}$ and $\rho_{\ol{A}_{1}}$ have the same matrix elements on $\mathcal{H}_{A_{1}}$ and $\mathcal{H}_{\ol{A}_{1}}$ as $\tilde{\rho}_{a}\equiv_{\ol{a}}\tilde{\rho}$ and $\tilde{\rho}_{\ol{a}}\equiv\tr_{a}\tilde{\rho}$ do on $\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{a}}$ respectively. We can therefore define two area operators
-\begin{equation}
-	\begin{aligned} 
-		\mathcal{L}_{A}&\equiv S(\chi_{A_{2}})I_{a}\\
-		\mathcal{L}_{\ol{A}}&\equiv S(\chi_{A_{2}})I_{\ol{a}},
-	\end{aligned}
-\end{equation}
-which give us
-\begin{equation}\label{RT2}
-	\begin{aligned}
-		S(\tilde{\rho}_{A})&=\tr(\tilde{\rho}_{a}\mathcal{L}_{A})+S(\tilde{\rho}_{a})\\
-		S(\tilde{\rho}_{\ol{A}})&=\tr(\tilde{\rho}_{\ol{a}}\mathcal{L}_{\ol{A}})+S(\tilde{\rho}_{\ol{a}}).
-	\end{aligned}
-\end{equation}
-This gives us two RT formulae with the the entropy $S(\tilde{\rho})$ shared between $A$ and $\ol{A}$ - solving the issue we had with conventional correction! In fact, the converse is also true - if \ref{RT2} both hold, then so too does condition \ref{S2} of the theorem. We still have an issue though: the area operators are proportional to the identity. This is undesirable from a holographic point of view. The origin of this issue is that we assumed that $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$, but this can be further generalised by requiring that $\mathcal{H}_{L}$ has a \textit{von Neumann algebra} of operators acting on it.
+\subsubsection{An Example}
+
+%\subsection{Complementary Recovery}
+%In applying this to holography, we also wish to recover arbitrary operators $\tilde{O}_{\ol{a}}$ on $\mathcal{H}_{\ol{a}}$. This is the analogue of \textit{complementary recovery} for error correcting codes. Formally, if there exists a unitary $U_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, a decomposition $\mathcal{H}_{\ol{A}}=(\mathcal{H}_{\ol{A}_{1}}\otimes\mathcal{H}_{\ol{A}_{2}})\oplus\mathcal{H}_{\ol{A}_{3}}$ with $|\ol{A}_{1}|=|\ol{a}|$ and $|\ol{A}_{3}\leq|\ol{a}|$, and a set of orthonormal states $\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}$ such that
+%\begin{equation}\label{S5}
+%	(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{j}_{\ol{A}_{1}}\otimes\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A},
+%\end{equation}
+%where $\{\ket{j}_{\ol{A}_{1}}\}$ is an orthonormal basis of $\mathcal{H}_{\ol{A}_{1}}$ in \textit{addition} to \ref{S1}, we say a code has complementary recovery. If we apply $U_{A}\otimes I_{\ol{A}}$ to \ref{S5}, and $I_{A}\otimes U_{\ol{A}}$ to \ref{S1}, we get
+%\begin{equation}
+%	\begin{aligned}
+%		(I_{A}\otimes U_{\ol{A}})(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{i}_{A_{1}}\otimes (I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}\\
+%		(U_{A}\otimes I_{\ol{A}_{2}})(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{j}_{\ol{A}_{1}}\otimes (U_{A}\otimes I_{\ol{A}})\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}.
+%	\end{aligned}
+%\end{equation}
+%In order for both of these to be true simultaneously, there must be a state $\ket{\chi}_{A_{2}\ol{A}_{2}}$ such that
+%$(I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}=\ket{\chi}_{A_{2}\ol{A}_{2}}\otimes\ket{j}_{\ol{A}_{1}}$, which implies
+%\begin{equation}
+%	(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{i}_{A_{1}}\ket{j}_{\ol{A}_{1}}\ket{\chi}_{A_{2}\ol{A}_{2}}.
+%\end{equation}
+%This expression is the starting point for recovering an RT formula for subsystem codes.
+%\subsection{An RT Formula}
+%Suppose we have a subsystem code with complementary recovery as above. Let $\tilde{\rho}$ be a state on $\mathcal{H}_{L}$; defining $\chi_{A_{2}}\equiv\tr_{\ol{A}_{2}}\ketbras{\chi}$ and $\chi_{\ol{A}_{2}}\equiv\tr_{A_{2}}\ketbras{\chi}$, we now have:
+%\begin{equation}
+%	\begin{aligned}
+%		V\tilde{\rho}V^{\dagger}&=U_{A}^{\dagger}U_{\ol{A}}^{\dagger}(\rho_{A_{1}\ol{A}_{1}}\otimes\ketbras{\chi})U_{A}U_{\ol{A}}\\
+%		\tilde{\rho}_{A}&\equiv\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger})=U_{A}^{\dagger}(\rho_{A_{1}}\otimes\chi_{A_{2}})U_{A}\\
+%		\tilde{\rho}_{\ol{A}}&\equiv\tr_{A}(V\tilde{\rho}V^{\dagger})=U_{\ol{A}}^{\dagger}(\rho_{\ol{A}_{1}}\otimes\chi_{\ol{A}_{2}})U_{\ol{A}}^{\dagger},
+%	\end{aligned}
+%\end{equation}
+%where $\rho_{A_{1}\ol{A}_{1}}$ has the same matrix elements on $\Hcode=V\mathcal{H}_{L}V^{\dagger}$ as $\tilde{\rho}$ does on $\mathcal{H}_{L}$, and $\rho_{A_{1}}$ and $\rho_{\ol{A}_{1}}$ have the same matrix elements on $\mathcal{H}_{A_{1}}$ and $\mathcal{H}_{\ol{A}_{1}}$ as $\tilde{\rho}_{a}\equiv_{\ol{a}}\tilde{\rho}$ and $\tilde{\rho}_{\ol{a}}\equiv\tr_{a}\tilde{\rho}$ do on $\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{a}}$ respectively. We can therefore define two area operators
+%\begin{equation}
+%	\begin{aligned} 
+%		\mathcal{L}_{A}&\equiv S(\chi_{A_{2}})I_{a}\\
+%		\mathcal{L}_{\ol{A}}&\equiv S(\chi_{A_{2}})I_{\ol{a}},
+%	\end{aligned}
+%\end{equation}
+%which give us
+%\begin{equation}\label{RT2}
+%	\begin{aligned}
+%		S(\tilde{\rho}_{A})&=\tr(\tilde{\rho}_{a}\mathcal{L}_{A})+S(\tilde{\rho}_{a})\\
+%		S(\tilde{\rho}_{\ol{A}})&=\tr(\tilde{\rho}_{\ol{a}}\mathcal{L}_{\ol{A}})+S(\tilde{\rho}_{\ol{a}}).
+%	\end{aligned}
+%\end{equation}
+%This gives us two RT formulae with the the entropy $S(\tilde{\rho})$ shared between $A$ and $\ol{A}$ - solving the issue we had with conventional correction! In fact, the converse is also true - if \ref{RT2} both hold, then so too does condition \ref{S2} of the theorem. We still have an issue though: the area operators are proportional to the identity. This is undesirable from a holographic point of view. The origin of this issue is that we assumed that $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$, but this can be further generalised by requiring that $\mathcal{H}_{L}$ has a \textit{von Neumann algebra} of operators acting on it.
 
 \section{Operator Algebra Error Correction}
 In this section, we present the third (and most general) theorem of \cite{Harlow}: operator algebra erasure correction. However, in order to make sense of this, we need the theory of \textit{von Neumann algebras} on finite-dimensional Hilbert spaces. We present the necessary results here; readers looking for a more detailed exposition of von Neumann algebras should consult appendix A of \cite{Harlow}, or \cite{VNA} for a more `mathematical' set of notes applicable to the infinite dimensional case.
@@ -937,7 +896,7 @@ Also in matrix notation, the centre $Z_{M}$ consists of operators $\tilde{\Lambd
 	\end{pmatrix},
 \end{equation}
 where $\lambda_{\alpha}\in\mathbb{C}$.\\
-We can actually introduce a basis for a Hilbert space $\mathcal{H}$ with a von Neumann algebra $M$, which is `compatible' with the induced decomposition. Choose orthonormal bases $\{\ket{\widetilde{\alpha,i}}\}$ and $\{\ket{\widetilde{\alpha,j}}\}$ of $\mathcal{H}_{A_{\alpha}}$ and $\mathcal{H}_{\ol{A}_{\alpha}}$ respectively; we use these to build a basis for the entire Hilbert space
+We can actually introduce a basis for a Hilbert space $\mathcal{H}$ with a von Neumann algebra $M$, which is `compatible' with the induced decomposition. Choose orthonormal bases $\{\ket{\widetilde{\alpha,i}}\}$ and $\{\ket{\widetilde{\alpha,j}}\}$ of $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ respectively; we use these to build a basis for the entire Hilbert space
 \begin{equation}\label{basis}
 	\ket{\widetilde{\alpha,ij}}\equiv\ket{\widetilde{\alpha,i}}\otimes\ket{\widetilde{\alpha,j}}.
 \end{equation}
@@ -986,9 +945,18 @@ From \ref{factalg}, we see that when $M$ is a factor, the von Neumann entropy of
 	\begin{equation}
 		S(\rho,M)\equiv-\sum_{\alpha}\tr_{A_{\alpha}}(p_{\alpha}\rho_{A_{\alpha}}\log(p_{\alpha}\rho_{A_{\alpha}}))=-\sum_{\alpha}p_{\alpha}\log p_{\alpha}+\sum_{\alpha}p_{\alpha}S(\rho_{A_{\alpha}})
 	\end{equation}
-	where $S(\rho_{A_{\alpha}})\equiv-\tr_{A}(\rho_{A}\log\rho_{A_{\alpha}})$ is the von Neumann entropy of the reduced state $\rho_{A_{\alpha}}$ as defined in \ref{redst}.
+	where $S(\rho_{A_{\alpha}})\equiv-\tr_{A}(\rho_{A_{\alpha}}\log\rho_{A_{\alpha}})$ is the von Neumann entropy of the reduced state $\rho_{A_{\alpha}}$ as defined in \ref{redst}.
 \end{definition}
-We present a more `abstract' view of how we reached this definition in appendix A. We can interpret this as having two parts: a classical term consisting of the Shannon entropy $-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}$ of the probability distribution $p_{\alpha}$, and a quantum term associated to the von Neumann entropies of each diagonal block of $\rho$, weighted by the probabilities. We clearly see that when $M$ is a factor, this reduces to the standard von Neumann entropy since the classical Shannon entropy of the probabilities $p_{\alpha}$ vanishes. There's a lot of notation here, so we present an example.
+We can interpret this as having two parts: a classical term consisting of the Shannon entropy $-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}$ of the probability distribution $p_{\alpha}$, and a quantum term associated to the von Neumann entropies of each diagonal block of $\rho$, weighted by the probabilities. We clearly see that when $M$ is a factor, this reduces to the standard von Neumann entropy since the classical Shannon entropy of the probabilities $p_{\alpha}$ vanishes.\\
+We can also define the notion of \textit{algebraic relative entropy}.
+\begin{definition}
+	Given two states $\rho,\sigma$ on $M$, the algebraic relative entropy between them is
+	\begin{equation}
+		S(\rho|\sigma,M)=\sum_{\alpha}p_{\alpha}^{\{\rho\}}\log\frac{p_{\alpha}^{\{\rho\}}}{p_{\alpha}^{\{\sigma\}}}+\sum_{\alpha}p_{\alpha}^{\{\rho\}}S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}}),
+	\end{equation}
+	where $p_{\alpha}^{\{\rho\}}$ and $p_{\alpha}^{\{\sigma\}}$ are the probability distributions corresponding to $\rho$ and $\sigma$ respectively, and $S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}})$ is the relative entropy between $\rho_{A_{\alpha}}$ and $\sigma_{A_{\alpha}}$.
+\end{definition}
+There's a lot of notation here, so we present an example.
 \begin{example}
 	Consider the von Neumann algebra and Hilbert space of \ref{e1}, which has two diagonal blocks given by $\alpha=1,2$. Consider the GHZ state $\ket{\psi}=\frac{1}{\sqrt{2}}(\ket{000}+\ket{111})\in\mathcal{H}$. The density matrix of this state has diagonal blocks
 	\begin{equation}
@@ -1112,7 +1080,7 @@ So far in this chapter, we have presented the three theorems of \cite{Harlow}. T
 Here, $\mathcal{L}$ is an operator acting on the bulk. It is this formula which can be interpreted in terms of quantum erasure correction. In fact, we can \textit{define} what it means for an erasure correcting code to obey an RT formula as follows.
 \begin{definition}
 	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}_{L}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. The triplet $(V,A,M)$ has an RT formula if there exists an \textbf{area operator} $\mathcal{L}\in\mathcal{L}(\mathcal{H}_{L})$ such that for any state $\rho$ on $\mathcal{H}_{L}$:
-	\begin{equation}
+	\begin{equation}\label{RT3}
 		S(\tr_{\ol{A}}(V\rho V^{\dagger}))=S(M,\rho)+\tr(\rho\mathcal{L}).
 	\end{equation}
 	Moreover, if $\mathcal{L}\propto I$, we say the RT formula is trivial.
@@ -1125,9 +1093,26 @@ It turns out that \textit{any} operator-algebra erasure code obeying an addition
 	\end{aligned}
 \end{equation}
 We can then state and prove the following theorem:
-\begin{theorem}
+\begin{theorem}\label{bij}
 	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. Also say that $(V,A,M)$ has complementary recovery. Then, $(V,A,M)$ and $(V,\ol{A},M')$ both have an RT formula with the same area operator $\mathcal{L}$, and $\mathcal{L}\in Z_{M}$ is in the centre. Moreover, if $(V,A,M)$ and $(V,\ol{A},M)$ both have an RT formula with the same $\mathcal{L}$, then $(V,A,M)$ have complementary recovery.
 \end{theorem}
+To make the (rather dense) proof easier to follow, we present some initial lemmas first. The proofs of these are given in appendix A.
+\begin{lemma}[Uniqueness]\label{unique}
+	Say $V$ is an encoding isometry, and $A$ is a subregion. Let $M\equiv V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ be the image of operators on $\mathcal{H}_{A}$ projected onto $\mathcal{H}_{L}$. If $M$ is a von Neumann algebra, then it is the unique von Neumann algebra for which complementary recovery is satisfied. If it is not, then no von Neumann algebra satisfying complementary recovery exists.
+\end{lemma}
+\begin{lemma}\label{vnae}
+	To linear order, an arbitrary variation $\delta\rho$ satisfying $\tr\delta\rho=0$ of the von Neumann entropy of a state $\sigma$ satisfies
+	\begin{equation}
+		\delta S(\rho)\equiv S(\sigma+\delta\rho)-S(\sigma)=-\tr\left(\delta\rho\log\sigma\right).
+	\end{equation} 
+\end{lemma}
+\begin{lemma}\label{vnae2}
+	To linear order, an arbitrary variation $\delta\rho$ satisfying $\tr\delta\rho=0$ of the algebraic entropy of a state $\sigma$ satisfies
+	\begin{equation}
+		\delta S(\sigma,M)\equiv S(\sigma+\delta\rho,M)-S(\sigma,M)=-\sum_{\alpha}\tr\left(\delta\rho\left(\log\left( p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right).
+	\end{equation}
+\end{lemma}
+The proof of \ref{bij} is then as follows.
 \begin{proof}
 	($\implies$): Suppose $M$ induces the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$, so $M$ and $M'$ have Wedderburn decompositions
 	\begin{equation}
@@ -1211,12 +1196,59 @@ We can then state and prove the following theorem:
 		\end{aligned}
 	\end{equation}
 	so $(V,A,M)$ satisfy an RT formula with area operator $\mathcal{L}$, and $\mathcal{L}\in M$. We can do the same derivation for $(V,\ol{A},M')$ with $i\leftrightarrow j$, and since $\mathcal{L}\in M'$, $\mathcal{L}\in Z_{M}$ as claimed.\\
-	$(\impliedby)$: First, note that $S(\rho,M)=S(\rho_{M})$ by definition. We now want to consider a first order variation to $S(\rho,M)$, defined as $\delta S(\rho,M)=S(\rho+\delta\rho,M)-S(\rho,M)$, where $\tr(\delta\rho)=0$. Noting that to first order
+	$(\impliedby)$: From lemmas \ref{vnae} and \ref{vnae2}, we know that for a state $\sigma$ on $\mathcal{H}_{L}$ and arbitrary variation $\delta\rho$, we have
 	\begin{equation}
 		\begin{aligned}
-			content...
+			S\left(\tr_{\ol{A}}\left(V(\sigma+\delta\rho)V^{\dagger}\right)\right)-S\left(\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=-\tr\left(\tr_{\ol{A}}\left(V\delta\rho V^{\dagger}\right)\log \tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)\\
+			S(\sigma+\delta\rho,M)-S(\sigma,M)&=-\sum_{\alpha}\tr\left(\delta\rho\left(\log\left( p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)
 		\end{aligned}
 	\end{equation}
+	Also, recall the RT formula \ref{RT3}:
+	\begin{equation}
+		S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)=S(\rho,M)+\tr(\rho\mathcal{L}).
+	\end{equation}
+	If the RT formula holds, for any state $\sigma$ on $\mathcal{H}_{L}$ with small perturbation $\delta\rho$, we therefore have:
+	\begin{equation}
+		\begin{aligned}
+			S\left(\tr_{\ol{A}}\left(V(\sigma+\delta\rho)V^{\dagger}\right)\right)-S\left(\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=S(\sigma+\delta\rho,M)-S(\sigma,M)+\tr((\sigma+\delta\rho)\mathcal{L})-\tr(\sigma\mathcal{L})\\
+			\implies \tr\left(\tr_{\ol{A}}\left(V\delta\rho V^{\dagger}\right)\log\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=\sum_{\alpha}\tr\left(\delta\rho\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right).
+		\end{aligned}
+	\end{equation}
+	Both sides are linear in $\delta\rho$, and so we can integrate over all such perturbations to obtain
+	\begin{equation}\label{ph}
+		\tr\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\log\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)=\sum_{\alpha}\tr\left(\rho\left(\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right)\right).
+	\end{equation}
+	The next step is to calculate the relative entropy:
+	\begin{equation}
+		\begin{aligned}
+			S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)|\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)\right)-\tr\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)\right)\\&=-S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\rho\left(\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right)\right)\\&=-S(\rho,M)-\sum_{\alpha}\tr\left(\rho\left(\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)\right)\\&=-S(\rho,M)-\sum_{\alpha}\tr\left(p_{\alpha}^{\{\rho\}}\rho_{L_{\alpha}}\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\right)\\&=S(\rho|\sigma,M),
+		\end{aligned}
+	\end{equation}
+	where we use \ref{ph} in the second line, and the RT formula in the third. We can perform the same argument with ${A}\leftrightarrow \ol{A}$ and $M\leftrightarrow M'$, and we find similarly that
+	\begin{equation}\label{asd}
+		S(\tr_{{A}}(V\rho V^{\dagger})|\tr_{\ol{A}}(V\sigma V^{\dagger}))=S(\rho|\sigma,M').
+	\end{equation}
+	These two conditions together in fact imply complementary recovery. Consider an arbitrary state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, an arbitrary operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, and an operator $\tilde{O}\in M$. von Neumann algebras are spanned by their Hermitian elements, so we can take $\tilde{O}$ to be Hermitian. Now, consider
+	\begin{equation}\label{asd1}
+		\braket{\tilde{\psi}|e^{-i\lambda\tilde{O}}V^{\dagger}X_{\ol{A}}Ve^{i\lambda\tilde{O}}|\tilde{\psi}}=\braket{\tilde{\psi}|e^{-i\lambda\tilde{O}}P_{L}V^{\dagger}X_{\ol{A}}VP_{L}e^{i\lambda\tilde{O}}|\tilde{\psi}}.
+	\end{equation}
+	We show that this is independent of $\lambda$. Define
+	\begin{equation}
+		\ket{\tilde{\psi}(\lambda)}\equiv e^{i\lambda\tilde{O}}\ket{\tilde{\psi}},
+	\end{equation}
+	and note that for any $\tilde{O}'\in M'$, we have that the expectation $\braket{\tilde{\psi}(\lambda)|\tilde{O}'|\tilde{\psi}(\lambda)}$ is independent of $\lambda$. Since for any state $\rho$, there is a corresponding $\rho_{M'}$ such that $\mathbb{E}_{\rho}(x')=\mathbb{E}_{\rho_{M'}}(x)$ for any $x'\in M'$, the state $(\tilde{\psi}(\lambda))_{M'}$ corresponding to $\tilde{\psi}(\lambda)\equiv\ketbras{\tilde{\psi}(\lambda)}$ is also independent of $\lambda$. Therefore, for any two $\lambda,\lambda'$, $(\tilde{\psi}(\lambda))_{M'}=(\tilde{\psi}(\lambda'))_{M'}$, which means
+	\begin{equation}
+		S(\tilde{\psi}(\lambda)|\tilde{\psi}(\lambda'),M')=0.
+	\end{equation}
+	So, from \ref{asd}, we have
+	\begin{equation}
+		0=S(\tilde{\psi}(\lambda)|\tilde{\psi}(\lambda'),M')=S(\tr_{{A}}(V\tilde{\psi}(\lambda) V^{\dagger})|\tr_{\ol{A}}(V\tilde{\psi}(\lambda') V^{\dagger})),
+	\end{equation}
+	which further implies that $\tr_{A}(V\tilde{\psi}(\lambda)V^{\dagger})$ is independent of $\lambda$, which itself implies that $\ket{\tilde{\psi}(\lambda)}$ itself is independent of $\lambda$. Returning to \ref{asd1}, we see that it is independent of $\lambda$, and so in particular its first variation with respect to $\lambda$ must vanish. This is proportional to $\braket{\tilde{\psi}|[P_{L}V^{\dagger}X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}$, so we have
+	\begin{equation}
+		0=\braket{\tilde{\psi}|[P_{L}V^{\dagger}X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}\Pc X_{\ol{A}}\Pc V,\tilde{O}]|\tilde{\psi}}
+	\end{equation}
+	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
 \end{proof}
 
 \chapter{Generalisations of Holographic Error Correction}

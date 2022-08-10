@@ -19,18 +19,16 @@
 \contentsline {subsection}{\numberline {2.4.5}Complementary Recovery and Radial Commutativity}{15}{subsection.2.4.5}%
 \contentsline {chapter}{\numberline {3}Holographic Error Correction}{17}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Conventional Erasure Correction}{17}{section.3.1}%
-\contentsline {subsubsection}{An RT Formula}{21}{section*.9}%
-\contentsline {subsubsection}{An Example}{22}{section*.10}%
-\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{24}{section.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}Complementary Recovery}{25}{subsection.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}An RT Formula}{25}{subsection.3.2.2}%
-\contentsline {section}{\numberline {3.3}Operator Algebra Error Correction}{26}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{26}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{27}{subsection.3.3.2}%
-\contentsline {subsubsection}{Examples}{28}{section*.11}%
-\contentsline {subsection}{\numberline {3.3.3}Algebraic States and Entropy}{29}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{31}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{34}{section.3.5}%
+\contentsline {subsubsection}{An Example}{21}{section*.9}%
+\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{22}{section.3.2}%
+\contentsline {subsubsection}{An Example}{23}{section*.10}%
+\contentsline {section}{\numberline {3.3}Operator Algebra Error Correction}{23}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{24}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{25}{subsection.3.3.2}%
+\contentsline {subsubsection}{Examples}{25}{section*.11}%
+\contentsline {subsection}{\numberline {3.3.3}Algebraic States and Entropy}{27}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{29}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{32}{section.3.5}%
 \contentsline {chapter}{\numberline {4}Generalisations of Holographic Error Correction}{39}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Approximate and Non-Isometric Codes}{39}{section.4.1}%
 \contentsline {chapter}{\numberline {5}Conclusions}{41}{chapter.5}%
