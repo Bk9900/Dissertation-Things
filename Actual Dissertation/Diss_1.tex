@@ -289,79 +289,68 @@ The goal of this dissertation is to present the basic theory of holographic erro
 This dissertation is structured as follows. Chapter 2 will present all the relevant background theory in error correction, assuming an understanding of quantum mechanics and quantum computing. Those looking for a more detailed exposition of these topics would be well-advised to read Nielsen and Chuang's textbook \cite{NielsenChuang}. This chapter also contains a brief discussion on the relevant aspects of holography in a somewhat `non-rigourous' way. Chapter 3 will present the main results and proofs of \cite{Harlow} - this paper is the primary reference for holographic error correction in general, presenting the three basic theorems of the field in a self-contained way. We change some of the conventions used by Harlow to be more relevant to quantum computing, describing error correction via an \textit{encoding isometry} rather than a \textit{code subspace} as Harlow does. Chapter 4 presents some generalisations of holographic error correction, including \textit{approximate codes}, \textit{state-specific codes}, and \textit{non-isometric codes}, all adapted from \cite{QMS}. Finally, chapter 5 will present a summary of the project and suggestions as to the future direction of the field.
 
 
-\chapter{Background Theory}
+\chapter{Error Correction: An Introduction}
 
-In this chapter, we present the theory of quantum error correction. We begin with a discussion of the analogous topic in the classical regime to build up some intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}. We then end with a brief discussion on some aspects of holography, adapted from \cite{Pollack}.
+In this chapter, we present the theory of quantum error correction. We begin with a discussion of the analogous topic in the classical regime to build up some intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}.
 
-\section{Classical Noise}
-\subsection{The Classical Bit-Flip}
-We begin with a classical example of error correction, called the \textit{bit-flip code} to build up some intuition. Suppose Alice wishes to send Bob a bit string - a sequence of 0s and 1s - across a \textit{channel}, which for now we just think of as the medium the bit string is transmitted across. In theory, this is easy if the channel is perfect, but in practice this almost never holds and the channel is \textit{noisy}, meaning it can introduce errors to the bit-string. In this example, we model the noise as a bit-flip: each transmitted 0 has a fixed probability $p$ of `flipping' from a 0 to a 1 (and a probability $1-p$ of remaining a 0), and vice versa for 1s. Schematically, the channel acts as in \ref{ClassBitFlip}.
-
-\begin{figure}
-	\centering
-	\scalebox{1.5}{\begin{tikzpicture}
-		\node at (0,2) (0) {$0$};
-		\node at (0,0) (1) {$1$};
-		\node at (4,0) (1s) {$1$};
-		\node at (4,2) (0s) {$0$};
-		\draw [thick,->] (0) -- node [above] {$p$} (0s);
-		\draw [thick,->] (1) -- node [below] {$p$} (1s);
-		\draw [thick,->] (0) -- node [left = 1em] {$1-p$} (1s);
-		\draw [thick,->] (1) -- (0s);
-		%\draw [thick, decorate,
-		decoration = {brace}] (-0.2,-0.2) --  (-0.2,2.2);
-		%\draw [thick, decorate,
-		decoration = {brace}] (4.2,2.2) --  (4.2,-0.2);
-		\node at (-0.5,1) [left] {$\substack{\text{Transmitted}\\\text{bit}}$};
-		\node at (4.5,1) [right] {$\substack{\text{Received}\\\text{bit}}$};
-	\end{tikzpicture}}
-	\caption{A schematic diagram of the action of the classical bit-flip channel. On the left is each bit which is being transmitted through the channel, and on the right is the resultant bit received after transmission. The arrows are labelled by the probability $p$ with which the channel flips each bit.}
-	\label{ClassBitFlip}
-\end{figure}
-
-To figure out what $p$ is in practice, we need e.g. a model for the distribution of electromagnetic radiation in the environment, and a model for how this radiation interacts with Alice's transmitted bits in the channel. This idea - having a model for both the environment and the system/environment interaction - is the starting point for analysing any classical or quantum error process. Let's suppose that the bit-string Alice sends is random (as may be the case for a cryptographic code word), and say $p_{0}$ and $p_{1}$ are the initial probabilities that a transmitted bit is a 0 or a 1 respectively, and $q_{0}$ and $q_{1}$ are the corresponding probabilities that Bob receives a 0 and 1 respectively. Denoting the initial state of an individual bit as $A$ and the final state as $B$, then we have
+\section{The Classical Bit-Flip}
+To gain some intuition for error-correction, we don't even need to start with a quantum process. Instead, we present the \textit{classical bit-flip code}. While the ideas are basic and situation-specific, the key features of the process carry through to the quantum case.\\
+Suppose Alice wishes to send a single bit to Bob across a noisy communication channel. In this example, we model the noise as a bit-flip - there is a fixed probability $p$ for the transmitted bit to flip state from a 0 to a 1 or a 1 to a 0. Alice is afraid that Bob will receive the incorrect bit value, so she instead copies her bit three times and sends all three bits to Bob instead. When Bob receives the three bits, he takes the majority bit value to be the correct message; that way, if 1 or fewer of the bits flip, Bob will receive the correct message!\\
+This method is not perfect though. It could be the case that 2 or more bits flip in the channel, and Bob could receive the incorrect message. Assuming the noise acts \textit{independently} on each transmitted bit, the probability of this happening is
 \begin{equation}
-	\mathbb{P}(B=b)=\sum_{a=0}^{1}\mathbb{P}(B=b\,|\,A=a)\mathbb{P}(A=a)
+	\mathbb{P}(\text{2 or more flips})=3p^{2}(1-p)+p^{3},
 \end{equation}
-which can be rewritten in matrix form as
-\begin{equation}\label{cmat}
-	\begin{pmatrix}
-		q_{0}\\q_{1}
-	\end{pmatrix}=\begin{pmatrix}1-p&p\\p&1-p\end{pmatrix}\begin{pmatrix}
-	p_{0}\\p_{1}
-\end{pmatrix}.
+which is strictly less than $p$ for $0<p<1/2$. Therefore so long as $p$ is less than $1/2$, Bob has an increased chance of receiving Alice's intended message.\\
+While this is a very simple example, there are some salient features which are common to all error-correcting processes, both quantum and classical. First, Alice \textit{encodes} her bit (called the \textit{logical bit}) by copying it three times (where the encoded bits are called the \textit{physical bits}). She then sends the physical bits to Bob, where they encounter \textit{noise} in the process, potentially flipping. When the Bits reach Bob, he needs to determine whether a bit-flip occurred - called \textit{error detection} - and if so, he \textit{corrects} it by flipping back the corresponding physical bit, before finally \textit{decoding} the message. Schematically:
+\begin{equation*}
+	0\xrightarrow{\text{Encoding}}000\xrightarrow{\text{Noise}}001\xrightarrow{\text{Correction}}000\xrightarrow{\text{Decoding}}0.
+\end{equation*}
+\section{The Quantum Bit-Flip}
+The quantum situation is exactly analogous, except this time Alice wishes to send a qubit to Bob. The quantum channel acts analogously too, flipping each of the computational basis states (essentially applying a $X$ gate) with a fixed probability $p$. The \textit{no-cloning theorem} prevents Alice copying her arbitrary qubit though, so she has to be a bit more creative with encoding it. She does this by means of a quantum circuit taking $\ket{0}\to\ket{000}$ and $\ket{1}\to\ket{111}$; explicitly
+\begin{equation}\label{bfv}
+	\scalebox{1.5}{\begin{quantikz}
+			\lstick{$\ket{\psi}$} & \ctrl{1} & \ctrl{2} & \qw\\
+			\lstick{$\ket{0}$} & \targ{} & \qw & \qw\\
+			\lstick{$\ket{0}$} & \qw & \targ{} & \qw 
+	\end{quantikz}}
 \end{equation}
-The quantities $\mathbb{P}(B=b\,|\,A=a)$ are called \textit{transition probabilities}. If further noise occurs after an initial bit-flip, we can model this as being independent of the first flip; this independence is called \textit{markovicity}, and the total noise process is a \textit{Markov process}.\\
-More generally, for a single-state process such as this, we have that the vector of output probabilities $\mathbf{q}$ is related to the vector of input probabilities $\mathbf{p}$ by some matrix $E$ via
-\begin{equation} \label{cprob}
-	\mathbf{q}=E\mathbf{p}
+Note in particular that the physical encoded state is \textbf{not} equal to three copies of the logical state: $\ket{\psi}=a\ket{0}+b\ket{1}\to a\ket{000}+b\ket{111}\neq \ket{\psi}\otimes\ket{\psi}\otimes\ket{\psi}$, so no-cloning is certainly not violated.\\
+Suppose Alice does all this, and sends Bob the encoded physical qubits. Bob needs to check whether a bit-flip occurred on any of the individual qubits, so he performs a projective measurement with projectors
+\begin{equation}
+	\begin{aligned}
+		P_{0}&=\ketbras{000}+\ketbras{111}&\quad&\text{(no error)}\\
+		P_{1}&=\ketbras{100}+\ketbras{011}&\quad&\text{(qubit 1 flipped)}\\
+		P_{2}&=\ketbras{010}+\ketbras{101}&\quad&\text{(qubit 2 flipped)}\\
+		P_{3}&=\ketbras{001}+\ketbras{110}&\quad&\text{(qubit 3 flipped)}.
+	\end{aligned}
 \end{equation}
-where $E$ is known as an \textit{evolution matrix}. Since $E\mathbf{p}$ is a probability distribution, we can instantly extract some conditions on $E$:
-\begin{enumerate}
-	\item All entries of $E$ must be non-negative, so $E$ is a positive matrix.
-	\item All columns of $E$ sum to 1, called \textit{completeness}.
-\end{enumerate}
-While this is a simple example of a noise process, the features and intuition it provides can be generalised to the quantum case.
+This is called a \textit{syndrome measurement}. To see that this works, suppose only the first physical qubit flips, so Bob receives $\ket{E}\equiv a\ket{100}+b\ket{011}$. In this case, $\braket{E|P_{1}|E}=1$, so the measurement returns 1 with certainty, and Bob can establish that the first qubit flipped. Also note that $P_{1}\ket{E}=\ket{E}$, so the measurement does not change the state.\\
+Bob's final task is to recover the original logical qubit. The outcome of the syndrome measurement tells him which physical qubit flipped (if any), and so he can just flip the corresponding qubit back by applying an $X$ gate. He can then just perform a measurement of the corrected state to obtain the original amplitudes.\\
+This process is again imperfect. If two or more qubits flip, then Bob cannot recover the original state with this process. However, an identical calculation to the classical case shows us that it improves the probability that Bob can reconstruct the original state so long as $p<1/2$.
 \section{Quantum Noise}
-In this section, we present the formal theory for modelling noise for quantum systems. To do this, we need the notion of \textit{quantum operations} (\textbf{not} operators), which can be used to describe the evolution of more complex quantum systems which may not evolve unitarily. They can describe evolution under the influence of noise, as well as Markov processes, so are of particular interest for our purposes.
+The above examples provide basic examples of error correction. However, in order to talk about error correction in full generality, we need some general theory. In particular, how to model arbitrary noise for quantum systems, which is done through \textit{quantum operations}.
 \subsection{Quantum Operations}
-Similar to the classical evolution of probabilities \ref{cprob}, we suppose a quantum state $\rho$ evolves as
+In general, an isolated or \textit{closed} quantum system evolves in time under the action of a unitary operator. That is, if a closed system is initially in state $\rho$, at a later time it will be in the state $U\rho U^{\dagger}$ for some unitary operator $U$. In practice though, quantum systems are \textit{open} and interact with their environment, so we cannot just assume that our system of interest evolves unitarily. If a system is initially in state $\rho$ and evolves to state $\rho'$, to be fully general we simply write
 \begin{equation}
-	\rho'=\mathcal{E}(\rho).
+	\rho'=\mathcal{E}(\rho),
 \end{equation}
-$\mathcal{E}$ is a quantum operation. A simple example of this is unitary evolution, where states evolve as $\mathcal{E}(\rho)=U\rho U^{\dagger}$. A \textit{closed} quantum system evolves unitarily like this, but many more realistic systems are \textit{open}, which we think of as arising from the interaction between a principal system of interest and an environment, together forming a closed system. In open systems, a state $\rho$ of the principal system may not evolve unitarily.\\
-To be more explicit, suppose the total system-environment system is initially in the product state $\rho\otimes\rho_{\text{env}}$; then, the full state of the system-environment evolves under the action of a unitary transformation $U$ since it is closed, so the quantum operation governing the evolution of $\rho$ alone can be found by taking a trace over the environment:
+where $\mathcal{E}$ is a map from density operators to density operators on the state space of the system. This, in the loosest possible sense, defines a quantum operation.\\
+To be more explicit, suppose our system of interest is initially in the state $\rho$, and the environment is in $\rho_{\text{env}}$. The full state system-environment state is then $\rho\otimes\rho_{\text{env}}$, and taken together is a closed system, so it evolves unitarily as 
+\begin{equation}
+	\rho\otimes\rho_{\text{env}}\to U\left(\rho\otimes\rho_{\text{env}}\right)U^{\dagger}.
+\end{equation}
+To find the quantum operation governing the evolution of $\rho$ alone, we can take a partial trace over the environment:
 \begin{equation}\label{qop}
 	\mathcal{E}(\rho)=\text{Tr}_{\text{env}}\left[U(\rho\otimes\rho_{\text{env}})U^{\dagger}\right].
 \end{equation}
-This can be taken to \textit{define} a quantum operation. One immediate issue though is that evolution of the principal system is expressed in terms of operators involving the environment. How can we rectify this?
+This is a more concrete definition of a quantum operation. One immediate issue though is that evolution of the principal system is expressed in terms of operators involving the environment, which we may not have access to in full. There is however a way around this.
 \subsection{Operator-Sum Representation}
-Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that the environment is initially in the state $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite \ref{qop} as
+Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that the initial state of the environment is $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite \ref{qop} as
 \begin{equation}\label{opel}
 	\mathcal{E}(\rho)=\sum_{k}\bra{e_{k}}U\Big[\rho\otimes\ketbras{e_{0}}\Big]U^{\dagger}\ket{e_{k}}\equiv\sum_{k}E_{k}\rho E_{k}^{\dagger},
 \end{equation}
-where we implicitly define $E_{k}=\braket{e_{k}|U|e_{0}}$. These are operators on the principal system only, so fix our issue! This is called the \textit{operator-sum representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called its \textit{operation elements}.\\
-The operation elements have a completeness property; since $\mathcal{E}(\rho)$ is itself a state expressed as a density matrix, we must have $\text{Tr}(\mathcal{E}(\rho))=1$. Therefore
+where we implicitly define $E_{k}\equiv\braket{e_{k}|U|e_{0}}$. These are operators on the principal system of interest only, so fix our issue! This is called the \textit{operator-sum representation} or \textit{Kraus representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called its \textit{operation elements}.\\
+The operation elements have a completeness property; since $\mathcal{E}(\rho)$ must itself be a density matrix, we require $\text{Tr}(\mathcal{E}(\rho))=1$. Therefore
 \begin{equation}
 	1=\text{Tr}\left(\sum_{k}E_{k}\rho E_{k}^{\dagger}\right)=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}E_{k}\right)
 \end{equation}
@@ -375,9 +364,9 @@ The operator-sum representation of a quantum operation is not unique. The follow
 	Suppose $\{E_{1},\ldots,E_{m}\}$ and $\{F_{1},\ldots,F_{n}\}$ are operation elements of operations $\mathcal{E}$ and $\mathcal{F}$ respectively. Append zero operators to the shorter list of elements to ensure $m=n$. Then, $\mathcal{E}=\mathcal{F}$ if and only if $E_{i}=\sum_{j}u_{ij}F_{j}$, where $u_{ij}$ are the elements of an $m\times m$ unitary matrix.
 \end{theorem}
 \subsection{Axiomatisation}
-Quantum operations can alternatively be defined axiomatically, with no reference to an environment at all; this is often neater, especially for our purposes. Denoting the set of density operators on a Hilbert space $\mathcal{H}$ as its set of endomorphisms $\text{End}(\mathcal{H})$, we can make the following definition.
+Quantum operations can alternatively be defined axiomatically, with no reference to an environment at all; this is often neater, especially for our purposes. We therefore define the following.
 \begin{definition}[Quantum Operation]
-	A map $\mathcal{E}\,:\,\text{End}(\mathcal{H}_{1})\to\text{End}(\mathcal{H}_{2})$ is called a quantum operation if it satisfies:
+	A map $\mathcal{E}$ from the set of density operators on $\mathcal{H}_{1}$ to the set of density operators on $\mathcal{H}_{2}$ is called a quantum operation if it satisfies:
 	\begin{enumerate}
 		\item $\text{Tr}(\mathcal{E}(\rho))$ is the probability that the process represented by $\mathcal{E}$ occurs, so $0\leq\text{Tr}(\mathcal{E}(\rho))\leq 1$.
 		\item $\mathcal{E}$ is \textit{convex-linear}; that is, for a set of probabilities $\{p_{i}\}$ and density matrices $\{\rho_{i}\}$, we have
@@ -389,80 +378,45 @@ Quantum operations can alternatively be defined axiomatically, with no reference
 \end{definition}
 Note that the first property here reduces to $\tr(\mathcal{E}(\rho))=1$ for trace-preserving operations. We can in fact show that any map $\mathcal{E}$ satisfying these properties has an operator-sum representation, which is formalised by the following theorem, again stated without proof:
 \begin{theorem}
-	A map $\mathcal{E}\,:\,\text{End}(\mathcal{H}_{1})\to\text{End}(\mathcal{H}_{2})$ satisfies the above 3 axioms if and only if
+	A map $\mathcal{E}$ from the set of density operators on $\mathcal{H}_{1}$ to the set of density operators on $\mathcal{H}_{2}$ satisfies the above axioms if and only if
 	\begin{equation}
 		\mathcal{E}(\rho)=\sum_{i}E_{i}\rho E_{i}^{\dagger}
 	\end{equation}
 	for some set of operators $E_{i}\,:\,\mathcal{H}_{1}\to\mathcal{H}_{2}$, and $\sum_{i}E_{i}^{\dagger}E_{i}\leq I$.
 \end{theorem}
-\subsection{The Quantum Bit-Flip}
-To show how quantum operations can model noise, we describe the \textit{quantum bit-flip}. This time, Alice wishes to send Bob a qubit $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob, which has density matrix
-\begin{equation}
-	\begin{aligned} 
-		\rho_{\psi}&=\ketbras{\psi}\\&=|a|^{2}\ketbras{0}+ab^{*}\ketbra{1}{0}+a^{*}b\ketbra{0}{1}+|b|^{2}\ketbras{1}\\&=\begin{pmatrix}
-			|a|^{2}&ab^{*}\\a^{*}b&|b|^{2}
-		\end{pmatrix}.
-	\end{aligned}
-\end{equation}
-The quantum channel she sends the qubit through analogously to the classical case, flipping a $\ket{0}$ to a $\ket{1}$ and vice versa with probability $p$, and doing nothing with probability $1-p$. Bob therefore receives $a\ket{0}+b\ket{1}$ with probability $1-p$ and $b\ket{0}+a\ket{1}$ with probability $p$. Writing these in density operator form, we can then extract the operation elements \ref{opel} as
-\begin{equation}
-	E_{0}=\sqrt{1-p}\begin{pmatrix}1&0\\0&1\end{pmatrix},\quad E_{1}=\sqrt{p}\begin{pmatrix}0&1\\1&0\end{pmatrix}.
-\end{equation}
-This shows how a quantum operation can model noise.
-\section{Error Correction}
-So far, we have discussed how to model errors and noise. This section describes how to actually correct the noise. Starting with the bit-flip, suppose Alice wishes to send $\ket{\psi}=a\ket{0}+b\ket{1}$ to Bob across the bit-flip channel, as stated above. Bob only has a probability of $1-p$ of receiving the transmitted qubit as intended by Alice. How can we improve this?\\
-The process of error correcting starts with Alice \textit{encoding} her initial qubit into a \textit{logical} or \textit{code subspace}. She adjoins two ancillary qubits in the $\ket{0}$ state, and applies two $CNOT$ gates conditioned on the first qubit to the second and third qubit. This has the effect of mapping
-\begin{equation}
-	\begin{aligned}
-		\ket{0}&\to\ket{0_{L}}\equiv\ket{000}\\
-		\ket{1}&\to\ket{1_{L}}\equiv\ket{111}.
-	\end{aligned}
-\end{equation}
-So overall, the original qubit is mapped as
-\begin{equation}
-	\ket{\psi}=a\ket{0}+b\ket{1}\to\ket{\psi_{L}}=a\ket{000}+b\ket{111}.
-\end{equation}
-This can be written as a quantum circuit:
-\begin{equation}\label{bfv}
-	\scalebox{1.5}{\begin{quantikz}
-	\lstick{$\ket{\psi}$} & \ctrl{1} & \ctrl{2} & \qw\rstick[wires = 3]{$\ket{\psi_{L}}$}\\
-	\lstick{$\ket{0}$} & \targ{} & \qw & \qw\\
-	\lstick{$\ket{0}$} & \qw & \targ{} & \qw 
-	\end{quantikz}}
-\end{equation}
-This is then sent to Bob across the bit-flip channel. The three qubits that Bob receives may have individually suffered a bit-flip, but he needs to determine both whether this occurred, and if so, on which qubit it occurred on. This is called \textit{error detection} or sometimes \textit{syndrome diagnosis}. To do this, he performs a projective measurement with projectors
-\begin{equation}
-	\begin{aligned}
-		P_{0}&=\ketbras{000}+\ketbras{111}&\quad&\text{(no error)}\\
-		P_{1}&=\ketbras{100}+\ketbras{011}&\quad&\text{(qubit 1 flipped)}\\
-		P_{2}&=\ketbras{010}+\ketbras{101}&\quad&\text{(qubit 2 flipped)}\\
-		P_{3}&=\ketbras{001}+\ketbras{110}&\quad&\text{(qubit 3 flipped)}.
-	\end{aligned}
-\end{equation}
-To see why these correspond to the errors stated in brackets, consider the case where only the first qubit flips, so Bob receives
-\begin{equation}
-	\ket{\psi_{E}}\equiv a\ket{100}+b\ket{011}.
-\end{equation}
-Note that $\braket{\psi_{E}|P_{1}|\psi_{E}}=1$, so the outcome of the measurement is 1 with certainty. Moreover, $P_{1}\ket{\psi_{E}}=\ket{\psi_{E}}$, so the syndrome measurement does not change the state. Bob now knows with certainty that a bit-flip occurred on the first qubit, so can apply an $X$ gate to the first qubit to flip it back, and recover the original qubit by measuring off the ancillary qubits.\\
-This procedure works perfectly so long as only one qubit flips; this occurs with probability $(1-p)^{3}+3p(1-p)^{2}=1-3p^{2}+2p^{3}$, so the probability Bob cannot correct the error is $3p^{2}-2p^{3}$. Since $3p^{2}-2p^{3}\leq p\implies p\leq 1/2$, we have increased reliability so long as $p\leq 1/2$.
-
-\subsection{Generalities}
-While simple, the bit-flip code provides an example of features common to all error correcting procedures. In general, a state $\rho\in\text{End}(\mathcal{H}_{L})$ is encoded by an isometry $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$, where the image of the isometry is called a \textit{code subspace} $\Hcode$, which is a subspace of a larger space $\mathcal{H}$. In the bit-flip code for example, $V$ is specified by the quantum circuit \ref{bfv}, and  $\Hcode=\text{span}\{V\ket{0},V\ket{1}\}$. After encoding, the state is subjected to noise (modelled by a quantum channel),  a syndrome measurement is performed to diagnose the type of error which occurred (if any), and then a recovery operation is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished.\\
-In the general theory of error correction, no assumptions are made about the full recovery procedure - in particular, we do not assume it is necessarily a two-stage detection-recovery process. We just assume that the noise is modelled by an operation $\mathcal{E}$, and the correction is performed by an operation $\mathcal{R}$. For error correction to be deemed successful, we require that for any state $\rho$ with support on $\Hcode$, we have
+We now present a basic example of a quantum operation, showing how the action of the bit-flip channel can be modelled.
+\begin{example}[The quantum bit-flip]
+	Consider the quantum operation from the set of density matrices of a single qubit to itself, defined by operation elements
+	\begin{equation}
+		E_{0}\equiv\sqrt{1-p}I=\sqrt{1-p}\begin{pmatrix}
+			1&0\\0&1
+		\end{pmatrix},\quad E_{1}\equiv\sqrt{p}X=\begin{pmatrix}
+		0&1\\1&0
+	\end{pmatrix}.
+	\end{equation}
+	The action of this operation on a state $\rho$ is therefore 
+	\begin{equation}
+		\mathcal{E}(\rho)=(1-p)\rho+pX\rho X.
+	\end{equation}
+	It therefore `does nothing' to $\rho$ with probability $1-p$, and flips each basis element of $\rho$ with probability $p$, exactly matching the bit-flip channel!
+\end{example}
+\subsection{General Theory of Error Correction}
+We now have the necessary theory to talk about the general theory behind quantum error-correction. A logical state $\rho$ with support on a \textit{logical space} $\mathcal{H}_{L}$ is encoded by an isometry $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$, where the image of the isometry is called a \textit{code subspace} $\Hcode\subseteq\mathcal{H}$, which has equal dimensionality to $\mathcal{H}_{L}$. We call $\mathcal{H}$ the \textit{physical space}. In the bit-flip code for example, $V$ is specified by the quantum circuit \ref{bfv}, and  $\Hcode=\text{span}\{V\ket{0},V\ket{1}\}=\{\ket{000},\ket{111}\}$. After encoding, the state is subjected to noise (modelled by a quantum operation), a syndrome measurement is performed to diagnose the type of error which occurred (if any), and then a recovery operation is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished by the syndrome measurement.\\
+In general, we make no assumptions about the full recovery procedure - in particular, we do not assume it is necessarily a two-stage detection-recovery process. We only assume that the noise is modelled by a quantum operation $\mathcal{E}$, and the correction is performed by a quantum operation $\mathcal{R}$. For error correction to be deemed successful, we require that for any state $\rho$ with support on $\Hcode$
 \begin{equation}
 	(\mathcal{R}\circ\mathcal{E})(\rho)\propto\rho,
 \end{equation}
-where we have a proportionality constant rather than equality to account for the possibility that the noise may not be trace-preserving.\\
+where we have a proportionality constant rather than equality to account for the possibility that the noise may not be trace-preserving (for example, if it takes a measurement).\\
 Not all errors are correctable. This is characterised by the \textit{quantum error correction conditions}, which can be stated as the following theorem:
 \begin{theorem}[Quantum error-correction conditions]\label{QECC}
-	Let $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, and $\Pc$ the projector onto its image $\Hcode$. Suppose $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
+	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, and that $\Pc$ is the projector onto its image $\Hcode$. Suppose $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
 	\begin{equation}\label{QECC1}
 		\Pc E_{i}^{\dagger}E_{j}\Pc=\alpha_{ij}\Pc
 	\end{equation}
 	where $\alpha_{ij}$ are the elements of a complex hermitian matrix.
 \end{theorem}
-The set $\{E_{i}\}$ are called the \textit{errors}, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
-In general, we may not know the form of the noise precisely, but the error correction conditions can be adapted to characterise an equivalence class of noise which a code $\Hcode$ and correction operation $\mathcal{R}$ can correct for.
+From now on, we call the set $\{E_{i}\}$ \textit{errors} rather than operation elements, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
+In general, we may not know the form of the noise precisely, but the error correction conditions can be adapted to characterise an equivalence class of noise which an isometry and correction operation $\mathcal{R}$ can correct for.
 \begin{theorem}
 	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry with image $\Hcode$, and $\mathcal{R}$ is the full error-correcting operation correcting $\mathcal{E}$ with errors $\{E_{i}\}$. Then, $\mathcal{R}$ corrects for $\mathcal{F}$ with errors $\{F_{i}\}$ if
 	\begin{equation}
@@ -475,12 +429,12 @@ This is a useful statement, as we can talk about a class of errors $\{E_{i}\}$ w
 	\Pc \sigma_{i}^{1}\sigma_{j}^{1}\Pc=\alpha_{ij}\Pc
 \end{equation}
 for the Pauli matrices, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be proportional to the Pauli matrices. Shor's code \cite{PhysRevA.52.R2493} can do this, for example.
-\subsection{Quantum Erasure}
-One particularly important class of errors which are relevant for us is that of \textit{quantum erasure}. This is defined as the channel acting to erase a \textbf{known} subsystem of the transmitted state. Formally, we suppose that $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. The erasure channel (which is non-trace-preserving) can then be modelled by
+\section{Quantum Erasure}
+For our purposes, a class of errors called \textit{quantum erasures} are particularly important. An erasure is defined as the channel acting to erase a \textbf{known} of subsystem of the physical space. Formally, we suppose that the physical space $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. One representation of the erasure channel is then 
 \begin{equation}\label{qerasure}
 	\mathcal{E}(\rho)=\text{Tr}_{\ol{A}}(\rho),
 \end{equation} 
-for any $\rho\in\text{End}(\Hcode)$, which erases the $\ol{A}$ system with certainty. This representation is not unique; indeed, erasure can be more loosely defined as simply erasing all information within the subsystem (for example, the decoherence channel in the case of a single qubit), so we no longer have any access to it. To extract the operation elements, we let $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite \ref{qerasure} as
+for any state on $\mathcal{H}$. Note that this takes states on $\mathcal{H}$ to states on $\mathcal{H}_{A}$ only. To extract the operation elements, we let $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite \ref{qerasure} as
 \begin{equation}
 	\mathcal{E}(\rho)=\sum_{\ol{a}}\braket{\ol{a}|\rho|\ol{a}},
 \end{equation}
@@ -498,9 +452,9 @@ and so \ref{QECC1} then reduces to
 \end{equation}
 where we drop the $I_{A}$ for notational simplicity since the $\ket{\ol{a}}$s do not have any action on the $A$ subsystem. Even more simply, we can just write
 \begin{equation}
-	\Pc\ketbra{\ol{a}}{\ol{b}}\propto\Pc.
+	\Pc\ketbra{\ol{a}}{\ol{b}}\Pc\propto\Pc.
 \end{equation}
-This will have an important implication when we come to look at \cite{Harlow}. Note that an arbitrary operator $X_{\ol{A}}$ acting on $\mathcal{H}_{\ol{A}}$ can be decomposed in the $\{\ket{\ol{a}}\}$ basis as
+This will have an important implication when we come to look at theorem 3.1 of \cite{Harlow}. Note that an arbitrary operator $X_{\ol{A}}$ acting on $\mathcal{H}_{\ol{A}}$ can be decomposed in the $\{\ket{\ol{a}}\}$ basis as
 \begin{equation}
 	X_{\ol{A}}\equiv \sum_{\ol{a},\ol{b}}x_{\ol{a},\ol{b}}\ketbra{\ol{a}}{\ol{b}}
 \end{equation}
@@ -508,47 +462,47 @@ for some $x_{\ol{a},\ol{b}}\in\mathbb{C}$. Therefore, if \ref{Qerc} holds, we ha
 \begin{equation}\label{EC}
 	\Pc X_{\ol{A}}\Pc\propto\Pc.
 \end{equation}
-This will be our starting point for building intuition about theorem 1 of \cite{Harlow}.
+This is precisely condition 3 of theorem 3.1 of \cite{Harlow}.
 
-\section{Holography}
-In this section, I will give a brief summary of what constitutes a holographic theory, and how this can be translated to the language of error correction. We also introduce some holographic terminology which we will frequently refer back to. It should be emphasized that the focus of this dissertation is on error correction rather then holography; this exposition will therefore focus on intuition rather than the full details of holography. The goal is to provide some intuition for the concepts of a \textit{Ryu-Takayanagi (RT) formula}, the \textit{causal and entanglement wedges}, \textit{complementary recovery}, and \textit{radial commutativity}.
-\subsection{Quantum Gravity}
-General relativity is inherently classical. If we have enough initial data about a gravitational situation (i.e. the position and velocity of all particles, the electric and magnetic fields everywhere, the stress-energy tensor, and the metric), then Einstein's equations
-\begin{equation}
-	G_{\mu\nu}=8\pi G T_{\mu\nu}
-\end{equation}
-can be used to find a description of the situation at a later time with certainty.\\
-Quantum mechanics, while similar, is non-classical. Given a Hamiltonian and initial wavefunction, the Schrodinger equation governs evolution of the wavefunction in time. We can then recover classical quantities by operating on the wavefunction with the relevant observables; for example, the position or momentum operators. While the expectation values of these observables evolves smoothly, if we actually measure an observable then we project onto one of its eigenstates, and only by repeated measurement of an identical system can we extract the expectation values.
-\subsection{The Holographic Dictionary}
-A holographic theory is one in which a gravitational theory is in direct correspondence with a non-gravitational theory on its boundary. The most well-known example of this is the so-called \textit{AdS/CFT correspondence} \cite{Maldacena}, which posits a relation between a certain solution to Einstein's equations called \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its boundary. One major result of this correspondence is that there is a precise \textit{holographic dictionary} which defines how quantities in the boundary CFT `match up' with quantities in the bulk AdS space and vice versa. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula} which defines the correspondence between entropies in the boundary CFT and the area of geodesics in the bulk. This is the principal entry of interest for us, as it has a direct analogue in terms of quantum error correction; a code satisfying an RT formula (in some sense) is said to be a holographic code.
-\subsection{The RT Formula}
-The most simple form of the RT formula applies to a CFT state dual to a purely classical geometry:
-\begin{equation}
-	S_{A}(\rho)=\frac{1}{4G}\min_{\gamma_{A}}Area(\gamma_{A}).
-\end{equation}
-On the right hand side, $\gamma_{A}$ refers to a geodesic in the bulk (or extremal surface in higher dimensions) which hits the boundary at the edge of some chosen subregion $A$ of the boundary. We then minimise over all such $\gamma_{A}$, choosing the one with smallest length/area. The left hand side refers to the entanglement entropy in subregion $A$ of a state $\rho$ supported on the Hilbert space of the boundary CFT. This explicitly provides a quantitative entry in the dictionary to compute these entropies in terms of bulk geometric quantities.\\
-More generally, the RT formula has an extended form which applies to bulk superpositions of geometries. This form is
-\begin{equation}\label{RT}
-	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
-\end{equation}
-Here, $\mathcal{L}$ is an operator acting on the quantum-gravitational Hilbert space (whatever that may be), with eigenstates dual to classical geometries, and eigenvalues being the areas of the minimal surfaces meeting the boundary subregion $A$. This is quite poorly defined in a sense, as we do not know what a gravitational state actually physically \textit{is}. We therefore view this equation as a \textit{definition} of entropy in the gravitational bulk.
-\subsection{The Causal and Entanglement Wedges}
-Lorentzian metrics describing a spacetime have a causal structure, so an operator at a point in the bulk can only be affected by a boundary subregion which can send or receive a signal to said bulk point. Formally, for a boundary subregion $A$, the causal wedge $\mathcal{C}[A]$ is the region of the bulk bounded by the boundary region of dependence on $A$ itself, and the set of bulk geodesics which start and end in this region of dependence. (FIGURE)\\
-It's often convenient to work with a spatial slice within the causal wedge. If the RT surface is spacelike, all spatial slices in the causal wedge end on the RT surface itself, but hit the boundary at different times. In this case, we can choose a spatial slice which intersects the boundary precisely at $A$. In nice situations (for example, a static spacetime), we can pick a spatial slice extending between $A$ and its RT surface, which by causality has all the information we need to reconstruct the full causal wedge. In cases like this, we can draw diagrams suppressing time entirely.\\
-Alternatively, given access to the entropy of a CFT subregion $A$, the RT formula says we can compute the area of the relevant extremal surface. Intuitively, we expect that if we know the full reduced density operator of a CFT state $\rho$ on $A$, we can construct the full RT surface itself. We can then use this information to construct the RT surfaces of smaller parts of the subregion $A$, and so we should be able to find the metric everywhere in the bulk region between $A$ and its RT surface. This idea is formalised by the entanglement wedge $\mathcal{E}[A]$. This is the domain of dependence of the bulk bounded by $A$, and the RT surface of $A$. $\mathcal{E}[A]$ is determined by the RT surface, which has area proportional to the von Neumann entropy of the boundary theory contained in $A$, which motivates the name.\\
-It can be shown that $\mathcal{C}[A]\subseteq\mathcal{E}[A]$. For a pure boundary state, the RT surface of $A$ is the same as the RT surface of $\ol{A}$; the operator $\mathcal{L}$ giving its area is in both the set of operators acting on $A$ and those acting on $\ol{A}$. Causality says that both these sets of operators must mutually commute, so $\mathcal{L}$ must commute with all operators on $A$ and on $\ol{A}$. We say it's in the \textit{centre} of the operators acting on $A$. One example of such an operator is the identity, but if there is a gauge symmetry in the bulk theory, then there will be non-trivial elements of the centre, and the area operator $\mathcal{L}$ will be one of these. Non-triviality of $\mathcal{L}$ therefore tells us that the bulk is gravitational and has diffeomorphism invariance.
-\subsection{Complementary Recovery and Radial Commutativity}
-The causal wedge tells us which operators in the bulk can be reconstructed from information in a boundary region $A$. If we divide the boundary into two disjoint regions, an operator in an arbitrary point in the bulk must be in the causal wedge of one of the two regions, and only lies in both when it the point is on the corresponding RT surface. This is called \textit{complementary recovery}: given a subregion, we can reconstruct all operators in its causal wedge, but none of the operators outside of it.\\
-If instead we allow the region $A$ to vary, a fixed operator in the bulk lies in the causal wedge of many regions. If we than have access to a boundary region with the property that many of its subregions can individually reconstruct the operator, we don't need the full state on such a region to reconstruct it, and there are multiple possibilities for reconstruction. If this is true, we say the full state has \textit{subregion duality}. If we erase a piece of the boundary $A$ which is much smaller than $A$ itself, almost every bulk operator can still be reconstructed - see the analogy to error correction?\\
-The converse to subregion duality is \textit{radial commutativity}. For sensible spacetimes, the RT surface of a small subregion does not penetrate deep into the bulk; we need large subregions to do this. If a bulk operator lies outside the causal wedge of a subregion, it commutes with every operator inside the causal wedge; in particular, those operators which act on the boundary itself. However, every boundary operator acting at a single point at the boundary lives in the causal wedge of any boundary subregion containing the point, including arbitrarily small subregions around the point. So any bulk operator which does not act at the boundary itself must commute with \textbf{every} operator acting at a single boundary point, which is radial commutativity.\\
-This is a problem. In field theories, the operator product expansion states that the product of operators acting at multiple points can be decomposed as a sum of local operators acting only at a single point. Radial commutativity then implies that all of these local operators commutes with the bulk operator - this would mean that any bulk operator commutes with every boundary operator. This conclusion is, however, only true since we treated the bulk Hilbert space as being the same as the boundary CFT Hilbert space. This is not true: the bulk Hilbert space for a given geometry is encoded inside the CFT Hilbert space. The resolution is therefore to map the bulk into the boundary via an isometry.
+%\section{Holography}
+%In this section, I will give a brief summary of what constitutes a holographic theory, and how this can be translated to the language of error correction. We also introduce some holographic terminology which we will frequently refer back to. It should be emphasized that the focus of this dissertation is on error correction rather then holography; this exposition will therefore focus on intuition rather than the full details of holography. The goal is to provide some intuition for the concepts of a \textit{Ryu-Takayanagi (RT) formula}, the \textit{causal and entanglement wedges}, \textit{complementary recovery}, and \textit{radial commutativity}.
+%\subsection{Quantum Gravity}
+%General relativity is inherently classical. If we have enough initial data about a gravitational situation (i.e. the position and velocity of all particles, the electric and magnetic fields everywhere, the stress-energy tensor, and the metric), then Einstein's equations
+%\begin{equation}
+%	G_{\mu\nu}=8\pi G T_{\mu\nu}
+%\end{equation}
+%can be used to find a description of the situation at a later time with certainty.\\
+%Quantum mechanics, while similar, is non-classical. Given a Hamiltonian and initial wavefunction, the Schrodinger equation governs evolution of the wavefunction in time. We can then recover classical quantities by operating on the wavefunction with the relevant observables; for example, the position or momentum operators. While the expectation values of these observables evolves smoothly, if we actually measure an observable then we project onto one of its eigenstates, and only by repeated measurement of an identical system can we extract the expectation values.
+%\subsection{The Holographic Dictionary}
+%A holographic theory is one in which a gravitational theory is in direct correspondence with a non-gravitational theory on its boundary. The most well-known example of this is the so-called \textit{AdS/CFT correspondence} \cite{Maldacena}, which posits a relation between a certain solution to Einstein's equations called \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its boundary. One major result of this correspondence is that there is a precise \textit{holographic dictionary} which defines how quantities in the boundary CFT `match up' with quantities in the bulk AdS space and vice versa. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula} which defines the correspondence between entropies in the boundary CFT and the area of geodesics in the bulk. This is the principal entry of interest for us, as it has a direct analogue in terms of quantum error correction; a code satisfying an RT formula (in some sense) is said to be a holographic code.
+%\subsection{The RT Formula}
+%The most simple form of the RT formula applies to a CFT state dual to a purely classical geometry:
+%\begin{equation}
+%	S_{A}(\rho)=\frac{1}{4G}\min_{\gamma_{A}}Area(\gamma_{A}).
+%\end{equation}
+%On the right hand side, $\gamma_{A}$ refers to a geodesic in the bulk (or extremal surface in higher dimensions) which hits the boundary at the edge of some chosen subregion $A$ of the boundary. We then minimise over all such $\gamma_{A}$, choosing the one with smallest length/area. The left hand side refers to the entanglement entropy in subregion $A$ of a state $\rho$ supported on the Hilbert space of the boundary CFT. This explicitly provides a quantitative entry in the dictionary to compute these entropies in terms of bulk geometric quantities.\\
+%More generally, the RT formula has an extended form which applies to bulk superpositions of geometries. This form is
+%\begin{equation}\label{RT}
+%	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
+%\end{equation}
+%Here, $\mathcal{L}$ is an operator acting on the quantum-gravitational Hilbert space (whatever that may be), with eigenstates dual to classical geometries, and eigenvalues being the areas of the minimal surfaces meeting the boundary subregion $A$. This is quite poorly defined in a sense, as we do not know what a gravitational state actually physically \textit{is}. We therefore view this equation as a \textit{definition} of entropy in the gravitational bulk.
+%\subsection{The Causal and Entanglement Wedges}
+%Lorentzian metrics describing a spacetime have a causal structure, so an operator at a point in the bulk can only be affected by a boundary subregion which can send or receive a signal to said bulk point. Formally, for a boundary subregion $A$, the causal wedge $\mathcal{C}[A]$ is the region of the bulk bounded by the boundary region of dependence on $A$ itself, and the set of bulk geodesics which start and end in this region of dependence. (FIGURE)\\
+%It's often convenient to work with a spatial slice within the causal wedge. If the RT surface is spacelike, all spatial slices in the causal wedge end on the RT surface itself, but hit the boundary at different times. In this case, we can choose a spatial slice which intersects the boundary precisely at $A$. In nice situations (for example, a static spacetime), we can pick a spatial slice extending between $A$ and its RT surface, which by causality has all the information we need to reconstruct the full causal wedge. In cases like this, we can draw diagrams suppressing time entirely.\\
+%Alternatively, given access to the entropy of a CFT subregion $A$, the RT formula says we can compute the area of the relevant extremal surface. Intuitively, we expect that if we know the full reduced density operator of a CFT state $\rho$ on $A$, we can construct the full RT surface itself. We can then use this information to construct the RT surfaces of smaller parts of the subregion $A$, and so we should be able to find the metric everywhere in the bulk region between $A$ and its RT surface. This idea is formalised by the entanglement wedge $\mathcal{E}[A]$. This is the domain of dependence of the bulk bounded by $A$, and the RT surface of $A$. $\mathcal{E}[A]$ is determined by the RT surface, which has area proportional to the von Neumann entropy of the boundary theory contained in $A$, which motivates the name.\\
+%It can be shown that $\mathcal{C}[A]\subseteq\mathcal{E}[A]$. For a pure boundary state, the RT surface of $A$ is the same as the RT surface of $\ol{A}$; the operator $\mathcal{L}$ giving its area is in both the set of operators acting on $A$ and those acting on $\ol{A}$. Causality says that both these sets of operators must mutually commute, so $\mathcal{L}$ must commute with all operators on $A$ and on $\ol{A}$. We say it's in the \textit{centre} of the operators acting on $A$. One example of such an operator is the identity, but if there is a gauge symmetry in the bulk theory, then there will be non-trivial elements of the centre, and the area operator $\mathcal{L}$ will be one of these. Non-triviality of $\mathcal{L}$ therefore tells us that the bulk is gravitational and has diffeomorphism invariance.
+%\subsection{Complementary Recovery and Radial Commutativity}
+%The causal wedge tells us which operators in the bulk can be reconstructed from information in a boundary region $A$. If we divide the boundary into two disjoint regions, an operator in an arbitrary point in the bulk must be in the causal wedge of one of the two regions, and only lies in both when it the point is on the corresponding RT surface. This is called \textit{complementary recovery}: given a subregion, we can reconstruct all operators in its causal wedge, but none of the operators outside of it.\\
+%If instead we allow the region $A$ to vary, a fixed operator in the bulk lies in the causal wedge of many regions. If we than have access to a boundary region with the property that many of its subregions can individually reconstruct the operator, we don't need the full state on such a region to reconstruct it, and there are multiple possibilities for reconstruction. If this is true, we say the full state has \textit{subregion duality}. If we erase a piece of the boundary $A$ which is much smaller than $A$ itself, almost every bulk operator can still be reconstructed - see the analogy to error correction?\\
+%The converse to subregion duality is \textit{radial commutativity}. For sensible spacetimes, the RT surface of a small subregion does not penetrate deep into the bulk; we need large subregions to do this. If a bulk operator lies outside the causal wedge of a subregion, it commutes with every operator inside the causal wedge; in particular, those operators which act on the boundary itself. However, every boundary operator acting at a single point at the boundary lives in the causal wedge of any boundary subregion containing the point, including arbitrarily small subregions around the point. So any bulk operator which does not act at the boundary itself must commute with \textbf{every} operator acting at a single boundary point, which is radial commutativity.\\
+%This is a problem. In field theories, the operator product expansion states that the product of operators acting at multiple points can be decomposed as a sum of local operators acting only at a single point. Radial commutativity then implies that all of these local operators commutes with the bulk operator - this would mean that any bulk operator commutes with every boundary operator. This conclusion is, however, only true since we treated the bulk Hilbert space as being the same as the boundary CFT Hilbert space. This is not true: the bulk Hilbert space for a given geometry is encoded inside the CFT Hilbert space. The resolution is therefore to map the bulk into the boundary via an isometry.
 
 \chapter{Holographic Error Correction}
 
 In this section, we state and prove the three theorems of \cite{Harlow}. We use the language of encoding isometries as in \cite{Pollack} rather than the code subspace language of \cite{Harlow}, as it makes constructing examples via a quantum circuit considerably easier. The three theorems are in increasing generality; the first describes \textit{conventional erasure correction}, the second \textit{subsystem error correction}, and the third \textit{operator algebra error correction}. They all characterise whether an erasure is correctable in the sense of complete state recovery; approximate state recovery is covered in chapter 4.
 \section{Conventional Erasure Correction}
 We now present theorem 3.1 of \cite{Harlow} from the encoding isometry point of view.
-\begin{theorem}
+\begin{theorem}\label{t1}
 	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $\Hcode\subseteq\mathcal{H}$ is the image of $V$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$, The following statements are then equivalent:
 	\begin{enumerate}
 		\item $|R|\leq|A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that 
@@ -1251,25 +1205,20 @@ The proof of \ref{bij} is then as follows.
 	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
 \end{proof}
 
-\chapter{Generalisations of Holographic Error Correction}
-Theorem 3.0.1 can be generalised in multiple ways. Two of the more notable ways are that of \textit{operator-algebra error correction} as presented in \cite{Harlow}, and the generalisation for \textit{non-isometric codes} as in (???). We present these generalisations here, starting with operator algebra error correction. To do this though, we first need some of the theory of finite-dimensional \textit{von Neumann algebras}. We follow the structure of \cite{Harlow} in presenting the main applications here, with detailed results relegated to an appendix.
+\chapter{Approximate and Non-Isometric Codes}
+So far, we have discussed \textit{exact} codes - ones which perfectly recover information. In practice, exact codes are almost impossible to implement, and some information will be lost in correcting errors. To talk about this precisely, we need the notion of \textit{approximate error correction}.
 
 
-\section{Approximate and Non-Isometric Codes}
-So far, all our theorems have described cases where the error correcting code can perfectly recover information. In real world experiments and quantum computers, this is never truly the case, so we need to be able to talk about \textit{approximate error correction}. In this framework, there are analogous theorems to theorems 3.0.1 and 3.0.2, with the conditions replaced by approximate versions. For example, an approximate version of (3.0.15) is
-\begin{equation}
-	\lVert\tr_{A_{2}\ol{A}}(U_{A}V\tilde{\rho}V^{\dagger})-\tilde{\rho}_{A_{1}}\rVert_{1}\leq\epsilon
+\section{Approximate and State Specific Codes}
+Consider the statement of theorem \ref{t1}. In the language of density operators, this can be rewritten as saying that for all states $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+\begin{equation}\label{exact1}
+	\psi_{\ol{A}}\equiv\tr_{A}\left(V\ketbras{\tilde{\psi}}V^{\dagger}\right)=\chi_{\ol{A}},
 \end{equation}
-for any $\epsilon>0$. Here, $\lVert X\rVert_{1}=\tr\sqrt{X^{\dagger}X}$ is called the \textit{trace norm}.\\
-Approximate error correction behaves quite differently to exact error correction. For example, exact error correction is always impossible if the number of errors is greater than $1/4$ the number of qubits used for encoding, but approximate error correction is still possible as long as the number of errors is less than $1/2$ the number of qubits (CITE).\\
-For erasures, to quantify the difference somewhat, rather than considering the information which is accessible to $\mathcal{H}_{A}$, consider the information which is inaccessible to $\mathcal{H}_{\ol{A}}$. Since the no-cloning and no-deletion theorems are true in quantum computing, these are exactly equivalent - i.e. exact erasure correction is only possible if $\mathcal{H}_{A}$ has access to \textit{all} information about the encoded state, or if $\mathcal{H}_{\ol{A}}$ has access to \textit{no} information about it. More concretely, if we trace out the $A$ subsystem from any encoded state $V\ket{\tilde{\psi}}\in\Hcode$, the resultant state should contain no information about $\ket{\tilde{\psi}}$; for all states $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+where $\chi_{\ol{A}}\equiv\tr_{A}\left(\ketbras{\chi}\right)$. The fact that $\chi_{\ol{A}}$ is fixed for \textit{all} such states $\ket{\tilde{\psi}}$ is a reflection of the fact that for exact erasure correction, the $\ol{A}$ subsystem must know zero information about the $A$ system. For approximate erasure correction, we need to be more careful. Suppose we replaced \ref{exact1} with a directly approximate version\footnote{Here, $\lVert X\rVert_{1}\equiv \tr\sqrt{X^{\dagger}X}$ is called the \textit{trace norm}. We could equivalently replace it with e.g. fidelity.}:
 \begin{equation}
-	\tr_{A}(V\ketbras{\tilde{\psi}}V^{\dagger})=\omega_{\ol{A}}
-\end{equation} 
-for some \textit{fixed} state $\omega_{\ol{A}}$ which is completely independent of $\ket{\tilde{\psi}}$. While this holds for exact erasure correction, for approximate erasure correction we require that for all $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$
-\begin{equation}
-	\lVert \tr_{A}(V\ketbras{\tilde{\psi}}V^{\dagger})-\omega_{\ol{A}}\rVert_{1}\leq \epsilon.
+	\left\lVert \psi_{\ol{A}}-\chi_{\ol{A}}\right\rVert_{1}\leq \epsilon
 \end{equation}
+for $\epsilon>0$. 
 
 \chapter{Conclusions}
 

@@ -1,47 +1,39 @@
 \contentsline {subsubsection}{Example\nobreakspace {}3: a very mathematical project}{iv}{section*.3}%
 \contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
-\contentsline {chapter}{\numberline {2}Background Theory}{4}{chapter.2}%
-\contentsline {section}{\numberline {2.1}Classical Noise}{4}{section.2.1}%
-\contentsline {subsection}{\numberline {2.1.1}The Classical Bit-Flip}{4}{subsection.2.1.1}%
-\contentsline {section}{\numberline {2.2}Quantum Noise}{6}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Quantum Operations}{6}{subsection.2.2.1}%
-\contentsline {subsection}{\numberline {2.2.2}Operator-Sum Representation}{7}{subsection.2.2.2}%
-\contentsline {subsection}{\numberline {2.2.3}Axiomatisation}{7}{subsection.2.2.3}%
-\contentsline {subsection}{\numberline {2.2.4}The Quantum Bit-Flip}{8}{subsection.2.2.4}%
-\contentsline {section}{\numberline {2.3}Error Correction}{9}{section.2.3}%
-\contentsline {subsection}{\numberline {2.3.1}Generalities}{10}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Quantum Erasure}{11}{subsection.2.3.2}%
-\contentsline {section}{\numberline {2.4}Holography}{12}{section.2.4}%
-\contentsline {subsection}{\numberline {2.4.1}Quantum Gravity}{13}{subsection.2.4.1}%
-\contentsline {subsection}{\numberline {2.4.2}The Holographic Dictionary}{13}{subsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.4.3}The RT Formula}{13}{subsection.2.4.3}%
-\contentsline {subsection}{\numberline {2.4.4}The Causal and Entanglement Wedges}{14}{subsection.2.4.4}%
-\contentsline {subsection}{\numberline {2.4.5}Complementary Recovery and Radial Commutativity}{15}{subsection.2.4.5}%
-\contentsline {chapter}{\numberline {3}Holographic Error Correction}{17}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Conventional Erasure Correction}{17}{section.3.1}%
-\contentsline {subsubsection}{An Example}{21}{section*.9}%
-\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{22}{section.3.2}%
-\contentsline {subsubsection}{An Example}{23}{section*.10}%
-\contentsline {section}{\numberline {3.3}Operator Algebra Error Correction}{23}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{24}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{25}{subsection.3.3.2}%
-\contentsline {subsubsection}{Examples}{25}{section*.11}%
-\contentsline {subsection}{\numberline {3.3.3}Algebraic States and Entropy}{27}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{29}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{32}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Generalisations of Holographic Error Correction}{39}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Approximate and Non-Isometric Codes}{39}{section.4.1}%
-\contentsline {chapter}{\numberline {5}Conclusions}{41}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Quantum Mechanics and Information: Background and Conventions}{42}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Quantum Mechanics}{42}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}State Spaces}{42}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Evolution of States}{43}{subsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.1.3}Measurements}{43}{subsection.A.1.3}%
-\contentsline {subsubsection}{Projective Measurements}{44}{section*.12}%
-\contentsline {subsubsection}{POVM measurements}{45}{section*.13}%
-\contentsline {subsection}{\numberline {A.1.4}Composite Systems}{45}{subsection.A.1.4}%
-\contentsline {subsection}{\numberline {A.1.5}Density Operators}{46}{subsection.A.1.5}%
-\contentsline {section}{\numberline {A.2}Quantum Information and Computation}{47}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Distance Measures}{48}{subsection.A.2.1}%
-\contentsline {subsubsection}{Properties}{48}{section*.14}%
-\contentsline {chapter}{\numberline {B}Stuff that won't be read by anyone}{53}{appendix.B}%
+\contentsline {chapter}{\numberline {2}Error Correction: An Introduction}{4}{chapter.2}%
+\contentsline {section}{\numberline {2.1}The Classical Bit-Flip}{4}{section.2.1}%
+\contentsline {section}{\numberline {2.2}The Quantum Bit-Flip}{5}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Quantum Noise}{6}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Quantum Operations}{6}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Operator-Sum Representation}{7}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Axiomatisation}{8}{subsection.2.3.3}%
+\contentsline {subsection}{\numberline {2.3.4}General Theory of Error Correction}{9}{subsection.2.3.4}%
+\contentsline {section}{\numberline {2.4}Quantum Erasure}{10}{section.2.4}%
+\contentsline {chapter}{\numberline {3}Holographic Error Correction}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Conventional Erasure Correction}{12}{section.3.1}%
+\contentsline {subsubsection}{An Example}{16}{section*.8}%
+\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{17}{section.3.2}%
+\contentsline {subsubsection}{An Example}{18}{section*.9}%
+\contentsline {section}{\numberline {3.3}Operator Algebra Error Correction}{18}{section.3.3}%
+\contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{19}{subsection.3.3.1}%
+\contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{20}{subsection.3.3.2}%
+\contentsline {subsubsection}{Examples}{20}{section*.10}%
+\contentsline {subsection}{\numberline {3.3.3}Algebraic States and Entropy}{22}{subsection.3.3.3}%
+\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{24}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{27}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Approximate and Non-Isometric Codes}{34}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Approximate and State Specific Codes}{34}{section.4.1}%
+\contentsline {chapter}{\numberline {5}Conclusions}{35}{chapter.5}%
+\contentsline {chapter}{\numberline {A}Quantum Mechanics and Information: Background and Conventions}{36}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Quantum Mechanics}{36}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}State Spaces}{36}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Evolution of States}{37}{subsection.A.1.2}%
+\contentsline {subsection}{\numberline {A.1.3}Measurements}{37}{subsection.A.1.3}%
+\contentsline {subsubsection}{Projective Measurements}{38}{section*.11}%
+\contentsline {subsubsection}{POVM measurements}{39}{section*.12}%
+\contentsline {subsection}{\numberline {A.1.4}Composite Systems}{39}{subsection.A.1.4}%
+\contentsline {subsection}{\numberline {A.1.5}Density Operators}{40}{subsection.A.1.5}%
+\contentsline {section}{\numberline {A.2}Quantum Information and Computation}{41}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}Distance Measures}{42}{subsection.A.2.1}%
+\contentsline {subsubsection}{Properties}{42}{section*.13}%
+\contentsline {chapter}{\numberline {B}Stuff that won't be read by anyone}{47}{appendix.B}%
