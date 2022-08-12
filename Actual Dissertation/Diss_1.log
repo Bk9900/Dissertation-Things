@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.6.4)  11 AUG 2022 17:47
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  12 AUG 2022 11:56
  restricted system commands enabled.
 **Diss_1.tex
 (./Diss_1.tex
@@ -1196,7 +1196,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 \@outlinefile=\write4
 
 \openout4 = Diss_1.out
-<crest.pdf, id=134, 93.60962pt x 92.1871pt>
+<crest.pdf, id=138, 93.60962pt x 92.1871pt>
 File: crest.pdf Graphic file (type pdf)
 <use crest.pdf>
 Package luatex.def Info: crest.pdf  used on input line 86.
@@ -1286,60 +1286,60 @@ Overfull \hbox (0.10551pt too wide) detected at line 1025
  []
 
 [27] [28] [29]
-Overfull \hbox (20.72736pt too wide) detected at line 1130
+Overfull \hbox (20.72736pt too wide) detected at line 1131
 [][][][][]
  []
 
-[30]
-Overfull \hbox (75.8604pt too wide) detected at line 1170
+[30] [31]
+Overfull \hbox (75.8604pt too wide) detected at line 1171
 [][][][][]
  []
 
-[31]
-Overfull \hbox (118.26581pt too wide) detected at line 1180
+
+Overfull \hbox (118.26581pt too wide) detected at line 1181
 [][][][][]
  []
 
-[32] [33]
+[32] [33] [34]
 Chapter 4.
-[34
-
-]
-Chapter 5.
 [35
 
 ]
-Appendix A.
+Chapter 5.
 [36
 
-] [37] [38] [39] [40] [41] [42] [43] [44] [45]
-Overfull \hbox (14.4414pt too wide) in paragraph at lines 1529--1530
+]
+Appendix A.
+[37
+
+] [38] [39] [40] [41] [42] [43] [44] [45] [46]
+Overfull \hbox (14.4414pt too wide) in paragraph at lines 1570--1571
 []\TU/lmr/m/n/12 Choose pu-rifi-ca-tions $[]$ and $[]$ of $\OML/cmm/m/it/12 []
 $ \TU/lmr/m/n/12 and $\OML/cmm/m/it/12 []$ \TU/lmr/m/n/12 re-spec-tively such 
 that $\OML/cmm/m/it/12 F\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 []; []\OT1/cmr/m/n/
 12 ) =
  []
 
-[46]
+[47]
 Appendix B.
-(./Diss_1.bbl [47
+(./Diss_1.bbl [48
 
-] [48
+] [49
 
-]) [49] (./Diss_1.aux)
+]) [50] (./Diss_1.aux)
 Package rerunfilecheck Info: File `Diss_1.out' has not changed.
-(rerunfilecheck)             Checksum: F7C7A84D99252F1B440251573953F783;6008.
+(rerunfilecheck)             Checksum: 95C7900DDB121852E552A778572F3B07;6138.
 )
 
 Here is how much of LuaTeX's memory you used:
- 35227 strings out of 477742
+ 35338 strings out of 477742
  125177,1144653 words of node,token memory allocated
- 2915 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 129 sub_mlist, 1 glyph, 499 attribu
-te, 62 glue_spec, 499 attribute_list, 2 write, 2 pdf_action nodes
-   avail lists: 1:12,2:3382,3:1835,4:276,5:696,6:62,7:7215,8:101,9:2013,10:20,11
+ 2979 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 129 sub_mlist, 1 glyph, 515 attribu
+te, 62 glue_spec, 515 attribute_list, 2 write, 2 pdf_action nodes
+   avail lists: 1:12,2:3350,3:1835,4:276,5:692,6:62,7:7215,8:104,9:2013,10:20,11
 :566
- 54246 multiletter control sequences out of 65536+600000
+ 54345 multiletter control sequences out of 65536+600000
  94 fonts using 6845807 bytes
  99i,22n,128p,1237b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
 <//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmmon
@@ -1372,9 +1372,9 @@ amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/amsfonts/cm/cmsy7.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTe
 X/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Diss_1.pdf (60 pages, 553502 bytes).
+Output written on Diss_1.pdf (61 pages, 563120 bytes).
 
-PDF statistics: 953 PDF objects out of 1000 (max. 8388607)
- 351 named destinations out of 1000 (max. 131072)
- 272 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 977 PDF objects out of 1000 (max. 8388607)
+ 363 named destinations out of 1000 (max. 131072)
+ 280 words of extra memory for PDF output out of 10000 (max. 100000000)
 

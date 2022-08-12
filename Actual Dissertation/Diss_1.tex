@@ -1025,6 +1025,7 @@ Similar to the last theorem, this characterises in some sense `how well' a code 
 	\end{equation}
 	which finishes the proof.
 \end{proof}
+\subsubsection{An Example}
 
 \section{Holographic Properties of Erasure Codes}
 So far in this chapter, we have presented the three theorems of \cite{Harlow}. These are of increasing generality, and characterise the correctability of certain subsystems. However, we have yet to define what actually makes a code \textit{holographic}. In high-energy physics, a holographic theory is one which posits a quantitative relationship between a gravitational theory and a non-gravitational theory `on the boundary'. The most well known example of a holographic theory is the \textit{AdS/CFT correspondence} \cite{Maldacena}, which describes a correspondence between a string theory on $D$-dimensional \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its $D-1$-dimensional boundary. There is a so-called `holographic dictionary', which precisely defines the links between objects in the gravitational bulk and the boundary CFT. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula}, which describes the correspondence between the entropy of a boundary subregion $A$, and the entropy of the degrees of freedom in the gravitational bulk which are `visible' from $A$:
@@ -1204,7 +1205,47 @@ The proof of \ref{bij} is then as follows.
 	\end{equation}
 	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
 \end{proof}
-
+\subsection{Some Examples}
+The notation above is rather cumbersome and difficult to understand. Following \cite{Pollack}, we present some simple examples to try and elucidate the structure of this proof. Recall that if $M$ is a von Neumann algebra acting on $\mathcal{H}_{L}$, then we have Wedderburn decomposition
+\begin{equation}
+	\mathcal{H}_{L}=\oplus_{\alpha}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right).
+\end{equation}
+This decomposition takes into account the possibility that $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ may have dimensionality depending on $\alpha$. However, our examples involve qubits only, so we simply drop the $\alpha$ dependence, and just relabel $\mathcal{H}_{L_{\alpha}}\to\mathcal{H}_{i}=\mathbb{C}^{2}$ and $\mathcal{H}_{\ol{L}_{\alpha}}\to\mathcal{H}_{j}=\mathbb{C}^{2}$. We also limit our examples to have at most two blocks, so $\alpha=0,1$. Therefore, we keep track of which block we are in by encoding the $\alpha$ degree of freedom in a qubit as well, with the computational basis elements $\{\ket{0},\ket{1}\}$ corresponding to the two choices of $\alpha$. In full, we are essentially expressing the Hilbert space isomorphism
+\begin{equation}
+	\mathcal{H}_{L}=\oplus_{\alpha=0}^{1}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right)\cong \mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}
+\end{equation}
+where $\mathcal{H}_{\alpha}=\mathbb{C}^{2}$. The examples are presented by writing the encoding isometry as a quantum circuit acting on qubits $\mathcal{H}_{\alpha},\mathcal{H}_{i}$, and $\mathcal{H}_{j}$, with the corresponding qubit labelled on the left hand side. 
+\subsubsection{Example 1}
+Our encoding isometry is
+\begin{equation}
+	V_{1}\equiv
+			\begin{quantikz}
+			\lstick{$\ket{\alpha}$} & \ctrl{1} & \qw\\
+			\lstick{$\ket{0}$} & \targ{} & \qw
+			\end{quantikz}.
+\end{equation}
+We pick $\mathcal{H}_{A}$ to be the first qubit on the right hand side, and $\mathcal{H}_{\ol{A}}$ to be the second. We can write this explicitly in a basis as
+\begin{equation}
+	V=\ketbra{00}{0}+\ketbra{11}{1}.
+\end{equation}
+There are no $i$ and $j$ qubits in this example, and our logical space is just $\mathbb{C}^{2}$ - a single qubit.\\
+Following the uniqueness theorem \ref{unique}, we compute the von Neumann algebra by calculating $V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$. We express any operator $O\in\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$ in terms of the Pauli matrices:
+\begin{equation}
+	O=\alpha(I_{A}\otimes I_{\ol{A}})+\beta(X_{A}\otimes I_{\ol{A}})+\gamma(Y_{A}\otimes I_{\ol{A}})+\delta(Z_{A}\otimes I_{\ol{A}}),
+\end{equation}
+and then
+\begin{equation}
+	V^{\dagger}OV=\alpha I+\delta Z.
+\end{equation}
+$M$ is therefore the von Neumann algebra of diagonal operators on $\mathcal{H}_{\alpha}$. This algebra induces Wedderburn decomposition 
+\begin{equation}
+	\mathcal{H}_{L}\cong \mathbb{C}\oplus\mathbb{C},
+\end{equation}
+so in terms of our original notation, $\mathcal{H}_{L_{0}}=\mathcal{H}_{L_{1}}=\mathbb{C}$ and $\mathcal{H}_{\ol{L}_{0}}=\mathcal{H}_{\ol{L}_{1}}=\boldsymbol{0}$. For an arbitrary state $\rho$ on $\mathcal{H}_{L}$, we can calculate the algebraic state is just
+\begin{equation}
+	\rho_{M}=p_{0}\rho_{00}+p_{1}\rho_{11},
+\end{equation}
+which is also diagonal. What this tells us is that observables in $M$ cannot distinguish superpositions over the $\alpha$ blocks from classical Bernoulli probability distributions over $\alpha$, so the algebraic entropy $S(\rho,M)$ reduces to just the \textit{classical} term, and the area operator $\mathcal{L}=0$. However, note that $M$ is its own centre which is not trivial - so even algebras with a non-trivial centre can have a trivial area operator!
 \chapter{Approximate and Non-Isometric Codes}
 So far, we have discussed \textit{exact} codes - ones which perfectly recover information. In practice, exact codes are almost impossible to implement, and some information will be lost in correcting errors. To talk about this precisely, we need the notion of \textit{approximate error correction}.
 
