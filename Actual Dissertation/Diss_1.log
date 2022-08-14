@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  12 AUG 2022 11:56
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  14 AUG 2022 16:50
  restricted system commands enabled.
 **Diss_1.tex
 (./Diss_1.tex
@@ -1272,7 +1272,7 @@ n al-ge-bra $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$\TU/lmr/m/it/12 ,
 \l__nicematrix_local_start_int=\count371
 \l__nicematrix_local_end_int=\count372
 [21] [22] [23]
-Overfull \hbox (14.59541pt too wide) in paragraph at lines 941--942
+Overfull \hbox (14.59541pt too wide) in paragraph at lines 943--944
 \TU/lmr/m/it/12 si-tion $\OMS/cmsy/m/n/12 H[] \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/1
 2 []\OT1/cmr/m/n/12 (\OMS/cmsy/m/n/12 H[] 
  H[]\OT1/cmr/m/n/12 )$ \TU/lmr/m/it/12 in-duced by $\OML/cmm/m/it/12 M$\TU/lmr/
@@ -1281,63 +1281,79 @@ t/12 V []\OT1/cmr/m/n/12 )[]$\TU/lmr/m/it/12 ,
  []
 
 [24] [25] [26]
-Overfull \hbox (0.10551pt too wide) detected at line 1025
+Overfull \hbox (0.10551pt too wide) detected at line 1027
 [][][][][]
  []
 
-[27] [28] [29]
-Overfull \hbox (20.72736pt too wide) detected at line 1131
+[27] [28]
+Overfull \hbox (23.19789pt too wide) detected at line 1106
+[][][][][]
+ []
+
+[29]
+Overfull \hbox (15.32848pt too wide) detected at line 1138
+[][][][][]
+ []
+
+
+Overfull \hbox (47.7511pt too wide) detected at line 1148
 [][][][][]
  []
 
 [30] [31]
-Overfull \hbox (75.8604pt too wide) detected at line 1171
-[][][][][]
- []
-
-
-Overfull \hbox (118.26581pt too wide) detected at line 1181
-[][][][][]
- []
-
-[32] [33] [34]
 Chapter 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1176--1177
+
+ []
+
+[32
+
+]
+
+LaTeX Warning: Reference `unique' on page 33 undefined on input line 1201.
+
+[33]
+Chapter 5.
+[34
+
+]
+Chapter 6.
 [35
 
 ]
-Chapter 5.
+Appendix A.
 [36
 
-]
-Appendix A.
-[37
-
-] [38] [39] [40] [41] [42] [43] [44] [45] [46]
-Overfull \hbox (14.4414pt too wide) in paragraph at lines 1570--1571
+] [37] [38] [39] [40] [41] [42] [43] [44] [45]
+Overfull \hbox (14.4414pt too wide) in paragraph at lines 1539--1540
 []\TU/lmr/m/n/12 Choose pu-rifi-ca-tions $[]$ and $[]$ of $\OML/cmm/m/it/12 []
 $ \TU/lmr/m/n/12 and $\OML/cmm/m/it/12 []$ \TU/lmr/m/n/12 re-spec-tively such 
 that $\OML/cmm/m/it/12 F\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 []; []\OT1/cmr/m/n/
 12 ) =
  []
 
-[47]
+[46]
 Appendix B.
-(./Diss_1.bbl [48
+(./Diss_1.bbl [47
 
-] [49
+] [48
 
-]) [50] (./Diss_1.aux)
+]) [49] (./Diss_1.aux)
+
+LaTeX Warning: There were undefined references.
+
 Package rerunfilecheck Info: File `Diss_1.out' has not changed.
-(rerunfilecheck)             Checksum: 95C7900DDB121852E552A778572F3B07;6138.
+(rerunfilecheck)             Checksum: 675F13D22202189A410ED4A2760EA1CA;6092.
 )
 
 Here is how much of LuaTeX's memory you used:
- 35338 strings out of 477742
+ 35330 strings out of 477742
  125177,1144653 words of node,token memory allocated
- 2979 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 129 sub_mlist, 1 glyph, 515 attribu
-te, 62 glue_spec, 515 attribute_list, 2 write, 2 pdf_action nodes
-   avail lists: 1:12,2:3350,3:1835,4:276,5:692,6:62,7:7215,8:104,9:2013,10:20,11
+ 2859 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 4 glue, 4 kern, 116 sub_mlist, 1 glyph, 493 attribu
+te, 62 glue_spec, 493 attribute_list, 2 write, 2 pdf_action nodes
+   avail lists: 1:12,2:3394,3:1848,4:276,5:688,6:62,7:7214,8:102,9:2013,10:20,11
 :566
  54345 multiletter control sequences out of 65536+600000
  94 fonts using 6845807 bytes
@@ -1362,19 +1378,20 @@ nts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/nebka/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nebka/AppData/Local/Pr
 ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/nebka/AppData/L
 ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nebka/Ap
-pData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/Users/n
-ebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/U
-sers/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr7.pfb
-><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cm
-r8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/
-amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/
-public/amsfonts/cm/cmsy7.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Diss_1.pdf (61 pages, 563120 bytes).
+pData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/n
+ebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/
+Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pf
+b><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
+mr7.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
+s/cm/cmr8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmsy7.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTe
+X/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/Program
+s/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Diss_1.pdf (60 pages, 564955 bytes).
 
-PDF statistics: 977 PDF objects out of 1000 (max. 8388607)
- 363 named destinations out of 1000 (max. 131072)
+PDF statistics: 964 PDF objects out of 1000 (max. 8388607)
+ 355 named destinations out of 1000 (max. 131072)
  280 words of extra memory for PDF output out of 10000 (max. 100000000)
 

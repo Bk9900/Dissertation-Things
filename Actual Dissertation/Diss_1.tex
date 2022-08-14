@@ -906,7 +906,9 @@ We can also define the notion of \textit{algebraic relative entropy}.
 \begin{definition}
 	Given two states $\rho,\sigma$ on $M$, the algebraic relative entropy between them is
 	\begin{equation}
-		S(\rho|\sigma,M)=\sum_{\alpha}p_{\alpha}^{\{\rho\}}\log\frac{p_{\alpha}^{\{\rho\}}}{p_{\alpha}^{\{\sigma\}}}+\sum_{\alpha}p_{\alpha}^{\{\rho\}}S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}}),
+		\begin{aligned}
+			S(\rho|\sigma,M)&=-S(\rho,M)-\tr\left(\oplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{A_{\alpha}}\right)\otimes I_{\ol{A}_{\alpha}}\right]\rho\right)\\&=\sum_{\alpha}p_{\alpha}^{\{\rho\}}\log\frac{p_{\alpha}^{\{\rho\}}}{p_{\alpha}^{\{\sigma\}}}+\sum_{\alpha}p_{\alpha}^{\{\rho\}}S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}}),
+		\end{aligned}
 	\end{equation}
 	where $p_{\alpha}^{\{\rho\}}$ and $p_{\alpha}^{\{\sigma\}}$ are the probability distributions corresponding to $\rho$ and $\sigma$ respectively, and $S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}})$ is the relative entropy between $\rho_{A_{\alpha}}$ and $\sigma_{A_{\alpha}}$.
 \end{definition}
@@ -1051,132 +1053,97 @@ We can then state and prove the following theorem:
 \begin{theorem}\label{bij}
 	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. Also say that $(V,A,M)$ has complementary recovery. Then, $(V,A,M)$ and $(V,\ol{A},M')$ both have an RT formula with the same area operator $\mathcal{L}$, and $\mathcal{L}\in Z_{M}$ is in the centre. Moreover, if $(V,A,M)$ and $(V,\ol{A},M)$ both have an RT formula with the same $\mathcal{L}$, then $(V,A,M)$ have complementary recovery.
 \end{theorem}
-To make the (rather dense) proof easier to follow, we present some initial lemmas first. The proofs of these are given in appendix A.
-\begin{lemma}[Uniqueness]\label{unique}
-	Say $V$ is an encoding isometry, and $A$ is a subregion. Let $M\equiv V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ be the image of operators on $\mathcal{H}_{A}$ projected onto $\mathcal{H}_{L}$. If $M$ is a von Neumann algebra, then it is the unique von Neumann algebra for which complementary recovery is satisfied. If it is not, then no von Neumann algebra satisfying complementary recovery exists.
-\end{lemma}
-\begin{lemma}\label{vnae}
-	To linear order, an arbitrary variation $\delta\rho$ satisfying $\tr\delta\rho=0$ of the von Neumann entropy of a state $\sigma$ satisfies
-	\begin{equation}
-		\delta S(\rho)\equiv S(\sigma+\delta\rho)-S(\sigma)=-\tr\left(\delta\rho\log\sigma\right).
-	\end{equation} 
-\end{lemma}
-\begin{lemma}\label{vnae2}
-	To linear order, an arbitrary variation $\delta\rho$ satisfying $\tr\delta\rho=0$ of the algebraic entropy of a state $\sigma$ satisfies
-	\begin{equation}
-		\delta S(\sigma,M)\equiv S(\sigma+\delta\rho,M)-S(\sigma,M)=-\sum_{\alpha}\tr\left(\delta\rho\left(\log\left( p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right).
-	\end{equation}
-\end{lemma}
-The proof of \ref{bij} is then as follows.
 \begin{proof}
 	($\implies$): Suppose $M$ induces the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$, so $M$ and $M'$ have Wedderburn decompositions
 	\begin{equation}
 		M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{L_{\alpha}})\otimes I_{\ol{L}_{\alpha}}),\quad M'=\oplus_{\alpha}(I_{L_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{L}_{\alpha}})).
 	\end{equation}
-	Let $\{\ket{\widetilde{\alpha,ij}}\}=\{\ket{\widetilde{\alpha,i}}_{L_{\alpha}}\otimes\ket{\widetilde{\alpha,j}}_{\ol{L}_{\alpha}}\}$ be the basis of $\mathcal{H}_{L}$ which is compatible with $M$ in the sense of \ref{basis}. By the equivalence of \ref{O1} and \ref{O2} in theorem \ref{5.1} and complementary recovery, we know there exist factorisations
+	Let $\{\ket{\widetilde{\alpha,ij}}\}=\{\ket{{\alpha,i}}_{L_{\alpha}}\otimes\ket{{\alpha,j}}_{\ol{L}_{\alpha}}\}$ be the basis of $\mathcal{H}_{L}$ which is compatible with $M$ in the sense of \ref{basis}. By the equivalence of \ref{O1} and \ref{O2} in theorem \ref{5.1} and complementary recovery, we know there exist factorisations
 	\begin{equation}
 		\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}},\quad\mathcal{H}_{\ol{A}}=\oplus_{\alpha}(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}})\oplus\mathcal{H}_{\ol{A}_{3}}
 	\end{equation}
-	and unitaries $U_{A}\in\mathcal{L}(\mathcal{H}_{A})$ and $U_{\ol{A}}\in\mathcal{L}(\mathcal{H}_{\ol{A}})$ such that
+	and unitaries $U_{A}\in\mathcal{L}(\mathcal{H}_{A})$ and $U_{\ol{A}}\in\mathcal{L}(\mathcal{H}_{\ol{A}})$ such that (dropping the tensor factors with identity operators)
 	\begin{equation}
 		\begin{aligned}
-			(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{\alpha,i,j}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
-			(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{\alpha,i,j}}&=\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
+			U_{A}V\ket{\widetilde{\alpha,i,j}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
+			U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}&=\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
 		\end{aligned}
 	\end{equation}
-	If we apply $(U_{A}\otimes I_{\ol{A}})$ and $(I_{A}\otimes U_{\ol{A}})$ sequentially, we see that
+	Applying $U_{\ol{A}}$ to the first of these, and $U_{A}$ to the second, we see
+	\begin{equation}\label{333}
+		\begin{aligned}
+			U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes U_{\ol{A}}\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
+			U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}&=U_{A}\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}
+		\end{aligned}
+	\end{equation}
+	Equating the right hand sides, we see there must be states $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$ and $\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$ such that
 	\begin{equation}
 		\begin{aligned}
-			(I_{A}\otimes U_{\ol{A}})(U_{A}\otimes I_{A})V\ket{\widetilde{\alpha,i,j}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes(I_{A_{2}^{\alpha}}\otimes U_{\ol{A}})\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
-			(U_{A}\otimes I_{A})(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{\alpha,i,j}}&=(U_{A}\otimes I_{\ol{A}_{2}^{\alpha}})\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}
+			U_{\ol{A}}\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}&=\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}\\
+			U_{A}\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}.
 		\end{aligned}
 	\end{equation}
-	In order for both of these to be true simultaneously, there therefore must exist states $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$ such that $(I_{A_{2}^{\alpha}}\otimes U_{\ol{A}})\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}=\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}$, which implies
+	However, the equality of the right hand sides of equation \ref{333} tells us that $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}=\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$. We therefore obtain that
 	\begin{equation}\label{imp}
-		(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
+		U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
 	\end{equation}
-	This is the key fact which allows us to prove an RT formula.To do this, we suppose $\rho$ is a state with support on $\mathcal{H}_{L}$, and we compute $S(M,\rho)$ and $S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))$ and take their difference.\\
-	Instead of considering $S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))$ we might as well consider $S(\text{Tr}_{\ol{A}}(V\rho_{M} V^{\dagger}))$. To see why, set $O_{A}\in \mathcal{L}(\mathcal{H}_{A})$, and compute
+	We can use this map to express any logical state $\tilde{\rho}$ on $\mathcal{H}_{L}$ as follows
 	\begin{equation}
-		\text{Tr}(O_{A}\cdot\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))=\text{Tr}((O_{A}\otimes I_{\ol{A}})\cdot V\rho V^{\dagger})=\text{Tr}(V^{\dagger}(O_{A}\otimes I_{\ol{A}})V\cdot\rho).
+		U_{A}U_{\ol{A}}V\tilde{\rho}V^{\dagger}U_{A}^{\dagger}U_{\ol{A}}^{\dagger}=\bigoplus_{\alpha}\left[p_{\alpha}\rho_{A_{1}^{\alpha}\ol{A}_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\right].
 	\end{equation}
-	by cyclicity of the trace. But $V^{\dagger}(O_{A}\otimes I_{\ol{A}})V\in M$ by uniqueness, and for any $\tilde{O}\in M$ we have $\text{Tr}(\tilde{O}\rho)=\text{Tr}(\tilde{O}\rho_{M})$, we can just consider $\rho_{M}$ in the above. Since the states $\text{Tr}_{\ol{A}}(V\rho V^{\dagger})$ and $\text{Tr}_{\ol{A}}(V\rho_{M} V^{\dagger})$ have the same expectation for all observables in $M$, they are the same state and so have the same entropy. Acting with a unitary on $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ separately does not change the entropy, so we have:
-	\begin{equation}
-		S(\text{Tr}_{\ol{A}}(V\rho_{M} V^{\dagger}))=S(\text{Tr}_{\ol{A}}((U_{A}\otimes U_{\ol{A}})V\rho_{M} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger})).
+	Here, $\rho_{A_{1}^{\alpha}\ol{A}_{1}^{\alpha}}$ is a state acting on $\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}^{\alpha}}$ in the same way as $\tilde{\rho}_{L_{\alpha}\ol{L}_{\alpha}}$ does on $\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}$ (recall that $p_{\alpha}\rho_{L_{\alpha}\ol{L}_{\alpha}}$ are the diagonal blocks of $\tilde{\rho}$ in $\alpha$ with the $p_{\alpha}$ chosen to ensure $\tr(\rho_{L_{\alpha}\ol{L}_{\alpha}})=1$), and $\chi_{\alpha}\equiv\ketbras{\chi_{\alpha}}$. We therefore have that
+	\begin{equation}\label{asdfgh}
+		\tr_{\ol{A}}\left(U_{A}U_{\ol{A}}V\tilde{\rho}V^{\dagger}U_{A}^{\dagger}U_{\ol{A}}^{\dagger}\right)=U_{A}\tr_{\ol{A}}\left(V\tilde{\rho}V^{\dagger}\right)U_{A}^{\dagger}=\bigoplus_{\alpha}\left[p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\right].
 	\end{equation}
-	The next step is to define isometries $\tilde{V}_{\alpha}\,:\,(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})\to(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}^{\alpha}})$ using the states $\ket{\alpha,i}_{A_{1}^{\alpha}}$ and $\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}$:
-	\begin{equation}
-		\tilde{V}_{\alpha}\ket{\widetilde{\alpha,i,j}}\equiv\ket{\psi_{\alpha,i}}_{A_{1}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
-	\end{equation}
-	which is certainly an isometry since $\ket{\alpha,i}_{A_{1}^{\alpha}}$ and $\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}$ are orthonormal bases for $\mathcal{H}_{A_{1}^{\alpha}}$ and $\mathcal{H}_{\ol{A}_{1}^{\alpha}}$ respectively.\\
-	$\tilde{V}_{\alpha}$ then lets us rewrite \ref{imp} as
-	\begin{equation}
-		(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{\alpha,i,j}}=\tilde{V}_{\alpha}\ket{\widetilde{\alpha,i,j}}\otimes\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}.
-	\end{equation}
-	which lets us further simplify $(U_{A}\otimes U_{\ol{A}})V\rho_{M} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}$:
+	We then compute:
 	\begin{equation}
 		\begin{aligned}
-			&(U_{A}\otimes U_{\ol{A}})V\rho_{M} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger})\\&=\sum_{\alpha}p_{\alpha}\cdot (U_{A}\otimes U_{\ol{A}})V\rho_{L_{\alpha}} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}\\&=\sum_{\alpha}p_{\alpha}\cdot \frac{1}{p_{\alpha}}\sum_{i,j}\sum_{i',j'}(\rho_{\alpha\alpha})_{i,j,i',j'}(U_{A}\otimes U_{\ol{A}})V\ketbra{\widetilde{\alpha,i,j}}{\widetilde{\alpha,i',j'}} V^{\dagger}(U_{A}\otimes U_{\ol{A}})^{\dagger}\\&=\sum_{\alpha}p_{\alpha}\cdot\frac{1}{p_{\alpha}}\sum_{i,j}\sum_{i',j'}(\rho_{\alpha\alpha})_{i,j,i',j'}\tilde{V}_{\alpha}\ketbra{\widetilde{\alpha,i,j}}{\widetilde{\alpha,i',j'}}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}\\&=\sum_{\alpha}p_{\alpha}\cdot\tilde{V}_{\alpha}\rho_{L_{\alpha}}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}.
+			S\left(\tr_{\ol{A}}\left(V\tilde{\rho}V^{\dagger}\right)\right)&=-\tr\left[\bigoplus_{\alpha}\left(p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\right)\log\bigoplus_{\alpha}\left(p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\right)\right]\\
+			&=-\sum_{\alpha}\tr\left[p_{\alpha}\rho_{A_{1}^{\alpha}}\log\left(p_{\alpha}\rho_{A_{1}^{\alpha}}\right)\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}+p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\log\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\right]\\
+			&=-\sum_{\alpha}\tr_{L_{\alpha}}\left[p_{\alpha}\tilde{\rho}_{L_{\alpha}}\log\left(p_{\alpha}\tilde{\rho}_{L_{\alpha}}\right)\right]-\sum_{\alpha}p_{\alpha}\tr\left[\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\log\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\right]\\
+			&=S(\tilde{\rho},M)+\sum_{\alpha}p_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right).
 		\end{aligned}
 	\end{equation}
-	Here, the coefficients $(\rho_{\alpha\alpha})_{i,j,i',j'}$ are defined by the decomposition of $\rho$ with respect to the Hilbert space decomposition of $\mathcal{H}_{L}$ written as
+	On the first line, we use the fact that von Neumann entropy is invariant under unitary transformations and \ref{asdfgh}, the second uses that $\log(O_{A}\otimes O_{B})=\log(O_{A})\otimes I_{B}+I_{A}\otimes\log(O_{B})$, and the third uses the fact that $\rho_{A_{1}^{\alpha}}$ and $\tilde{\rho}_{L_{\alpha}}$ have the same matrix elements on their corresponding Hilbert spaces. So, if we define
 	\begin{equation}
-		\rho=\sum_{\alpha,\alpha'}\sum_{i,j}\sum_{i',j'}(\rho_{\alpha\alpha})_{i,j,i',j'}\ketbra{\widetilde{\alpha,i,j}}{\widetilde{\alpha,i',j'}}.
+		\mathcal{L}\equiv \oplus_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)I_{L_{\alpha}\ol{L}_{\alpha}},
 	\end{equation}
-	Each of the states $\tilde{V}_{\alpha}\rho_{L_{\alpha}}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}$ are normalised and act on different blocks, so we can compute the entropy as
-	\begin{equation}\label{entr}
-		\begin{aligned}
-			S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))&=-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}\otimes\ketbras{\chi_{\alpha}}))\\&=-\sum_{\alpha}p_{\alpha}\log(p_{\alpha})+\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\tilde{V}_{\alpha}\rho_{\alpha}\tilde{V}_{\alpha}^{\dagger}))+\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}})).
-		\end{aligned}
-	\end{equation}
-	Now, since $\ket{\alpha,j}$ is independent of $i$, we further have that
+	we see that
 	\begin{equation}
-		S(\text{Tr}_{\ol{A}}(\tilde{V}_{\alpha}\rho_{L_{\alpha}}\tilde{V}_{\alpha}^{\dagger}))=S(\text{Tr}_{\ol{A}_{1}^{\alpha}}(\tilde{V}_{\alpha}\rho_{L_{\alpha}}\tilde{V}_{\alpha}^{\dagger}))=S(\text{Tr}_{\ol{L}_{\alpha}}(\rho_{L_{\alpha}}))=S(\rho_{L_{\alpha}}).
+		\tr\left(\tilde{\rho}\mathcal{L}\right)=\tr\left(\bigoplus_{\alpha}\left[p_{\alpha}\tilde{\rho}_{L_{\alpha}}\otimes\tilde{\rho}_{\ol{L}_{\alpha}}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)\right]\right)=\sum_{\alpha}p_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right).
 	\end{equation}
-	Now, the first two terms of \ref{entr} are just $S(\rho,M)$, so we have
+	Therefore, we establish an RT formula
+	\begin{equation}\label{RTyay}
+		S\left(\tr_{\ol{A}}\left(V\tilde{\rho}V^{\dagger}\right)\right)=S(\tilde{\rho},M)+\tr\left(\tilde{\rho}\mathcal{L}\right)
+	\end{equation}
+	for $(V,A,M)$. Since we can repeat these arguments with $A\leftrightarrow\ol{A}$ and $M\leftrightarrow M'$ (i.e. with $i\leftrightarrow j$), we see that complementary recovery holds. Moreover, since $S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)=S\left(\tr_{A}\left(\chi_{\alpha}\right)\right)$, the area operator $\mathcal{L}$ is indeed the same for both RT formulae; since it is in $M$ and $M'$, it is in the centre as well.\\
+	$(\impliedby)$: Recall the definition of algebraic relative entropy
 	\begin{equation}
-		S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))-S(\rho,M)=\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}})).
+		S(\tilde{\rho}|\tilde{\sigma},M)=-S(\tilde{\rho},M)-\tr\left(\oplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right]\tilde{\rho}\right).
 	\end{equation}
-	The RHS is linear in $p_{\alpha}$, so must be linear in $\rho$ also. This means there exists an area operator $\mathcal{L}$ such that the RHS can be written as $\text{Tr}(\rho\mathcal{L})$. Explicitly, we define
+	Consider taking a small perturbation $\delta\tilde{\rho}$ about a state $\tilde{\sigma}$; to first order in $\delta\tilde{\rho}$, we have that
 	\begin{equation}
-		\begin{aligned}
-			I_{\alpha}&\equiv \sum_{i,j}\ketbras{\widetilde{\alpha,i,j}}\\
-			\mathcal{L}&\equiv\sum_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot I_{\alpha}
-		\end{aligned}
+		S(\tilde{\sigma}+\delta\tilde{\rho}|\tilde{\sigma},M)=0.
 	\end{equation}
-	which gives $\mathcal{L}\in M$, and so $\text{Tr}(\rho\mathcal{L})=\text{Tr}(\rho_{M}\mathcal{L})$, and we can write
+	We similarly find that
 	\begin{equation}
-		\begin{aligned}
-			\text{Tr}(\rho_{M}\mathcal{L})&=\text{Tr}\left(\sum_{\alpha}p_{L_{\alpha}}\rho_{\alpha}\cdot\sum_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot I_{\alpha}\right)\\&=\sum_{\alpha}p_{\alpha}S(\text{Tr}_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot \text{Tr}(\rho_{L_{\alpha}}I_{\alpha})\\&=S(\text{Tr}_{\ol{A}}(V\rho V^{\dagger}))-S(\rho,M),
-		\end{aligned}
+		S\left(\tr_{\ol{A}}\left(V\left(\tilde{\sigma}+\delta\tilde{\rho}\right)V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma}V^{\dagger}\right)\right)=0
 	\end{equation}
-	so $(V,A,M)$ satisfy an RT formula with area operator $\mathcal{L}$, and $\mathcal{L}\in M$. We can do the same derivation for $(V,\ol{A},M')$ with $i\leftrightarrow j$, and since $\mathcal{L}\in M'$, $\mathcal{L}\in Z_{M}$ as claimed.\\
-	$(\impliedby)$: From lemmas \ref{vnae} and \ref{vnae2}, we know that for a state $\sigma$ on $\mathcal{H}_{L}$ and arbitrary variation $\delta\rho$, we have
+	to first order\footnote{These can be proved by using the Baker-Campbell-Hausdorf formula, and noting that $\tr(A[B,C])=0$ if $A$ and $B$ are simultaneously diagonalisable.}. Using these facts, we take the same variation on \ref{RTyay}:
 	\begin{equation}
 		\begin{aligned}
-			S\left(\tr_{\ol{A}}\left(V(\sigma+\delta\rho)V^{\dagger}\right)\right)-S\left(\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=-\tr\left(\tr_{\ol{A}}\left(V\delta\rho V^{\dagger}\right)\log \tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)\\
-			S(\sigma+\delta\rho,M)-S(\sigma,M)&=-\sum_{\alpha}\tr\left(\delta\rho\left(\log\left( p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)
+			S\left(\tr_{\ol{A}}\left(V\left(\tilde{\sigma}+\delta\tilde{\rho}\right)V^{\dagger}\right)\right)&=S(\tilde{\sigma}+\delta\tilde{\rho},M)+\tr\left(\left(\tilde{\sigma}+\delta\tilde{\rho}\right)\mathcal{L}\right)\\
+			\implies \tr\left(\tr_{\ol{A}}\left(V\delta\tilde{\rho} V^{\dagger}\right)\log\left[\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right]\right)&=\sum_{\alpha}\tr\left(\delta\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right).
 		\end{aligned}
 	\end{equation}
-	Also, recall the RT formula \ref{RT3}:
-	\begin{equation}
-		S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)=S(\rho,M)+\tr(\rho\mathcal{L}).
-	\end{equation}
-	If the RT formula holds, for any state $\sigma$ on $\mathcal{H}_{L}$ with small perturbation $\delta\rho$, we therefore have:
-	\begin{equation}
-		\begin{aligned}
-			S\left(\tr_{\ol{A}}\left(V(\sigma+\delta\rho)V^{\dagger}\right)\right)-S\left(\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=S(\sigma+\delta\rho,M)-S(\sigma,M)+\tr((\sigma+\delta\rho)\mathcal{L})-\tr(\sigma\mathcal{L})\\
-			\implies \tr\left(\tr_{\ol{A}}\left(V\delta\rho V^{\dagger}\right)\log\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=\sum_{\alpha}\tr\left(\delta\rho\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right).
-		\end{aligned}
-	\end{equation}
-	Both sides are linear in $\delta\rho$, and so we can integrate over all such perturbations to obtain
+	Both sides of the equation are linear in $\delta\tilde{\rho}$, so we can integrate over all such perturbations:
 	\begin{equation}\label{ph}
-		\tr\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\log\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)=\sum_{\alpha}\tr\left(\rho\left(\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right)\right).
+		\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left[\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right]\right)=\sum_{\alpha}\tr\left(\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right).
 	\end{equation}
 	The next step is to calculate the relative entropy:
 	\begin{equation}
 		\begin{aligned}
-			S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)|\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)\right)-\tr\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\sigma V^{\dagger}\right)\right)\right)\\&=-S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\rho\left(\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right)\right)\\&=-S(\rho,M)-\sum_{\alpha}\tr\left(\rho\left(\left(\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)\right)\\&=-S(\rho,M)-\sum_{\alpha}\tr\left(p_{\alpha}^{\{\rho\}}\rho_{L_{\alpha}}\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{L_{\alpha}}\right)\right)\\&=S(\rho|\sigma,M),
+			S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)\right)\\&\phantom{==}-\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)\right)\\&=-S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right)\\&=-S(\tilde{\rho},M)-\sum_{\alpha}\tr\left(\tilde{\rho}\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)\\&=S(\rho|\sigma,M),
 		\end{aligned}
 	\end{equation}
 	where we use \ref{ph} in the second line, and the RT formula in the third. We can perform the same argument with ${A}\leftrightarrow \ol{A}$ and $M\leftrightarrow M'$, and we find similarly that
@@ -1205,8 +1172,10 @@ The proof of \ref{bij} is then as follows.
 	\end{equation}
 	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
 \end{proof}
-\subsection{Some Examples}
-The notation above is rather cumbersome and difficult to understand. Following \cite{Pollack}, we present some simple examples to try and elucidate the structure of this proof. Recall that if $M$ is a von Neumann algebra acting on $\mathcal{H}_{L}$, then we have Wedderburn decomposition
+\chapter{Examples}
+The notation in the previous chapter is rather dense and difficult to understand. Following \cite{Pollack}, we therefore present some simple examples to try and elucidate the structure of the proof of theorem 3.5.1.\\
+
+Recall that if $M$ is a von Neumann algebra acting on $\mathcal{H}_{L}$, then we have Wedderburn decomposition
 \begin{equation}
 	\mathcal{H}_{L}=\oplus_{\alpha}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right).
 \end{equation}
