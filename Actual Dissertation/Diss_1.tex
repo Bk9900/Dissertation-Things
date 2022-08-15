@@ -1173,63 +1173,205 @@ We can then state and prove the following theorem:
 	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
 \end{proof}
 \chapter{Examples}
-The notation in the previous chapter is rather dense and difficult to understand. Following \cite{Pollack}, we therefore present some simple examples to try and elucidate the structure of the proof of theorem 3.5.1.\\
-
-Recall that if $M$ is a von Neumann algebra acting on $\mathcal{H}_{L}$, then we have Wedderburn decomposition
+The notation in the previous chapter is rather dense and difficult to understand. We therefore present some simple examples to try and elucidate the structure of the proof of theorem \ref{bij}. First, we recall some basic facts we've talked about so far to keep them all for easy reference.\\
+We say a triplet $(V,A,M)$ of an encoding isometry $V:\mathcal{H}_{L}\to\mathcal{H}\cong\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, a subregion $A$, and von Neumann algebra $M$ on $\mathcal{H}_{L}$ has an \textit{RT formula} if
 \begin{equation}
-	\mathcal{H}_{L}=\oplus_{\alpha}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right).
+	S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)=S(\rho,M)+\tr\left(\rho\mathcal{L}\right)
 \end{equation}
-This decomposition takes into account the possibility that $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ may have dimensionality depending on $\alpha$. However, our examples involve qubits only, so we simply drop the $\alpha$ dependence, and just relabel $\mathcal{H}_{L_{\alpha}}\to\mathcal{H}_{i}=\mathbb{C}^{2}$ and $\mathcal{H}_{\ol{L}_{\alpha}}\to\mathcal{H}_{j}=\mathbb{C}^{2}$. We also limit our examples to have at most two blocks, so $\alpha=0,1$. Therefore, we keep track of which block we are in by encoding the $\alpha$ degree of freedom in a qubit as well, with the computational basis elements $\{\ket{0},\ket{1}\}$ corresponding to the two choices of $\alpha$. In full, we are essentially expressing the Hilbert space isomorphism
+for any state $\rho$ on $\mathcal{H}_{L}$ and some \textit{area operator} $\mathcal{L}\in\mathcal{L}(\mathcal{H}_{L}$. The \textit{algebraic entropy} $S(\rho,M)$ is defined as
 \begin{equation}
-	\mathcal{H}_{L}=\oplus_{\alpha=0}^{1}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right)\cong \mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}
+	S(\rho,M)=-\sum_{\alpha}p_{\alpha}\log\left(p_{\alpha}\right)+\sum_{\alpha}p_{\alpha}S\left(\rho_{L_{\alpha}}\right).
+\end{equation} 
+In some sense, this splits the algebraic entropy into a `classical' part $S_{c}\equiv-\sum_{\alpha}p_{\alpha}\log(p_{\alpha})$ (which is just the Shannon entropy of a discrete probability distribution taking values $\{p_{\alpha}\}$), and a `quantum' part $S_{q}\equiv \sum_{\alpha}p_{\alpha}S\left(\rho_{L_{\alpha}}\right)$ (which is the sum of the von Neumann entropies of the reduced states $\rho_{L_{\alpha}}$, weighted by the probabilities $p_{\alpha}$). Moreover, the left hand side of the RT formula is in some sense the von Neumann entropy of the state $\rho$ on the subregion $A$, which we denote $S_{A}$. We therefore express the RT formula in full as
+\begin{equation}
+	\underbrace{S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)}_{S_{A}}=\underbrace{-\sum_{\alpha}p_{\alpha}\log\left(p_{\alpha}\right)}_{S_{c}}+\underbrace{\sum_{\alpha}p_{\alpha}S\left(\rho_{L_{\alpha}}\right)}_{S_{q}}+\tr\left(\rho\mathcal{L}\right).
 \end{equation}
-where $\mathcal{H}_{\alpha}=\mathbb{C}^{2}$. The examples are presented by writing the encoding isometry as a quantum circuit acting on qubits $\mathcal{H}_{\alpha},\mathcal{H}_{i}$, and $\mathcal{H}_{j}$, with the corresponding qubit labelled on the left hand side. 
+Following \cite{Pollack}, we present some examples of operator-algebra erasure codes which one, two, or all three of the classical, quantum, and area terms in their RT formula. We express all the isometries as \textit{quantum circuits}, and familiarity with these is assumed; for a summary, see appendix ????.\\
+To analyse the codes, we need to make use of a uniqueness theorem of \cite{Pollack}, which we state without proof. 
+\begin{theorem}
+	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ is an encoding isometry, and $A$ is a subregion. Let $M\equiv V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ be the image of operators on $\mathcal{H}_{A}$ projected back onto $\mathcal{H}_{L}$ under $V$. If $M$ is a von Neumann algebra, then it is the \textbf{unique} von Neumann algebra such that $(V,A,M)$ satisfy complementary recovery. If not, then no such von Neumann algebra exists.
+\end{theorem}
+Combined with theorem \ref{bij}, this gives a series of steps to compute the area operator of the RT formula for a given code. These are
+\begin{enumerate}
+	\item Calculate $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ and check it is a von Neumann algebra to verify that we have complementary recovery.
+	\item Compute the Wedderburn decomposition of $\mathcal{H}_{L}$ induced by $M$, and follow \ref{5.1} to define a basis $\ket{\widetilde{\alpha,i,j}}$ which lines up with $M$.
+	\item Apply \ref{5.1} twice to obtain unitaries $U_{A}$ and $U_{\ol{A}}$ such that $U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}\otimes\ket{\chi_{\alpha}}\otimes\ket{\alpha,j}$.
+	\item Following theorem \ref{bij}, obtain the states $\ket{\chi_{\alpha}}$ and compute their entanglement entropies across $A_{2}$ and $\ol{A}_{2}$; these are the eigenvalues of $\mathcal{L}$.
+\end{enumerate}
+\section{Codes with one term}
+We start with some codes which have only a single term on the right hand side of the RT formula. To make sense of these, recall that the von Neumann algebra $M$ on $\mathcal{H}_{L}$ induces a decomposition
+\begin{equation}
+	\mathcal{H}_{L}=\bigoplus_{\alpha}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right).
+\end{equation}
+This expression takes into account the fact that the tensor factors $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ may vary in dimensionality with $\alpha$. To keep these examples simple, we don't consider cases such as these. We therefore relabel
+\begin{equation}
+	\mathcal{H}_{L_{\alpha}}\to\mathcal{H}_{i},\quad\mathcal{H}_{\ol{L}_{\alpha}}\to\mathcal{H}_{j},
+\end{equation}
+so both of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ are encoded by a qubit, or are not present at all. Moreover, we limit $\alpha$ to take at most two values, so $\alpha=0$ or $\alpha\in\{0,1\}$ depending on our specific example. When $\alpha$ has two degrees of freedom, we encode it in its own Hilbert space $\mathcal{H}_{\alpha}=\mathbb{C}^{2}$, where each element of the computational basis keeps track of which $\alpha$-block of the decomposition we are in. Essentially, in this case we are expressing the Hilbert space isomorphism
+\begin{equation}
+	\mathcal{H}_{L}=\bigoplus_{\alpha=0}^{1}\left(\mathcal{H}_{i}\otimes\mathcal{H}_{j}\right)\cong \mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}.
+\end{equation}
+The benefit of doing this is that we can specify the encoding isometry $V$ as quantum circuits as stated, acting on qubits.
 \subsubsection{Example 1}
+In this example, we choose $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ to not be present, but allow $\alpha\in\{0,1\}$ to have its own qubit. The logical space is then
+\begin{equation}
+	\mathcal{H}_{L}=\mathcal{H}_{\alpha}=\mathbb{C}^{2}.
+\end{equation}
 Our encoding isometry is
 \begin{equation}
 	V_{1}\equiv
 			\begin{quantikz}
-			\lstick{$\ket{\alpha}$} & \ctrl{1} & \qw\\
-			\lstick{$\ket{0}$} & \targ{} & \qw
-			\end{quantikz}.
+			\lstick{\alpha} & \ctrl{1} & \qw\rstick{$A$}\\
+			\lstick{$\ket{0}$} & \targ{} & \qw\rstick{$\ol{A}$}
+			\end{quantikz}
 \end{equation}
-We pick $\mathcal{H}_{A}$ to be the first qubit on the right hand side, and $\mathcal{H}_{\ol{A}}$ to be the second. We can write this explicitly in a basis as
+and we pick $\mathcal{H}_{A}$ to be the first qubit on the right, and $\mathcal{H}_{\ol{A}}$ to be the second. In terms of the computational basis $\{\ket{0},\ket{1}\}$, we can write this algebraically as
 \begin{equation}
-	V=\ketbra{00}{0}+\ketbra{11}{1}.
+	V=\ket{00}_{A\ol{A}}\bra{0}_{\alpha}+\ket{11}_{A\ol{A}}\bra{1}_{\alpha}.
 \end{equation}
-There are no $i$ and $j$ qubits in this example, and our logical space is just $\mathbb{C}^{2}$ - a single qubit.\\
-Following the uniqueness theorem \ref{unique}, we compute the von Neumann algebra by calculating $V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$. We express any operator $O\in\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$ in terms of the Pauli matrices:
+Following the uniqueness theorem, we compute the von Neumann algebra by calculating $V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$. We can express any operator $O\in\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$ in terms of the Pauli matrices:
 \begin{equation}
 	O=\alpha(I_{A}\otimes I_{\ol{A}})+\beta(X_{A}\otimes I_{\ol{A}})+\gamma(Y_{A}\otimes I_{\ol{A}})+\delta(Z_{A}\otimes I_{\ol{A}}),
 \end{equation}
-and then
+where $\alpha,\ldots,\delta\in\mathbb{C}$, and then
 \begin{equation}
 	V^{\dagger}OV=\alpha I+\delta Z.
 \end{equation}
-$M$ is therefore the von Neumann algebra of diagonal operators on $\mathcal{H}_{\alpha}$. This algebra induces Wedderburn decomposition 
+$M$ is therefore the von Neumann algebra of diagonal operators on $\mathcal{H}_{\alpha}$. So, consider an arbitrary state $\rho$ on $\mathcal{H}_{L}$. The algebraic state $\rho_{M}$ is just the state consisting of the diagonal elements of $\rho$
 \begin{equation}
-	\mathcal{H}_{L}\cong \mathbb{C}\oplus\mathbb{C},
+	\rho_{M}=p_{0}\ketbras{0}+p_{1}\ketbras{1}
 \end{equation}
-so in terms of our original notation, $\mathcal{H}_{L_{0}}=\mathcal{H}_{L_{1}}=\mathbb{C}$ and $\mathcal{H}_{\ol{L}_{0}}=\mathcal{H}_{\ol{L}_{1}}=\boldsymbol{0}$. For an arbitrary state $\rho$ on $\mathcal{H}_{L}$, we can calculate the algebraic state is just
+for some constants $p_{0}$ and $p_{1}$ summing to 1. Classically, we cannot say which of the two states the system is in, so observables in $M$ can only measure a classical uncertainty in the state corresponding to the probabilities $p_{0}$ and $p_{1}$, and cannot distinguish any superposition over $\alpha$ from this. The algebraic entropy therefore reduces to just the classical term $S(\rho,M)=S_{c}$. Moreover, we calculate that $\tr_{\ol{A}}(V\rho V^{\dagger})=p_{0}\ketbras{0}+p_{1}\ketbras{1}$. So the entropy $S_{A}$ exactly matches $S_{c}$, and the full RT formula is just
 \begin{equation}
-	\rho_{M}=p_{0}\rho_{00}+p_{1}\rho_{11},
+	S(\tr_{\ol{A}}(V\rho V^{\dagger}))=-\sum_{\alpha=0}^{1}p_{\alpha}\log{p_{\alpha}}.
 \end{equation}
-which is also diagonal. What this tells us is that observables in $M$ cannot distinguish superpositions over the $\alpha$ blocks from classical Bernoulli probability distributions over $\alpha$, so the algebraic entropy $S(\rho,M)$ reduces to just the \textit{classical} term, and the area operator $\mathcal{L}=0$. However, note that $M$ is its own centre which is not trivial - so even algebras with a non-trivial centre can have a trivial area operator!
-\chapter{Approximate and Non-Isometric Codes}
-So far, we have discussed \textit{exact} codes - ones which perfectly recover information. In practice, exact codes are almost impossible to implement, and some information will be lost in correcting errors. To talk about this precisely, we need the notion of \textit{approximate error correction}.
-
-
-\section{Approximate and State Specific Codes}
-Consider the statement of theorem \ref{t1}. In the language of density operators, this can be rewritten as saying that for all states $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
-\begin{equation}\label{exact1}
-	\psi_{\ol{A}}\equiv\tr_{A}\left(V\ketbras{\tilde{\psi}}V^{\dagger}\right)=\chi_{\ol{A}},
-\end{equation}
-where $\chi_{\ol{A}}\equiv\tr_{A}\left(\ketbras{\chi}\right)$. The fact that $\chi_{\ol{A}}$ is fixed for \textit{all} such states $\ket{\tilde{\psi}}$ is a reflection of the fact that for exact erasure correction, the $\ol{A}$ subsystem must know zero information about the $A$ system. For approximate erasure correction, we need to be more careful. Suppose we replaced \ref{exact1} with a directly approximate version\footnote{Here, $\lVert X\rVert_{1}\equiv \tr\sqrt{X^{\dagger}X}$ is called the \textit{trace norm}. We could equivalently replace it with e.g. fidelity.}:
+This means we have a trivial area operator $\mathcal{L}=0$. Interestingly, $M$ is its own centre and is non-trivial, so even an algebra with a non-trivial centre can have a trivial area operator.
+\subsubsection{Example 2}
+We now present a slightly degenerate example. We choose $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ to not be present again, but also restrict $\alpha=0$. The logical Hilbert space is therefore one-dimensional, with $\mathcal{H}_{L}=\mathbb{C}$. We can still however define a single state: $\rho=1$. Our encoding isometry is
 \begin{equation}
-	\left\lVert \psi_{\ol{A}}-\chi_{\ol{A}}\right\rVert_{1}\leq \epsilon
+	V\equiv\begin{quantikz}
+		\lstick{$\ket{+}$} & \ctrl{1} & \qw\rstick{$A$}\\
+		\lstick{$\ket{0}$} & \targ{} & \qw\rstick{$\ol{A}$}
+	\end{quantikz}
 \end{equation}
-for $\epsilon>0$. 
-
+which just prepares a Bell state:
+\begin{equation}
+	V=\ket{\Phi}\equiv\frac{1}{\sqrt{2}}(\ket{00}+\ket{11}).
+\end{equation}
+$S_{A}$ is therefore $S(\ketbras{\Phi})=\log{2}$, and the von Neumann algebra is just the set of scalars, so $S(\rho,M)=0$. The RT formula is therefore achieved by choosing $\mathcal{L}=\log{2}$, as then $S_{A}=\log{2}=\tr(\rho\mathcal{L})$ as required.
+\subsubsection{Example 3}
+In this example, we choose $\alpha=0$, but allow each of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ to be qubits, so $\mathcal{H}_{i}=\mathcal{H}_{j}=\mathbb{C}^{2}$. In full, $\mathcal{H}_{L}=\mathcal{H}_{i}\otimes\mathcal{H}_{j}=\mathbb{C}^{2}\otimes\mathbb{C}^{2}$. Our encoding isometry is simply the identity
+\begin{equation}
+	V\equiv\begin{quantikz}
+		\lstick{$i$} & \qw\rstick{$A$}\\
+		\lstick{$j$} & \qw\rstick{$\ol{A}$}
+	\end{quantikz}
+\end{equation}
+We have $\mathcal{H}_{i}=\mathcal{H}_{A}$ and $\mathcal{H}_{j}=\mathcal{H}_{\ol{A}}$, so $S_{A}=S(\tr_{j}(\rho))$ for arbitrary state $\rho$. Moreover, $M=\mathcal{L}(\mathcal{H}_{i})\otimes I_{j}$, so the distribution over blocks is trivial with $p_{0}=1$, and the classical part of $S(\rho,M)$ vanishes, leaving us with $S(\rho,M)=S_{q}=S(\tr_{j}(\rho))$. Therefore, we necessarily have $\mathcal{L}=0$ for the area operator.
+\section{Codes with two terms}
+In this section, we present some codes in which the RT formula has two terms on the right hand side. These examples are built up by combining the single term examples in various ways. There's a bit more complexity in the physical Hilbert space though, so we go through this first. Recall that in theorem \ref{bij}, $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ were decomposed into
+\begin{equation}
+	\mathcal{H}_{A}=\bigoplus_{\alpha}\left(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}}\right)\oplus\mathcal{H}_{A_{3}},\quad\mathcal{H}_{\ol{A}}=\bigoplus_{\alpha}\left(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}}\right)\oplus\mathcal{H}_{\ol{A}_{3}}.
+\end{equation}
+As with the decomposition of $\mathcal{H}_{L}$, the $\alpha$-dependence allows dependence of dimensionality of the tensor factors on which $\alpha$-block we are in. In these examples, this is not the case. The presence of $\mathcal{H}_{A_{3}}$ allows us to factor only the image of $V$ in $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$, which is what we do. Following what we did for $\mathcal{H}_{L}$, we therefore factorise as
+\begin{equation}
+	\mathcal{H}_{A}=\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}},\quad\mathcal{H}_{\ol{A}}=\mathcal{H}_{\ol{A}_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}}\otimes\mathcal{H}_{\ol{A}_{2}},
+\end{equation}
+with the $\mathcal{H}_{A_{\alpha}}$ and $\mathcal{H}_{\ol{A}_{\alpha}}$ factors only present if we have an example with two $\alpha$-blocks. The fact that the $\alpha$ degree of freedom is visible from both $A$ and $\ol{A}$ is where the pseudo-classical behaviour of the codes comes from. In these examples, we label the right hand side of our circuits with the associated decomposition of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ as well.\\
+Recall as well in \ref{bij} that the decompositions above allowed us to show that there exist unitaries $U_{A}$ and $U_{\ol{A}}$ such that for codes with complementary recovery
+\begin{equation}\label{CR}
+	U_{A}U_{\ol{A}}V\ket{\alpha,i,j}=\ket{\alpha,i}_{A_{\alpha}A_{1}}\otimes\ket{\chi_{\alpha}}_{A_{2}\ol{A}_{2}}\otimes\ket{\alpha,j}_{\ol{A}_{\alpha}\ol{A}_{1}}
+\end{equation}
+in our new notation. In our examples, $U_{A}$ and $U_{\ol{A}}$ will always be the identity.
+\subsubsection{Example 4}
+This example is perhaps the most intuitive so far, as all three of the tensor factors of $\mathcal{H}_{L}=\mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}$ are qubits. Our encoding isometry is the circuit
+\begin{equation}
+	V=\begin{quantikz}
+		\lstick{\alpha} & \ctrl{2} & \qw \rstick{$A_{\alpha}$}\\
+		\lstick{$i$} & \qw & \qw \rstick{$A_{1}$}\\
+		\lstick{$\ket{0}$} & \targ{} & \qw \rstick{$\ol{A}_{\alpha}$}\\
+		\lstick{$j$} & \qw & \qw \rstick{$\ol{A}_{1}$}
+	\end{quantikz}
+\end{equation}
+We have chosen $A$ to be the first two qubits, and $\ol{A}$ to be the last two. We begin by computing $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})$. Analogously to example 1, $M$ has access to all diagonal operators on $\mathcal{H}_{\alpha}$ (via $\mathcal{H}_{A_{\alpha}}$), and analogously to example 3, it also has full access to all operators on $\mathcal{H}_{i}$. $M$ also must necessarily act as the identity on $\mathcal{H}_{j}$. The centre $Z_{M}$ is non-trivial: while it must act as the identity on $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$, it can act non-trivially on $\mathcal{H}_{\alpha}$ as a diagonal operator.\\
+Since we have decomposition $\mathcal{H}_{L}=\mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}$, we note that the basis $\{\ket{\widetilde{\alpha,i,j}}\}$ of $\mathcal{H}_{L}$ which lines up with $M$ is just $\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}\ket{i}\ket{j}$. Considering how our isometry acts on such a basis element, we explicitly have
+\begin{equation}
+	V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}_{A_{\alpha}}\ket{i}_{A_{1}}\ket{\alpha}_{\ol{A}_{\alpha}}\ket{j}_{\ol{A}_{1}}.
+\end{equation}
+Comparing with \ref{CR}, we see that we can clearly pick both unitaries $U_{A}$ and $U_{\ol{A}}$ to be identities, and the states $\ket{\alpha,i}_{A_{\alpha}A_{1}}=\ket{\alpha}_{A_{\alpha}}\ket{i}_{A_{1}}$ and $\ket{\alpha,j}_{\ol{A}_{\alpha}\ol{A}_{1}}=\ket{\alpha}_{\ol{A}_{\alpha}}\ket{j}_{\ol{A}_{1}}$ also factorise cleanly. We do not however have any $\ket{\chi_{\alpha}}$ states (as we have no $A_{2}$ and $\ol{A}_{2}$ subsystems), so we see that $\mathcal{L}=0$ as it only has zero eigenvalues and the RT formula has no area term.\\
+Now, the $\alpha$ degree of freedom is visible from both $A$ and $\ol{A}$, so acts as though it has been measured from the point of view of $A$, giving the classical term $S_{c}$ on the right hand side. The $i$ and $j$ qubits may be entangled with $\mathcal{H}_{\alpha}$, so after measurement it will collapse to one of the $\rho_{\alpha}$ states from the decomposition $\rho_{M}=p_{0}\rho_{0}+p_{1}\rho_{1}$. The quantum term $S_{q}$ then reduces to the probability $p_{\alpha}$ corresponding to $\rho_{\alpha}$, multiplied by the von Neumann entropy of $\rho_{\alpha}$ reduced to $\mathcal{H}_{i}$. In full, the RT formula is
+\begin{equation}
+	S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)=-\sum_{\alpha}p_{\alpha}\log\left(p_{\alpha}\right)+\sum_{\alpha}p_{\alpha}S\left(\tr_{j}\left(\rho_{\alpha}\right)\right).
+\end{equation}
+\subsubsection{Example 5}
+In this next code, we have the full $\mathcal{H}_{\alpha}$ system, but no $\mathcal{H}_{i}$ or $\mathcal{H}_{j}$. Our encoding isometry is
+\begin{equation}
+	V=\begin{quantikz}
+		\lstick{\alpha} & \ctrl{2} & \ctrl{3} & \qw \rstick{$A_{\alpha}$}\\
+		\lstick{$\ket{+}$} & \qw & \ctrl{2} & \qw \rstick{$A_{2}$}\\
+		\lstick{$\ket{0}$} & \targ{} & \qw &\qw \rstick{$\ol{A}_{\alpha}$}\\
+		\lstick{$\ket{0}$} & \qw & \targ{} & \qw \rstick{$\ol{A}_{2}$}
+	\end{quantikz}
+\end{equation}
+As in example 1, the von Neumann algebra $M$ is just the set of diagonal operators on $\mathcal{H}_{\alpha}$. The algebraic entropy $S(\rho,M)$ will therefore again just be the classical Shannon entropy of the distribution $\{p_{\alpha}\}$.\\
+We can actually be even more explicit with this example by considering a logical pure state $\ket{\psi}=a\ket{0}+b\ket{1}$, where $|a|^{2}=p_{0}$ and $|b|^{2}=p_{1}$. We calculate $V\ket{\psi}$ as
+\begin{equation}
+	V\ket{\psi}=a\ket{0+00}+\frac{b}{\sqrt{2}}(\ket{1010}+\ket{1111}),
+\end{equation}
+from which we can calculate the reduced state for the density operator $\rho=\ketbras{\psi}$ corresponding to our qubit:
+\begin{equation}
+	\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)=|a|^{2}\ketbras{0+}_{A_{\alpha}A_{2}}+|b|^{2}\left(\ketbras{1}_{A_{\alpha}}\otimes\frac{I_{A_{2}}}{2}\right).
+\end{equation}
+Therefore, the entropy $S_{A}$ is
+\begin{equation}
+	\begin{aligned}
+		S_{A}&=-\left(|a|^{2}\log|a|^{2}+|b|^{2}\log|b|^{2}\right)+|b|^{2}S\left(\frac{I_{A_2}}{2}\right)\\&=-\sum_{\alpha=0}^{1}p_{\alpha}\log{p_{\alpha}}+\tr\left(\rho\begin{pmatrix}
+			0&0\\0&\log{2}
+		\end{pmatrix}\right).
+	\end{aligned}
+\end{equation}
+So for this pure case, the area operator is explicitly $\mathcal{L}=\log{2}\cdot\ketbras{1}$. This matches what we expect: comparing with \ref{CR}, we see that we have for this isometry
+\begin{equation}
+	V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}_{A_{\alpha}}\otimes\ket{\chi_{\alpha}}_{A_{2}\ol{A}_{2}}\otimes\ket{\alpha}_{\ol{A}_{\alpha}}
+\end{equation}
+where $\ket{\chi_{0}}=\ket{+0}$ and $\ket{\chi_{1}}=\frac{1}{\sqrt{2}}(\ket{00}+\ket{11})$ is a Bell state. So since $S(\tr_{\ol{A}}(\ketbras{\chi_{0}}))=0$ and $S(\tr_{\ol{A}}(\ketbras{\chi_{0}}))=\log{2}$, $\mathcal{L}=\sum_{\alpha=0}^{1}S(\tr_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot I_{\alpha}$ matches what we found.
+\subsubsection{Example 6}
+This example has $\alpha=1$, and each of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ are qubits. Our encoding isometry is
+\begin{equation}
+	V=\begin{quantikz}
+		\lstick{$i$} & \qw & \qw \rstick{$A_{1}$}\\
+		\lstick{$\ket{+}$} & \ctrl{2} & \qw \rstick{$A_{2}$}\\
+		\lstick{$j$} & \qw & \qw \rstick{$\ol{A}_{1}$}\\
+		\lstick{$\ket{0}$} & \targ{} & \qw \rstick{$\ol{A}_{2}$}
+	\end{quantikz}
+\end{equation}
+Analogously to example 3 again, $M=\mathcal{L}(\mathcal{H}_{i})\otimes I_{j}$. Since there is only one value of $\alpha$, the classical part $S_{q}=0$, and the only contribution to the algebraic entropy $S(\rho,M)$ is the entropy of the reduced state on $\mathcal{H}_{i}$, so $S(\tr_{j}(\rho))$.\\
+However, since there is a Bell state shared across $A_{2}$ and $\ol{A}_{2}$, its entropy contributes to $S_{A}$. Explicitly, comparing with \ref{CR}, we have
+\begin{equation}
+	V\ket{\widetilde{\alpha,i,j}}=\ket{i}_{A_{1}}\otimes\ket{\chi_{0}}_{A_{2}\ol{A}_{2}}\otimes\ket{j}_{\ol{A}_{1}},
+\end{equation}
+where $\ket{\chi_{0}}$ is again a Bell state. We therefore have area operator $\mathcal{L}=\log{2}\cdot I$.
+\section{A Complete Example}
+We now present an example of a code in which \textit{all} terms of the RT formula are present. All the terms in the decomposition $\mathcal{H}_{L}=\mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}$ are present, as are all terms in the decompositions of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$. The encoding isometry is given by
+\begin{equation}
+	V=\begin{quantikz}
+		\lstick{\alpha} & \ctrl{3} & \ctrl{5} & \qw \rstick{$A_{\alpha}$}\\
+		\lstick{$i$} & \qw & \qw & \qw \rstick{$A_{1}$}\\
+		\lstick{$\ket{+}$} & \qw & \ctrl{3} & \qw \rstick{$A_{2}$}\\
+		\lstick{$\ket{0}$} & \targ{} & \qw & \qw \rstick{$\ol{A}_{\alpha}$}\\
+		\lstick{$j$} & \qw & \qw & \qw \rstick{$\ol{A}_{1}$}\\
+		\lstick{$\ket{0}$} & \qw & \targ{} & \qw \rstick{$\ol{A}_{2}$}
+	\end{quantikz}
+\end{equation}
+Analogously to example 4, $M$ has full access to operators on $\mathcal{H}_{i}$ (via $\mathcal{H}_{A_{1}}$); analogously to example 1, it has full access to diagonal operators on $\mathcal{H}_{\alpha}$ (via $\mathcal{H}_{A_{\alpha}}$); and it has no access to $\mathcal{H}_{j}$, so must act as the identity on it. The basis lining up with $M$ therefore decomposes as $\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}\ket{i}\ket{j}$. Applying the isometry to this basis state, we get the full form of \ref{CR}
+\begin{equation}
+	V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}_{A_{\alpha}A_{1}}\otimes \ket{\chi_{\alpha}}_{A_{2}\ol{A}_{2}}
+\end{equation}
+where $\ket{\alpha,i}=\ket{\alpha}\ket{i}$, $\ket{\alpha,j}=\ket{\alpha}\ket{j}$ both decompose, and the $\ket{\chi_{\alpha}}$ are
+\begin{equation}
+	\ket{\chi_{0}}_{A_{2}\ol{A}_{2}}=\ket{+}_{A_{2}}\ket{0}_{\ol{A}_{2}},\quad\ket{\chi_{1}}_{A_{2}\ol{A}_{2}}=\frac{1}{\sqrt{2}}(\ket{00}_{A_{2}\ol{A}_{2}}+\ket{11}_{A_{2}\ol{A}_{2}}).
+\end{equation}
+Following example 5, we see that we again prepare a Bell state on $\mathcal{H}_{A_{2}}\otimes\mathcal{H}_{\ol{A}_{2}}$, so the same calculation implies that the area operator is $\mathcal{L}=\log{2}\ketbras{1}_{\alpha}$. However, we also have all the pieces of example 4, so the algebraic entropy has both a classical and a quantum term, and so we have all three terms on the left hand side of the RT formula.
 \chapter{Conclusions}
 
 This is the place to put your conclusions about your work. You can
