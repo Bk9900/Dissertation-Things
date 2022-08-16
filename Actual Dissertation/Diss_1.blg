@@ -5,6 +5,10 @@ Reallocating 'name_of_file' (item size: 1) to 5 items.
 The style file: siam.bst
 Reallocating 'name_of_file' (item size: 1) to 5 items.
 Database file #1: refs.bib
+I was expecting a `,' or a `}'---line 349 of file refs.bib
+ :  journal = "Berkeley Symposium on Mathematical Statistics and Probability"
+ :                                                                           \
+I'm skipping whatever remains of this entry
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
 while executing---line 991 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
@@ -25,45 +29,46 @@ Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." 
 while executing---line 1034 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
 while executing---line 1034 of file siam.bst
-You've used 15 entries,
+Warning--empty year in Renyi
+You've used 17 entries,
             2030 wiz_defined-function locations,
-            613 strings with 5948 characters,
-and the built_in function-call counts, 5172 in all, are:
-= -- 524
-> -- 165
+            625 strings with 6251 characters,
+and the built_in function-call counts, 5568 in all, are:
+= -- 557
+> -- 179
 < -- 0
-+ -- 67
-- -- 51
-* -- 359
-:= -- 760
-add.period$ -- 16
-call.type$ -- 15
-change.case$ -- 71
++ -- 73
+- -- 55
+* -- 384
+:= -- 828
+add.period$ -- 19
+call.type$ -- 17
+change.case$ -- 79
 chr.to.int$ -- 0
-cite$ -- 15
-duplicate$ -- 268
-empty$ -- 393
-format.name$ -- 51
-if$ -- 1155
+cite$ -- 18
+duplicate$ -- 288
+empty$ -- 431
+format.name$ -- 55
+if$ -- 1234
 int.to.chr$ -- 0
-int.to.str$ -- 15
-missing$ -- 15
-newline$ -- 49
-num.names$ -- 29
-pop$ -- 55
+int.to.str$ -- 17
+missing$ -- 16
+newline$ -- 56
+num.names$ -- 33
+pop$ -- 68
 preamble$ -- 1
-purify$ -- 56
+purify$ -- 62
 quote$ -- 0
-skip$ -- 260
+skip$ -- 271
 stack$ -- 0
-substring$ -- 387
-swap$ -- 133
+substring$ -- 397
+swap$ -- 137
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 58
-warning$ -- 0
-while$ -- 52
-width$ -- 17
-write$ -- 135
-(There were 10 error messages)
+type$ -- 66
+warning$ -- 1
+while$ -- 56
+width$ -- 19
+write$ -- 151
+(There were 11 error messages)

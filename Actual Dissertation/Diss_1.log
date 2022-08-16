@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  15 AUG 2022 17:48
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  16 AUG 2022 17:28
  restricted system commands enabled.
 **Diss_1.tex
 (./Diss_1.tex
@@ -1196,7 +1196,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 \@outlinefile=\write4
 
 \openout4 = Diss_1.out
-<crest.pdf, id=142, 93.60962pt x 92.1871pt>
+<crest.pdf, id=150, 93.60962pt x 92.1871pt>
 File: crest.pdf Graphic file (type pdf)
 <use crest.pdf>
 Package luatex.def Info: crest.pdf  used on input line 86.
@@ -1326,36 +1326,40 @@ Chapter 5.
 Appendix A.
 [42
 
-] [43] [44] [45] [46] [47] [48] [49] [50] [51]
-Overfull \hbox (14.4414pt too wide) in paragraph at lines 1681--1682
-[]\TU/lmr/m/n/12 Choose pu-rifi-ca-tions $[]$ and $[]$ of $\OML/cmm/m/it/12 []
-$ \TU/lmr/m/n/12 and $\OML/cmm/m/it/12 []$ \TU/lmr/m/n/12 re-spec-tively such 
-that $\OML/cmm/m/it/12 F\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 []; []\OT1/cmr/m/n/
-12 ) =
+] [43] [44] [45] [46] [47] [48]
+Appendix B.
+[49
+
+] [50] (./Diss_1.bbl [51]
+Underfull \hbox (badness 1215) in paragraph at lines 35--39
+[]\TU/lmr/m/sc/12 R. Jozsa\TU/lmr/m/n/12 , \TU/lmr/m/it/12 Quan-tum in-for-ma-ti
+on and com-pu-ta-tion notes for part ii\TU/lmr/m/n/12 .
  []
 
-[52]
-Appendix B.
-(./Diss_1.bbl [53
 
-] [54
+Underfull \hbox (badness 10000) in paragraph at lines 35--39
+[]$\TU/lmtt/m/n/12 https://www.qi.damtp.cam.ac.uk/files/PartIIIQC/Part%202%20QIC
+%
+ []
 
-]) [55] (./Diss_1.aux)
+[52
+
+]) [53] (./Diss_1.aux)
 Package rerunfilecheck Info: File `Diss_1.out' has not changed.
-(rerunfilecheck)             Checksum: 4EB3A8AB1E1F74FE5B9CBB31EDACA670;6091.
+(rerunfilecheck)             Checksum: 4EE21FB632BAFDAFA4C6E64004F1ABE7;6289.
 )
 
 Here is how much of LuaTeX's memory you used:
- 36423 strings out of 477742
+ 36681 strings out of 477742
  125177,1144653 words of node,token memory allocated
- 3059 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 121 sub_mlist, 1 glyph, 541 attribu
-te, 62 glue_spec, 541 attribute_list, 2 write, 2 pdf_action nodes
-   avail lists: 1:12,2:6829,3:2792,4:276,5:689,6:91,7:8791,8:102,9:2388,10:20,11
-:566
- 55400 multiletter control sequences out of 65536+600000
+ 2979 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 121 sub_mlist, 1 glyph, 521 attribu
+te, 62 glue_spec, 521 attribute_list, 2 write, 2 pdf_action nodes
+   avail lists: 1:12,2:6867,3:2792,4:276,5:690,6:90,7:8791,8:102,9:2388,10:20,11
+:545
+ 55666 multiletter control sequences out of 65536+600000
  93 fonts using 6714119 bytes
- 99i,22n,128p,1237b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 99i,22n,128p,1173b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
 <//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmmon
 o12-regular.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype
 /public/lm/lmromancaps10-regular.otf><//?/c:/users/nebka/appdata/local/programs/
@@ -1385,9 +1389,9 @@ fonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/t
 ype1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/
 fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Diss_1.pdf (66 pages, 588362 bytes).
+Output written on Diss_1.pdf (64 pages, 584616 bytes).
 
-PDF statistics: 1031 PDF objects out of 1200 (max. 8388607)
- 393 named destinations out of 1000 (max. 131072)
- 288 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 1033 PDF objects out of 1200 (max. 8388607)
+ 385 named destinations out of 1000 (max. 131072)
+ 304 words of extra memory for PDF output out of 10000 (max. 100000000)
 

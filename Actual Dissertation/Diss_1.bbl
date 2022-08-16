@@ -31,6 +31,12 @@
 {\sc V.~F.~R. Jones}, {\em Von neumann algebras}.
 \newblock \url{https://math.berkeley.edu/~vfr/VonNeumann2009.pdf}, 2009.
 
+\bibitem{Jozsa}
+{\sc R.~Jozsa}, {\em Quantum information and computation notes for part ii}.
+\newblock
+  \url{https://www.qi.damtp.cam.ac.uk/files/PartIIIQC/Part\%202\%20QIC\%20lecturenotes.pdf},
+  January 2019.
+
 \bibitem{KITAEV20032}
 {\sc A.~Kitaev}, {\em Fault-tolerant quantum computation by anyons}, Annals of
   Physics, 303 (2003), pp.~2--30.
@@ -56,6 +62,10 @@
 \bibitem{NielsenChuang}
 {\sc M.~A. Nielsen and I.~L. Chuang}, {\em Quantum Computation and Quantum
   Information}, Cambridge University Press, 10th~ed., 2010.
+
+\bibitem{Renyi}
+{\sc A.~Rényi}, {\em {On Measures of Entropy and Information}}, Berkeley
+  Symposium on Mathematical Statistics and Probability.
 
 \bibitem{PhysRevA.52.R2493}
 {\sc P.~W. Shor}, {\em Scheme for reducing decoherence in quantum computer

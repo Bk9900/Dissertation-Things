@@ -285,28 +285,28 @@ Luckily for anyone relying on cryptographic procedures such as these, qubits are
 A few years later in 1995, Shor proposed a potential solution: \textit{quantum error correction} \cite{PhysRevA.52.R2493}. The idea was relatively simple - encode one logical qubit in nine physical qubits in such a way that the single qubit was protected from arbitrary errors. Shor's code was quickly improved upon, with a (minimal) five qubit code which could protect against arbitrary single qubit errors being published in 2001 \cite{PhysRevLett.86.5811}.\\
 While quantum computing has in many ways moved on from simple factorisation, error correction remains an active field of research. With the proof of the \textit{quantum threshold theorem} \cite{doi:10.1137/S0097539799359385}\cite{doi:10.1126/science.279.5349.342}\cite{KITAEV20032} which states that a quantum computer with a \textit{physical} error rate below a certain threshold can suppress the \textit{logical} error rate to arbitrarily low levels, quantum error correction is considered by many as the most likely way to build a fully fault-tolerant quantum computer.\\
 Recently, an unexpected link between quantum error correction and the structure of space-time was discovered. The AdS/CFT correspondence in the field of holography (itself a branch of string theory) posits a relationship between quantum gravity in an anti-de Sitter space, and a conformal field theory on the boundary \cite{Maldacena}. In 2015, Ahmed Almheiri, Xi Dong, and Daniel Harlow discovered that in the language of quantum error correction, a certain aspect of AdS/CFT known as \textit{subregion duality} could be elucidated \cite{ADH}. Explicitly, certain error correcting procedures have various properties which can be interpreted naturally in holography. Such codes have come to be known as \textit{holographic error correcting codes}, and they have already provided simple toy models to explore the emergence of space-time. From a quantum error correction perspective, it is also hoped that holography can inspire new error correcting codes to be developed.\\
-The goal of this dissertation is to present the basic theory of holographic error correction in a self-contained way, aimed at those with a background in quantum computing rather than holography. Therefore, the focus will be almost entirely on the quantum information perspective, with any comments on holography being present purely for intuition.\\
-This dissertation is structured as follows. Chapter 2 will present all the relevant background theory in error correction, assuming an understanding of quantum mechanics and quantum computing. Those looking for a more detailed exposition of these topics would be well-advised to read Nielsen and Chuang's textbook \cite{NielsenChuang}. This chapter also contains a brief discussion on the relevant aspects of holography in a somewhat `non-rigourous' way. Chapter 3 will present the main results and proofs of \cite{Harlow} - this paper is the primary reference for holographic error correction in general, presenting the three basic theorems of the field in a self-contained way. We change some of the conventions used by Harlow to be more relevant to quantum computing, describing error correction via an \textit{encoding isometry} rather than a \textit{code subspace} as Harlow does. Chapter 4 presents some generalisations of holographic error correction, including \textit{approximate codes}, \textit{state-specific codes}, and \textit{non-isometric codes}, all adapted from \cite{QMS}. Finally, chapter 5 will present a summary of the project and suggestions as to the future direction of the field.
+The goal of this dissertation is to present the basic theory of holographic error correction in a self-contained way, aimed at those with a background in quantum computing rather than holography. Therefore, the focus will be almost entirely on the quantum information perspective, with any comments on holography being given purely for motivation.\\
+This dissertation is structured as follows. Chapter 2 will present all the relevant background theory in error correction, assuming an understanding of quantum mechanics and quantum computing. Those looking for a more detailed exposition of these topics would be well-advised to read Nielsen and Chuang's textbook \cite{NielsenChuang}. Chapter 3 will present the main results and proofs of \cite{Harlow} - this paper is the primary reference for holographic error correction in general, describing the three basic theorems of the field in a self-contained way. We change some of the conventions used by Harlow to be more relevant to quantum computing, describing error correction via an \textit{encoding isometry} rather than a \textit{code subspace} as Harlow does. Chapter 4 presents and expands on the examples of operator-algebra holographic codes in \cite{Pollack}. Finally, chapter 5 will present a summary of the project and suggestions as to future directions of study.
 
 
 \chapter{Error Correction: An Introduction}
 
-In this chapter, we present the theory of quantum error correction. We begin with a discussion of the analogous topic in the classical regime to build up some intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}.
+In this chapter, we present the theory of quantum error correction. We begin with a discussion of a classical example to build intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}. This chapter also assumes an understanding of quantum circuit notation. If this is not familiar, a brief summary of the salient features is presented in appendix B.
 
 \section{The Classical Bit-Flip}
 To gain some intuition for error-correction, we don't even need to start with a quantum process. Instead, we present the \textit{classical bit-flip code}. While the ideas are basic and situation-specific, the key features of the process carry through to the quantum case.\\
-Suppose Alice wishes to send a single bit to Bob across a noisy communication channel. In this example, we model the noise as a bit-flip - there is a fixed probability $p$ for the transmitted bit to flip state from a 0 to a 1 or a 1 to a 0. Alice is afraid that Bob will receive the incorrect bit value, so she instead copies her bit three times and sends all three bits to Bob instead. When Bob receives the three bits, he takes the majority bit value to be the correct message; that way, if 1 or fewer of the bits flip, Bob will receive the correct message!\\
+Suppose Alice wishes to send a single bit to Bob across a noisy communication channel. In this example, we model the noise as a bit-flip - there is a fixed probability $p$ for the transmitted bit to flip state from a 0 to a 1 or a 1 to a 0. Alice is afraid that Bob will receive the incorrect bit value, so she instead copies her bit three times and sends all three bits to Bob instead. When Bob receives the three bits, he takes the majority bit value to be the correct message; that way, even if 1 bit flips, Bob will still receive the correct message!\\
 This method is not perfect though. It could be the case that 2 or more bits flip in the channel, and Bob could receive the incorrect message. Assuming the noise acts \textit{independently} on each transmitted bit, the probability of this happening is
 \begin{equation}
 	\mathbb{P}(\text{2 or more flips})=3p^{2}(1-p)+p^{3},
 \end{equation}
 which is strictly less than $p$ for $0<p<1/2$. Therefore so long as $p$ is less than $1/2$, Bob has an increased chance of receiving Alice's intended message.\\
-While this is a very simple example, there are some salient features which are common to all error-correcting processes, both quantum and classical. First, Alice \textit{encodes} her bit (called the \textit{logical bit}) by copying it three times (where the encoded bits are called the \textit{physical bits}). She then sends the physical bits to Bob, where they encounter \textit{noise} in the process, potentially flipping. When the Bits reach Bob, he needs to determine whether a bit-flip occurred - called \textit{error detection} - and if so, he \textit{corrects} it by flipping back the corresponding physical bit, before finally \textit{decoding} the message. Schematically:
+While this is a very simple example, there are some salient features which are common to all error-correcting processes, both quantum and classical. First, Alice \textit{encodes} her bit (called the \textit{logical bit}) by copying it three times (where the encoded bits are called the \textit{physical bits}). She then sends the physical bits to Bob, where they encounter \textit{noise} in the communication channel, potentially flipping. When the Bits reach Bob, he needs to determine whether a bit-flip occurred - called \textit{error detection} - and if so, he \textit{corrects} it by flipping back the corresponding physical bit, before finally \textit{decoding} the message. Schematically:
 \begin{equation*}
 	0\xrightarrow{\text{Encoding}}000\xrightarrow{\text{Noise}}001\xrightarrow{\text{Correction}}000\xrightarrow{\text{Decoding}}0.
 \end{equation*}
 \section{The Quantum Bit-Flip}
-The quantum situation is exactly analogous, except this time Alice wishes to send a qubit to Bob. The quantum channel acts analogously too, flipping each of the computational basis states (essentially applying a $X$ gate) with a fixed probability $p$. The \textit{no-cloning theorem} prevents Alice copying her arbitrary qubit though, so she has to be a bit more creative with encoding it. She does this by means of a quantum circuit taking $\ket{0}\to\ket{000}$ and $\ket{1}\to\ket{111}$; explicitly
+The quantum situation is exactly analogous, except this time Alice wishes to send a qubit $\ket{\psi}$ to Bob. The quantum communications channel acts similarly too, flipping each of the computational basis states (essentially applying a $X$ gate) with a fixed probability $p$. The \textit{no-cloning theorem} prevents Alice copying her arbitrary qubit though, so she has to be a bit more creative with encoding it. She does this by means of a quantum circuit taking $\ket{0}\to\ket{000}$ and $\ket{1}\to\ket{111}$; explicitly
 \begin{equation}\label{bfv}
 	\scalebox{1.5}{\begin{quantikz}
 			\lstick{$\ket{\psi}$} & \ctrl{1} & \ctrl{2} & \qw\\
@@ -386,11 +386,11 @@ Note that the first property here reduces to $\tr(\mathcal{E}(\rho))=1$ for trac
 \end{theorem}
 We now present a basic example of a quantum operation, showing how the action of the bit-flip channel can be modelled.
 \begin{example}[The quantum bit-flip]
-	Consider the quantum operation from the set of density matrices of a single qubit to itself, defined by operation elements
+	Consider the quantum operation from the set of density matrices of a single qubit to itself, with operation elements
 	\begin{equation}
 		E_{0}\equiv\sqrt{1-p}I=\sqrt{1-p}\begin{pmatrix}
 			1&0\\0&1
-		\end{pmatrix},\quad E_{1}\equiv\sqrt{p}X=\begin{pmatrix}
+		\end{pmatrix},\quad E_{1}\equiv\sqrt{p}X=\sqrt{p}\begin{pmatrix}
 		0&1\\1&0
 	\end{pmatrix}.
 	\end{equation}
@@ -400,22 +400,22 @@ We now present a basic example of a quantum operation, showing how the action of
 	\end{equation}
 	It therefore `does nothing' to $\rho$ with probability $1-p$, and flips each basis element of $\rho$ with probability $p$, exactly matching the bit-flip channel!
 \end{example}
-\subsection{General Theory of Error Correction}
-We now have the necessary theory to talk about the general theory behind quantum error-correction. A logical state $\rho$ with support on a \textit{logical space} $\mathcal{H}_{L}$ is encoded by an isometry $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$, where the image of the isometry is called a \textit{code subspace} $\Hcode\subseteq\mathcal{H}$, which has equal dimensionality to $\mathcal{H}_{L}$. We call $\mathcal{H}$ the \textit{physical space}. In the bit-flip code for example, $V$ is specified by the quantum circuit \ref{bfv}, and  $\Hcode=\text{span}\{V\ket{0},V\ket{1}\}=\{\ket{000},\ket{111}\}$. After encoding, the state is subjected to noise (modelled by a quantum operation), a syndrome measurement is performed to diagnose the type of error which occurred (if any), and then a recovery operation is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished by the syndrome measurement.\\
-In general, we make no assumptions about the full recovery procedure - in particular, we do not assume it is necessarily a two-stage detection-recovery process. We only assume that the noise is modelled by a quantum operation $\mathcal{E}$, and the correction is performed by a quantum operation $\mathcal{R}$. For error correction to be deemed successful, we require that for any state $\rho$ with support on $\Hcode$
+\section{General Theory of Error Correction}
+We now have the necessary theory to talk about the general theory behind quantum error-correction. A logical state $\rho$ with support on a \textit{logical space} $\mathcal{H}_{L}$ is encoded by an \textit{encoding isometry} $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$, where the image of the isometry is called a \textit{code subspace} $\Hcode\subseteq\mathcal{H}$, and has equal dimensionality to $\mathcal{H}_{L}$. We call $\mathcal{H}$ the \textit{physical space}. In the bit-flip code for example, $V$ is specified by the quantum circuit \ref{bfv}, and  $\Hcode=\text{span}\{V\ket{0},V\ket{1}\}=\text{span}\{\ket{000},\ket{111}\}$. After encoding, the state is subjected to noise (modelled by a quantum operation), a \textit{syndrome measurement} is performed to diagnose whether an error occurred, and if so, what the error is, and then a \textit{recovery operation} is performed to obtain the original state. Note that different errors have to correspond to orthogonal subspaces of the full Hilbert space $\mathcal{H}$ in order to be reliably distinguished by the syndrome measurement.\\
+In general, we make no assumptions about the full recovery procedure - in particular, we do not assume it is necessarily a two-stage detection-recovery process. We only assume that the noise is modelled by a quantum operation $\mathcal{E}$, and the correction is performed by a quantum operation $\mathcal{R}$, both acting on the physical Hilbert space. For error correction to be deemed successful, we require that for any physical state $\rho$ with support on $\Hcode$
 \begin{equation}
 	(\mathcal{R}\circ\mathcal{E})(\rho)\propto\rho,
 \end{equation}
 where we have a proportionality constant rather than equality to account for the possibility that the noise may not be trace-preserving (for example, if it takes a measurement).\\
 Not all errors are correctable. This is characterised by the \textit{quantum error correction conditions}, which can be stated as the following theorem:
 \begin{theorem}[Quantum error-correction conditions]\label{QECC}
-	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, and that $\Pc$ is the projector onto its image $\Hcode$. Suppose $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
+	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, and that $\Pc$ is the projection operator onto its image $\Hcode\subseteq\mathcal{H}$. Say $\mathcal{E}$ is a quantum operation modelling noise, with elements $\{E_{i}\}$. An error correction operation $\mathcal{R}$ correcting $\mathcal{E}$ on $\Hcode$ exists if and only if
 	\begin{equation}\label{QECC1}
 		\Pc E_{i}^{\dagger}E_{j}\Pc=\alpha_{ij}\Pc
 	\end{equation}
 	where $\alpha_{ij}$ are the elements of a complex hermitian matrix.
 \end{theorem}
-From now on, we call the set $\{E_{i}\}$ \textit{errors} rather than operation elements, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
+The proof of this can be found in \cite{NielsenChuang}. From now on, we call the set $\{E_{i}\}$ \textit{errors} rather than operation elements, and if an $\mathcal{R}$ exists then we say they are a \textit{correctable set} of errors.\\
 In general, we may not know the form of the noise precisely, but the error correction conditions can be adapted to characterise an equivalence class of noise which an isometry and correction operation $\mathcal{R}$ can correct for.
 \begin{theorem}
 	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry with image $\Hcode$, and $\mathcal{R}$ is the full error-correcting operation correcting $\mathcal{E}$ with errors $\{E_{i}\}$. Then, $\mathcal{R}$ corrects for $\mathcal{F}$ with errors $\{F_{i}\}$ if
@@ -428,9 +428,9 @@ This is a useful statement, as we can talk about a class of errors $\{E_{i}\}$ w
 \begin{equation}
 	\Pc \sigma_{i}^{1}\sigma_{j}^{1}\Pc=\alpha_{ij}\Pc
 \end{equation}
-for the Pauli matrices, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be proportional to the Pauli matrices. Shor's code \cite{PhysRevA.52.R2493} can do this, for example.
+for the Pauli matrices $\sigma_{i}^{1}\in\{I,X,Y,Z\}$ acting on the first qubit, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be proportional to the Pauli matrices. Shor's code \cite{PhysRevA.52.R2493} can do this, for example.
 \section{Quantum Erasure}
-For our purposes, a class of errors called \textit{quantum erasures} are particularly important. An erasure is defined as the channel acting to erase a \textbf{known} of subsystem of the physical space. Formally, we suppose that the physical space $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. One representation of the erasure channel is then 
+For our purposes, a class of errors called \textit{quantum erasures} are particularly important. An erasure is defined as the channel acting to erase a \textbf{known} subsystem of the physical space. Formally, we suppose that the physical space $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. One representation of the erasure channel is then 
 \begin{equation}\label{qerasure}
 	\mathcal{E}(\rho)=\text{Tr}_{\ol{A}}(\rho),
 \end{equation} 
@@ -499,11 +499,11 @@ This is precisely condition 3 of theorem 3.1 of \cite{Harlow}.
 
 \chapter{Holographic Error Correction}
 
-In this section, we state and prove the three theorems of \cite{Harlow}. We use the language of encoding isometries as in \cite{Pollack} rather than the code subspace language of \cite{Harlow}, as it makes constructing examples via a quantum circuit considerably easier. The three theorems are in increasing generality; the first describes \textit{conventional erasure correction}, the second \textit{subsystem error correction}, and the third \textit{operator algebra error correction}. They all characterise whether an erasure is correctable in the sense of complete state recovery; approximate state recovery is covered in chapter 4.
+In this section, we state and prove the three theorems of \cite{Harlow}. We use the language of encoding isometries as in \cite{Pollack} rather than the code subspace language of \cite{Harlow}, as it makes constructing examples via a quantum circuit considerably easier. The three theorems are in increasing generality; the first describes \textit{conventional erasure correction}, the second \textit{subsystem error correction}, and the third \textit{operator algebra error correction}. They all characterise whether an erasure is correctable in the sense of complete state recovery.
 \section{Conventional Erasure Correction}
 We now present theorem 3.1 of \cite{Harlow} from the encoding isometry point of view.
 \begin{theorem}\label{t1}
-	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $\Hcode\subseteq\mathcal{H}$ is the image of $V$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$, The following statements are then equivalent:
+	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $\Hcode\subseteq\mathcal{H}$ is the image of $V$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
 	\begin{enumerate}
 		\item $|R|\leq|A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that 
 		\begin{equation}\label{C1}
@@ -528,7 +528,7 @@ We now present theorem 3.1 of \cite{Harlow} from the encoding isometry point of 
 		\end{equation}
 	\end{enumerate}
 \end{theorem}
-Before proving this, let's go over some of the intuition behind each statement, and what all the objects in this theorem refer to. $\ol{A}$ is the erased subsystem, and $A$ is preserved under erasure. \ref{C1} is the statement of full state recovery; we can recover the matrix elements of any state on $\Hcode$ in full on subsystem $A_{1}$ by applying some unitary $U_{A}$, without access to $\ol{A}$ at all. We can visualise this by means of a circuit diagram:
+Before proving this, let's go over some of the intuition behind each statement, and what all the objects in this theorem refer to. $\ol{A}$ is the erased subsystem, and $A$ is preserved under erasure. \ref{C1} is the statement of full state recovery; we can recover the matrix elements of any state on $\Hcode$ in full on subsystem $A_{1}$ by applying some unitary $U_{A}$ which does not need access to $\ol{A}$ at all. We can visualise this by means of a circuit diagram:
 \begin{figure}[H] 
 	\centering
 	\scalebox{1.2}{%
@@ -614,7 +614,7 @@ We now present the proof of this theorem.
 	as claimed.
 \end{proof}
 One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. It may be that some choices of $\ol{A}$ are not correctable; we need to apply the theorem to each choice in turn and check.\\
-We now present two example of conventional erasure correction.
+We now present example of conventional erasure correction.
 \subsubsection{An Example}
 In this example, we refer to \textit{qutrits}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}}\}$. An arbitrary qutrit can then be written
 \begin{equation}
@@ -1385,323 +1385,263 @@ pages, but not much longer.
 \appendix
 % the appendix command just changes heading styles for appendices.
 
-\chapter{Quantum Mechanics and Information: Background and Conventions}
-
-In this appendix, I outline the background and conventions used for quantum mechanics and quantum information theory throughout this dissertation in detail. I mainly stick to the description of quantum mechanics as given in Nielsen and Chuang's textbook \cite{NielsenChuang} and the notes of David Skinner, and supplement Nielsen and Chuang's description of quantum information and computing with notes by Richard Jozsa and John Preskill.
-
-
-\section{Quantum Mechanics}
-\label{sec:QM}
-
-I begin with a discussion of the four defining postulates of quantum mechanics.
-
-\subsection{State Spaces}
-
-\begin{postulate}
-	Any isolated quantum system has an associated Hilbert space $\mathcal{H}$ called the \textit{state space} of the system. The system is fully described by its \textit{state vector} (or just \textit{state}), which is a unit vector $\ket{\psi}\in\mathcal{H}$.
-\end{postulate}
-
-Note that this just tells us that the state space for a system exists, and not necessarily what the relevant Hilbert space is. The simplest example of a non-trivial system is that of the two-dimensional \textit{qubit}, with state space denoted $\mathcal{H}_{2}$. An orthonormal basis of this space is given by the set $\{\ket{0},\ket{1}\}$, so the state of a qubit can be written
-\begin{equation}
-	\ket{\psi}=a\ket{0}+b\ket{1},\quad a,b\in\mathbb{C}
-\end{equation} 
-with the condition that $\ket{\psi}$ is a unit vector (i.e. $\braket{\psi,\psi}=1$) implying that $|a|^{2}+|b|^{2}=1$. We say that $\ket{\psi}$ is in a \textit{superposition} of $\ket{0}$ and $\ket{1}$, with \textit{amplitudes} $a$ and $b$, which generalises in the obvious way to arbitrary linear combinations of states.
-
-\subsection{Evolution of States}
-\begin{postulate}
-	The evolution in time of a \textit{closed} quantum system is described by a unitary transformation. Explicitly, if $\ket{\psi,t}$ is the state of a system at time $t$, and $\ket{\psi',t'}$ is the state at time $t'$, then the two states are related by some unitary operator $U(t,t')$ depending only on times $t$ and $t'$ such that
+\chapter{Quantum Information and Entropy}
+In this appendix, we present the necessary background in information theory to understand this dissertation. We will begin with some \textit{classical} information theory to present the subject and build some intuition, before describing the quantum generalisations. We follow the textbook of Nielsen and Chuang\cite{NielsenChuang} in presentation. Note that there are several other information-theoretic quantities which we don't describe here. We limit ourselves to only those definitions which are directly relevant to this dissertation.
+\section{Classical Information}
+\subsection{Shannon Entropy}
+The key concept of classical information theory is the \textit{Shannon entropy} of a random variable $X$. Intuitively, this is a way of quantifying the information gained when we learn the value of $X$, or alternatively, the uncertainty about $X$ before we learn its value. To define Shannon entropy, suppose we wish to quantify how much information is provided by an event $E$ which may occur in a probabilistic experiment. To do this, we define an `information function' $I(E)$, which we intuitively suppose should obey the following axioms:
+\begin{enumerate}
+	\item $I(E)$ is a function of the probability the event $E$ occurs only, so we can write $I=I(p)$, where $p\in[0,1]$.
+	\item $I$ should be a smooth function of probability.
+	\item The information gained when two independent events occur with individual probabilities $p$ and $q$ should be equal to the sum of the information gained from each event alone; that is, $I(pq)=I(p)+I(q)$.
+\end{enumerate}
+With these axioms, it's not hard to show that $I(p)=k\log{p}$, where $k$ is a real constant. This therefore motivates the following definition of Shannon entropy.
+\begin{definition}
+	Suppose $X$ is a discrete random variable, taking values $x_{n}$ with probabilities $p_{n}$. The \textbf{Shannon entropy} of $X$ is given by
 	\begin{equation}
-		\ket{\psi',t'}=U(t,t')\ket{\psi,t}
+		H(X)\equiv-\sum_{n}p_{n}\log{p_{n}}.
 	\end{equation}
-\end{postulate}
-Again, this does not tell us which unitary operators describe the dynamics of a real-world system. On a simple system such as a qubit, it turns out that any unitary operator can be realised. For example, the Pauli matrix $X$ which takes $\ket{0}\mapsto\ket{1}$ and $\ket{1}\mapsto\ket{0}$ is a unitary operator on a single qubit which can always be physically implemented. Note that this postulate generalises to the case of continuous time, whereupon evolution is governed by the Schrodinger equation, but this is less relevant for the case of quantum information.
-
-\subsection{Measurements}
-\begin{postulate}
-	A measurement of a quantum system is described by a set $\{M_{m}\}$ of \textit{measurement operators}, which act on the state space of the system being measured. The index $m$ labels the possible outcomes of the measurement. If the system is in state $\ket{\psi}$ immediately before the measurement is taken, the probability the measurement returns outcome $m$ is given by
-	\begin{equation}
-		\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}
-	\end{equation}
-	and the state of the system immediately after the measurement is
-	\begin{equation}
-		\frac{M_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}.
-	\end{equation}
-\end{postulate}
-Since probabilities sum to 1, we can also derive that the measurement operators obey the \textit{completeness relation}:
-\begin{equation}
-	1=\sum_{m}\mathbb{P}(m)=\braket{\psi|\sum_{m}M_{m}^{\dagger}M_{m}|\psi},\;\forall \ket{\psi}\iff \sum_{m}M_{m}^{\dagger}M_{m}=I
-\end{equation}
-which is a necessary condition for the measurement operators to obey.
-\subsubsection{Projective Measurements}
-In quantum information, a particularly important class of measurements are the \textit{projective measurements}. These turn out to be exactly equivalent to the more general measurement postulate when augmented with the ability to perform unitary transformations as in postulate 2.
-\begin{definition}[Projective measurement]
-	A projective measurement is described by a Hermitian operator (or \textit{observable}) $M$ acting on the state space of the system being measured. Since $M$ is Hermitian, it has a spectral decomposition
-	\begin{equation}
-		M=\sum_{m}mP_{m}
-	\end{equation}
-	where $m$ indexes the eigenvalues, and $P_{m}$ is the corresponding projector onto the $m$-eigenspace. The possible outcomes of the measurement correspond to the eigenvalues. 
 \end{definition}
-With this definition, we see that the probability of obtaining outcome $m$ on measuring state $\ket{\psi}$ is
+When Claude Shannon defined this, he chose the logarithm to be with base 2. This is arbitrary, and we choose the convention that the definition involves the \textit{natural logarithm}, with base $e$.
+\begin{example}[Binary entropy]
+	Suppose $X$ is a Bernoulli random variable, taking values $x_{0}$ and $x_{1}$ with probabilities $p$ and $1-p$ respectively. The Shannon entropy of $X$ is then
+	\begin{equation}
+		H(X)\equiv H_{\text{bin}}(p)=-p\log{p}-(1-p)\log{(1-p)}.
+	\end{equation}
+	Note that this attains its maximum value for $p=1/2$. This matches our intuition that entropy should be a measure of uncertainty in $X$ before we measure it: if $p=1/2$, we have maximum uncertainty as to whether a measurement of $X$ will return $x_{0}$ or $x_{1}$. To the contrary, if $p=0.999$, even before measuring $X$ we could say with some degree of certainty that $X$ will return $x_{0}$.
+\end{example}
+\subsection{Relative Entropy}
+The \textit{relative entropy} is a measure of the `closeness' of two probability distributions $p(x)$ and $q(x)$, over the same index set $x$. 
+\begin{definition}
+	Suppose $p(x)$ and $q(x)$ are two probability distributions, indexed over $x$. The \textbf{relative entropy} of $p(x)$ to $q(x)$ is given by
+	\begin{equation}
+		H(p(x)\Vert q(x))\equiv\sum_{x}p(x)\log\frac{p(x)}{q(x)}=-H(X)-\sum_{x}p(x)\log{q(x)},
+	\end{equation}
+	where $X$ is a random variable under probability distribution $p$.
+\end{definition}
+It is not immediately obvious why this is a good definition for a distance between two distributions. The following theorem gives a starting point as to why this is the case.
+\begin{theorem}
+	$H(p(x)\Vert q(x))\geq0$, so the relative entropy is non-negative, with equality if and only if $p(x)=q(x)$ for all $x$.
+\end{theorem}
+\begin{example}
+	Suppose $X\sim p(x)$ is a random variable following discrete distribution $p(x)$, where the index set $x$ takes $d$ values. Set $Y\sim q(x)\equiv 1/d$ to be the uniform distribution over $x$. Then:
+	\begin{equation}
+		H(p(x)\Vert q(x))=-H(X)-\sum_{x}p(x)\log\frac{1}{d}=\log{d}-H(X).
+	\end{equation}
+	Note that non-negativity therefore implies that $H(X)\leq\log{d}$; an occasionally useful fact about entropy.
+\end{example}
+\section{Quantum Information}
+\subsection{von Neumann Entropy}
+Shannon entropy measures the uncertainty of random variables associated with classical probability distributions; quantum states are similarly associated with probabilities, with density operators replacing classical probability distributions. We therefore wish to define a similar measure of uncertainty for states. To motivate a definition, consider an ensemble of pure quantum states $\{\rho_{n}\}$ occurring with corresponding probabilities $\{p_n\}$. The density operator for this system is then
 \begin{equation}
-	\mathbb{P}(m)=\braket{\psi|P_{m}|\psi}
+	\rho=\sum_{n}p_{n}\rho_{n}.
 \end{equation}
-and the state immediately after the measurement is
+If the set of states $\{\rho_{n}\}$ are all orthogonal, this ensemble should behave exactly like a classical random variable following probability distribution $\{p_{n}\}$. A quantum measure of entropy should therefore reduce to $H(p_{n})$ in this case. With this idea in mind, we can define the so-called \textit{von Neumann entropy}, which satisfies this intuition.
+\begin{definition}
+	Given a quantum state described by density operator $\rho$ on $\mathcal{H}$, its \textbf{von Neumann entropy} is defined as
+	\begin{equation}
+		S(\rho)\equiv -\tr_{\mathcal{H}}\left(\rho\log{\rho}\right),
+	\end{equation}
+	where $\log$ refers to the natural matrix logarithm.
+\end{definition}
+The matrix logarithm is often quite computationally difficult to calculate. However, if we write $\rho$ in terms of its eigenvectors $\{\ket{i}\}$ and corresponding eigenvalues $\{\eta_{i}\}$ as $\rho=\sum_{i}\eta_{i}\ketbras{i}$, the von Neumann entropy is simply
 \begin{equation}
-	\frac{P_{m}\ket{\psi}}{\sqrt{\mathbb{P}(m)}}.
+	S(\rho)=-\sum_{i}\eta_{i}\log\eta_{i}.
 \end{equation}
-Projective measurements have all sorts of nice properties which general measurements do not. One notable such property is how \textit{expectation values} in a probabilistic sense simplify. If we measure observable $M$ on $\ket{\psi}$, the average outcome is
+\begin{example}
+	In this example, we consider two states in a two-state system with basis $\{\ket{0},\ket{1}\}$. First, consider the state
+	\begin{equation}
+		\rho=\frac{1}{2}\left(\ketbras{0}+\ketbras{1}\right)=\frac{1}{2}\begin{pmatrix}
+			1&0\\0&1
+		\end{pmatrix}.
+	\end{equation}
+	The states $\ketbras{0}$ and $\ketbras{1}$ are orthogonal, so perfectly distinguishable; we therefore cannot say classically which of the two states the system is in, so we expect the von Neumann entropy to reduce to $H_{\text{bin}}(1/2)=\log{2}$. This is exactly what we observe:
+	\begin{equation}
+		S(\rho)=-\tr(\rho\log\rho)=-\frac{1}{2}\log\frac{1}{2}-\frac{1}{2}\log\frac{1}{2}=\log{2}.
+	\end{equation}
+	Alternatively, consider the state
+	\begin{equation}
+		\sigma=\frac{1}{2}\left(\ketbras{0}+\ketbra{0}{1}+\ketbra{1}{0}+\ketbras{1}\right)=\frac{1}{2}\begin{pmatrix}
+			1&1\\1&1
+		\end{pmatrix}.
+	\end{equation}
+	The von Neumann entropy is then
+	\begin{equation}
+		S(\sigma)=-\tr(\sigma\log\sigma)=-1\log{1}-0\log{0}=0.
+	\end{equation}
+	This vanishes because $\sigma$ actually describes a pure state
+	\begin{equation}
+		\sigma=\frac{1}{2}(\ket{0}+\ket{1})(\bra{0}+\bra{1}),
+	\end{equation}
+	so we can classically say the system described by $\sigma$ is in the corresponding state with certainty.
+\end{example}
+\begin{example}[Quantum vs Classical Entropy]
+	Consider the density operator describing a superposition between two non-orthogonal states:
+	\begin{equation}
+		\rho=p\underbrace{\ketbras{0}}_{\rho_{0}}+(1-p)\cdot\underbrace{\frac{1}{2}(\ket{0}+\ket{1})(\bra{0}+\bra{1})}_{\rho_{1}}.
+	\end{equation}
+	This is a mixed state describing an ensemble of $\rho_{0}$ and $\rho_{1}$ with probabilities $p$ and $1-p$. Classically, if this was the case the entropy of the ensemble would be given by $H_{\text{bin}}(p)$. However, quantum effects mean that the lack of orthogonality between $\rho_{0}$ and $\rho_{1}$ generates cross terms in the density operator which modifies its eigenvalues. We can compute the eigenvalues of $\rho$ as
+	\begin{equation}
+		\lambda_{\pm}\equiv\frac{1}{2}\left(1\pm\sqrt{1-2p(1-p)}\right),
+	\end{equation}
+	and so the von Neumann entropy is
+	\begin{equation}
+		S(\rho)=-\lambda_{+}\log\lambda_{+}-\lambda_{-}\log\lambda_{-}\neq H_{\text{bin}}(p).
+	\end{equation}
+	While this does not match the classical case, it does share some properties. They both vanish for $p=0,1$, which in the quantum case corresponds to there being no uncertainty in the system and $\rho$ representing a pure state. They also both attain a maximum at $p=1/2$, corresponding to the maximally mixed state.
+\end{example}
+\subsection{Relative Entropy}
+Similarly to the classical relative entropy measuring the distance between two probability distributions (without being a formal metric), there is a quantum relative entropy measuring the distance between two density operators without being a formal metric on the underlying Hilbert space. We define this as follows.
+\begin{definition}
+	Given two density operators $\rho$ and $\sigma$ on Hilbert space $\mathcal{H}$, the \textbf{relative entropy} between them is given by
+	\begin{equation}
+		S(\rho\Vert\sigma)=-\tr_{\mathcal{H}}\left(\rho\log\rho-\rho\log\sigma\right)=-S(\rho)-\tr_{\mathcal{H}}\left(\rho\log\sigma\right).
+	\end{equation}
+\end{definition}
+Once again, this is non-negative; a result called \textit{Klein's inequality}
+\begin{theorem}
+	The relative entropy is non-negative for any two states $\rho$ and $\sigma$:
+	\begin{equation}
+		S(\rho\Vert\sigma)\geq 0.
+	\end{equation}
+\end{theorem}
+\begin{example}
+	Suppose $\rho$ and $\sigma$ are states on a $d$-dimensional Hilbert space $\mathcal{H}_{d}$. Choose $\sigma=I_{d}/d$ to be the maximally mixed state, proportional to the identity. Then, the relative entropy is given by
+	\begin{equation}
+		S(\rho\Vert\sigma)=-S(\rho)-\tr_{\mathcal{H}_{d}}\left(\rho\log{\frac{1}{d}}\right)=-S(\rho)+\log{d}.
+	\end{equation}
+	Note then that non-negativity implies that $S(\rho)\leq\log{d}$.
+\end{example}
+\subsection{Properties of von Neumann Entropy}
+We now state some generic properties of von Neumann entropy, without proof. See \cite{NielsenChuang} or any good set of notes on quantum information theory for proofs.
+\begin{itemize}
+	\item $S(\rho)=0$ if and only if $\rho$ is a pure state.
+	\item $S(\rho)=\log{d}$ is maximal for a $d$-dimensional Hilbert space if and only if $\rho$ is a maximally mixed state (e.g. $\rho$ is proportional to the identity).
+	\item $S(\rho)=S(U\rho U^{\dagger})$ is invariant under unitary transformations $U$; this is just the statement that entropy is invariant under a change of basis.
+	\item $S(\rho)$ is \textit{concave}: given an ensemble of density operators $\{\rho_{i}\}$ and probabilities $\{p_{i}\}$, we have
+	\begin{equation}
+		S\left(\sum_{i}p_{i}\rho_{i}\right)\geq\sum_{i}p_{i}S(\rho_{i}).
+	\end{equation}
+	\item $S(\rho)$ satisfies the following bound, for the same set-up as the last property:
+	\begin{equation}
+		S\left(\sum_{i}p_{i}\rho_{i}\right)\leq\sum_{i}p_{i}S(\rho_{i})-\sum_{i}p_{i}\log{p_{i}}=\sum_{i}p_{i}S(\rho_{i})+H(p_{i}),
+	\end{equation}
+	with equality if the $\rho_{i}$ are orthogonal.
+	\item $S(\rho)$ is additive for independent systems. If $\rho_{A}$ and $\rho_{B}$ describe states in systems $A$ and $B$, then
+	\begin{equation}
+		S(\rho_{A}\otimes\rho_{B})=S(\rho_{A})+S(\rho_{B}).
+	\end{equation}
+	\item $S(\rho)$ is strongly subadditive: for any three systems $A,B,C$, we have
+	\begin{equation}
+		S(\rho_{ABC})+S(\rho_{B})\leq S(\rho_{AB})+S(\rho_{ABC}).
+	\end{equation}
+\end{itemize}
+\subsection{Entropy as a Measure of Entanglement}
+Entanglement between quantum systems is notoriously a \textit{very} hard quantity to quantify, particularly for more than two systems. However, for entanglement between precisely two systems, the von Neumann entropy can be used as a way to quantify the entanglement.\\
+To build some intuition, suppose that we have a separable state of two systems $A$ and $B$: $\ket{\Psi_{AB}}=\ket{\psi_{A}}\otimes\ket{\psi_{B}}$. Consider the reduced density matrices on either system $A$ or $B$:
 \begin{equation}
 	\begin{aligned}
-		\mathbb{E}_{\psi}(M)&\equiv\sum_{m}m\mathbb{P}_{\psi}(m)\\&=\sum_{m}m\braket{\psi|P_{m}|\psi}\\&=\braket{\psi|\sum_{m}mP_{m}|\psi}\\&=\braket{\psi|M|\psi}
+		\rho_{A}&=\tr_{B}\left(\ketbras{\Psi_{AB}}\right)=\ketbras{\psi_{A}}\\
+		\rho_{B}&=\tr_{A}\left(\ketbras{\Psi_{AB}}\right)=\ketbras{\psi_{B}}.
 	\end{aligned}
 \end{equation}
-which can simplify many calculations. This is often denoted $\braket{M}_{\psi}\equiv\braket{\psi|M|\psi}$.\\
-In this dissertation, I use the convention where I define a projective measurement by just listing the set of projectors $\{P_{m}\}$ rather than the observable $M$, where it is implicit that $M=\sum_{m}mP_{m}$, $\sum_{m}P_{m}=1$, and $P_{m}P_{n}=\delta_{mn}P_{m}$. I will also say `\textit{perform a measurement in the} $\ket{m}$ \textit{basis}', which refers to projective measurement with projectors $P_{m}=\ketbras{m}$.
-\subsubsection{POVM measurements}
-In quantum mechanics, the post-measurement state is often not particularly relevant; the important item being the outcome probabilities instead, for example where a quantum circuit only performs a measurement at the end of the circuit. \textit{POVM measurements} (standing for `positive operator valued measure') are particularly well-suited for this sort of application. Suppose we perform a measurement $\{M_{m}\}$ on a state $\ket{\psi}$, so $\mathbb{P}(m)=\braket{\psi|M_{m}^{\dagger}M_{m}|\psi}$. If we then define operators
-\begin{equation}
-	E_{m}\equiv M_{m}^{\dagger}M_{m},
-\end{equation}
-then the $E_{m}$ obey $\sum_{m}E_{m}=I$ and $\mathbb{P}(m)=\braket{\psi|E_{m}|\psi}$, and so the set $\{E_{m}\}$ alone is sufficient to determine the outcome probabilities. The operators $E_{m}$ are called \textit{POVM elements} for the measurement, and the set $\{E_{m}\}$ is simply called a POVM. It can be shown that any measurement where the measurement operators and the POVM operators are the same is a projective measurement, and moreover that for any POVM $\{E_{m}\}$, there exists a set of measurement operators $\{M_{m}\}$ describing an equivalent general measurement. 
+Both of these are pure states, so $S(\rho_{A})=S(\rho_{B})=0$. This is a result of our original state being separable; $A$ and $B$ were not entangled. Thus, we should expect that a non-zero von Neumann entropy for either of the reduced states to signify some degree of entanglement between $A$ and $B$. We therefore take this as a definition of entanglement entropy.
+\begin{definition}
+	Suppose we have a quantum system of $N$ particles, and a bipartition dividing it into a subsystem $A$ of $k$ particles and a subsystem $B$ of $l$ particles such that $k+l=N$. Suppose that the state of the system is described by $\rho_{AB}$. The \textit{entropy of entanglement} for the bipartition is given by
+	\begin{equation}
+		S(\rho_{A})=-\tr_{A}\left[\rho_{A}\log\rho_{A}\right]=-\tr_{B}\left[\rho_{B}\log\rho_{B}\right]=S(\rho_{B}),
+	\end{equation}
+	where $\rho_{A}=\tr_{B}\left(\rho_{AB}\right)$ is the reduced state to subsystem $A$ and similarly for $\rho_{B}$.
+\end{definition}
+Note that this is not a unique definition of entanglement entropy. Some other common definitions include the \textit{Renyi entanglement entropy}\cite{Renyi}, or even simply relative entropy.
+\begin{example}
+	Consider the Bell state $\ket{\Phi}=\frac{1}{\sqrt{2}}(\ket{0}_{A}\otimes\ket{1}_{B}+\ket{1}_{A}\otimes\ket{0}_{B})$. This has density matrix
+	\begin{equation}
+		\rho_{AB}=\frac{1}{2}\ketbras{\Psi}=\frac{1}{2}\begin{pmatrix}
+			0&0&0&0\\0&1&1&0\\0&1&1&0\\0&0&0&0
+		\end{pmatrix},
+	\end{equation}
+	which itself has zero entropy since it is a pure state. However, calculating the reduced density operators, we find
+	\begin{equation}
+			\begin{aligned}
+			\rho_{A}&=\frac{1}{2}(\ketbras{0}_{A}+\ketbras{1}_{A})=\frac{1}{2}\begin{pmatrix}
+				1&0\\0&1
+			\end{pmatrix}\\\rho_{B}&=\frac{1}{2}(\ketbras{0}_{B}+\ketbras{1}_{B})=\frac{1}{2}\begin{pmatrix}
+			1&0\\0&1
+			\end{pmatrix},
+		\end{aligned}
+	\end{equation}
+	 which have $S(\rho_{A})=S(\rho_{B})=\log{2}$. This reflects the fact that the Bell states maximally entangle subsystems $A$ and $B$.
+\end{example}
 
-\subsection{Composite Systems}
-\begin{postulate}
-	The state space of a composite system $AB$ is the \textit{tensor product} of the state spaces of the individual systems $\mathcal{H}_{AB}=\mathcal{H}_{A}\otimes\mathcal{H}_{B}$. More generally, if we have $n$ systems indexed by $i$ each prepared in the state $\ket{\psi_{i}}$, the joint state of the total system is $\ket{\psi}=\ket{\psi_{1}}\otimes\ket{\psi_{2}}\otimes\ldots\otimes\ket{\psi_{n}}$.
-\end{postulate}
-In practice, we often drop the tensor product symbol $\otimes$, and just write (for example) $\ket{\psi}_{A}\otimes\ket{\phi}_{B}\equiv\ket{\psi}_{A}\ket{\phi}_{B}$, where the subscript keeps track of which system each state refers to. We can also talk about the composition of operators. For example, if $O_{A}$ and $O_{B}$ are operators acting on systems $A$ and $B$ individually, the composition $O_{A}\otimes O_{B}$ acts on the joint state $\ket{A}\ket{B}$ as
+\chapter{Quantum Circuit Notation}
+In this appendix, we will introduce the graphical quantum circuit notation for quantum computations. This is adapted from Nielsen and Chuang\cite{NielsenChuang}. We only describe the minimal set of features of a quantum circuit to understand our examples; for a more detailed explanation, we recommend consulting the above textbook.
+\section{Quantum Gates}
+Generally, a quantum computation consists of taking a string of qubits $\ket{\psi_{1}}\otimes\ldots\otimes\ket{\psi_{n}}$ as an input, applying a series of unitary operators to specified qubits in turn, and outputting a string of qubits. In computing jargon, we call a unitary operator a \textit{quantum gate} in this context. These can be as simple or as complex as we want; the \textit{only} constraint is unitarity.
+\begin{example}
+	Consider the qubit $\ket{\psi}=a\ket{0}+b\ket{1}$, with computational basis elements $\{\ket{0},\ket{1}\}$.The quantum $NOT$ gate, denoted $X$, is defined by its action on the computational basis as follows
+	\begin{equation}
+		X\ket{0}=\ket{1},\quad X\ket{1}=\ket{0}.
+	\end{equation}
+	In matrix notation, $X$ can be expressed as
+	\begin{equation}
+		X=\begin{pmatrix}
+			0&1\\1&0
+		\end{pmatrix}
+	\end{equation}
+	Another quantum gate is the Hadamard gate, denoted $H$. This is defined by
+	\begin{equation}
+		H\ket{0}=\frac{1}{\sqrt{2}}(\ket{0}+\ket{1})\equiv\ket{+},\quad H\ket{1}=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})\equiv\ket{-}.
+	\end{equation}
+	In some sense, this rotates the computational basis elements by $\pi/4$. In matrix notation, it can be written
+	\begin{equation}
+		H=\frac{1}{\sqrt{2}}\begin{pmatrix}
+			1&1\\1&-1
+		\end{pmatrix}.
+	\end{equation}
+\end{example}
+Both of these single-qubit gates are clearly unitary. However, gates don't have to act on only a single qubit. There are \textit{multiple qubit gates}, which we give an example of too.
+\begin{example}
+	Consider the space of two qubits, with computational basis $\{\ket{00},\ket{01},\ket{10},\ket{11}\}$. The $CNOT$ (or controlled-$NOT$) gate is defined by
+	\begin{equation}
+		\begin{aligned}
+			CNOT\ket{00}&=\ket{00},\quad CNOT\ket{10}=\ket{11}\\
+			CNOT\ket{01}&=\ket{01},\quad CNOT\ket{11}=\ket{10}.
+		\end{aligned}
+	\end{equation}
+This can be seen to act as a $NOT$ gate on the second qubit if the first (or control) qubit is in the $\ket{1}$ state, and as the identity if the control qubit is a $\ket{0}$. In matrix notation, it can be written as
 \begin{equation}
-	(O_{A}\otimes O_{B})\ket{A}\ket{B}\equiv O_{A}O_{B}\ket{A}\ket{B}=(O_{A}\ket{A})\otimes(O_{B} \ket{B}).
-\end{equation}
-We often wish to express operators and states explicitly in a basis. If $\{\ket{a}\}_{a=1}^{n}$ is an orthonormal basis for system $A$, then any operator $O_{A}$ on $\mathcal{H}_{A}$ can be expressed as
-\begin{equation}
-	O_{A}\equiv \sum_{ab}O_{ab}\ketbra{a}{b}=\begin{pmatrix}
-		O_{11}&\dots&O_{1n}\\
-		\vdots&\ddots&\vdots\\
-		O_{n1}&\dots&O_{nn}
-	\end{pmatrix},\quad O_{ab}\in\mathbb{C}.
-\end{equation}
-The composite operator $O_{A}\otimes O_{B}$ for some operator $O_{B}$ on system $B$ with state space $\mathcal{H}_{B}$ is then the block matrix
-\begin{equation}
-	O_{A}\otimes O_{B}\equiv\begin{pmatrix}
-		O_{11}O_{B}&\dots&O_{1n}O_{B}\\
-		\vdots&\ddots&\vdots\\
-		O_{n1}O_{B}&\dots&O_{nn}O_{B}
+	CNOT=\begin{pmatrix}
+		1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0
 	\end{pmatrix}.
 \end{equation}
-Note that this representation of an operator can be used to represent states as a specific case. 
-\subsection{Density Operators}
-For some cases, the description of a state as being just a unit vector $\ket{\psi}$ is insufficient. This motivates the formalism of \textit{density operators}, which find particular use in talking about subsystems of a composite system, systems which we may not know the state with certainty, and in statistical mechanics. Consider a system which is in the state $\ket{\psi_{i}}$ with probability $p_{i}$. The complete set $\{\ket{\psi_{i}},p_{i}\}$ is known as an \textit{ensemble} of pure states. The density operator for this system is then defined as
+\end{example}
+\section{Quantum Circuits}
+Now we have defined a quantum gate, we can define a quantum circuit. Formally, a quantum circuit is an ordered sequence of quantum gates, measurements, and resets, all of which may be conditioned on the outcome of classical computations. In the simple examples in this dissertation, we do not consider any circuits involving measurements and resets; only quantum gates. Circuits are diagrammatically represented by quantum circuit notation, with the benefit being that it is far clearer to see which individual qubits a multiple-qubit gate may be acting on. The below diagram demonstrates a simple example.
 \begin{equation}
-	\rho\equiv\sum_{i}p_{i}\ketbras{\psi_{i}}.
+	\begin{quantikz}
+		\lstick{$\ket{\psi}$} & \ctrl{1} & \gate{X} & \qw\rstick{}\\
+		\lstick{$\ket{0}$} & \targ{} &\qw &\qw\rstick{}
+	\end{quantikz}
 \end{equation}
-We can reformulate the postulates above in terms of density operators; we use them so frequently, that we do this explicitly.\\
-For postulate 1, we note that the states $\ket{\psi_{i}}$ define a unique $\rho$ and vice versa, so this remains unchanged. Similarly, the fourth postulate also remains unchanged since it does not explicitly refer to states in its statement. Consider postulate 2, and suppose we have a unitary $U$ governing evolution of the system. $\rho$ then evolves as
-\begin{equation}
-	\rho=\sum_{i}p_{i}\ketbras{\psi_{i}}\xrightarrow{U}\sum_{i}p_{i}U\ketbras{\psi_{i}}U^{\dagger}=U\rho U^{\dagger}.
-\end{equation}
-We can similarly reformulate the measurement postulate 3 for density operators. Suppose we perform a measurement with operators $\{M_{m}\}$. If our system happened to initially be in state $\ket{\psi_{i}}$, then the probability of outcome $m$ is
-\begin{equation}
-	\mathbb{P}(m|i)=\braket{\psi_{i}|M^{\dagger}_{m}M_{m}|\psi_{i}}=\text{Tr}(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}})
-\end{equation}
-where the trace is taken over the entire state space. Therefore, the full probability of outcome $m$ is
-\begin{equation}
-	\mathbb{P}(m)=\sum_{i}\mathbb{P}(m|i)p_{i}=\sum_{i}p_{i}\text{Tr}(M_{m}^{\dagger}M_{m}\ketbras{\psi_{i}})=\text{Tr}(M_{m}^{\dagger}M_{m}\rho).
-\end{equation}
-What is the density operator $\rho$ immediately after the measurement returning $m$? If the initial state was $\ket{\psi_{i}}$, then we know that immediately after the measurement it is
-\begin{equation}
-	\ket{\psi_{i}^{m}}=\frac{M_{m}\ket{\psi_{i}}}{\sqrt{\mathbb{P}(m|i)}},
-\end{equation}
-and so we now have an ensemble of states $\{\ket{\psi_{i}^{m}},\mathbb{P}(i|m)\}$ immediately post-measurement. Therefore, $\rho$ becomes
-\begin{equation}
-	\rho_{m}\equiv\sum_{i}\mathbb{P}(i|m)\ketbras{\psi_{i}^{m}}.
-\end{equation}
-Probability theory states that $\mathbb{P}(i|m)=\mathbb{P}(m|i)p_{i}/\mathbb{P}(m)$, so we therefore find
-\begin{equation}
-	\rho_{m}=\sum_{i}p_{i}\frac{M_{m}\ketbras{\psi_{i}}M_{m}^{\dagger}}{\text{Tr}(M_{m}^{\dagger}\rho)}=\frac{M_{m}\rho M_{m}^{\dagger}}{\text{Tr}(M_{m}^{\dagger}M_{m}\rho)},
-\end{equation}
-which completes the reformulation.\\
-Density operators can also be axiomatised. Indeed, we can show that an arbitrary operator $\rho$ is a density operator for some system if and only if both:
-\begin{enumerate}
-	\item $\text{Tr}(\rho)=1$
-	\item $\rho$ is a positive operator.
-\end{enumerate}
-Before concluding, I'll introduce some nomenclature which is used to describe states quite often. A system which is known to be in state $\ket{\psi}$ exactly is called a \textit{pure state}, and the density operator is $\rho=\ketbras{\psi}$. If not, the state is said to be \textit{mixed}, and the density operator can be written as in (A.1.14). A sufficient criterion for checking whether a state is pure or mixed is calculating $\text{Tr}(\rho^{2})$; if this is 1, then the state is pure, and if it is less than 1, it is mixed. 
-
-\section{Quantum Information and Computation}
-This section will go through the basics of quantum information and computation. We discuss the definitions and conventions used for various distance measures for quantum information (with relevance to approximate error correction), entropy, as well as the basics of the circuit model of quantum computation.
-\subsection{Distance Measures}
-The point of quantum distance measures is to answer the question `how close are two states?'. The two main distance measures are \textit{trace distance} and \textit{fidelity}. For our purposes, only fidelity is important, so we run through its definition and properties.
-\begin{definition}[Fidelity]
-	Given two states (as density operators) $\rho$ and $\sigma$, the \textbf{fidelity} between them is
-	\begin{equation}
-		F(\rho,\sigma)\equiv\tr\sqrt{\rho^{1/2}\sigma\rho^{1/2}},
-	\end{equation}
-	where $(\rho^{1/2})^{2}=\rho$.
-\end{definition}
-While fidelity is not formally a metric, it does give a useful notion of distance between states. Before going through its properties, we note two cases where fidelity simplifies. The first is when $\rho$ and $\sigma$ commute, so can be simultaneously diagonalised; in some basis $\{\ket{i}\}$ of the underlying Hilbert space, we have
-\begin{equation}
-	\rho=\sum_{i}r_{i}\ketbras{i},\quad\sigma=\sum_{i}s_{i}\ketbras{i}.
-\end{equation}
-Then, we can compute the fidelity as
+We go through the pieces of this circuit step-by-step. The circuit takes an input state $\ket{\psi}$ on the left, and adjoins on an ancillary qubit in the $\ket{0}$ state. Moving to the right, the symbol connecting the two wires signifies a $CNOT$ gate, with the first qubit as control (denoted by the filled-in dot), and the second as the target (denoted by the circle with a cross). Finally, the $X$ in a box signifies that the circuit acts on the first qubit with an $X$ gate. We can be even more specific by considering the action of this circuit on an arbitrary input state $\ket{\psi}=a\ket{0}+b\ket{1}$. We have
 \begin{equation}
 	\begin{aligned}
-		F(\rho,\sigma)&=\tr\sqrt{\sum_{i}r_{i}s_{i}\ketbras{i}}\\&=\tr\left(\sum_{i}\sqrt{r_{i}s_{i}}\ketbras{i}\right)\\&=\sum_{i}\sqrt{r_{i}s_{i}}.
+		a\ket{0}+b\ket{1}\xrightarrow{\ket{0}}a\ket{00}+b\ket{10}
+		\xrightarrow{CNOT}a\ket{00}+b\ket{11}
+		\xrightarrow{X_{1}}a\ket{10}+b\ket{01}.
 	\end{aligned}
 \end{equation}
-The second special case is the fidelity between a pure state $\ket{\psi}$ and arbitrary $\rho$. In this case, we have
+While this example doesn't really illustrate how powerful this notation is due to its simplicity, the salient features of a quantum circuit diagram are all present. Essentially, it is just a graphical notation for adjoining on ancillary qubits to a state, and then applying a series of unitary operators.\\
+One gate which we haven't mentioned in our discussion is the \textit{Toffoli gate}, which features in our examples. This is a three-qubit gate, which can be thought of as a "doubly controlled $X$ gate". It acts as an $X$ gate on the third qubit if and only if the first two qubits are in the $\ket{11}$ state. In a quantum circuit diagram, this is denoted by the symbol
 \begin{equation}
-	F(\ket{\psi},\rho)=\tr\sqrt{\ket{\psi}\braket{\psi|\rho|\psi}\bra{\psi}}=\sqrt{\braket{\psi|\rho|\psi}},
+	\begin{quantikz}
+		\qw&\ctrl{2}&\qw\\
+		\qw&\ctrl{1}&\qw\\
+		\qw&\targ{}&\qw
+	\end{quantikz}
 \end{equation}
-so fidelity is just the square root of the overlap between $\ket{\psi}$ and $\rho$.
-\subsubsection{Properties}
-We now present some useful properties of fidelity.
-\begin{proposition}
-	Fidelity is invariant under unitary transformations; that is, for unitary $U$, we have
-	\begin{equation}
-		F(U\rho U^{\dagger},U\sigma U^{\dagger})=F(\rho,\sigma).
-	\end{equation}
-\end{proposition}
-\begin{proof}
-	For any positive operator $A$, we know that $\sqrt{UAU^{\dagger}}=U\sqrt{A}U^{\dagger}$. Density operators are positive, so
-	\begin{equation}
-		\begin{aligned}
-			F(U\rho U^{\dagger},U\sigma U^{\dagger})&=\tr\sqrt{(U\rho U^{\dagger})^{1/2}U\sigma U^{\dagger}(U\rho U^{\dagger})^{1/2}}\\&=\tr\sqrt{U\rho^{1/2}U^{\dagger}U\sigma U^{\dagger}U\rho^{1/2}U^{\dagger}}\\&=\tr\sqrt{U\rho^{1/2}\sigma\rho^{1/2}U^{\dagger}}\\&=\tr U\sqrt{\rho^{1/2}\sigma\rho^{1/2}}U^{\dagger}\\&=F(\rho,\sigma).
-		\end{aligned}
-	\end{equation}
-\end{proof}
-Fidelity can be characterised by a theorem called \textit{Uhlmann's theorem}. Before presenting and proving this, we need two basic lemmas.
-\begin{lemma}
-	Let $A$ be an arbitrary operator, and $U$ a unitary operator. Then
-	\begin{equation}
-		|\tr(AU)|\leq\tr|A|,
-	\end{equation}
-	with equality when $U=V^{\dagger}$, where $A=|A|V$ is the polar decomposition of $A$.
-\end{lemma}
-\begin{proof}
-	Equality is clear under the stated condition. We compute
-	\begin{equation}
-		|\tr(AU)|=|\tr(|A|VU)|=|\tr(|A|^{1/2}|A|^{1/2}VU)|,
-	\end{equation}
-	where we note that the trace term is just the Hilbert-Schmidt inner product $\braket{|A|^{1/2},|A|^{1/2}VU}$. The Cauchy-Schwarz inequality then implies
-	\begin{equation}
-		|\tr(AU)|\leq\sqrt{\tr|A|\tr(U^{\dagger}V^{\dagger}|A|VU)}=\tr|A|
-	\end{equation}
-	as required.
-\end{proof}
-\begin{lemma}
-	Suppose $A$ and $R$ are two quantum systems with the same Hilbert space, with bases $\{\ket{i_{A}}\}$ and $\{\ket{i_{R}}\}$ respectively. Define $\ket{m}=\sum_{i}\ket{i_{R}}\ket{i_{A}}$, and let $P$ be an arbitrary operator on $A$ and $Q$ on $R$. Then
-	\begin{equation}
-		\tr(Q^{\dagger}P)=\braket{m|Q\otimes P|m}
-	\end{equation}
-	where the left hand side refers to matrix multiplication, and the matrix elements are taken with respect to the given bases.
-\end{lemma}
-\begin{proof}
-	We just compute:
-	\begin{equation}
-		\begin{aligned}
-			\tr(Q^{\dagger}P)&=\braket{i_{R}|Q|j_{R}}\braket{i_{A}|P|j_{A}}\\&=\bra{i_{R}}\bra{i_{A}}(Q\otimes P)\ket{j_{R}}\ket{j_{A}}=\braket{m|Q\otimes P|m},
-		\end{aligned}
-	\end{equation}
-	as required, where summation convention is implied.
-\end{proof}
-\begin{theorem}[Uhlmann's Theorem]
-	Suppose $\rho$ and $\sigma$ are states of quantum system $A$. Introduce an auxiliary system $R$ with $\mathcal{H}_{R}=\mathcal{H}_{A}$. Then:
-	\begin{equation}
-		F(\rho,\sigma)=\max_{\ket{\psi},\ket{\phi}}|\braket{\psi|\phi}|,
-	\end{equation}
-	where the maximisation is taken over all purifications $\ket{\psi}$ of $\rho$ and $\ket{\phi}$ of $\sigma$, both into $RA$.
-\end{theorem}
-\begin{proof}
-	Choose orthonormal bases $\{\ket{i_{A}}\}$ and $\{\ket{i_{R}}\}$ of $A$ and $R$. Define $\ket{m}\equiv\sum_{i}\ket{i_{R}}\ket{i_{A}}$, and let $\ket{\psi}$ be an arbitrary purification of $\rho$. The  Schmidt decomposition then implies that there exist some unitary operators $U_{A}$ and $U_{R}$ on $A$ and $R$ respectively such that
-	\begin{equation}
-		\ket{\psi}=(U_{R}\otimes\sqrt{\rho}U_{A})\ket{m}.
-	\end{equation}
-	We have an identical statement for some other unitaries $V_{A}$ and $V_{R}$, and arbitrary purification $\ket{\phi}$ of $\sigma$. Taking an inner product then implies
-	\begin{equation}
-		|\braket{\psi|\phi}|=|\braket{m|(U_{R}^{\dagger}V_{R}\otimes U_{A}^{\dagger}\sqrt{\rho}\sqrt{\sigma}V_{A})|m}|.
-	\end{equation}
-	Using lemma A.2.2, we then have
-	\begin{equation}
-		|\braket{\psi|\phi}|=|\tr(V_{R}^{\dagger}U_{R}U_{A}^{\dagger}\sqrt{\rho}\sqrt{\sigma}V_{A})|.
-	\end{equation}
-	So, defining $U\equiv V_{A}V_{R}^{\dagger}U_{R}U_{A}^{\dagger}$, we have
-	\begin{equation}
-		|\braket{\psi|\phi}|=|\tr(\sqrt{\rho}\sqrt{\sigma}U)|.
-	\end{equation}
-	Then, by lemma A.2.1, we have
-	\begin{equation}
-		|\braket{\psi|\phi}|\leq\tr|\sqrt{\rho}\sqrt{\sigma}|=\tr\sqrt{\rho^{1/2}\sigma\rho^{1/2}}=F(\rho,\sigma).
-	\end{equation}
-	To attain equality, take the polar decomposition $\sqrt{\rho}\sqrt{\sigma}=|\sqrt{\rho}\sqrt{\sigma}|V$, and choose $U_{A}=U_{R}=V_{R}=I$ and $V_{A}=V^{\dagger}$, and we are done.
-\end{proof}
-While Uhlmann's theorem is not particularly useful in a computational sense, it shows us that the fidelity indeed has properties we would expect from a distance measure. It clearly implies symmetry of inputs $F(\rho,\sigma)=F(\sigma,\rho)$, and that it is bounded between 0 and 1, with equality with 1 if $\rho=\sigma$, and equality with 0 if and only if $\rho$ and $\sigma$ are supported on orthogonal subspaces. This would make sense: if two states are orthogonal, they are perfectly distinguishable, so we would expect minimum fidelity between them.\\
-Fidelity is not a metric, but we can turn it into one. To do this, we make the following definition:
-\begin{definition}[Angle]
-	Given two states $\rho$ and $\sigma$, the \textbf{angle} between them is
-	\begin{equation}
-		A(\rho,\sigma)\equiv\arccos F(\rho,\sigma).
-	\end{equation}
-\end{definition}
-The motivation for this comes from the fact that the angle between two points on a sphere is a metric, and Uhlmann's theorem tells us that the fidelity between two states is the maximum possible inner product between purifications of these states. Clearly the angle is non-negative and symmetric in its inputs, and $A(\rho,\sigma)=0\iff\rho=\sigma$. The only property left to show angle is a metric is that it obeys the triangle inequality. To do this, consider three states $\rho$, $\sigma$, and $\tau$. Choose purifications $\ket{\phi}$ of $\sigma$, $\ket{\psi}$ of $\rho$, and $\ket{\gamma}$ of $\tau$ such that
-\begin{equation}
-	\begin{aligned}
-		F(\rho,\sigma)&=\braket{\psi|\phi}\\
-		F(\sigma,\tau)&=\braket{\phi|\gamma},
-	\end{aligned}
-\end{equation}
-and $\braket{\psi|\gamma}$ is real and positive. We have in general for arbitrary vectors that
-\begin{equation}
-	\arccos(\braket{\psi|\gamma})\leq\arccos(\braket{\psi|\phi})+\arccos({\phi|\gamma})=A(\rho,\sigma)+A(\sigma,\tau),
-\end{equation}
-but by Uhlmann's theorem, $F(\rho,\tau)\geq\braket{\psi|\gamma}$. Therefore $A(\rho,\tau)\leq\arccos(\braket{\psi|\gamma})$. Together with (A.2.20), we then get the triangle equality, so angle is indeed a metric.\\
-Fidelity is also monotonic under trace-preserving quantum operations.
-\begin{proposition}
-	Suppose $\mathcal{E}$ is a trace-preserving quantum operation, and $\rho$ and $\sigma$ are states of system $A$. Then
-	\begin{equation}
-		F(\mathcal{E}(\rho),\mathcal{E}(\sigma))\geq F(\rho,\sigma).
-	\end{equation}
-\end{proposition} 
-\begin{proof}
-	Take purifications $\ket{\psi}$ and $\ket{\phi}$ of $\rho$ and $\sigma$ respectively onto a joint system $AR$ such that $F(\rho,\sigma)=|\braket{\psi|\phi}|$. Introduce an environment $E$ for the operation $\mathcal{E}$, which is initially in the state $\ket{0}_{E}$, and take it to interact with $A$ via a unitary operation $U$. $U\ket{\psi}_{RA}\ket{0}_{E}$ is a purification of $\mathcal{E}(\rho)$, and similarly $U\ket{\phi}_{RA}\ket{0}_{E}$ is of $\mathcal{E}(\sigma)$. By Uhlmann's theorem, we therefore have
-	\begin{equation}
-		\begin{aligned}
-			F(\mathcal{E}(\rho),\mathcal{E}(\sigma))&\geq|\bra{\psi}\braket{0|U^{\dagger}U|\phi}\ket{0}|\\&=|\braket{\psi|\phi}|\\&=F(\rho,\sigma)
-		\end{aligned}
-	\end{equation}
-	as claimed.
-\end{proof}
-Our last property of fidelity is strong concavity.
-\begin{theorem}
-	Let $p_{i}$ and $q_{i}$ be probability distributions indexed by $i$, and $\rho_{i}$ and $\sigma_{i}$ density operators also indexed by $i$. Then
-	\begin{equation}
-		F\left(\sum_{i}p_{i}\rho_{i},\sum_{i}q_{i}\sigma_{i}\right)\geq\sum_{i}\sqrt{p_{i}q_{i}}F(\rho_{i},\sigma_{i}).
-	\end{equation}
-\end{theorem}
-\begin{proof}
-	Choose purifications $\ket{\psi_{i}}$ and $\ket{\phi_{i}}$ of $\rho_{i}$ and $\sigma_{i}$ respectively such that $F(\rho_{i},\sigma_{i})=\braket{\psi_{i}|\phi_{i}}$. Introduce an ancillary system which has orthonormal basis $\{\ket{i}\}$, indexed by the same $i$ as everything else. Define
-	\begin{equation}
-		\ket{\psi}\equiv\sum_{i}\sqrt{p_{i}}\ket{\psi_{i}}\ket{i},\quad\ket{\phi}\equiv\sum_{i}\sqrt{q_{i}}\ket{\phi_{i}}\ket{i}.
-	\end{equation}
-	Note that $\ket{\psi}$ purifies $\sum_{i}p_{i}\rho_{i}$ and $\ket{\phi}$ purifies $\sum_{i}q_{i}\sigma_{i}$, so by Uhlmann's theorem:
-	\begin{equation}
-		\begin{aligned}
-			F\left(\sum_{i}p_{i}\rho_{i},\sum_{i}q_{i}\sigma_{i}\right)&\geq|\braket{\psi|\phi}|\\&=\sum_{i}\sqrt{p_{i}q_{i}}\braket{\psi_{i}|\phi_{i}}\\&=\sum_{i}\sqrt{p_{i}q_{i}}F(\rho_{i},\sigma_{i})
-		\end{aligned}
-	\end{equation}
-	as claimed.
-\end{proof}
-
-
-
-
-\chapter{Stuff that won't be read by anyone}
-
-Some people include in their thesis a lot of detail, particularly lots
-of tables containing raw results, figures of intermediate results, or
-computer code which no-one will ever read. You should be careful that
-anything like this you include should contain some element of
-uniqueness which justifies its inclusion.
-
+analogously to the $CNOT$ gate.
 
 \bibliographystyle{siam}
 \bibliography{refs}

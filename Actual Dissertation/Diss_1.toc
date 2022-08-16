@@ -7,8 +7,8 @@
 \contentsline {subsection}{\numberline {2.3.1}Quantum Operations}{6}{subsection.2.3.1}%
 \contentsline {subsection}{\numberline {2.3.2}Operator-Sum Representation}{7}{subsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.3.3}Axiomatisation}{8}{subsection.2.3.3}%
-\contentsline {subsection}{\numberline {2.3.4}General Theory of Error Correction}{9}{subsection.2.3.4}%
-\contentsline {section}{\numberline {2.4}Quantum Erasure}{10}{section.2.4}%
+\contentsline {section}{\numberline {2.4}General Theory of Error Correction}{9}{section.2.4}%
+\contentsline {section}{\numberline {2.5}Quantum Erasure}{10}{section.2.5}%
 \contentsline {chapter}{\numberline {3}Holographic Error Correction}{12}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Conventional Erasure Correction}{12}{section.3.1}%
 \contentsline {subsubsection}{An Example}{16}{section*.8}%
@@ -33,16 +33,15 @@
 \contentsline {subsubsection}{Example 6}{39}{section*.17}%
 \contentsline {section}{\numberline {4.3}A Complete Example}{39}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Conclusions}{41}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Quantum Mechanics and Information: Background and Conventions}{42}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Quantum Mechanics}{42}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}State Spaces}{42}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Evolution of States}{43}{subsection.A.1.2}%
-\contentsline {subsection}{\numberline {A.1.3}Measurements}{43}{subsection.A.1.3}%
-\contentsline {subsubsection}{Projective Measurements}{44}{section*.18}%
-\contentsline {subsubsection}{POVM measurements}{45}{section*.19}%
-\contentsline {subsection}{\numberline {A.1.4}Composite Systems}{45}{subsection.A.1.4}%
-\contentsline {subsection}{\numberline {A.1.5}Density Operators}{46}{subsection.A.1.5}%
-\contentsline {section}{\numberline {A.2}Quantum Information and Computation}{47}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}Distance Measures}{48}{subsection.A.2.1}%
-\contentsline {subsubsection}{Properties}{48}{section*.20}%
-\contentsline {chapter}{\numberline {B}Stuff that won't be read by anyone}{53}{appendix.B}%
+\contentsline {chapter}{\numberline {A}Quantum Information and Entropy}{42}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Classical Information}{42}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}Shannon Entropy}{42}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Relative Entropy}{43}{subsection.A.1.2}%
+\contentsline {section}{\numberline {A.2}Quantum Information}{44}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}von Neumann Entropy}{44}{subsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.2.2}Relative Entropy}{46}{subsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.2.3}Properties of von Neumann Entropy}{47}{subsection.A.2.3}%
+\contentsline {subsection}{\numberline {A.2.4}Entropy as a Measure of Entanglement}{47}{subsection.A.2.4}%
+\contentsline {chapter}{\numberline {B}Quantum Circuit Notation}{49}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Quantum Gates}{49}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Quantum Circuits}{50}{section.B.2}%
