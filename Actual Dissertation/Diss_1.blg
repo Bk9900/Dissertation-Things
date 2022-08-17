@@ -9,6 +9,8 @@ I was expecting a `,' or a `}'---line 349 of file refs.bib
  :  journal = "Berkeley Symposium on Mathematical Statistics and Probability"
  :                                                                           \
 I'm skipping whatever remains of this entry
+Name 1 in "Jason Pollack, Patrick Rall, and Andrea Rocchetto" has a comma at the end for entry Pollack
+while executing---line 991 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
 while executing---line 991 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
@@ -16,8 +18,6 @@ while executing---line 991 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
 while executing---line 991 of file siam.bst
 Name 1 in "Ahmed Almheiri, Xi Dong, and Daniel Harlow" has a comma at the end for entry ADH
-while executing---line 991 of file siam.bst
-Name 1 in "Jason Pollack, Patrick Rall, and Andrea Rocchetto" has a comma at the end for entry Pollack
 while executing---line 991 of file siam.bst
 Name 1 in "Ahmed Almheiri, Xi Dong, and Daniel Harlow" has a comma at the end for entry ADH
 while executing---line 1034 of file siam.bst
@@ -32,43 +32,43 @@ while executing---line 1034 of file siam.bst
 Warning--empty year in Renyi
 You've used 17 entries,
             2030 wiz_defined-function locations,
-            625 strings with 6251 characters,
-and the built_in function-call counts, 5568 in all, are:
-= -- 557
-> -- 179
+            626 strings with 6258 characters,
+and the built_in function-call counts, 5720 in all, are:
+= -- 577
+> -- 185
 < -- 0
-+ -- 73
-- -- 55
-* -- 384
-:= -- 828
-add.period$ -- 19
++ -- 75
+- -- 57
+* -- 392
+:= -- 844
+add.period$ -- 18
 call.type$ -- 17
-change.case$ -- 79
+change.case$ -- 80
 chr.to.int$ -- 0
 cite$ -- 18
-duplicate$ -- 288
-empty$ -- 431
-format.name$ -- 55
-if$ -- 1234
+duplicate$ -- 302
+empty$ -- 432
+format.name$ -- 57
+if$ -- 1274
 int.to.chr$ -- 0
 int.to.str$ -- 17
-missing$ -- 16
-newline$ -- 56
+missing$ -- 17
+newline$ -- 55
 num.names$ -- 33
-pop$ -- 68
+pop$ -- 65
 preamble$ -- 1
-purify$ -- 62
+purify$ -- 63
 quote$ -- 0
-skip$ -- 271
+skip$ -- 289
 stack$ -- 0
-substring$ -- 397
-swap$ -- 137
+substring$ -- 409
+swap$ -- 149
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 66
 warning$ -- 1
-while$ -- 56
+while$ -- 57
 width$ -- 19
 write$ -- 151
 (There were 11 error messages)

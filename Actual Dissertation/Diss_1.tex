@@ -64,7 +64,7 @@
 \vspace*{0.1\textheight}
 
 \begin{center}
-        \huge{\bfseries Quantum Error Correction and Entanglement Wedge Reconstruction}\\
+        \huge{\bfseries Operator-Algebra Quantum Erasure Correction and Holography}\\
 \end{center}
 
 \bigskip
@@ -107,8 +107,7 @@
 \pagenumbering{roman}
 
 \begin{abstract}
-This is where you summarise the contents of your dissertation. It should be
-at least 100 words, but not more than 200 words.
+We present a self-contained introduction to holographic error correction, aimed at readers with a background in quantum information theory. We use minimal holographic language, characterising what makes a quantum erasure correcting code holographic in a purely algebraic way. We state and prove the main theorems of the field, expanding on details of previously written proofs. We also present several simple examples of holographic codes.
 \end{abstract}
 
 \pagenumbering{roman}
@@ -119,31 +118,13 @@ at least 100 words, but not more than 200 words.
 
 I declare that this dissertation was composed entirely by myself.
 
-Chapters 2 and 3 provide an introduction to the subject area and a
-description of previous work on this topic. They do not contain
-original research.
+Chapter 2 provides an introduction to quantum error correction. It largely contains standard results from the quantum information literature, and is not original work. Section 2.5 adapts these results for the case of erasures, and consists of my own independent analysis.
 
-Chapter~4 describes work that was done entirely by me. The results of
-this chapter have been obtained previously by Anne T Matta, but the
-methods used here are different in some important (or minor) ways.
+Chapter 3 states and proves the three main theorems of Daniel Harlow's subject-defining paper \cite{Harlow}. While this does not contain original work (as it goes through Harlow's proofs), various steps are expanded on, and much of the added detail is my own work. Section 3.5 discusses holographic properties of erasure codes, and is heavily inspired by Harlow \cite{Harlow} and Pollack et al. \cite{Pollack}, although the proof therein is largely my own work.
 
-Chapters 4 through 6 contain my original work. The work described in
-Chapter~4 was done in collaboration with Professor Carole Ann O'Malley
-and her PhD student Jake O'Bean. Chapter~5 presents original work done
-entirely by me.
+Chapter 4 presents the examples of \cite{Pollack}. The discussions contained within largely follow the discussions of this paper, and are not my own work. However, I expand on various aspects of their discussion independently.
 
-\bigskip
-
-State whether calculations were done using Mathematica, SymPy, etc,
-with (or without) gamma matrix code, master integrals, the Super-Duper
-software package, etc. In other words, you should refer to any
-software that you used during your project. For example, Monte Carlo
-simulation packages, hydrodynamics packages, measurement code, fitting
-code, tensor algebra or calculus packages, Feynman diagram packages,
-etc.
-
-State whether any software you used was written by you from scratch,
-by your supervisor (or by whoever), or if it's a standard package.
+Chapter 5 contains my own thoughts and conclusions on the results of the rest of the dissertation, and was composed independently.
 
 \newpage
 
@@ -151,109 +132,12 @@ by your supervisor (or by whoever), or if it's a standard package.
 \textbf{Personal Statement}
 \end{center}
 
-\emph{You \textbf{\emph{must}} include a Personal Statement in your
-  dissertation. This should describe what you did during the project,
-  and when you did it. Give an account of problems you faced and how
-  you attempted to overcome them. The examples below are based on
-  personal statements from MSc and MPhys projects in previous years,
-  with (mostly-obvious) changes to make them anonymous. }
-
-\subsubsection*{Example~1: an analytical project}
-
-The project began with an introduction to the spinor-helicity
-formalism in four dimensions, with my main source material being
-H. Elvang's “Scattering Amplitudes in Gauge Theory and Gravity” [1]. I
-read the first chapter, and acquainted myself with the formalism,
-and how it worked in a practical sense.
-
-Once I felt more comfortable with it, we moved onto the
-six-dimensional spinor-helicity formalism paper, where I spent some
-time gaining as strong an understanding of how the formalism worked,
-and proving identities.
-
-The next stage was to learn about the generalised unitarity procedure,
-with the end goal being to use it to calculate coefficients for some
-one loop integral, likely involving massive particles. Learning how
-this worked took some time, and proved to be some of the most
-difficult material for me to understand. \cite{Harlow} \cite{NielsenChuang}
-
-It wasn't until later that we began to consider applying what I had
-learned to a Kaluza-Klein reduction, which ended up being the main
-focus of the project. It mixed well with the general theme of
-“extra-dimensional theory” the project began with, and allowed me to
-apply all that I'd learned and prepared for so far.  The vast majority
-of my remaining time was spent calculating coefficients for the scalar
-box contribution to the gluon-gluon to two-Kaluza-Klein-particle
-amplitude, overcoming a number of problems and errors, to finally have
-human-readable, and presentable results.
-
-During the course of the project, I met with my supervisor every week,
-in order to discuss my progress and the direction I would head
-next. Toward the end, the frequency of our meetings increased
-somewhat, as I began to finish my calculations.
-
-I started writing this dissertation in mid-July, and I spent the first
-three weeks of August working on it full-time.
-
-Overall, I feel that the project was a success, and I found it to be
-extremely enjoyable throughout.
-
-
-\subsubsection*{Example~2: a computational project}
-
-I spent the first 2 weeks of the project reading the material
-surrounding my project - mainly [1] and [2]. I also began to plan out
-how I would implement the algorithms in C++, in doing this I gained an
-understanding of what the main goals of the first half of my project
-would be and how they could be achieved. I identified which Monte
-Carlo observables would be useful to measure in these simulations.
-
-For the next 3 weeks I implemented the standard Atlantic City
-algorithm and debugged my code whilst developing analysis tools in
-python. I compared the results from my simulations to the results from
-[3] (for the Random Osculator) and [4] for the EvenMoreRandom
-Osculator. Having obtained positive results for the Random Osculator I
-started reading up on Heaviside Articulation. I examined how to
-integrate a Heaviside Articulator into the simulation in order to
-produce the most efficient simulation - the solution I decided on was
-to use a package called HeaviArt[5].
-
-Following this I began to integrate the Heaviside Articulator into my
-code and test it against the regular algorithm. In addition to this I
-ran longer simulations to verify my findings without Articulation.
-
-In mid July I finished implementing Heaviside Articulation into my
-code and began looking into how to quantify any improvement in speed
-gained by this algorithm. As July progressed I started looking into
-how to integrate the EvenMoreRandom Osculator into my code - this was
-the most complicated part of the project, as discussed in the body of
-this report. Despite much effort on my part, I couldn't get the
-results produced by the new algorithm to agree with the old
-ones. Following further study of the literature, and long discussions
-with Jack O'Bean, it turned out that the original form of Heaviside
-Articulation didn't applied to the EvenMoreRandom Osculator. With the
-help of Jack and my supervisor, I then developed the new version
-described in this report. I also did analytical calculations of the
-Four-Point Green-and-White- Function to two orders higher than had
-been published previously in the literature.
-
-For the final parts of the summer I worked mainly on perfecting the
-algorithm for the Random Osculator and implementing the EvenMoreRandom
-Osculators algorithm with the improved Heaviside Articulation. The
-final results were encouraging, but more work is clearly needed. To
-this end, I have been awarded a studentship by the British University
-of Lifelong Learning to extend this work during my PhD Studies at
-the non-existent Scottish Highlands Institute of Technology in
-Inveroxter.
-
-I started writing this dissertation in mid-July, and I spent the first
-three weeks of August working on it full-time.
-
-
-
-\subsubsection{Example~3: a very mathematical project}
-
-[In preparation]
+The first two weeks of the project consisted of me reading up on the background theory underlying quantum error correction. This included how to model noise using quantum operations, specific examples of error correcting circuits, and various theoretical machinery such as the error correction conditions. My main source for this was Nielsen and Chuang's textbook \cite{NielsenChuang}. I also attempted to adapt some of the theory to quantum erasures, which were to be the main focus of the project, deriving some of the results in section 2.5, with a view to link them to theorem 3.1 of \cite{Harlow}. I also read some theory about holography and the AdS/CFT correspondence. Even though the goal of the dissertation was to approach the subject from a quantum informational perspective, I wanted to understand how the subject fits into holography to gain some motivation and intuition as to why the theorems are structured the way they are.\\
+My supervisor, Dr. Joan Simon, suggested that it would make more sense to understand the toy model of \cite{Harlow} before jumping into the general theory presented. I therefore spent the third week going through this toy model in detail, with particular focus on trying to understand the significance of the $\ket{\chi}$ state. I wasn't able to come up with an `intuitive' explanation for this state, so I decided to move onto attempting to understand the proof of theorem 3.1 of \cite{Harlow} in hope that it would provide some intuition. This goal was realised, with the proof giving some insight into the importance of $\ket{\chi}$ as a purification.\\
+The fourth week of the project consisted of me reading about von Neumann algebras in some detail. This consisted of the proofs in appendix A of \cite{Harlow}, as well as \cite{VNA} for a more `abstract', mathematical exposition of the subject.\\
+After this, I moved onto understanding theorem 5.1 of \cite{Harlow}. I used \cite{Pollack} as a secondary source here, as I found some of the language more comprehensible. I also decided to change the language used from that of code subspaces to encoding isometries at this point, inspired by \cite{Pollack}.\\
+The next step was trying to precisely characterise what makes a code holographic. \cite{Harlow} is not particularly clear on this to a reader with minimal background in holography, referring to several complex holographic concepts. \cite{Pollack} however provides a precise algebraic characterisation of the so-called Ryu-Takayanagi formula in the language of erasure codes, which I decided to take as the defining characteristic of a holographic code. This, combined with the two-sided implication of a code having complementary recovery and satisfying an RT formula, implies all the other holographic properties which \cite{Harlow} talks about. Understanding this implication was the next goal. I read through and understood the proof in the forward direction in \cite{Pollack}, but found it quite dense and notationally cumbersome. I therefore attempted to prove it in a way which matched the sketch proof in \cite{Harlow} a bit more closely, accomplishing this. I also managed to prove the reverse implication, expanding on the sketch again presented in \cite{Harlow}. This was quite tricky as there was minimal detail provided, and I particularly struggled with working out what happens when one takes a small perturbation in the entropy. I did eventually manage this.\\
+The final weeks of the project consisted of writing up all my work, and going through the examples of \cite{Pollack}. These were more opaque than I first anticipated, as I found the authors to not be particularly clear in defining various characteristics. Once I worked out what the authors had intended though, the examples made sense; indeed, they elucidated many aspects of the proof that an RT formula implies complementary recovery and vice versa.
 
 
 
@@ -498,10 +382,9 @@ This is precisely condition 3 of theorem 3.1 of \cite{Harlow}.
 %This is a problem. In field theories, the operator product expansion states that the product of operators acting at multiple points can be decomposed as a sum of local operators acting only at a single point. Radial commutativity then implies that all of these local operators commutes with the bulk operator - this would mean that any bulk operator commutes with every boundary operator. This conclusion is, however, only true since we treated the bulk Hilbert space as being the same as the boundary CFT Hilbert space. This is not true: the bulk Hilbert space for a given geometry is encoded inside the CFT Hilbert space. The resolution is therefore to map the bulk into the boundary via an isometry.
 
 \chapter{Holographic Error Correction}
-
 In this section, we state and prove the three theorems of \cite{Harlow}. We use the language of encoding isometries as in \cite{Pollack} rather than the code subspace language of \cite{Harlow}, as it makes constructing examples via a quantum circuit considerably easier. The three theorems are in increasing generality; the first describes \textit{conventional erasure correction}, the second \textit{subsystem error correction}, and the third \textit{operator algebra error correction}. They all characterise whether an erasure is correctable in the sense of complete state recovery.
 \section{Conventional Erasure Correction}
-We now present theorem 3.1 of \cite{Harlow} from the encoding isometry point of view.
+We start presenting theorem 3.1 of \cite{Harlow} from the encoding isometry point of view.
 \begin{theorem}\label{t1}
 	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $\Hcode\subseteq\mathcal{H}$ is the image of $V$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
 	\begin{enumerate}
@@ -526,20 +409,21 @@ We now present theorem 3.1 of \cite{Harlow} from the encoding isometry point of 
 		\begin{equation}\label{C4}
 			\rho_{R\ol{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\ol{A}}[\phi].
 		\end{equation}
+		Here, $\rho_{R}[\phi]=\tr_{A\ol{A}}(\ketbras{\phi})$ etc. are the reduced density matrices for $\ket{\phi}$.
 	\end{enumerate}
 \end{theorem}
-Before proving this, let's go over some of the intuition behind each statement, and what all the objects in this theorem refer to. $\ol{A}$ is the erased subsystem, and $A$ is preserved under erasure. \ref{C1} is the statement of full state recovery; we can recover the matrix elements of any state on $\Hcode$ in full on subsystem $A_{1}$ by applying some unitary $U_{A}$ which does not need access to $\ol{A}$ at all. We can visualise this by means of a circuit diagram:
+Before proving this, let's go over some of the intuition behind each statement, and what all the objects in this theorem refer to. $\ol{A}$ is the erased subsystem, and $A$ is preserved under erasure. \ref{C1} is the statement of full state recovery; we can recover any state on $\mathcal{H}_{L}$ in full on subsystem $A_{1}$ by applying some unitary $U_{A}$ which does not need access to $\ol{A}$. We can visualise this by means of a circuit diagram:
 \begin{figure}[H] 
 	\centering
 	\scalebox{1.2}{%
 		\begin{quantikz}
-			\lstick{$\ket{\psi_{L}}$} & \qw & \gate[wires = 2]{U_{A}^{\dagger}} & \qw \rstick{$A_{1}$}\\
+			\lstick{$\ket{\psi}$} & \qw & \gate[wires = 2]{U_{A}^{\dagger}} & \qw \rstick{$A_{1}$}\\
 			\makeebit{$\ket{\chi}$} & \qw & & \qw \rstick{$A_{2}$} \\
 			& \qw & \qw & \qw \rstick{$\overline{A}$}
 	\end{quantikz}}
 \end{figure}
-A natural question about \ref{C1} is asking what the significance of $\ket{\chi}$ is. This is elucidated in the proof, but essentially it turns out that $\ket{\chi}$ is an arbitrary purification of $\rho_{\ol{A}}[\phi]$ on $A_{2}$. \ref{C2} says that any logical operator on $\mathcal{H}_{L}$ can be equivalently represented by an operator acting on the $A$ subsystem only. \ref{C3} is just equation \ref{EC}; the quantum error correction conditions adapted to erasures. In a more physically intuitive way, this says that performing a measurement of any operator on the erased subsystem $\ol{A}$ cannot disturb the encoded information - a plausible condition for erasure to be correctable. In some sense, this means that all information about the original state is contained in the $A$ system. \ref{C4} states that operators on the auxiliary system $R$ and operators on the erased subsystem $\ol{A}$ are not correlated.\\
-We now present the proof of this theorem.
+Here, $\ket{\psi}$ is a state on $\mathcal{H}_{A_{1}}$, and we would recover a state $V\ket{\tilde{\psi}}$ on the right hand side over $A_{1}$ and $A_{2}$, where $\ket{\tilde{\psi}}$ has the same matrix elements as $\ket{\psi}$. A natural question about \ref{C1} is asking what the significance of $\ket{\chi}$ is. This is elucidated in the proof, but essentially it turns out that $\ket{\chi}$ is an arbitrary purification of $\rho_{\ol{A}}[\phi]$ on $A_{2}$. \ref{C2} says that any logical operator on $\mathcal{H}_{L}$ can be equivalently represented by an operator acting on the $A$ subsystem only. This makes sense as a condition for erasure correction: if we can reconstruct a state without access to $\ol{A}$, all the information about the state is in some sense `contained' in $A$, so we should be able to operate on this information by just acting within $\mathcal{H}_{A}$. We derived \ref{C3} earlier, as \ref{EC}; it is just the quantum error correction conditions for erasures. In a more physically intuitive way, this says that performing a measurement of any operator on the erased subsystem $\ol{A}$ cannot disturb the encoded information - a plausible condition for erasure to be correctable. In some sense, this means that all information about the original state is contained in the $A$ system, as mentioned before. \ref{C4} states that operators on the auxiliary system $R$ and operators on the erased subsystem $\ol{A}$ are not correlated.\\
+We now present the proof of this theorem. This follows Harlow's proof in \cite{Harlow}, with details filled in.
 \newcommand{\Xabar}{X_{\overline{A}}}
 \begin{proof}
 	$(1)\implies(2)$: Define $O_{A}\equiv U_{A}^{\dagger}O_{A_{1}}U_{A}$, where $O_{A_{1}}$ is an operator on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $\tilde{O}$ has on $\mathcal{H}_{L}$; that is
@@ -556,13 +440,13 @@ We now present the proof of this theorem.
 	We can then just check these are satisfied by our $O_{A}$:
 	\begin{equation}
 		\begin{aligned}
-			\braket{\tilde{i}|V^{\dagger}O_{A}V|\tilde{j}}&=\braket{\tilde{i}|V^{\dagger}U_{A}^{\dagger}O_{A_{1}}U_{A}V|\tilde{j}}\\&=(\bra{i}_{A_{1}}\bra{\chi}_{A_{2}\ol{A}})O_{A_{1}}(\ket{j}_{A_{1}}\ket{\chi}_{A_{2}\ol{A}})\\&=\braket{i|O_{A_{1}}|j}_{A_{1}}\braket{\chi|\chi}_{A_{2}\ol{A}}\\&=\braket{\tilde{i}|\tilde{O}|\tilde{j}}
+			\braket{\tilde{i}|V^{\dagger}O_{A}V|\tilde{j}}&=\braket{\tilde{i}|V^{\dagger}U_{A}^{\dagger}O_{A_{1}}U_{A}V|\tilde{j}}\\&=\left(\bra{i}_{A_{1}}\otimes\bra{\chi}_{A_{2}\ol{A}}\right)O_{A_{1}}\left(\ket{j}_{A_{1}}\otimes\ket{\chi}_{A_{2}\ol{A}}\right)\\&=\braket{i|O_{A_{1}}|j}_{A_{1}}\braket{\chi|\chi}_{A_{2}\ol{A}}\\&=\braket{\tilde{i}|\tilde{O}|\tilde{j}}
 		\end{aligned}
 	\end{equation}
 	with similar for $O_{A}^{\dagger}$, as claimed.\\
 	$(2)\implies(3)$: This implication is by contradiction. We can rewrite \ref{C3} as the statement that $P_{L}V^{\dagger}\Xabar VP_{L}\propto P_{L}$. So suppose there was some $X_{\ol{A}}$ such that $P_{L}V^{\dagger} X_{\ol{A}}VP_{L} \not\propto P_{L}$. Now, Schur's lemma in this context states that the only non-trivial operators commuting with all other operators on $\mathcal{H}_{L}$ are scalar multiples of the identity. Since $V^{\dagger}X_{\ol{A}}V$ is not the identity, there must be some $\tilde{O}$ on $\mathcal{H}_{L}$ which doesn't commute with $V^{\dagger}X_{\ol{A}}V$, and some $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ such that:
 	\begin{equation}
-		\braket{\tilde{\psi}|[P_{L}V^{\dagger} X_{\ol{A}}P_{L},\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}\neq 0.
+		\braket{\tilde{\psi}|[P_{L}V^{\dagger} X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}\neq 0.
 	\end{equation}
 	But such an $\tilde{O}$ cannot have a representation $O_{A}$ on $\mathcal{H}_{A}$ as defined in \ref{C2}, since this would by definition commute with $X_{\ol{A}}$; if it had such an $O_{A}$, then $\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,V^{\dagger}O_{A}V]|\tilde{\psi}}=\braket{\tilde{\psi}|V^{\dagger}[X_{\ol{A}},O_{A}]V|\tilde{\psi}}=0$, which is a contradiction.\\
 	$(3)\implies (4)$: Consider arbitrary operators $O_{R}$ on $\mathcal{H}_{R}$ and $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$. If we denote the constant of proportionality in \ref{C3} as $\lambda\in\mathbb{C}$, we have
@@ -573,7 +457,7 @@ We now present the proof of this theorem.
 	\begin{equation}
 		\braket{\phi|\Pc\Xabar\Pc|\phi}=\braket{\phi|\Xabar|\phi}=\lambda\braket{\phi|\Pc|\phi}=\lambda\braket{\phi|\phi}=\lambda,
 	\end{equation}
-	so $\braket{\phi|\Xabar|\phi}=\lambda$. But this implies
+	giving $\braket{\phi|\Xabar|\phi}=\lambda$. But this implies
 	\begin{equation}
 		\begin{aligned}
 			\braket{\phi|\Xabar O_{R}|\phi}&=\braket{\phi|\Pc O_{R}\Xabar\Pc|\phi}\\&=\braket{\phi|O_{R}\Pc\Xabar\Pc|\phi}\\&=\braket{\phi|O_{R}\lambda\Pc|\phi}\\&=\braket{\phi|O_{R}|\phi}\braket{\phi|\Xabar|\phi}
@@ -584,7 +468,7 @@ We now present the proof of this theorem.
 	\begin{equation}
 		\rho_{R}[\phi]=\text{Tr}_{A\overline{A}}\left(\frac{1}{|R|}\sum_{ij}\ketbra{i}{j}_{R}(V\ketbra{\tilde{i}}{\tilde{j}}V^{\dagger})_{A\overline{A}}\right)=\frac{1}{|R|}\sum_{i}\ketbras{i}_{R}=\frac{I_{R}}{|R|}
 	\end{equation}
-	since $\rho_{R}[\phi]=I/|R|$ is the maximally mixed state. This means that \ref{C4} becomes
+	since $\rho_{R}[\phi]=I_{R}/|R|$ is the maximally mixed state. This means that \ref{C4} becomes
 	\begin{equation}\label{C5}
 		\rho_{R\overline{A}}[\phi]=\frac{I_{R}}{|R|}\otimes\rho_{\overline{A}}[\phi].
 	\end{equation}
@@ -613,58 +497,58 @@ We now present the proof of this theorem.
 	\end{equation}
 	as claimed.
 \end{proof}
-One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. It may be that some choices of $\ol{A}$ are not correctable; we need to apply the theorem to each choice in turn and check.\\
-We now present example of conventional erasure correction.
+One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. It may be that some choices of $\ol{A}$ are not correctable; we need to apply the theorem to each choice in turn and check. Note as well that $\ket{\chi}_{A_{2}\ol{A}}$ has to have entanglement here for the code to function robustly. If $\ket{\chi}_{A_{2}\ol{A}}$ was a product state, for example, then we can get rid of $\ol{A}$ entirely as it is extemporaneous. Entanglement is what allows a subsystem of $A$ together with $\ol{A}$ to access information which $A$ cannot access on its own.\\
+We now present an example of conventional erasure correction: the toy model of \cite{Harlow}.
 \subsubsection{An Example}
-In this example, we refer to \textit{qutrits}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}}\}$. An arbitrary qutrit can then be written
+In this example, we refer to \textit{qutrits}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{0},\ket{1},\ket{2}\}$. An arbitrary qutrit can then be written
 \begin{equation}
-	\ket{\tilde{\psi}}=\sum_{i=0}^{2}a_{i}\ket{\tilde{i}}
+	\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
 \end{equation}
-where $\sum_{i=0}^{2}|a_{i}|^{2}=1$. Suppose Alice wishes to send this qutrit to Bob through a channel which acts to erase 1 of every three transmitted qutrits with certainty. To protect for this, Alice encodes her qutrit into the logical code subspace $\Hcode=\text{span}(\ket{0},\ket{1},\ket{2})$, defined by
+where $\sum_{i=0}^{2}|a_{i}|^{2}=1$. Suppose Alice wishes to send this qutrit to Bob through a channel which acts to erase every third transmitted qutrit with certainty. To protect for this, Alice encodes her qutrit into the physical code subspace $\Hcode=\text{span}(\ket{0}_{\text{code}},\ket{1}_{\text{code}},\ket{2}_{\text{code}})$, defined by
 \begin{equation}
 	\begin{aligned}
-		\ket{0}&=\frac{1}{\sqrt{3}}(\ket{\widetilde{000}}+\ket{\widetilde{111}}+\ket{\widetilde{222}})\\
-		\ket{1}&=\frac{1}{\sqrt{3}}(\ket{\widetilde{012}}+\ket{\widetilde{120}}+\ket{\widetilde{201}})\\
-		\ket{2}&=\frac{1}{\sqrt{3}}(\ket{\widetilde{021}}+\ket{\widetilde{102}}+\ket{\widetilde{210}})
+		\ket{0}_{\text{code}}&=\frac{1}{\sqrt{3}}(\ket{{000}}+\ket{{111}}+\ket{{222}})\\
+		\ket{1}_{\text{code}}&=\frac{1}{\sqrt{3}}(\ket{{012}}+\ket{{120}}+\ket{{201}})\\
+		\ket{2}_{\text{code}}&=\frac{1}{\sqrt{3}}(\ket{{021}}+\ket{{102}}+\ket{{210}})
 	\end{aligned}.
 \end{equation}
 Explicitly, the encoding isometry $V$ can be written
 \begin{equation}
-	V=\ket{0}\bra{\tilde{0}}+\ket{1}\bra{\tilde{1}}+\ket{2}\bra{\tilde{2}}.
+	V=\ket{0}_{\text{code}}\bra{\tilde{0}}+\ket{1}_{\text{code}}\bra{\tilde{1}}+\ket{2}_{\text{code}}\bra{\tilde{2}}.
 \end{equation}
 Suppose that the erasure acts on the third qutrit of $\Hcode$. Bob then only has access to the first two qutrits, but he can still recover the original state. Define a unitary operator on the first two qutrits by
 \begin{equation}\label{unitary}
 	\begin{aligned}
-		U_{12}\equiv&\ketbras{\widetilde{00}}+\ketbra{\widetilde{01}}{\widetilde{11}}+\ketbra{\widetilde{02}}{\widetilde{22}}+\ketbra{\widetilde{12}}{\widetilde{01}}+\ketbra{\widetilde{10}}{\widetilde{12}}+\ketbra{\widetilde{11}}{\widetilde{20}}\\&+\ketbra{\widetilde{21}}{\widetilde{02}}+\ketbra{\widetilde{22}}{\widetilde{10}}+\ketbra{\widetilde{20}}{\widetilde{21}},
+		U_{12}\equiv&\ketbras{{00}}+\ketbra{{01}}{{11}}+\ketbra{{02}}{{22}}+\ketbra{{12}}{{01}}+\ketbra{{10}}{{12}}+\ketbra{{11}}{{20}}\\&+\ketbra{{21}}{{02}}+\ketbra{{22}}{{10}}+\ketbra{{20}}{{21}},
 	\end{aligned}
 \end{equation}
-which does nothing to $\ket{\widetilde{00}}$, and permutes the remaining 8 basis states as
+which does nothing to $\ket{{00}}$, and permutes the remaining 8 basis states as
 \begin{equation}
-	\ket{\widetilde{11}}\to\ket{\widetilde{01}}\to\ket{\widetilde{12}}\to\ket{\widetilde{10}}\to\ket{\widetilde{22}}\to\ket{\widetilde{02}}\to\ket{\widetilde{21}}\to\ket{\widetilde{20}}\to\ket{\widetilde{11}}.
+	\ket{{11}}\to\ket{{01}}\to\ket{{12}}\to\ket{{10}}\to\ket{{22}}\to\ket{{02}}\to\ket{{21}}\to\ket{{20}}\to\ket{{11}}.
 \end{equation}
 We can then compute that
 \begin{equation}
-	(U_{12}\otimes I_{3})\ket{i}=\ket{\tilde{i}}_{1}\otimes\frac{1}{\sqrt{3}}(\ket{\widetilde{00}}+\ket{\widetilde{11}}+\ket{\widetilde{22}})_{23}\equiv\ket{\tilde{i}}_{1}\otimes\ket{\chi}_{23},
+	(U_{12}\otimes I_{3})V\ket{{i}}=\ket{i}_{1}\otimes\frac{1}{\sqrt{3}}(\ket{{00}}+\ket{{11}}+\ket{{22}})_{23}\equiv\ket{{i}}_{1}\otimes\ket{\chi}_{23},
 \end{equation}
 which explicitly shows state recovery is possible given access to only the first two qutrits, since then
 \begin{equation}\label{staterec}
-	(U_{12}\otimes I_{3})V\ket{\tilde{\psi}}=\ket{\tilde{\psi}}_{1}\otimes\ket{\chi}_{23}.
+	(U_{12}\otimes I_{3})V\ket{{\psi}}=\ket{{\psi}}_{1}\otimes\ket{\chi}_{23}.
 \end{equation}
-This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to \ref{unitary} acting on the remaining two qutrits. In terms of operator reconstructability \ref{C2}. Suppose $\tilde{O}$ acts on the space of a single qutrit as
+This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to \ref{unitary} acting on the remaining two qutrits. We can also phrase this in terms of operator reconstructability \ref{C2}. Suppose ${O}$ acts on the space of a single qutrit as
 \begin{equation}
-	\tilde{O}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}.
+	{O}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}.
 \end{equation}
-We can then find a corresponding operator $O_{12}$ on the first two qutrits of $\Hcode$ which has an identical action to $\tilde{O}$ on the whole space
+Here, $(O)_{ji}$ are just the matrix elements of $O$. We can then find a corresponding operator $O_{12}$ on the first two qutrits of $\Hcode$ which has an identical action to $O$ on the basis elements of $\Hcode$:
 \begin{equation}
-	O_{12}\ket{i}=\sum_{j=0}^{2}(O)_{ji}\ket{j}.
+	O_{12}\ket{i}_{\text{code}}=\sum_{j=0}^{2}(O)_{ji}\ket{j}_{\text{code}}.
 \end{equation}
 This is done by just defining
 \begin{equation}
-	O_{12}\equiv U_{12}^{\dagger}\tilde{O}U_{12}
+	O_{12}\equiv U_{12}^{\dagger}OU_{12}
 \end{equation}
 where we take $\tilde{O}$ to act on the first qutrit only.
 \section{Subsystem Error Correction}
-The generalisation of conventional erasure correction which encompasses situations where we can recover some information on $A$ and some on $\ol{A}$ is called \textit{subsystem error correction}. This is theorem 2 of \cite{Harlow}. This theorem is as follows.
+The generalisation of conventional erasure correction which encompasses situations where we can recover some information on $A$ and some on $\ol{A}$ is called \textit{subsystem error correction}. This is theorem 4.1 of \cite{Harlow}, and can be stated as follows.
 \begin{theorem}
 	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$ and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Define orthonormal bases $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{a}$ and $\{\ket{\tilde{j}}\}$ of $\mathcal{H}_{\ol{a}}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R||\ol{R}|}}\sum_{i,j}\ket{i}_{R}\ket{j}_{\ol{R}}(V\ket{\widetilde{ij}})_{A\ol{A}}$ where $R$ and $\ol{R}$ are auxiliary systems with $\mathcal{H}_{R}=\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{R}}=\mathcal{H}_{\ol{a}}$. The following statements are then equivalent:
 	\begin{enumerate}
@@ -682,7 +566,7 @@ The generalisation of conventional erasure correction which encompasses situatio
 		\end{equation}
 		\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{A}$, we have
 		\begin{equation}\label{S3}
-			\Pc X_{\ol{A}}\Pc=(I_{a}\otimes X_{\ol{a}})\Pc,
+			\Pc X_{\ol{A}}\Pc=V(I_{a}\otimes X_{\ol{a}})V^{\dagger}\Pc,
 		\end{equation}
 		where $\Pc$ is the projector onto the image of $V$; that is, if $P_{L}=\sum_{i,j}\ketbras{\widetilde{ij}}$ is the projector onto $\mathcal{H}_{L}$, then $\Pc=VP_{L}V^{\dagger}$.
 		\item In the state $\ket{\phi}$, we have
@@ -691,57 +575,13 @@ The generalisation of conventional erasure correction which encompasses situatio
 		\end{equation}
 	\end{enumerate}
 \end{theorem}
-The proof of this is virtually identical to that of theorem 3.0.1, only that we must now keep track of the $\mathcal{H}_{a}$ subsystem. Moreover, it is a straightforward special case of \textit{operator algebra error correction} in the next section, so we do not go through the proof.
-\subsubsection{An Example}
+The proof of this is virtually identical to that of theorem \ref{t1}, only that we must now keep track of the $\mathcal{H}_{a}$ subsystem. Moreover, it is a straightforward special case of \textit{operator-algebra error correction} in the next section, so we do not go through the proof. We just include the theorem here for completeness.
 
-%\subsection{Complementary Recovery}
-%In applying this to holography, we also wish to recover arbitrary operators $\tilde{O}_{\ol{a}}$ on $\mathcal{H}_{\ol{a}}$. This is the analogue of \textit{complementary recovery} for error correcting codes. Formally, if there exists a unitary $U_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, a decomposition $\mathcal{H}_{\ol{A}}=(\mathcal{H}_{\ol{A}_{1}}\otimes\mathcal{H}_{\ol{A}_{2}})\oplus\mathcal{H}_{\ol{A}_{3}}$ with $|\ol{A}_{1}|=|\ol{a}|$ and $|\ol{A}_{3}\leq|\ol{a}|$, and a set of orthonormal states $\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}$ such that
-%\begin{equation}\label{S5}
-%	(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{j}_{\ol{A}_{1}}\otimes\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A},
-%\end{equation}
-%where $\{\ket{j}_{\ol{A}_{1}}\}$ is an orthonormal basis of $\mathcal{H}_{\ol{A}_{1}}$ in \textit{addition} to \ref{S1}, we say a code has complementary recovery. If we apply $U_{A}\otimes I_{\ol{A}}$ to \ref{S5}, and $I_{A}\otimes U_{\ol{A}}$ to \ref{S1}, we get
-%\begin{equation}
-%	\begin{aligned}
-%		(I_{A}\otimes U_{\ol{A}})(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{i}_{A_{1}}\otimes (I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}\\
-%		(U_{A}\otimes I_{\ol{A}_{2}})(I_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}&=\ket{j}_{\ol{A}_{1}}\otimes (U_{A}\otimes I_{\ol{A}})\ket{\ol{\chi}_{i}}_{\ol{A}_{2}A}.
-%	\end{aligned}
-%\end{equation}
-%In order for both of these to be true simultaneously, there must be a state $\ket{\chi}_{A_{2}\ol{A}_{2}}$ such that
-%$(I_{A_{2}}\otimes U_{\ol{A}})\ket{\chi_{j}}_{A_{2}\ol{A}}=\ket{\chi}_{A_{2}\ol{A}_{2}}\otimes\ket{j}_{\ol{A}_{1}}$, which implies
-%\begin{equation}
-%	(U_{A}\otimes U_{\ol{A}})V\ket{\widetilde{ij}}=\ket{i}_{A_{1}}\ket{j}_{\ol{A}_{1}}\ket{\chi}_{A_{2}\ol{A}_{2}}.
-%\end{equation}
-%This expression is the starting point for recovering an RT formula for subsystem codes.
-%\subsection{An RT Formula}
-%Suppose we have a subsystem code with complementary recovery as above. Let $\tilde{\rho}$ be a state on $\mathcal{H}_{L}$; defining $\chi_{A_{2}}\equiv\tr_{\ol{A}_{2}}\ketbras{\chi}$ and $\chi_{\ol{A}_{2}}\equiv\tr_{A_{2}}\ketbras{\chi}$, we now have:
-%\begin{equation}
-%	\begin{aligned}
-%		V\tilde{\rho}V^{\dagger}&=U_{A}^{\dagger}U_{\ol{A}}^{\dagger}(\rho_{A_{1}\ol{A}_{1}}\otimes\ketbras{\chi})U_{A}U_{\ol{A}}\\
-%		\tilde{\rho}_{A}&\equiv\tr_{\ol{A}}(V\tilde{\rho}V^{\dagger})=U_{A}^{\dagger}(\rho_{A_{1}}\otimes\chi_{A_{2}})U_{A}\\
-%		\tilde{\rho}_{\ol{A}}&\equiv\tr_{A}(V\tilde{\rho}V^{\dagger})=U_{\ol{A}}^{\dagger}(\rho_{\ol{A}_{1}}\otimes\chi_{\ol{A}_{2}})U_{\ol{A}}^{\dagger},
-%	\end{aligned}
-%\end{equation}
-%where $\rho_{A_{1}\ol{A}_{1}}$ has the same matrix elements on $\Hcode=V\mathcal{H}_{L}V^{\dagger}$ as $\tilde{\rho}$ does on $\mathcal{H}_{L}$, and $\rho_{A_{1}}$ and $\rho_{\ol{A}_{1}}$ have the same matrix elements on $\mathcal{H}_{A_{1}}$ and $\mathcal{H}_{\ol{A}_{1}}$ as $\tilde{\rho}_{a}\equiv_{\ol{a}}\tilde{\rho}$ and $\tilde{\rho}_{\ol{a}}\equiv\tr_{a}\tilde{\rho}$ do on $\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{a}}$ respectively. We can therefore define two area operators
-%\begin{equation}
-%	\begin{aligned} 
-%		\mathcal{L}_{A}&\equiv S(\chi_{A_{2}})I_{a}\\
-%		\mathcal{L}_{\ol{A}}&\equiv S(\chi_{A_{2}})I_{\ol{a}},
-%	\end{aligned}
-%\end{equation}
-%which give us
-%\begin{equation}\label{RT2}
-%	\begin{aligned}
-%		S(\tilde{\rho}_{A})&=\tr(\tilde{\rho}_{a}\mathcal{L}_{A})+S(\tilde{\rho}_{a})\\
-%		S(\tilde{\rho}_{\ol{A}})&=\tr(\tilde{\rho}_{\ol{a}}\mathcal{L}_{\ol{A}})+S(\tilde{\rho}_{\ol{a}}).
-%	\end{aligned}
-%\end{equation}
-%This gives us two RT formulae with the the entropy $S(\tilde{\rho})$ shared between $A$ and $\ol{A}$ - solving the issue we had with conventional correction! In fact, the converse is also true - if \ref{RT2} both hold, then so too does condition \ref{S2} of the theorem. We still have an issue though: the area operators are proportional to the identity. This is undesirable from a holographic point of view. The origin of this issue is that we assumed that $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$, but this can be further generalised by requiring that $\mathcal{H}_{L}$ has a \textit{von Neumann algebra} of operators acting on it.
-
-\section{Operator Algebra Error Correction}
-In this section, we present the third (and most general) theorem of \cite{Harlow}: operator algebra erasure correction. However, in order to make sense of this, we need the theory of \textit{von Neumann algebras} on finite-dimensional Hilbert spaces. We present the necessary results here; readers looking for a more detailed exposition of von Neumann algebras should consult appendix A of \cite{Harlow}, or \cite{VNA} for a more `mathematical' set of notes applicable to the infinite dimensional case.
+\section{Operator-Algebra Error Correction}
+In this section, we present theorem 5.1 of \cite{Harlow}: operator-algebra erasure correction. This is the most general theorem of Harlow, encompassing both conventional and subsystem correction as special cases. However, in order to make sense of this, we need the theory of \textit{von Neumann algebras} on finite-dimensional Hilbert spaces. We present the necessary results here; readers looking for a more detailed exposition of von Neumann algebras should consult appendix A of \cite{Harlow}, or \cite{VNA} for a more `mathematical' set of notes applicable to the infinite dimensional case. Note as well we do not prove the results here; we just present them.
 \subsection{von Neumann Algebras}
 \begin{definition}
-	A \textbf{von Neumann algebra} on a finite dimensional Hilbert space $\mathcal{H}$ is any set of linear operators $M\subseteq\mathcal{L}(\mathcal{H})$ such that:
+	A \textbf{von Neumann algebra} on a finite-dimensional Hilbert space $\mathcal{H}$ is any set of linear operators $M\subseteq\mathcal{L}(\mathcal{H})$ such that:
 	\begin{itemize}
 		\item $M$ contains all scalar multiples of the identity: $\forall \lambda\in\mathbb{C}$, $\lambda I\in M$, where $I$ is the identity operator.
 		\item $M$ is closed under Hermitian conjugation: $\forall x\in M$, $x^{\dagger}\in M$.
@@ -749,7 +589,7 @@ In this section, we present the third (and most general) theorem of \cite{Harlow
 		\item $M$ is closed under addition: $\forall x,y\in M$, $x+y\in M$.
 	\end{itemize}
 \end{definition}
-Note the notation of operators written in lower case rather than upper case as is common. This is because we are treating the operators as elements of an algebra, rather than individual operators in their own right. We will occasionally refer to a von Neumann algebra by its \textit{generators}: the minimal set of operators which under the operations of conjugation, multiplication, and addition, can construct all other operators in $M$. We denote this $M=\braket{x,y,\ldots}$ for the algebra generated by $a,b,\ldots$.\\
+From now on, whenever we refer to a von Neumann algebra, we really mean a von Neumann algebra on a finite-dimensional Hilbert space. Note the notation of operators written in lower case rather than upper case as is common. This is because we are treating the operators as elements of an algebra, rather than individual operators in their own right. We will occasionally refer to a von Neumann algebra by its \textit{generators}: the minimal set of operators which under the operations of conjugation, multiplication, and addition, can construct all other operators in $M$. We write $M=\braket{x,y,\ldots}$ for the algebra generated by $x,y,\ldots$.\\
 Any von Neumann algebra induces two `natural' associated algebras: the \textit{commutant} and the \textit{centre}.
 \begin{definition}[Commutant]
 	Given a von Neumann algebra $M$ on $\mathcal{H}$, its \textbf{commutant}, denoted $M'$, is the set of all operators on $\mathcal{H}$ which commute with $M$; that is
@@ -777,7 +617,7 @@ In order to apply the theory of von Neumann algebras to error correction, we nee
 \end{theorem}
 In other words, $M$ induces a tensor factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and it is then the set of all linear operators on the tensor factor $\mathcal{H}_{A}$. For more general von Neumann algebras, this classification generalises to something called a \textit{Wedderburn decomposition}.
 \begin{theorem}\label{vnclass}
-	Suppose $M$ is a von Neumann algebra on $\mathcal{H}$. Then there exists a block-decomposition 
+	Suppose $M$ is a von Neumann algebra on $\mathcal{H}$. Then there exists a block decomposition 
 	\begin{equation} 
 		\mathcal{H}=\big[\oplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}})\big]\oplus \mathcal{H}_{0}
 	\end{equation}
@@ -787,9 +627,8 @@ In other words, $M$ induces a tensor factorisation $\mathcal{H}=\mathcal{H}_{A}\
 	\end{equation}
 	Here, $\mathcal{H}_{0}$ is the null space, and $0$ is the zero operator on $\mathcal{H}_{0}$.
 \end{theorem}
-For ease of notation, we usually drop the direct sum with the null space. The decompositions \ref{wburn} are called Wedderburn decompositions.
-\subsubsection{Examples}
-We now give a series of examples of these classification theorems to build intuition, beginning with the classification of factors.
+For ease of notation, we usually drop the direct sum with the null space. These decompositions collectively are Wedderburn decompositions.\\
+This is all a bit abstract. We therefore give a series of examples of these classification theorems to build intuition, beginning with the classification of factors.
 \begin{example}
 	The von Neumann algebra $M=\mathcal{L}(\mathbb{C}^{2})\otimes I$ on $\mathcal{H}=\mathbb{C}^{4}$ is a factor. It has Wedderburn decomposition
 	\begin{equation}
@@ -797,9 +636,9 @@ We now give a series of examples of these classification theorems to build intui
 			a&0&b&0\\0&a&0&b\\c&0&d&0\\0&c&0&d
 		\end{pmatrix},
 	\end{equation}
-	where $a,b,c,d\in\mathbb{C}$. The commutant is $M'=I\otimes\mathcal{L}(\mathbb{C}^{2})$.
+	where $a,b,c,d\in\mathbb{C}$. The commutant is $M'=I\otimes\mathcal{L}(\mathbb{C}^{2})$, and it induces $\mathcal{H}=\mathbb{C}^{2}\otimes\mathbb{C}^{2}$.
 \end{example}
-Our next example is a more complex one, exhibiting the block-diagonal structure of \ref{wburn}.
+Our next example is a more complex one, displaying the block diagonal structure of \ref{wburn}.
 \begin{example}\label{e1}
 	Consider the von Neumann algebra $M=\braket{Z\otimes I\otimes I,I\otimes X\otimes I,I\otimes Z\otimes I}$, where $X$ and $Z$ are Pauli matrices, over $\mathcal{H}=\mathbb{C}^{8}$. This induces a decomposition of $\mathcal{H}$ as
 	\begin{equation}
@@ -821,7 +660,8 @@ Our next example is a more complex one, exhibiting the block-diagonal structure 
 	\end{equation}
 	where $a,\ldots,h\in\mathbb{C}$. The commutant is $M'=\oplus_{\alpha=0}^{1}(I\otimes\mathcal{L}(\mathbb{C}^{2}))$.
 \end{example}
-So far this is all a bit abstract. With a view to linking this to error correction, suppose we have a von Neumann algebra $M$ on $\mathcal{H}_{L}$. Then we have a decomposition
+\subsection{The Link to Error Correction}
+To link this mathematical discussion to the language of error correction, suppose we have a von Neumann algebra $M$ on the logical Hilbert space $\mathcal{H}_{L}$. Then we have a decomposition
 \begin{equation}\label{decomp}
 	\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})
 \end{equation} 
@@ -850,7 +690,7 @@ Also in matrix notation, the centre $Z_{M}$ consists of operators $\tilde{\Lambd
 	\end{pmatrix},
 \end{equation}
 where $\lambda_{\alpha}\in\mathbb{C}$.\\
-We can actually introduce a basis for a Hilbert space $\mathcal{H}$ with a von Neumann algebra $M$, which is `compatible' with the induced decomposition. Choose orthonormal bases $\{\ket{\widetilde{\alpha,i}}\}$ and $\{\ket{\widetilde{\alpha,j}}\}$ of $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ respectively; we use these to build a basis for the entire Hilbert space
+We can actually introduce a basis for $\mathcal{H}_{L}$ with a von Neumann algebra $M$, which is `compatible' with the induced decomposition. Choose orthonormal bases $\{\ket{\widetilde{\alpha,i}}\}$ and $\{\ket{\widetilde{\alpha,j}}\}$ of $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ respectively; we use these to build a basis for the entire Hilbert space as
 \begin{equation}\label{basis}
 	\ket{\widetilde{\alpha,ij}}\equiv\ket{\widetilde{\alpha,i}}\otimes\ket{\widetilde{\alpha,j}}.
 \end{equation}
@@ -861,22 +701,22 @@ Given a state $\rho$ on $\mathcal{H}$ and a Hermitian operator $O$, the expectat
 \end{equation}
 In what follows, we will often wish to compute the expectation values of operators in a von Neumann algebra $M$. An arbitrary state $\rho$ is typically \textit{not} an element of $M$, and contains more information than is necessary to compute expectations on $M$. This is the motivation for defining a so-called \textit{algebraic state} - a version of the state which is in some sense `visible' from $M$. We denote this by $\rho_{M}$. The following theorem precisely defines what we mean by this.
 \begin{theorem}\label{algst}
-	Suppose $M$ is a von Neumann algebra on $\mathcal{H}$, and let $\rho\in\text{End}(\mathcal{H})$ be a state. Then, there exists a unique state $\rho_{M}\in M$ such that
+	Suppose $M$ is a von Neumann algebra on $\mathcal{H}$, and let $\rho$ be a state on $\mathcal{H}$. Then, there exists a unique state $\rho_{M}\in M$ such that
 	\begin{equation}
 		\tr(x\rho_{M})=\tr(x\rho)\iff \mathbb{E}_{\rho_{M}}(x)=\mathbb{E}_{\rho}(x)
 	\end{equation}
 	for all $x\in M$.
 \end{theorem}
 This theorem states that in computing expectation values of elements of $M$, we can replace $\rho$ by $\rho_{M}$.\\
-We can actually write down an explicit form for $\rho_{M}$. We do this for factors first. From \ref{factorclass}, we know that if $M$ is a factor on $\mathcal{H}$, then there exists a factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$. Defining the reduced state
+We can actually write down an explicit form for $\rho_{M}$. We do this for factors first. From theorem \ref{factorclass}, we know that if $M$ is a factor on $\mathcal{H}$, then there exists a factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$. Defining the reduced state
 \begin{equation}
 	\rho_{A}\equiv\tr_{\ol{A}}\rho,
 \end{equation} 
-we see that the unique algebraic state obeying \ref{algst} is just
+we see that the unique algebraic state obeying theorem \ref{algst} is just
 \begin{equation}\label{factalg}
 	\rho_{M}\equiv\rho_{A}\otimes\frac{I_{\ol{A}}}{|\ol{A}|}.
 \end{equation}
-For a general von Neumann algebra, we can do similar. From \ref{vnclass}, we know that if $M$ is a von Neumann algebra on $\mathcal{H}$, then there exists a decomposition
+For a general von Neumann algebra, we can do similar. From theorem \ref{vnclass}, we know that if $M$ is a von Neumann algebra on $\mathcal{H}$, then there exists a decomposition
 \begin{equation}\label{decomp1}
 	\mathcal{H}=\oplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}}),
 \end{equation}
@@ -884,7 +724,7 @@ in terms of which
 \begin{equation}
 	M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\ol{A}_{\alpha}}).
 \end{equation}
-Any state $\rho$ can be written in block form with respect to the decomposition \ref{decomp1}, and since $M$ is block-diagonal, only the diagonal blocks of $\rho$ will contribute to expectation values. We denote the $\alpha\alpha'$th block of $\rho$ by $\rho_{\alpha\alpha'}$; we can then define
+Any state $\rho$ can be written in block form with respect to the decomposition \ref{decomp1}, and since $M$ is block-diagonal, only the diagonal blocks of $\rho$ will contribute to expectation values. We denote the $(\alpha,\alpha')$th block of $\rho$ by $\rho_{\alpha\alpha'}$; we can then define
 \begin{equation}\label{redst}
 	p_{\alpha}\rho_{A_{\alpha}}\equiv\tr_{\ol{A}_{\alpha}}\rho_{\alpha\alpha},
 \end{equation}
@@ -901,7 +741,7 @@ From \ref{factalg}, we see that when $M$ is a factor, the von Neumann entropy of
 	\end{equation}
 	where $S(\rho_{A_{\alpha}})\equiv-\tr_{A}(\rho_{A_{\alpha}}\log\rho_{A_{\alpha}})$ is the von Neumann entropy of the reduced state $\rho_{A_{\alpha}}$ as defined in \ref{redst}.
 \end{definition}
-We can interpret this as having two parts: a classical term consisting of the Shannon entropy $-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}$ of the probability distribution $p_{\alpha}$, and a quantum term associated to the von Neumann entropies of each diagonal block of $\rho$, weighted by the probabilities. We clearly see that when $M$ is a factor, this reduces to the standard von Neumann entropy since the classical Shannon entropy of the probabilities $p_{\alpha}$ vanishes.\\
+For some more motivation as to why this is an appropriate definition, we recommend to consult appendix A of \cite{Harlow}. We can interpret this as having two parts: a classical term consisting of the Shannon entropy $-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}$ of the probability distribution $p_{\alpha}$, and a quantum term associated to the von Neumann entropies of each diagonal block of $\rho$, weighted by the probabilities. We clearly see that when $M$ is a factor, this reduces to the standard von Neumann entropy since the classical Shannon entropy of the probabilities $p_{\alpha}$ vanishes.\\
 We can also define the notion of \textit{algebraic relative entropy}.
 \begin{definition}
 	Given two states $\rho,\sigma$ on $M$, the algebraic relative entropy between them is
@@ -912,16 +752,16 @@ We can also define the notion of \textit{algebraic relative entropy}.
 	\end{equation}
 	where $p_{\alpha}^{\{\rho\}}$ and $p_{\alpha}^{\{\sigma\}}$ are the probability distributions corresponding to $\rho$ and $\sigma$ respectively, and $S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}})$ is the relative entropy between $\rho_{A_{\alpha}}$ and $\sigma_{A_{\alpha}}$.
 \end{definition}
-There's a lot of notation here, so we present an example.
+There's a lot of notation to unpack here, so we present an example.
 \begin{example}
-	Consider the von Neumann algebra and Hilbert space of \ref{e1}, which has two diagonal blocks given by $\alpha=1,2$. Consider the GHZ state $\ket{\psi}=\frac{1}{\sqrt{2}}(\ket{000}+\ket{111})\in\mathcal{H}$. The density matrix of this state has diagonal blocks
+	Consider the von Neumann algebra and Hilbert space of example \ref{e1}, which has two diagonal blocks given by $\alpha=0,1$. Consider the GHZ state $\ket{\psi}=\frac{1}{\sqrt{2}}(\ket{000}+\ket{111})\in\mathcal{H}$. The density matrix of this state has diagonal blocks
 	\begin{equation}
-		\rho_{11}=\begin{pmatrix}
+		\rho_{00}=\begin{pmatrix}
 			1&0&0&0\\
 			0&0&0&0\\
 			0&0&0&0\\
 			0&0&0&0
-		\end{pmatrix},\quad\rho_{22}=\begin{pmatrix}
+		\end{pmatrix},\quad\rho_{11}=\begin{pmatrix}
 		0&0&0&0\\
 		0&0&0&0\\
 		0&0&0&0\\
@@ -930,15 +770,15 @@ There's a lot of notation here, so we present an example.
 	\end{equation}
 	Tracing out the corresponding blocks, we find
 	\begin{equation}
-		\rho_{A_{1}}=\begin{pmatrix}1&0\\0&0\end{pmatrix},\quad\rho_{A_{1}}=\begin{pmatrix}0&0\\0&1\end{pmatrix},
+		\rho_{A_{0}}=\begin{pmatrix}1&0\\0&0\end{pmatrix},\quad\rho_{A_{1}}=\begin{pmatrix}0&0\\0&1\end{pmatrix},
 	\end{equation}
-	and $p_{1}=p_{2}=1/2$. We can then compute
+	and $p_{0}=p_{1}=1/2$. We can then compute
 	\begin{equation}
 		S(\rho,M)=-2\left(\frac{1}{2}\log\frac{1}{2}\right)+\frac{1}{2}S(\rho_{A_{1}})+\frac{1}{2}S(\rho_{A_{2}})=1.
 	\end{equation}
 \end{example}
 \section{Operator-Algebra Error Correction}
-We are now able to present theorem 5.1 of \cite{Harlow}.
+We now finally have the machinery to present theorem 5.1 of \cite{Harlow}.
 \begin{theorem}\label{5.1}
 	Let $V\,:\,\mathcal{H}_{L}\to \mathcal{H}$ be an encoding isometry with image $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Say we have a von Neumann algebra $M$ on $\mathcal{H}_{L}$. Define orthonormal basis $\{\ket{\widetilde{\alpha,ij}}\}$ of $\mathcal{H}_{L}$ as in \ref{basis}, which is compatible with the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$ induced by $M$. Let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}(V\ket{\widetilde{\alpha,ij}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
 	\begin{enumerate}
@@ -1027,10 +867,8 @@ Similar to the last theorem, this characterises in some sense `how well' a code 
 	\end{equation}
 	which finishes the proof.
 \end{proof}
-\subsubsection{An Example}
-
 \section{Holographic Properties of Erasure Codes}
-So far in this chapter, we have presented the three theorems of \cite{Harlow}. These are of increasing generality, and characterise the correctability of certain subsystems. However, we have yet to define what actually makes a code \textit{holographic}. In high-energy physics, a holographic theory is one which posits a quantitative relationship between a gravitational theory and a non-gravitational theory `on the boundary'. The most well known example of a holographic theory is the \textit{AdS/CFT correspondence} \cite{Maldacena}, which describes a correspondence between a string theory on $D$-dimensional \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its $D-1$-dimensional boundary. There is a so-called `holographic dictionary', which precisely defines the links between objects in the gravitational bulk and the boundary CFT. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula}, which describes the correspondence between the entropy of a boundary subregion $A$, and the entropy of the degrees of freedom in the gravitational bulk which are `visible' from $A$:
+So far in this chapter, we have stated and proved the three theorems of \cite{Harlow}. These are of increasing generality, and characterise the correctability of certain subsystems. However, we have yet to define what actually makes a code \textit{holographic}. In high-energy physics, a holographic theory is one which posits a quantitative relationship between a gravitational theory and a non-gravitational theory `on the boundary'. The most well known example of a holographic theory is the \textit{AdS/CFT correspondence} \cite{Maldacena}, which describes a correspondence between a string theory on $D$-dimensional \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its $D-1$-dimensional boundary. There is a so-called `holographic dictionary', which precisely defines the links between objects in the gravitational bulk and the boundary CFT. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula}, which describes the correspondence between the entropy of a boundary subregion $A$, and the entropy of the degrees of freedom in the gravitational bulk which are `visible' from $A$:
 \begin{equation}
 	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
 \end{equation}
@@ -1116,7 +954,7 @@ We can then state and prove the following theorem:
 	\begin{equation}\label{RTyay}
 		S\left(\tr_{\ol{A}}\left(V\tilde{\rho}V^{\dagger}\right)\right)=S(\tilde{\rho},M)+\tr\left(\tilde{\rho}\mathcal{L}\right)
 	\end{equation}
-	for $(V,A,M)$. Since we can repeat these arguments with $A\leftrightarrow\ol{A}$ and $M\leftrightarrow M'$ (i.e. with $i\leftrightarrow j$), we see that complementary recovery holds. Moreover, since $S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)=S\left(\tr_{A}\left(\chi_{\alpha}\right)\right)$, the area operator $\mathcal{L}$ is indeed the same for both RT formulae; since it is in $M$ and $M'$, it is in the centre as well.\\
+	for $(V,A,M)$. Since we can repeat these arguments with $A\leftrightarrow\ol{A}$ and $M\leftrightarrow M'$ (i.e. with $i\leftrightarrow j$), we see that $(V,\ol{A},M')$ obeys an RT formula. Moreover, since $S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)=S\left(\tr_{A}\left(\chi_{\alpha}\right)\right)$, the area operator $\mathcal{L}$ is indeed the same for both RT formulae; since it is in $M$ and $M'$, it is in the centre as well.\\
 	$(\impliedby)$: Recall the definition of algebraic relative entropy
 	\begin{equation}
 		S(\tilde{\rho}|\tilde{\sigma},M)=-S(\tilde{\rho},M)-\tr\left(\oplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right]\tilde{\rho}\right).
@@ -1143,12 +981,12 @@ We can then state and prove the following theorem:
 	The next step is to calculate the relative entropy:
 	\begin{equation}
 		\begin{aligned}
-			S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)\right)\\&\phantom{==}-\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)\right)\\&=-S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right)\\&=-S(\tilde{\rho},M)-\sum_{\alpha}\tr\left(\tilde{\rho}\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)\\&=S(\rho|\sigma,M),
+			S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)\right)\\&\phantom{==}-\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)\right)\\&=-S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right)\\&=-S(\tilde{\rho},M)-\sum_{\alpha}\tr\left(\tilde{\rho}\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)\\&=S(\tilde{\rho}|\tilde{\sigma},M),
 		\end{aligned}
 	\end{equation}
 	where we use \ref{ph} in the second line, and the RT formula in the third. We can perform the same argument with ${A}\leftrightarrow \ol{A}$ and $M\leftrightarrow M'$, and we find similarly that
 	\begin{equation}\label{asd}
-		S(\tr_{{A}}(V\rho V^{\dagger})|\tr_{\ol{A}}(V\sigma V^{\dagger}))=S(\rho|\sigma,M').
+		S(\tr_{{A}}(V\tilde{\rho} V^{\dagger})|\tr_{\ol{A}}(V\tilde{\sigma} V^{\dagger}))=S(\tilde{\rho}|\tilde{\sigma},M').
 	\end{equation}
 	These two conditions together in fact imply complementary recovery. Consider an arbitrary state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, an arbitrary operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, and an operator $\tilde{O}\in M$. von Neumann algebras are spanned by their Hermitian elements, so we can take $\tilde{O}$ to be Hermitian. Now, consider
 	\begin{equation}\label{asd1}
@@ -1172,6 +1010,7 @@ We can then state and prove the following theorem:
 	\end{equation}
 	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
 \end{proof}
+This theorem establishes equivalence of a code obeying complementary recovery, and satisfying an RT formula, and hence being holographic. There is one subtlety, though. If $(V,A,M)$ and $(V,\ol{A},M')$ both satisfy an RT formula with the \textit{same} area operator $\mathcal{L}$, then we have complementary recovery too. This suggests that complementary recovery may actually be stronger of a condition than it first appears.  
 \chapter{Examples}
 The notation in the previous chapter is rather dense and difficult to understand. We therefore present some simple examples to try and elucidate the structure of the proof of theorem \ref{bij}. First, we recall some basic facts we've talked about so far to keep them all for easy reference.\\
 We say a triplet $(V,A,M)$ of an encoding isometry $V:\mathcal{H}_{L}\to\mathcal{H}\cong\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, a subregion $A$, and von Neumann algebra $M$ on $\mathcal{H}_{L}$ has an \textit{RT formula} if
@@ -1374,13 +1213,14 @@ where $\ket{\alpha,i}=\ket{\alpha}\ket{i}$, $\ket{\alpha,j}=\ket{\alpha}\ket{j}$
 Following example 5, we see that we again prepare a Bell state on $\mathcal{H}_{A_{2}}\otimes\mathcal{H}_{\ol{A}_{2}}$, so the same calculation implies that the area operator is $\mathcal{L}=\log{2}\ketbras{1}_{\alpha}$. However, we also have all the pieces of example 4, so the algebraic entropy has both a classical and a quantum term, and so we have all three terms on the left hand side of the RT formula.
 \chapter{Conclusions}
 
-This is the place to put your conclusions about your work. You can
-split it into different sections if appropriate. You may want to include
-a section of future work which could be carried out to continue your
-research.
-
-The conclusion section should be at least one page long, preferably 2
-pages, but not much longer.
+\section{Summary of Project}
+Throughout this dissertation, we explored holographic error correction, describing what it means for a code to be holographic. We began with introducing the background theory, discussing two simple examples of error correction in the classical and quantum bit-flip. We then discussed how to model noise via quantum operations, before specialising to error correction. We discussed the quantum error correction conditions, defining what it means for a set of errors to be correctable. We then adapted these conditions for the case of quantum erasures.\\
+We then moved onto describing the defining theorems of holographic erasure correction, following \cite{Harlow}. We stated and proved theorems on conventional, subsystem, and operator-algebra erasure correction, providing an example in the conventional case. We then defined what it means for a code to be holographic, by requiring that it obeys an algebraic version of the RT formula, and then showed that if a code obeys complementary recovery, then it must have an RT formula and vice versa. Finally, we presented some basic examples of operator-algebra error correction, describing the encoding isometries via quantum circuits.\\
+Our presentation of results throughout closely mirrored results in \cite{Harlow} and \cite{Pollack}, but we did not present all of the results they describe. In particular, we did not present a detailed discussion on holography, focussing more on the quantum information point of view.
+\section{Future Research Directions}
+While we presented the basic theory of holographic error correction in this project, the field has vastly widened since Harlow's original publication in 2016, with a vast set of research directions being undertaken. Moreover, Harlow's work is rather restrictive in making lots of assumptions about the structure of underlying Hilbert spaces. For example, it assumes that the physical Hilbert space decomposes as $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. This is often not possible, and from the point of view of holography, is often undesirable. Generalising the results would have been a natural direction for this project to have take, if time constraints allowed it. We would have liked to consider, for example, allowing $\mathcal{H}$ to have a von Neumann algebra acting on it in place of it having a tensor factorisation, and seeing if an analogous theorem to \ref{5.1} would hold if the commutant was erased.\\
+Another direction we would have liked to explore more is that of approximate and state-specific erasure correction, as discussed in \cite{QMS}. This provides a vast generalisation of the results of \cite{Harlow} to situations where we allow the code to only \textit{approximately} correct an erasure. This paper also discusses non-isometric encodings, generalising the results even further.\\
+However, the most active area of research in holographic error correction is one we've neglected to mention: \textit{tensor networks} \cite{Jahn_2021}. These are much more relevant from a holographer's point of view, and link error correction to the structure of AdS space much more concretely. Had we had a significant longer period of time to write this report, tensor network models of holography would likely have been our focus.
 
 \appendix
 % the appendix command just changes heading styles for appendices.

@@ -1,4 +1,3 @@
-\contentsline {subsubsection}{Example\nobreakspace {}3: a very mathematical project}{iv}{section*.3}%
 \contentsline {chapter}{\numberline {1}Introduction}{2}{chapter.1}%
 \contentsline {chapter}{\numberline {2}Error Correction: An Introduction}{4}{chapter.2}%
 \contentsline {section}{\numberline {2.1}The Classical Bit-Flip}{4}{section.2.1}%
@@ -11,37 +10,37 @@
 \contentsline {section}{\numberline {2.5}Quantum Erasure}{10}{section.2.5}%
 \contentsline {chapter}{\numberline {3}Holographic Error Correction}{12}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Conventional Erasure Correction}{12}{section.3.1}%
-\contentsline {subsubsection}{An Example}{16}{section*.8}%
-\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{17}{section.3.2}%
-\contentsline {subsubsection}{An Example}{18}{section*.9}%
-\contentsline {section}{\numberline {3.3}Operator Algebra Error Correction}{18}{section.3.3}%
+\contentsline {subsubsection}{An Example}{16}{section*.5}%
+\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{18}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Operator-Algebra Error Correction}{19}{section.3.3}%
 \contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{19}{subsection.3.3.1}%
 \contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{20}{subsection.3.3.2}%
-\contentsline {subsubsection}{Examples}{20}{section*.10}%
-\contentsline {subsection}{\numberline {3.3.3}Algebraic States and Entropy}{22}{subsection.3.3.3}%
-\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{24}{section.3.4}%
-\contentsline {subsubsection}{An Example}{27}{section*.11}%
-\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{27}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Examples}{32}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Codes with one term}{33}{section.4.1}%
-\contentsline {subsubsection}{Example 1}{34}{section*.12}%
-\contentsline {subsubsection}{Example 2}{35}{section*.13}%
-\contentsline {subsubsection}{Example 3}{35}{section*.14}%
-\contentsline {section}{\numberline {4.2}Codes with two terms}{36}{section.4.2}%
-\contentsline {subsubsection}{Example 4}{37}{section*.15}%
-\contentsline {subsubsection}{Example 5}{38}{section*.16}%
-\contentsline {subsubsection}{Example 6}{39}{section*.17}%
-\contentsline {section}{\numberline {4.3}A Complete Example}{39}{section.4.3}%
-\contentsline {chapter}{\numberline {5}Conclusions}{41}{chapter.5}%
-\contentsline {chapter}{\numberline {A}Quantum Information and Entropy}{42}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Classical Information}{42}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}Shannon Entropy}{42}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Relative Entropy}{43}{subsection.A.1.2}%
-\contentsline {section}{\numberline {A.2}Quantum Information}{44}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}von Neumann Entropy}{44}{subsection.A.2.1}%
-\contentsline {subsection}{\numberline {A.2.2}Relative Entropy}{46}{subsection.A.2.2}%
-\contentsline {subsection}{\numberline {A.2.3}Properties of von Neumann Entropy}{47}{subsection.A.2.3}%
-\contentsline {subsection}{\numberline {A.2.4}Entropy as a Measure of Entanglement}{47}{subsection.A.2.4}%
-\contentsline {chapter}{\numberline {B}Quantum Circuit Notation}{49}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Quantum Gates}{49}{section.B.1}%
-\contentsline {section}{\numberline {B.2}Quantum Circuits}{50}{section.B.2}%
+\contentsline {subsection}{\numberline {3.3.3}The Link to Error Correction}{21}{subsection.3.3.3}%
+\contentsline {subsection}{\numberline {3.3.4}Algebraic States and Entropy}{22}{subsection.3.3.4}%
+\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{25}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{28}{section.3.5}%
+\contentsline {chapter}{\numberline {4}Examples}{33}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Codes with one term}{34}{section.4.1}%
+\contentsline {subsubsection}{Example 1}{35}{section*.6}%
+\contentsline {subsubsection}{Example 2}{36}{section*.7}%
+\contentsline {subsubsection}{Example 3}{36}{section*.8}%
+\contentsline {section}{\numberline {4.2}Codes with two terms}{37}{section.4.2}%
+\contentsline {subsubsection}{Example 4}{38}{section*.9}%
+\contentsline {subsubsection}{Example 5}{39}{section*.10}%
+\contentsline {subsubsection}{Example 6}{40}{section*.11}%
+\contentsline {section}{\numberline {4.3}A Complete Example}{40}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusions}{42}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Summary of Project}{42}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Research Directions}{43}{section.5.2}%
+\contentsline {chapter}{\numberline {A}Quantum Information and Entropy}{44}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Classical Information}{44}{section.A.1}%
+\contentsline {subsection}{\numberline {A.1.1}Shannon Entropy}{44}{subsection.A.1.1}%
+\contentsline {subsection}{\numberline {A.1.2}Relative Entropy}{45}{subsection.A.1.2}%
+\contentsline {section}{\numberline {A.2}Quantum Information}{46}{section.A.2}%
+\contentsline {subsection}{\numberline {A.2.1}von Neumann Entropy}{46}{subsection.A.2.1}%
+\contentsline {subsection}{\numberline {A.2.2}Relative Entropy}{48}{subsection.A.2.2}%
+\contentsline {subsection}{\numberline {A.2.3}Properties of von Neumann Entropy}{49}{subsection.A.2.3}%
+\contentsline {subsection}{\numberline {A.2.4}Entropy as a Measure of Entanglement}{49}{subsection.A.2.4}%
+\contentsline {chapter}{\numberline {B}Quantum Circuit Notation}{51}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Quantum Gates}{51}{section.B.1}%
+\contentsline {section}{\numberline {B.2}Quantum Circuits}{52}{section.B.2}%

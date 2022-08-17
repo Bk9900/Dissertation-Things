@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  16 AUG 2022 17:28
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  17 AUG 2022 18:01
  restricted system commands enabled.
 **Diss_1.tex
 (./Diss_1.tex
@@ -1196,7 +1196,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 \@outlinefile=\write4
 
 \openout4 = Diss_1.out
-<crest.pdf, id=150, 93.60962pt x 92.1871pt>
+<crest.pdf, id=162, 93.60962pt x 92.1871pt>
 File: crest.pdf Graphic file (type pdf)
 <use crest.pdf>
 Package luatex.def Info: crest.pdf  used on input line 86.
@@ -1206,17 +1206,17 @@ Package luatex.def Info: crest.pdf  used on input line 86.
 {C:/Users/nebka/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}<./crest.pdf>]
  [2] [1]
 warning  (pdf backend): ignoring duplicate destination with the name 'page.i'
-[1] [2] [3] [4] [5] (./Diss_1.toc [6
+[1] [2] [3] [4] (./Diss_1.toc [5
 
 ])
 \tf@toc=\write5
 
 \openout5 = Diss_1.toc
- [7] (./Diss_1.lot)
+ [6] (./Diss_1.lot)
 \tf@lot=\write6
 
 \openout6 = Diss_1.lot
- [8
+ [7
 
 ] (./Diss_1.lof)
 \tf@lof=\write7
@@ -1241,7 +1241,7 @@ Chapter 3.
 [12
 
 ] [13] [14] [15] [16] [17] [18] [19] [20]
-Overfull \hbox (54.47823pt too wide) in paragraph at lines 804--805
+Overfull \hbox (54.47823pt too wide) in paragraph at lines 643--644
 [][]\TU/lmr/bx/n/12 Ex-am-ple 3.3.2. []\TU/lmr/m/it/12 Con-sider the von Neu-man
 n al-ge-bra $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$\TU/lmr/m/it/12 ,
  []
@@ -1271,8 +1271,8 @@ n al-ge-bra $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$\TU/lmr/m/it/12 ,
 \l__nicematrix_final_j_int=\count370
 \l__nicematrix_local_start_int=\count371
 \l__nicematrix_local_end_int=\count372
-[21] [22] [23]
-Overfull \hbox (14.59541pt too wide) in paragraph at lines 943--944
+[21] [22] [23] [24]
+Overfull \hbox (14.59541pt too wide) in paragraph at lines 783--784
 \TU/lmr/m/it/12 si-tion $\OMS/cmsy/m/n/12 H[] \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/1
 2 []\OT1/cmr/m/n/12 (\OMS/cmsy/m/n/12 H[] 
  H[]\OT1/cmr/m/n/12 )$ \TU/lmr/m/it/12 in-duced by $\OML/cmm/m/it/12 M$\TU/lmr/
@@ -1280,86 +1280,74 @@ m/it/12 . Let $[] \OMS/cmsy/m/n/12  [] [][] [][] \OT1/cmr/m/n/12 (\OML/cmm/m/i
 t/12 V []\OT1/cmr/m/n/12 )[]$\TU/lmr/m/it/12 ,
  []
 
-[24] [25] [26]
-Overfull \hbox (0.10551pt too wide) detected at line 1027
+[25] [26]
+Overfull \hbox (0.10551pt too wide) detected at line 867
 [][][][][]
  []
 
-[27] [28]
-Overfull \hbox (23.19789pt too wide) detected at line 1106
+[27] [28] [29]
+Overfull \hbox (23.19789pt too wide) detected at line 944
 [][][][][]
  []
 
-[29]
-Overfull \hbox (15.32848pt too wide) detected at line 1138
+[30]
+Overfull \hbox (15.32848pt too wide) detected at line 976
 [][][][][]
  []
 
 
-Overfull \hbox (47.7511pt too wide) detected at line 1148
+Overfull \hbox (47.7511pt too wide) detected at line 986
 [][][][][]
  []
 
-[30] [31]
+[31] [32]
 Chapter 4.
 
-Overfull \hbox (30.39119pt too wide) in paragraph at lines 1184--1186
+Overfull \hbox (30.39119pt too wide) in paragraph at lines 1023--1025
 \TU/lmr/m/n/12 In some sense, this splits the al-ge-braic en-tropy into a ‘cla
 s-si-cal’ part $\OML/cmm/m/it/12 S[] \OMS/cmsy/m/n/12  ^^@ [][] \OML/cmm/m/i
 t/12 p[] []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 p[]\OT1/cmr/m/n/12 )$
  []
 
-[32
+[33
 
-] [33] [34] [35] [36] [37]
-Overfull \hbox (24.40494pt too wide) in paragraph at lines 1336--1338
+] [34] [35] [36] [37] [38]
+Overfull \hbox (24.40494pt too wide) in paragraph at lines 1175--1177
 \TU/lmr/m/n/12 where $[] \OT1/cmr/m/n/12 = []$ \TU/lmr/m/n/12 and $[] \OT1/cmr/
 m/n/12 = []([] + [])$ \TU/lmr/m/n/12 is a Bell state. So since $\OML/cmm/m/it/1
 2 S\OT1/cmr/m/n/12 ([][]([] [])) =
  []
 
-[38] [39] [40]
+[39] [40] [41]
 Chapter 5.
-[41
-
-]
-Appendix A.
 [42
 
-] [43] [44] [45] [46] [47] [48]
+] [43]
+Appendix A.
+[44
+
+] [45] [46] [47] [48] [49] [50]
 Appendix B.
-[49
+[51
 
-] [50] (./Diss_1.bbl [51]
-Underfull \hbox (badness 1215) in paragraph at lines 35--39
-[]\TU/lmr/m/sc/12 R. Jozsa\TU/lmr/m/n/12 , \TU/lmr/m/it/12 Quan-tum in-for-ma-ti
-on and com-pu-ta-tion notes for part ii\TU/lmr/m/n/12 .
- []
+] [52] (./Diss_1.bbl [53] [54
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 35--39
-[]$\TU/lmtt/m/n/12 https://www.qi.damtp.cam.ac.uk/files/PartIIIQC/Part%202%20QIC
-%
- []
-
-[52
-
-]) [53] (./Diss_1.aux)
+]) [55] (./Diss_1.aux)
 Package rerunfilecheck Info: File `Diss_1.out' has not changed.
-(rerunfilecheck)             Checksum: 4EE21FB632BAFDAFA4C6E64004F1ABE7;6289.
+(rerunfilecheck)             Checksum: C02133B0C2C7B5C0ED4B08390F60B7AB;6842.
 )
 
 Here is how much of LuaTeX's memory you used:
- 36681 strings out of 477742
+ 36682 strings out of 477742
  125177,1144653 words of node,token memory allocated
- 2979 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 121 sub_mlist, 1 glyph, 521 attribu
-te, 62 glue_spec, 521 attribute_list, 2 write, 2 pdf_action nodes
-   avail lists: 1:12,2:6867,3:2792,4:276,5:690,6:90,7:8791,8:102,9:2388,10:20,11
-:545
- 55666 multiletter control sequences out of 65536+600000
+ 2635 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 74 sub_mlist, 1 glyph, 473 attribut
+e, 61 glue_spec, 473 attribute_list, 2 write, 1 pdf_action nodes
+   avail lists: 1:12,2:6869,3:2792,4:280,5:709,6:91,7:8791,8:98,9:2388,10:17,11:
+557
+ 55669 multiletter control sequences out of 65536+600000
  93 fonts using 6714119 bytes
- 99i,22n,128p,1173b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 99i,22n,128p,1494b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
 <//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmmon
 o12-regular.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype
 /public/lm/lmromancaps10-regular.otf><//?/c:/users/nebka/appdata/local/programs/
@@ -1389,9 +1377,9 @@ fonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/pu
 blic/amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/t
 ype1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/
 fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Diss_1.pdf (64 pages, 584616 bytes).
+Output written on Diss_1.pdf (65 pages, 595493 bytes).
 
-PDF statistics: 1033 PDF objects out of 1200 (max. 8388607)
- 385 named destinations out of 1000 (max. 131072)
- 304 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 1075 PDF objects out of 1200 (max. 8388607)
+ 383 named destinations out of 1000 (max. 131072)
+ 328 words of extra memory for PDF output out of 10000 (max. 100000000)
 

@@ -22,6 +22,11 @@
   Correction}}, Communications in Mathematical Physics, 354 (2017),
   pp.~865--912.
 
+\bibitem{Jahn_2021}
+{\sc A.~Jahn and J.~Eisert}, {\em Holographic tensor network models and quantum
+  error correction: a topical review}, Quantum Science and Technology, 6
+  (2021), p.~033002.
+
 \bibitem{Pollack}
 {\sc P.~R. Jason~Pollack and A.~Rocchetto}, {\em Understanding holographic
   error correction via unique algebras and atomic examples}, Journal of High
@@ -30,12 +35,6 @@
 \bibitem{VNA}
 {\sc V.~F.~R. Jones}, {\em Von neumann algebras}.
 \newblock \url{https://math.berkeley.edu/~vfr/VonNeumann2009.pdf}, 2009.
-
-\bibitem{Jozsa}
-{\sc R.~Jozsa}, {\em Quantum information and computation notes for part ii}.
-\newblock
-  \url{https://www.qi.damtp.cam.ac.uk/files/PartIIIQC/Part\%202\%20QIC\%20lecturenotes.pdf},
-  January 2019.
 
 \bibitem{KITAEV20032}
 {\sc A.~Kitaev}, {\em Fault-tolerant quantum computation by anyons}, Annals of
