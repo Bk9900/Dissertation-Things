@@ -5,7 +5,7 @@ Reallocating 'name_of_file' (item size: 1) to 5 items.
 The style file: siam.bst
 Reallocating 'name_of_file' (item size: 1) to 5 items.
 Database file #1: refs.bib
-I was expecting a `,' or a `}'---line 349 of file refs.bib
+I was expecting a `,' or a `}'---line 345 of file refs.bib
  :  journal = "Berkeley Symposium on Mathematical Statistics and Probability"
  :                                                                           \
 I'm skipping whatever remains of this entry
@@ -30,45 +30,45 @@ while executing---line 1034 of file siam.bst
 Too many commas in name 1 of "Martín-López, E., Laing, A., Lawson, T. et al." for entry FactorRecord
 while executing---line 1034 of file siam.bst
 Warning--empty year in Renyi
-You've used 17 entries,
+You've used 18 entries,
             2030 wiz_defined-function locations,
-            626 strings with 6258 characters,
-and the built_in function-call counts, 5720 in all, are:
-= -- 577
-> -- 185
+            634 strings with 6406 characters,
+and the built_in function-call counts, 6098 in all, are:
+= -- 614
+> -- 195
 < -- 0
-+ -- 75
-- -- 57
-* -- 392
-:= -- 844
-add.period$ -- 18
-call.type$ -- 17
-change.case$ -- 80
++ -- 80
+- -- 60
+* -- 418
+:= -- 901
+add.period$ -- 19
+call.type$ -- 18
+change.case$ -- 84
 chr.to.int$ -- 0
-cite$ -- 18
-duplicate$ -- 302
-empty$ -- 432
-format.name$ -- 57
-if$ -- 1274
+cite$ -- 19
+duplicate$ -- 322
+empty$ -- 462
+format.name$ -- 60
+if$ -- 1358
 int.to.chr$ -- 0
-int.to.str$ -- 17
-missing$ -- 17
-newline$ -- 55
-num.names$ -- 33
-pop$ -- 65
+int.to.str$ -- 18
+missing$ -- 18
+newline$ -- 58
+num.names$ -- 36
+pop$ -- 67
 preamble$ -- 1
-purify$ -- 63
+purify$ -- 66
 quote$ -- 0
-skip$ -- 289
+skip$ -- 308
 stack$ -- 0
-substring$ -- 409
-swap$ -- 149
+substring$ -- 443
+swap$ -- 160
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
+type$ -- 70
 warning$ -- 1
-while$ -- 57
-width$ -- 19
-write$ -- 151
+while$ -- 62
+width$ -- 20
+write$ -- 160
 (There were 11 error messages)

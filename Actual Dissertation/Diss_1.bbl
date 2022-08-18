@@ -34,7 +34,7 @@
 
 \bibitem{VNA}
 {\sc V.~F.~R. Jones}, {\em Von neumann algebras}.
-\newblock \url{https://math.berkeley.edu/~vfr/VonNeumann2009.pdf}, 2009.
+\newblock \url{https://math.berkeley.edu/~vfr/VonNeumann2009.pdf}, 2022.
 
 \bibitem{KITAEV20032}
 {\sc A.~Kitaev}, {\em Fault-tolerant quantum computation by anyons}, Annals of
@@ -60,19 +60,23 @@
 
 \bibitem{NielsenChuang}
 {\sc M.~A. Nielsen and I.~L. Chuang}, {\em Quantum Computation and Quantum
-  Information}, Cambridge University Press, 10th~ed., 2010.
+  Information}, Cambridge University Press, 10th~ed., {2010}.
 
 \bibitem{Renyi}
 {\sc A.~Rényi}, {\em {On Measures of Entropy and Information}}, Berkeley
   Symposium on Mathematical Statistics and Probability.
+
+\bibitem{6773024}
+{\sc C.~E. Shannon}, {\em A mathematical theory of communication}, The Bell
+  System Technical Journal, 27 (1948), pp.~379--423.
 
 \bibitem{PhysRevA.52.R2493}
 {\sc P.~W. Shor}, {\em Scheme for reducing decoherence in quantum computer
   memory}, Phys. Rev. A, 52 (1995), pp.~R2493--R2496.
 
 \bibitem{Shor}
-\leavevmode\vrule height 2pt depth -1.6pt width 23pt, {\em Polynomial-time
-  algorithms for prime factorization and discrete logarithms on a quantum
-  computer}, SIAM J. Comput., 26 (1997), p.~1484–1509.
+{\sc {Shor, Peter W.}}, {\em {Polynomial-Time Algorithms for Prime
+  Factorization and Discrete Logarithms on a Quantum Computer}}, {SIAM J.
+  Comput.}, {26} ({1997}), p.~1484–1509.
 
 \end{thebibliography}

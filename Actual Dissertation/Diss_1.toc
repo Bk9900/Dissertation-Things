@@ -8,39 +8,43 @@
 \contentsline {subsection}{\numberline {2.3.3}Axiomatisation}{8}{subsection.2.3.3}%
 \contentsline {section}{\numberline {2.4}General Theory of Error Correction}{9}{section.2.4}%
 \contentsline {section}{\numberline {2.5}Quantum Erasure}{10}{section.2.5}%
-\contentsline {chapter}{\numberline {3}Holographic Error Correction}{12}{chapter.3}%
-\contentsline {section}{\numberline {3.1}Conventional Erasure Correction}{12}{section.3.1}%
-\contentsline {subsubsection}{An Example}{16}{section*.5}%
-\contentsline {section}{\numberline {3.2}Subsystem Error Correction}{18}{section.3.2}%
-\contentsline {section}{\numberline {3.3}Operator-Algebra Error Correction}{19}{section.3.3}%
-\contentsline {subsection}{\numberline {3.3.1}von Neumann Algebras}{19}{subsection.3.3.1}%
-\contentsline {subsection}{\numberline {3.3.2}Classification of von Neumann Algebras}{20}{subsection.3.3.2}%
-\contentsline {subsection}{\numberline {3.3.3}The Link to Error Correction}{21}{subsection.3.3.3}%
-\contentsline {subsection}{\numberline {3.3.4}Algebraic States and Entropy}{22}{subsection.3.3.4}%
-\contentsline {section}{\numberline {3.4}Operator-Algebra Error Correction}{25}{section.3.4}%
-\contentsline {section}{\numberline {3.5}Holographic Properties of Erasure Codes}{28}{section.3.5}%
-\contentsline {chapter}{\numberline {4}Examples}{33}{chapter.4}%
-\contentsline {section}{\numberline {4.1}Codes with one term}{34}{section.4.1}%
-\contentsline {subsubsection}{Example 1}{35}{section*.6}%
-\contentsline {subsubsection}{Example 2}{36}{section*.7}%
-\contentsline {subsubsection}{Example 3}{36}{section*.8}%
-\contentsline {section}{\numberline {4.2}Codes with two terms}{37}{section.4.2}%
-\contentsline {subsubsection}{Example 4}{38}{section*.9}%
-\contentsline {subsubsection}{Example 5}{39}{section*.10}%
-\contentsline {subsubsection}{Example 6}{40}{section*.11}%
-\contentsline {section}{\numberline {4.3}A Complete Example}{40}{section.4.3}%
-\contentsline {chapter}{\numberline {5}Conclusions}{42}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Summary of Project}{42}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Research Directions}{43}{section.5.2}%
-\contentsline {chapter}{\numberline {A}Quantum Information and Entropy}{44}{appendix.A}%
-\contentsline {section}{\numberline {A.1}Classical Information}{44}{section.A.1}%
-\contentsline {subsection}{\numberline {A.1.1}Shannon Entropy}{44}{subsection.A.1.1}%
-\contentsline {subsection}{\numberline {A.1.2}Relative Entropy}{45}{subsection.A.1.2}%
-\contentsline {section}{\numberline {A.2}Quantum Information}{46}{section.A.2}%
-\contentsline {subsection}{\numberline {A.2.1}von Neumann Entropy}{46}{subsection.A.2.1}%
-\contentsline {subsection}{\numberline {A.2.2}Relative Entropy}{48}{subsection.A.2.2}%
-\contentsline {subsection}{\numberline {A.2.3}Properties of von Neumann Entropy}{49}{subsection.A.2.3}%
-\contentsline {subsection}{\numberline {A.2.4}Entropy as a Measure of Entanglement}{49}{subsection.A.2.4}%
-\contentsline {chapter}{\numberline {B}Quantum Circuit Notation}{51}{appendix.B}%
-\contentsline {section}{\numberline {B.1}Quantum Gates}{51}{section.B.1}%
-\contentsline {section}{\numberline {B.2}Quantum Circuits}{52}{section.B.2}%
+\contentsline {chapter}{\numberline {3}Holographic Erasure Correction}{12}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Notation}{12}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Conventional Erasure Correction}{13}{section.3.2}%
+\contentsline {subsubsection}{Example}{17}{section*.3}%
+\contentsline {section}{\numberline {3.3}Subsystem Erasure Correction}{18}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Operator-Algebra Erasure Correction}{20}{section.3.4}%
+\contentsline {subsection}{\numberline {3.4.1}von Neumann Algebras}{20}{subsection.3.4.1}%
+\contentsline {subsection}{\numberline {3.4.2}Classification of von Neumann Algebras}{21}{subsection.3.4.2}%
+\contentsline {subsection}{\numberline {3.4.3}The Link to Error Correction}{22}{subsection.3.4.3}%
+\contentsline {subsection}{\numberline {3.4.4}Algebraic States and Entropy}{23}{subsection.3.4.4}%
+\contentsline {section}{\numberline {3.5}Operator-Algebra Error Correction}{26}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Holographic Properties of Erasure Codes}{29}{section.3.6}%
+\contentsline {chapter}{\numberline {4}Examples}{35}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Codes with one term}{36}{section.4.1}%
+\contentsline {subsubsection}{Example 1}{37}{section*.4}%
+\contentsline {subsubsection}{Example 2}{38}{section*.5}%
+\contentsline {subsubsection}{Example 3}{38}{section*.6}%
+\contentsline {section}{\numberline {4.2}Codes with two terms}{39}{section.4.2}%
+\contentsline {subsubsection}{Example 4}{40}{section*.7}%
+\contentsline {subsubsection}{Example 5}{41}{section*.8}%
+\contentsline {subsubsection}{Example 6}{42}{section*.9}%
+\contentsline {section}{\numberline {4.3}A Complete Example}{42}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Conclusions}{44}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Summary of Project}{44}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Future Research Directions}{45}{section.5.2}%
+\contentsline {chapter}{\numberline {A}Quantum Circuit Notation}{46}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Quantum Gates}{46}{section.A.1}%
+\contentsline {section}{\numberline {A.2}Quantum Circuits}{47}{section.A.2}%
+\contentsline {chapter}{\numberline {B}Quantum Information and Entropy}{49}{appendix.B}%
+\contentsline {section}{\numberline {B.1}Classical Information}{49}{section.B.1}%
+\contentsline {subsection}{\numberline {B.1.1}Shannon Entropy}{49}{subsection.B.1.1}%
+\contentsline {subsection}{\numberline {B.1.2}Relative Entropy}{50}{subsection.B.1.2}%
+\contentsline {section}{\numberline {B.2}Quantum Information}{51}{section.B.2}%
+\contentsline {subsection}{\numberline {B.2.1}von Neumann Entropy}{51}{subsection.B.2.1}%
+\contentsline {subsection}{\numberline {B.2.2}Relative Entropy}{53}{subsection.B.2.2}%
+\contentsline {subsection}{\numberline {B.2.3}Properties of von Neumann Entropy}{54}{subsection.B.2.3}%
+\contentsline {subsection}{\numberline {B.2.4}Entropy as a Measure of Entanglement}{54}{subsection.B.2.4}%
+\contentsline {chapter}{\numberline {C}The Schmidt Decomposition and Purifications}{56}{appendix.C}%
+\contentsline {section}{\numberline {C.1}The Schmidt Decomposition}{56}{section.C.1}%
+\contentsline {section}{\numberline {C.2}Purifications}{57}{section.C.2}%

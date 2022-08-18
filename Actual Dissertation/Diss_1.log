@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  17 AUG 2022 18:01
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  18 AUG 2022 18:20
  restricted system commands enabled.
 **Diss_1.tex
 (./Diss_1.tex
@@ -1196,7 +1196,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 \@outlinefile=\write4
 
 \openout4 = Diss_1.out
-<crest.pdf, id=162, 93.60962pt x 92.1871pt>
+<crest.pdf, id=178, 93.60962pt x 92.1871pt>
 File: crest.pdf Graphic file (type pdf)
 <use crest.pdf>
 Package luatex.def Info: crest.pdf  used on input line 86.
@@ -1212,21 +1212,9 @@ warning  (pdf backend): ignoring duplicate destination with the name 'page.i'
 \tf@toc=\write5
 
 \openout5 = Diss_1.toc
- [6] (./Diss_1.lot)
-\tf@lot=\write6
-
-\openout6 = Diss_1.lot
- [7
-
-] (./Diss_1.lof)
-\tf@lof=\write7
-
-\openout7 = Diss_1.lof
 
 warning  (pdf backend): ignoring duplicate destination with the name 'page.1'
-[1
-
-]
+[1]
 Chapter 1.
 
 warning  (pdf backend): ignoring duplicate destination with the name 'page.2'
@@ -1236,13 +1224,20 @@ warning  (pdf backend): ignoring duplicate destination with the name 'page.2'
 Chapter 2.
 [4
 
-] [5] [6] [7] [8] [9] [10] [11]
+] [5] [6] [7]
+Overfull \hbox (3.27463pt too wide) in paragraph at lines 251--252
+[][]\TU/lmr/bx/n/12 Def-i-ni-tion 2.3.1 \TU/lmr/m/n/12 (Quan-tum Op-er-a-tion)\
+TU/lmr/bx/n/12 . []\TU/lmr/m/n/12 Sup-pose $\OMS/cmsy/m/n/12 H[]$ \TU/lmr/m/n/1
+2 are finite-dimensional Hilbert
+ []
+
+[8] [9] [10] [11]
 Chapter 3.
 [12
 
-] [13] [14] [15] [16] [17] [18] [19] [20]
-Overfull \hbox (54.47823pt too wide) in paragraph at lines 643--644
-[][]\TU/lmr/bx/n/12 Ex-am-ple 3.3.2. []\TU/lmr/m/it/12 Con-sider the von Neu-man
+] [13] [14] [15] [16] [17] [18] [19] [20] [21]
+Overfull \hbox (54.47823pt too wide) in paragraph at lines 609--610
+[][]\TU/lmr/bx/n/12 Ex-am-ple 3.4.2. []\TU/lmr/m/it/12 Con-sider the von Neu-man
 n al-ge-bra $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$\TU/lmr/m/it/12 ,
  []
 
@@ -1271,115 +1266,112 @@ n al-ge-bra $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$\TU/lmr/m/it/12 ,
 \l__nicematrix_final_j_int=\count370
 \l__nicematrix_local_start_int=\count371
 \l__nicematrix_local_end_int=\count372
-[21] [22] [23] [24]
-Overfull \hbox (14.59541pt too wide) in paragraph at lines 783--784
-\TU/lmr/m/it/12 si-tion $\OMS/cmsy/m/n/12 H[] \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/1
-2 []\OT1/cmr/m/n/12 (\OMS/cmsy/m/n/12 H[] 
- H[]\OT1/cmr/m/n/12 )$ \TU/lmr/m/it/12 in-duced by $\OML/cmm/m/it/12 M$\TU/lmr/
-m/it/12 . Let $[] \OMS/cmsy/m/n/12  [] [][] [][] \OT1/cmr/m/n/12 (\OML/cmm/m/i
-t/12 V []\OT1/cmr/m/n/12 )[]$\TU/lmr/m/it/12 ,
- []
-
-[25] [26]
-Overfull \hbox (0.10551pt too wide) detected at line 867
+[22] [23] [24] [25] [26] [27] [28]
+Overfull \hbox (0.10551pt too wide) detected at line 833
 [][][][][]
  []
 
-[27] [28] [29]
-Overfull \hbox (23.19789pt too wide) detected at line 944
+[29] [30]
+Overfull \hbox (23.19789pt too wide) detected at line 910
 [][][][][]
  []
 
-[30]
-Overfull \hbox (15.32848pt too wide) detected at line 976
+[31]
+Overfull \hbox (15.32848pt too wide) detected at line 942
 [][][][][]
  []
 
 
-Overfull \hbox (47.7511pt too wide) detected at line 986
+Overfull \hbox (47.7511pt too wide) detected at line 952
 [][][][][]
  []
 
-[31] [32]
+[32] [33] [34]
 Chapter 4.
 
-Overfull \hbox (30.39119pt too wide) in paragraph at lines 1023--1025
+Overfull \hbox (30.39119pt too wide) in paragraph at lines 993--995
 \TU/lmr/m/n/12 In some sense, this splits the al-ge-braic en-tropy into a ‘cla
 s-si-cal’ part $\OML/cmm/m/it/12 S[] \OMS/cmsy/m/n/12  ^^@ [][] \OML/cmm/m/i
 t/12 p[] []\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 p[]\OT1/cmr/m/n/12 )$
  []
 
-[33
+[35
 
-] [34] [35] [36] [37] [38]
-Overfull \hbox (24.40494pt too wide) in paragraph at lines 1175--1177
+]
+Overfull \hbox (40.25299pt too wide) in paragraph at lines 1007--1008
+[]\TU/lmr/m/n/12 Ap-ply The-o-rem []3.5.1[] twice to ob-tain uni-taries $\OML/c
+mm/m/it/12 U[]$ \TU/lmr/m/n/12 and $\OML/cmm/m/it/12 U[]$ \TU/lmr/m/n/12 such th
+at $\OML/cmm/m/it/12 U[]U[]V [] \OT1/cmr/m/n/12 =
+ []
+
+[36] [37] [38] [39] [40]
+Overfull \hbox (24.40494pt too wide) in paragraph at lines 1145--1147
 \TU/lmr/m/n/12 where $[] \OT1/cmr/m/n/12 = []$ \TU/lmr/m/n/12 and $[] \OT1/cmr/
 m/n/12 = []([] + [])$ \TU/lmr/m/n/12 is a Bell state. So since $\OML/cmm/m/it/1
 2 S\OT1/cmr/m/n/12 ([][]([] [])) =
  []
 
-[39] [40] [41]
+[41] [42] [43]
 Chapter 5.
-[42
-
-] [43]
-Appendix A.
 [44
 
-] [45] [46] [47] [48] [49] [50]
+] [45]
+Appendix A.
+[46
+
+] [47] [48]
 Appendix B.
-[51
+[49
 
-] [52] (./Diss_1.bbl [53] [54
+] [50] [51] [52] [53] [54] [55]
+Appendix C.
+[56
 
-]) [55] (./Diss_1.aux)
+] [57] (./Diss_1.bbl [58] [59
+
+]) [60] (./Diss_1.aux)
 Package rerunfilecheck Info: File `Diss_1.out' has not changed.
-(rerunfilecheck)             Checksum: C02133B0C2C7B5C0ED4B08390F60B7AB;6842.
+(rerunfilecheck)             Checksum: 170F4C13174E026762DC1BF90947C08D;7547.
 )
 
 Here is how much of LuaTeX's memory you used:
- 36682 strings out of 477742
+ 36769 strings out of 477742
  125177,1144653 words of node,token memory allocated
- 2635 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 3 glue, 4 kern, 74 sub_mlist, 1 glyph, 473 attribut
-e, 61 glue_spec, 473 attribute_list, 2 write, 1 pdf_action nodes
-   avail lists: 1:12,2:6869,3:2792,4:280,5:709,6:91,7:8791,8:98,9:2388,10:17,11:
+ 2709 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 77 sub_mlist, 1 glyph, 491 attribut
+e, 61 glue_spec, 491 attribute_list, 2 write, 1 pdf_action nodes
+   avail lists: 1:12,2:6869,3:2805,4:280,5:654,6:94,7:8897,8:99,9:2405,10:17,11:
 557
- 55669 multiletter control sequences out of 65536+600000
- 93 fonts using 6714119 bytes
- 99i,22n,128p,1494b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 55758 multiletter control sequences out of 65536+600000
+ 60 fonts using 4505575 bytes
+ 99i,22n,128p,1853b,1343s stack positions out of 10000i,1000n,20000p,200000b,80000s
 <//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmmon
 o12-regular.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype
 /public/lm/lmromancaps10-regular.otf><//?/c:/users/nebka/appdata/local/programs/
 miktex/fonts/opentype/public/lm/lmroman10-bolditalic.otf><//?/c:/users/nebka/app
-data/local/programs/miktex/fonts/opentype/public/lm/lmroman10-regular.otf><//?/c
-:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmroman7-re
-gular.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype/publi
-c/lm/lmroman8-italic.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts
-/opentype/public/lm/lmroman8-regular.otf><//?/c:/users/nebka/appdata/local/progr
-ams/miktex/fonts/opentype/public/lm/lmroman12-italic.otf><//?/c:/users/nebka/app
-data/local/programs/miktex/fonts/opentype/public/lm/lmroman12-regular.otf><//?/c
-:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmroman12-b
-old.otf><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfont
-s/cm/cmbx12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmex10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type
-1/public/amsfonts/cmextra/cmex8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTe
-X/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/nebka/AppData/Local/Progra
-ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.pfb><C:/Users/nebka/AppData/Loca
-l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/nebka/AppDa
-ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/nebk
-a/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Use
-rs/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb>
-<C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr
-6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmr8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/pu
-blic/amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/
-fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Diss_1.pdf (65 pages, 595493 bytes).
+data/local/programs/miktex/fonts/opentype/public/lm/lmroman8-italic.otf><//?/c:/
+users/nebka/appdata/local/programs/miktex/fonts/opentype/public/lm/lmroman8-regu
+lar.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts/opentype/public/
+lm/lmroman12-italic.otf><//?/c:/users/nebka/appdata/local/programs/miktex/fonts/
+opentype/public/lm/lmroman12-regular.otf><//?/c:/users/nebka/appdata/local/progr
+ams/miktex/fonts/opentype/public/lm/lmroman12-bold.otf><C:/Users/nebka/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/nebka/A
+ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users
+/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cmextra/cmex8.p
+fb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
+cmmi12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsf
+onts/cm/cmmi6.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/type1/publ
+ic/amsfonts/cm/cmmi8.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmr12.pfb><C:/Users/nebka/AppData/Local/Programs/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmr6.pfb><C:/Users/nebka/AppData/Local/Programs/MiK
+TeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/nebka/AppData/Local/Progra
+ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Loca
+l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppDa
+ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebk
+a/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on Diss_1.pdf (68 pages, 600637 bytes).
 
-PDF statistics: 1075 PDF objects out of 1200 (max. 8388607)
- 383 named destinations out of 1000 (max. 131072)
- 328 words of extra memory for PDF output out of 10000 (max. 100000000)
+PDF statistics: 1124 PDF objects out of 1200 (max. 8388607)
+ 399 named destinations out of 1000 (max. 131072)
+ 360 words of extra memory for PDF output out of 10000 (max. 100000000)
 

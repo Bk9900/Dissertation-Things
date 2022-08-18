@@ -96,7 +96,7 @@
 \large{
   MSc in Theoretical Physics\\[0.8ex]
   The University of Edinburgh\\[0.8ex]
-  2021
+  2022
 }
 
 \end{center}
@@ -132,10 +132,10 @@ Chapter 5 contains my own thoughts and conclusions on the results of the rest of
 \textbf{Personal Statement}
 \end{center}
 
-The first two weeks of the project consisted of me reading up on the background theory underlying quantum error correction. This included how to model noise using quantum operations, specific examples of error correcting circuits, and various theoretical machinery such as the error correction conditions. My main source for this was Nielsen and Chuang's textbook \cite{NielsenChuang}. I also attempted to adapt some of the theory to quantum erasures, which were to be the main focus of the project, deriving some of the results in section 2.5, with a view to link them to theorem 3.1 of \cite{Harlow}. I also read some theory about holography and the AdS/CFT correspondence. Even though the goal of the dissertation was to approach the subject from a quantum informational perspective, I wanted to understand how the subject fits into holography to gain some motivation and intuition as to why the theorems are structured the way they are.\\
-My supervisor, Dr. Joan Simon, suggested that it would make more sense to understand the toy model of \cite{Harlow} before jumping into the general theory presented. I therefore spent the third week going through this toy model in detail, with particular focus on trying to understand the significance of the $\ket{\chi}$ state. I wasn't able to come up with an `intuitive' explanation for this state, so I decided to move onto attempting to understand the proof of theorem 3.1 of \cite{Harlow} in hope that it would provide some intuition. This goal was realised, with the proof giving some insight into the importance of $\ket{\chi}$ as a purification.\\
+The first two weeks of the project consisted of me reading up on the background theory underlying quantum error correction. This included how to model noise using quantum operations, specific examples of error correcting circuits, and various theoretical machinery such as the error correction conditions. My main source for this was Nielsen and Chuang's textbook \cite{NielsenChuang}. I also attempted to adapt some of the theory to quantum erasures, which were to be the main focus of the project, deriving some of the results in section 2.5, with a view to link them to Theorem 3.1 of \cite{Harlow}. I also read some theory about holography and the AdS/CFT correspondence. Even though the goal of the dissertation was to approach the subject from a quantum informational perspective, I wanted to understand how the subject fits into holography to gain some motivation and intuition as to why the theorems are structured the way they are.\\
+My supervisor, Dr. Joan Simon, suggested that it would make more sense to understand the toy model of \cite{Harlow} before jumping into the general theory presented. I therefore spent the third week going through this toy model in detail, with particular focus on trying to understand the significance of the $\ket{\chi}$ state. I wasn't able to come up with an `intuitive' explanation for this state, so I decided to move onto attempting to understand the proof of Theorem 3.1 of \cite{Harlow} in hope that it would provide some intuition. This goal was realised, with the proof giving some insight into the importance of $\ket{\chi}$ as a purification.\\
 The fourth week of the project consisted of me reading about von Neumann algebras in some detail. This consisted of the proofs in appendix A of \cite{Harlow}, as well as \cite{VNA} for a more `abstract', mathematical exposition of the subject.\\
-After this, I moved onto understanding theorem 5.1 of \cite{Harlow}. I used \cite{Pollack} as a secondary source here, as I found some of the language more comprehensible. I also decided to change the language used from that of code subspaces to encoding isometries at this point, inspired by \cite{Pollack}.\\
+After this, I moved onto understanding Theorem 5.1 of \cite{Harlow}. I used \cite{Pollack} as a secondary source here, as I found some of the language more comprehensible. I also decided to change the language used from that of code subspaces to encoding isometries at this point, inspired by \cite{Pollack}.\\
 The next step was trying to precisely characterise what makes a code holographic. \cite{Harlow} is not particularly clear on this to a reader with minimal background in holography, referring to several complex holographic concepts. \cite{Pollack} however provides a precise algebraic characterisation of the so-called Ryu-Takayanagi formula in the language of erasure codes, which I decided to take as the defining characteristic of a holographic code. This, combined with the two-sided implication of a code having complementary recovery and satisfying an RT formula, implies all the other holographic properties which \cite{Harlow} talks about. Understanding this implication was the next goal. I read through and understood the proof in the forward direction in \cite{Pollack}, but found it quite dense and notationally cumbersome. I therefore attempted to prove it in a way which matched the sketch proof in \cite{Harlow} a bit more closely, accomplishing this. I also managed to prove the reverse implication, expanding on the sketch again presented in \cite{Harlow}. This was quite tricky as there was minimal detail provided, and I particularly struggled with working out what happens when one takes a small perturbation in the entropy. I did eventually manage this.\\
 The final weeks of the project consisted of writing up all my work, and going through the examples of \cite{Pollack}. These were more opaque than I first anticipated, as I found the authors to not be particularly clear in defining various characteristics. Once I worked out what the authors had intended though, the examples made sense; indeed, they elucidated many aspects of the proof that an RT formula implies complementary recovery and vice versa.
 
@@ -152,45 +152,43 @@ The final weeks of the project consisted of writing up all my work, and going th
 \end{center}
 
 I would like to thank everyone at the University of Edinburgh who supported me through the MSc. program, and without whom I never would have been able to reach this project, let alone complete it.\\
-I would like to extend enormous thanks to my supervisor Joan Simon for his expertise, guidance, and incredible and detailed feedback on all aspects of the project, as well as timely replies to my emails!\\
+I would like to extend enormous thanks to my supervisor Joan Simon for his expertise, guidance, and incredibly detailed feedback on all aspects of the project, as well as timely replies to my emails!\\
 I also wish to thank my parents, Liz and Alan, for their continued support and encouragement throughout this year.\\
-Thank you to Joe also - several valuable conversations about various aspects of this project have proved hugely useful.\\
+Thank you to Joe also - several valuable conversations about various aspects of this project have proved hugely useful, as has your proofreading skills.\\
 I would finally like to thank several of my friends: James, Dan, Laurence, Tom, Millie, Louis, Sophie, Simon, and Jacob. Without your continued advice on my anxieties, humour, and just general incredible support, I doubt I'd have had the resilience to complete this MSc. 
 
 \tableofcontents
-\listoftables
-\listoffigures
 
 \pagenumbering{arabic}
 
 \chapter{Introduction}
 Ever since David Deutsch and Richard Josza introduced their famous algorithm \cite{DJ} demonstrating a problem which a quantum computer could solve exponentially faster than a classical computer, quantum computing has been an active area of research. A few years later when Peter Shor described a quantum algorithm to factorise integers in polynomial time \cite{Shor}, it became clear that quantum computers held vast potential; if Shor's algorithm could be implemented with enough qubits, then almost every cryptographic scheme used throughout the World could be broken!\\
-Luckily for anyone relying on cryptographic procedures such as these, qubits are immensely delicate and sensitive to changes in their environment. They are prone to suffering errors and decoherence, irreparably ruining computations. Even to this day, the largest number factorised using Shor's algorithm is 21 \cite{FactorRecord} - far smaller than the huge numbers needed to break cryptographic protocols!\\
-A few years later in 1995, Shor proposed a potential solution: \textit{quantum error correction} \cite{PhysRevA.52.R2493}. The idea was relatively simple - encode one logical qubit in nine physical qubits in such a way that the single qubit was protected from arbitrary errors. Shor's code was quickly improved upon, with a (minimal) five qubit code which could protect against arbitrary single qubit errors being published in 2001 \cite{PhysRevLett.86.5811}.\\
-While quantum computing has in many ways moved on from simple factorisation, error correction remains an active field of research. With the proof of the \textit{quantum threshold theorem} \cite{doi:10.1137/S0097539799359385}\cite{doi:10.1126/science.279.5349.342}\cite{KITAEV20032} which states that a quantum computer with a \textit{physical} error rate below a certain threshold can suppress the \textit{logical} error rate to arbitrarily low levels, quantum error correction is considered by many as the most likely way to build a fully fault-tolerant quantum computer.\\
+Luckily for anyone relying on cryptographic procedures such as these functioning robustly, qubits are immensely delicate and sensitive to changes in their environment. They are prone to suffering errors and decoherence, irreparably ruining computations. Even to this day, the largest number factorised using Shor's algorithm is 21 \cite{FactorRecord} - far smaller than the huge numbers needed to break cryptographic protocols!\\
+In 1995, Shor proposed a potential solution to this issue of scalability: \textit{quantum error correction} \cite{PhysRevA.52.R2493}. The idea was relatively simple - encode one logical qubit in nine physical qubits in such a way that the single qubit was protected from arbitrary errors. Shor's code was quickly improved upon, with a (minimal) five qubit code which could protect against arbitrary single qubit errors being published in 2001 \cite{PhysRevLett.86.5811}.\\
+While quantum computing has in many ways moved on from simple factorisation, error correction remains an active field of research. With the proof of the \textit{quantum threshold theorem} \cite{doi:10.1137/S0097539799359385}\cite{doi:10.1126/science.279.5349.342}\cite{KITAEV20032}, which states that a quantum computer with a \textit{physical} error rate below a certain threshold can suppress the \textit{logical} error rate to arbitrarily low levels, quantum error correction is considered by many as the most likely way to build a fully fault-tolerant quantum computer.\\
 Recently, an unexpected link between quantum error correction and the structure of space-time was discovered. The AdS/CFT correspondence in the field of holography (itself a branch of string theory) posits a relationship between quantum gravity in an anti-de Sitter space, and a conformal field theory on the boundary \cite{Maldacena}. In 2015, Ahmed Almheiri, Xi Dong, and Daniel Harlow discovered that in the language of quantum error correction, a certain aspect of AdS/CFT known as \textit{subregion duality} could be elucidated \cite{ADH}. Explicitly, certain error correcting procedures have various properties which can be interpreted naturally in holography. Such codes have come to be known as \textit{holographic error correcting codes}, and they have already provided simple toy models to explore the emergence of space-time. From a quantum error correction perspective, it is also hoped that holography can inspire new error correcting codes to be developed.\\
 The goal of this dissertation is to present the basic theory of holographic error correction in a self-contained way, aimed at those with a background in quantum computing rather than holography. Therefore, the focus will be almost entirely on the quantum information perspective, with any comments on holography being given purely for motivation.\\
-This dissertation is structured as follows. Chapter 2 will present all the relevant background theory in error correction, assuming an understanding of quantum mechanics and quantum computing. Those looking for a more detailed exposition of these topics would be well-advised to read Nielsen and Chuang's textbook \cite{NielsenChuang}. Chapter 3 will present the main results and proofs of \cite{Harlow} - this paper is the primary reference for holographic error correction in general, describing the three basic theorems of the field in a self-contained way. We change some of the conventions used by Harlow to be more relevant to quantum computing, describing error correction via an \textit{encoding isometry} rather than a \textit{code subspace} as Harlow does. Chapter 4 presents and expands on the examples of operator-algebra holographic codes in \cite{Pollack}. Finally, chapter 5 will present a summary of the project and suggestions as to future directions of study.
+This dissertation is structured as follows. Chapter 2 will present all the relevant background theory in error correction, assuming an understanding of quantum mechanics and quantum computing. Those looking for a more detailed exposition of these topics would be well-advised to read Nielsen and Chuang's textbook \cite{NielsenChuang}. Chapter 3 will present the main results and proofs of Daniel Harlow's work in \cite{Harlow} - this paper is the primary reference for holographic error correction in general, describing the three basic theorems of the field in a self-contained way. We change some of the conventions used by Harlow to be more relevant to quantum computing, describing error correction via an \textit{encoding isometry} rather than a \textit{code subspace} as Harlow does. Chapter 4 presents and expands on the examples of operator-algebra codes in \cite{Pollack}. Finally, Chapter 5 will present a summary of the project and suggestions as to future directions of study.
 
 
 \chapter{Error Correction: An Introduction}
 
-In this chapter, we present the theory of quantum error correction. We begin with a discussion of a classical example to build intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}. This chapter also assumes an understanding of quantum circuit notation. If this is not familiar, a brief summary of the salient features is presented in appendix B.
+In this chapter, we present the theory of quantum error correction. We begin with a discussion of a classical example to build intuition, before moving on to the quantum world. We work through the generalities, before discussing quantum \textit{erasure} correction - the main focus of this project. These discussions are adapted from \cite{NielsenChuang} and \cite{Harlow}. This chapter also assumes an understanding of quantum circuit notation. If this is not familiar, a brief summary of the salient features is presented in Appendix \ref{apa}.
 
 \section{The Classical Bit-Flip}
 To gain some intuition for error-correction, we don't even need to start with a quantum process. Instead, we present the \textit{classical bit-flip code}. While the ideas are basic and situation-specific, the key features of the process carry through to the quantum case.\\
-Suppose Alice wishes to send a single bit to Bob across a noisy communication channel. In this example, we model the noise as a bit-flip - there is a fixed probability $p$ for the transmitted bit to flip state from a 0 to a 1 or a 1 to a 0. Alice is afraid that Bob will receive the incorrect bit value, so she instead copies her bit three times and sends all three bits to Bob instead. When Bob receives the three bits, he takes the majority bit value to be the correct message; that way, even if 1 bit flips, Bob will still receive the correct message!\\
-This method is not perfect though. It could be the case that 2 or more bits flip in the channel, and Bob could receive the incorrect message. Assuming the noise acts \textit{independently} on each transmitted bit, the probability of this happening is
+Suppose Alice wishes to send a single bit to Bob across a noisy communication channel. In this example, we model the noise as a bit-flip - there is a fixed probability $p$ for the transmitted bit to flip state from a 0 to a 1 or a 1 to a 0. Alice is afraid that Bob will receive the incorrect bit value, so instead she copies her bit three times and sends all three bits to Bob instead. When Bob receives the three bits, he takes the majority bit value to be the correct message; that way, even if 1 bit flips, Bob will still receive the correct message!\\
+However, this method is not perfect. It could be the case that 2 or more bits flip in the channel, and Bob could receive the incorrect message. Assuming the noise acts \textit{independently} on each transmitted bit, the probability of this happening is
 \begin{equation}
 	\mathbb{P}(\text{2 or more flips})=3p^{2}(1-p)+p^{3},
 \end{equation}
 which is strictly less than $p$ for $0<p<1/2$. Therefore so long as $p$ is less than $1/2$, Bob has an increased chance of receiving Alice's intended message.\\
-While this is a very simple example, there are some salient features which are common to all error-correcting processes, both quantum and classical. First, Alice \textit{encodes} her bit (called the \textit{logical bit}) by copying it three times (where the encoded bits are called the \textit{physical bits}). She then sends the physical bits to Bob, where they encounter \textit{noise} in the communication channel, potentially flipping. When the Bits reach Bob, he needs to determine whether a bit-flip occurred - called \textit{error detection} - and if so, he \textit{corrects} it by flipping back the corresponding physical bit, before finally \textit{decoding} the message. Schematically:
+While this is a very simple example, there are some salient features which are common to all error-correcting processes, both quantum and classical. First, Alice \textit{encodes} her bit (called the \textit{logical bit}) by copying it three times (where the encoded bits are called the \textit{physical bits}). She then sends the physical bits to Bob, where they encounter \textit{noise} in the communication channel, potentially flipping their values. When the bits reach Bob, he needs to determine whether a bit-flip occurred - which is called \textit{error detection} - and if so, he \textit{corrects} it by flipping back the corresponding physical bit, before finally \textit{decoding} the message. Schematically:
 \begin{equation*}
 	0\xrightarrow{\text{Encoding}}000\xrightarrow{\text{Noise}}001\xrightarrow{\text{Correction}}000\xrightarrow{\text{Decoding}}0.
 \end{equation*}
 \section{The Quantum Bit-Flip}
-The quantum situation is exactly analogous, except this time Alice wishes to send a qubit $\ket{\psi}$ to Bob. The quantum communications channel acts similarly too, flipping each of the computational basis states (essentially applying a $X$ gate) with a fixed probability $p$. The \textit{no-cloning theorem} prevents Alice copying her arbitrary qubit though, so she has to be a bit more creative with encoding it. She does this by means of a quantum circuit taking $\ket{0}\to\ket{000}$ and $\ket{1}\to\ket{111}$; explicitly
+The quantum situation is exactly analogous, except this time Alice wishes to send a qubit $\ket{\psi}$ to Bob. The quantum communications channel acts similarly too, flipping each of the computational basis states (essentially applying an $X$ gate) with a fixed probability $p$. The \textit{no-cloning theorem} prevents Alice copying her arbitrary qubit though, so she has to be a bit more creative with encoding it. She does this by means of a quantum circuit taking $\ket{0}\to\ket{000}$ and $\ket{1}\to\ket{111}$, which is explicitly given by
 \begin{equation}\label{bfv}
 	\scalebox{1.5}{\begin{quantikz}
 			\lstick{$\ket{\psi}$} & \ctrl{1} & \ctrl{2} & \qw\\
@@ -209,10 +207,10 @@ Suppose Alice does all this, and sends Bob the encoded physical qubits. Bob need
 	\end{aligned}
 \end{equation}
 This is called a \textit{syndrome measurement}. To see that this works, suppose only the first physical qubit flips, so Bob receives $\ket{E}\equiv a\ket{100}+b\ket{011}$. In this case, $\braket{E|P_{1}|E}=1$, so the measurement returns 1 with certainty, and Bob can establish that the first qubit flipped. Also note that $P_{1}\ket{E}=\ket{E}$, so the measurement does not change the state.\\
-Bob's final task is to recover the original logical qubit. The outcome of the syndrome measurement tells him which physical qubit flipped (if any), and so he can just flip the corresponding qubit back by applying an $X$ gate. He can then just perform a measurement of the corrected state to obtain the original amplitudes.\\
+Bob's final task is to recover the original logical qubit. The outcome of the syndrome measurement tells him which physical qubit flipped (if any), and so he can just flip the corresponding qubit back by applying an $X$ gate. He can then perform a measurement of the corrected state to obtain the original amplitudes.\\
 This process is again imperfect. If two or more qubits flip, then Bob cannot recover the original state with this process. However, an identical calculation to the classical case shows us that it improves the probability that Bob can reconstruct the original state so long as $p<1/2$.
 \section{Quantum Noise}
-The above examples provide basic examples of error correction. However, in order to talk about error correction in full generality, we need some general theory. In particular, how to model arbitrary noise for quantum systems, which is done through \textit{quantum operations}.
+The above examples provide basic examples of error correction. However, in order to talk about error correction in full generality, we need some general theory. In particular, we need to consider how to model arbitrary noise for quantum systems, which is done through \textit{quantum operations}.
 \subsection{Quantum Operations}
 In general, an isolated or \textit{closed} quantum system evolves in time under the action of a unitary operator. That is, if a closed system is initially in state $\rho$, at a later time it will be in the state $U\rho U^{\dagger}$ for some unitary operator $U$. In practice though, quantum systems are \textit{open} and interact with their environment, so we cannot just assume that our system of interest evolves unitarily. If a system is initially in state $\rho$ and evolves to state $\rho'$, to be fully general we simply write
 \begin{equation}
@@ -227,13 +225,13 @@ To find the quantum operation governing the evolution of $\rho$ alone, we can ta
 \begin{equation}\label{qop}
 	\mathcal{E}(\rho)=\text{Tr}_{\text{env}}\left[U(\rho\otimes\rho_{\text{env}})U^{\dagger}\right].
 \end{equation}
-This is a more concrete definition of a quantum operation. One immediate issue though is that evolution of the principal system is expressed in terms of operators involving the environment, which we may not have access to in full. There is however a way around this.
+This is a more concrete definition of a quantum operation. One immediate issue though is that evolution of the principal system is expressed in terms of operators involving the environment, to which we may not have access in full. There is, however, a way around this.
 \subsection{Operator-Sum Representation}
-Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that the initial state of the environment is $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite \ref{qop} as
+Suppose $\{\ket{e_{k}}\}$ is an orthonormal basis for the environment system such that the initial state of the environment is $\rho_{\text{env}}=\ketbras{e_{0}}$. Then, we can rewrite Equation \ref{qop} as
 \begin{equation}\label{opel}
 	\mathcal{E}(\rho)=\sum_{k}\bra{e_{k}}U\Big[\rho\otimes\ketbras{e_{0}}\Big]U^{\dagger}\ket{e_{k}}\equiv\sum_{k}E_{k}\rho E_{k}^{\dagger},
 \end{equation}
-where we implicitly define $E_{k}\equiv\braket{e_{k}|U|e_{0}}$. These are operators on the principal system of interest only, so fix our issue! This is called the \textit{operator-sum representation} or \textit{Kraus representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called its \textit{operation elements}.\\
+where we implicitly define $E_{k}\equiv\braket{e_{k}|U|e_{0}}$. Note that this is a \textit{partial} inner product since $U$ acts on both the principal system and the environment, so the $E_{k}$ are operators on the principal system of interest only. This fixes our issue! This is called the \textit{operator-sum representation} or \textit{Kraus representation} of $\mathcal{E}$, and the set $\{E_{k}\}$ are called its \textit{operation elements}.\\
 The operation elements have a completeness property; since $\mathcal{E}(\rho)$ must itself be a density matrix, we require $\text{Tr}(\mathcal{E}(\rho))=1$. Therefore
 \begin{equation}
 	1=\text{Tr}\left(\sum_{k}E_{k}\rho E_{k}^{\dagger}\right)=\text{Tr}\left(\sum_{k}\rho E_{k}^{\dagger}E_{k}\right)
@@ -248,9 +246,9 @@ The operator-sum representation of a quantum operation is not unique. The follow
 	Suppose $\{E_{1},\ldots,E_{m}\}$ and $\{F_{1},\ldots,F_{n}\}$ are operation elements of operations $\mathcal{E}$ and $\mathcal{F}$ respectively. Append zero operators to the shorter list of elements to ensure $m=n$. Then, $\mathcal{E}=\mathcal{F}$ if and only if $E_{i}=\sum_{j}u_{ij}F_{j}$, where $u_{ij}$ are the elements of an $m\times m$ unitary matrix.
 \end{theorem}
 \subsection{Axiomatisation}
-Quantum operations can alternatively be defined axiomatically, with no reference to an environment at all; this is often neater, especially for our purposes. We therefore define the following.
+Quantum operations can alternatively be defined axiomatically, with no reference to an environment at all; this is often neater, especially for our purposes. We therefore make the following definition.
 \begin{definition}[Quantum Operation]
-	A map $\mathcal{E}$ from the set of density operators on $\mathcal{H}_{1}$ to the set of density operators on $\mathcal{H}_{2}$ is called a quantum operation if it satisfies:
+	Suppose $\mathcal{H}_{i}$ are finite-dimensional Hilbert spaces of arbitrary dimension. A map $\mathcal{E}$ from the set of density operators on $\mathcal{H}_{1}$ to the set of density operators on $\mathcal{H}_{2}$ is called a \textbf{quantum operation} if it satisfies:
 	\begin{enumerate}
 		\item $\text{Tr}(\mathcal{E}(\rho))$ is the probability that the process represented by $\mathcal{E}$ occurs, so $0\leq\text{Tr}(\mathcal{E}(\rho))\leq 1$.
 		\item $\mathcal{E}$ is \textit{convex-linear}; that is, for a set of probabilities $\{p_{i}\}$ and density matrices $\{\rho_{i}\}$, we have
@@ -314,11 +312,11 @@ This is a useful statement, as we can talk about a class of errors $\{E_{i}\}$ w
 \end{equation}
 for the Pauli matrices $\sigma_{i}^{1}\in\{I,X,Y,Z\}$ acting on the first qubit, then we can correct for \textbf{arbitrary} single qubit errors, since any single qubit operation has operation elements which can be chosen to be proportional to the Pauli matrices. Shor's code \cite{PhysRevA.52.R2493} can do this, for example.
 \section{Quantum Erasure}
-For our purposes, a class of errors called \textit{quantum erasures} are particularly important. An erasure is defined as the channel acting to erase a \textbf{known} subsystem of the physical space. Formally, we suppose that the physical space $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ has a tensor product structure. One representation of the erasure channel is then 
+For our purposes, a class of errors called \textit{quantum erasures} is particularly important. An erasure is defined as the channel acting to erase a \textbf{known} subsystem of the physical space. Formally, we suppose that the physical space $\mathcal{H}$ has a tensor product structure, factorising as $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. One representation of the erasure channel is then 
 \begin{equation}\label{qerasure}
 	\mathcal{E}(\rho)=\text{Tr}_{\ol{A}}(\rho),
 \end{equation} 
-for any state on $\mathcal{H}$. Note that this takes states on $\mathcal{H}$ to states on $\mathcal{H}_{A}$ only. To extract the operation elements, we let $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite \ref{qerasure} as
+for any state on $\mathcal{H}$. This is not a unique definition: alternatives include the \textit{depolarising channel}, which replaces the erased system with the identity. This definition is the most convenient for our purposes. Note that this takes states on $\mathcal{H}$ to states on $\mathcal{H}_{A}$ only. To extract the operation elements, we let $\{\ket{a}\}$ and $\{\ket{\ol{a}}\}$ be orthonormal bases of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ respectively. We can then rewrite Equation \ref{qerasure} as
 \begin{equation}
 	\mathcal{E}(\rho)=\sum_{\ol{a}}\braket{\ol{a}|\rho|\ol{a}},
 \end{equation}
@@ -326,11 +324,11 @@ from which we can read off operation elements
 \begin{equation}
 	E_{\ol{a}}\equiv I_{A}\otimes\bra{\ol{a}}=\sum_{a}\ketbras{a}\otimes\bra{\ol{a}}.
 \end{equation}
-The natural question to ask is what the quantum error correction conditions \ref{QECC} reduce to for erasures. To work this out, we can compute
+The natural question to ask is what the quantum error correction conditions (given in Theorem \ref{QECC}) reduce to for erasures. To work this out, we can compute
 \begin{equation}
 	E_{\ol{a}}^{\dagger}E_{\ol{b}}=(I_{A}\otimes\ket{\ol{a}})(I_{A}\otimes\bra{\ol{b}})=I_{A}\otimes\ketbra{\ol{a}}{\ol{b}},
 \end{equation}
-and so \ref{QECC1} then reduces to
+and so Equation \ref{QECC1} reduces to
 \begin{equation}\label{Qerc}
 	\Pc\ketbra{\ol{a}}{\ol{b}}\Pc=\alpha_{\ol{a}\ol{b}}\Pc
 \end{equation}
@@ -338,91 +336,59 @@ where we drop the $I_{A}$ for notational simplicity since the $\ket{\ol{a}}$s do
 \begin{equation}
 	\Pc\ketbra{\ol{a}}{\ol{b}}\Pc\propto\Pc.
 \end{equation}
-This will have an important implication when we come to look at theorem 3.1 of \cite{Harlow}. Note that an arbitrary operator $X_{\ol{A}}$ acting on $\mathcal{H}_{\ol{A}}$ can be decomposed in the $\{\ket{\ol{a}}\}$ basis as
+This will have an important implication when we come to look at Theorem 3.1 of \cite{Harlow}. Note that an arbitrary operator $X_{\ol{A}}$ acting on $\mathcal{H}_{\ol{A}}$ can be decomposed in the $\{\ket{\ol{a}}\}$ basis as
 \begin{equation}
 	X_{\ol{A}}\equiv \sum_{\ol{a},\ol{b}}x_{\ol{a},\ol{b}}\ketbra{\ol{a}}{\ol{b}}
 \end{equation}
-for some $x_{\ol{a},\ol{b}}\in\mathbb{C}$. Therefore, if \ref{Qerc} holds, we have
+for some $x_{\ol{a},\ol{b}}\in\mathbb{C}$. Therefore, if Equation \ref{Qerc} holds, we have
 \begin{equation}\label{EC}
 	\Pc X_{\ol{A}}\Pc\propto\Pc.
 \end{equation}
-This is precisely condition 3 of theorem 3.1 of \cite{Harlow}.
+This is precisely Condition 3 of Theorem 3.1 of \cite{Harlow}.
 
-%\section{Holography}
-%In this section, I will give a brief summary of what constitutes a holographic theory, and how this can be translated to the language of error correction. We also introduce some holographic terminology which we will frequently refer back to. It should be emphasized that the focus of this dissertation is on error correction rather then holography; this exposition will therefore focus on intuition rather than the full details of holography. The goal is to provide some intuition for the concepts of a \textit{Ryu-Takayanagi (RT) formula}, the \textit{causal and entanglement wedges}, \textit{complementary recovery}, and \textit{radial commutativity}.
-%\subsection{Quantum Gravity}
-%General relativity is inherently classical. If we have enough initial data about a gravitational situation (i.e. the position and velocity of all particles, the electric and magnetic fields everywhere, the stress-energy tensor, and the metric), then Einstein's equations
-%\begin{equation}
-%	G_{\mu\nu}=8\pi G T_{\mu\nu}
-%\end{equation}
-%can be used to find a description of the situation at a later time with certainty.\\
-%Quantum mechanics, while similar, is non-classical. Given a Hamiltonian and initial wavefunction, the Schrodinger equation governs evolution of the wavefunction in time. We can then recover classical quantities by operating on the wavefunction with the relevant observables; for example, the position or momentum operators. While the expectation values of these observables evolves smoothly, if we actually measure an observable then we project onto one of its eigenstates, and only by repeated measurement of an identical system can we extract the expectation values.
-%\subsection{The Holographic Dictionary}
-%A holographic theory is one in which a gravitational theory is in direct correspondence with a non-gravitational theory on its boundary. The most well-known example of this is the so-called \textit{AdS/CFT correspondence} \cite{Maldacena}, which posits a relation between a certain solution to Einstein's equations called \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its boundary. One major result of this correspondence is that there is a precise \textit{holographic dictionary} which defines how quantities in the boundary CFT `match up' with quantities in the bulk AdS space and vice versa. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula} which defines the correspondence between entropies in the boundary CFT and the area of geodesics in the bulk. This is the principal entry of interest for us, as it has a direct analogue in terms of quantum error correction; a code satisfying an RT formula (in some sense) is said to be a holographic code.
-%\subsection{The RT Formula}
-%The most simple form of the RT formula applies to a CFT state dual to a purely classical geometry:
-%\begin{equation}
-%	S_{A}(\rho)=\frac{1}{4G}\min_{\gamma_{A}}Area(\gamma_{A}).
-%\end{equation}
-%On the right hand side, $\gamma_{A}$ refers to a geodesic in the bulk (or extremal surface in higher dimensions) which hits the boundary at the edge of some chosen subregion $A$ of the boundary. We then minimise over all such $\gamma_{A}$, choosing the one with smallest length/area. The left hand side refers to the entanglement entropy in subregion $A$ of a state $\rho$ supported on the Hilbert space of the boundary CFT. This explicitly provides a quantitative entry in the dictionary to compute these entropies in terms of bulk geometric quantities.\\
-%More generally, the RT formula has an extended form which applies to bulk superpositions of geometries. This form is
-%\begin{equation}\label{RT}
-%	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
-%\end{equation}
-%Here, $\mathcal{L}$ is an operator acting on the quantum-gravitational Hilbert space (whatever that may be), with eigenstates dual to classical geometries, and eigenvalues being the areas of the minimal surfaces meeting the boundary subregion $A$. This is quite poorly defined in a sense, as we do not know what a gravitational state actually physically \textit{is}. We therefore view this equation as a \textit{definition} of entropy in the gravitational bulk.
-%\subsection{The Causal and Entanglement Wedges}
-%Lorentzian metrics describing a spacetime have a causal structure, so an operator at a point in the bulk can only be affected by a boundary subregion which can send or receive a signal to said bulk point. Formally, for a boundary subregion $A$, the causal wedge $\mathcal{C}[A]$ is the region of the bulk bounded by the boundary region of dependence on $A$ itself, and the set of bulk geodesics which start and end in this region of dependence. (FIGURE)\\
-%It's often convenient to work with a spatial slice within the causal wedge. If the RT surface is spacelike, all spatial slices in the causal wedge end on the RT surface itself, but hit the boundary at different times. In this case, we can choose a spatial slice which intersects the boundary precisely at $A$. In nice situations (for example, a static spacetime), we can pick a spatial slice extending between $A$ and its RT surface, which by causality has all the information we need to reconstruct the full causal wedge. In cases like this, we can draw diagrams suppressing time entirely.\\
-%Alternatively, given access to the entropy of a CFT subregion $A$, the RT formula says we can compute the area of the relevant extremal surface. Intuitively, we expect that if we know the full reduced density operator of a CFT state $\rho$ on $A$, we can construct the full RT surface itself. We can then use this information to construct the RT surfaces of smaller parts of the subregion $A$, and so we should be able to find the metric everywhere in the bulk region between $A$ and its RT surface. This idea is formalised by the entanglement wedge $\mathcal{E}[A]$. This is the domain of dependence of the bulk bounded by $A$, and the RT surface of $A$. $\mathcal{E}[A]$ is determined by the RT surface, which has area proportional to the von Neumann entropy of the boundary theory contained in $A$, which motivates the name.\\
-%It can be shown that $\mathcal{C}[A]\subseteq\mathcal{E}[A]$. For a pure boundary state, the RT surface of $A$ is the same as the RT surface of $\ol{A}$; the operator $\mathcal{L}$ giving its area is in both the set of operators acting on $A$ and those acting on $\ol{A}$. Causality says that both these sets of operators must mutually commute, so $\mathcal{L}$ must commute with all operators on $A$ and on $\ol{A}$. We say it's in the \textit{centre} of the operators acting on $A$. One example of such an operator is the identity, but if there is a gauge symmetry in the bulk theory, then there will be non-trivial elements of the centre, and the area operator $\mathcal{L}$ will be one of these. Non-triviality of $\mathcal{L}$ therefore tells us that the bulk is gravitational and has diffeomorphism invariance.
-%\subsection{Complementary Recovery and Radial Commutativity}
-%The causal wedge tells us which operators in the bulk can be reconstructed from information in a boundary region $A$. If we divide the boundary into two disjoint regions, an operator in an arbitrary point in the bulk must be in the causal wedge of one of the two regions, and only lies in both when it the point is on the corresponding RT surface. This is called \textit{complementary recovery}: given a subregion, we can reconstruct all operators in its causal wedge, but none of the operators outside of it.\\
-%If instead we allow the region $A$ to vary, a fixed operator in the bulk lies in the causal wedge of many regions. If we than have access to a boundary region with the property that many of its subregions can individually reconstruct the operator, we don't need the full state on such a region to reconstruct it, and there are multiple possibilities for reconstruction. If this is true, we say the full state has \textit{subregion duality}. If we erase a piece of the boundary $A$ which is much smaller than $A$ itself, almost every bulk operator can still be reconstructed - see the analogy to error correction?\\
-%The converse to subregion duality is \textit{radial commutativity}. For sensible spacetimes, the RT surface of a small subregion does not penetrate deep into the bulk; we need large subregions to do this. If a bulk operator lies outside the causal wedge of a subregion, it commutes with every operator inside the causal wedge; in particular, those operators which act on the boundary itself. However, every boundary operator acting at a single point at the boundary lives in the causal wedge of any boundary subregion containing the point, including arbitrarily small subregions around the point. So any bulk operator which does not act at the boundary itself must commute with \textbf{every} operator acting at a single boundary point, which is radial commutativity.\\
-%This is a problem. In field theories, the operator product expansion states that the product of operators acting at multiple points can be decomposed as a sum of local operators acting only at a single point. Radial commutativity then implies that all of these local operators commutes with the bulk operator - this would mean that any bulk operator commutes with every boundary operator. This conclusion is, however, only true since we treated the bulk Hilbert space as being the same as the boundary CFT Hilbert space. This is not true: the bulk Hilbert space for a given geometry is encoded inside the CFT Hilbert space. The resolution is therefore to map the bulk into the boundary via an isometry.
-
-\chapter{Holographic Error Correction}
-In this section, we state and prove the three theorems of \cite{Harlow}. We use the language of encoding isometries as in \cite{Pollack} rather than the code subspace language of \cite{Harlow}, as it makes constructing examples via a quantum circuit considerably easier. The three theorems are in increasing generality; the first describes \textit{conventional erasure correction}, the second \textit{subsystem error correction}, and the third \textit{operator algebra error correction}. They all characterise whether an erasure is correctable in the sense of complete state recovery.
+\chapter{Holographic Erasure Correction}\label{chap3}
+In this section, we state and prove the three theorems of Harlow's paper \cite{Harlow}. We follow Pollack et al. \cite{Pollack} in using the language of encoding isometries rather than the code subspace language of \cite{Harlow}. This is because when we give examples of erasure correcting codes in Chapter \ref{chap4}, they are much more easily presented by defining an isometry as a quantum circuit than directly giving a code subspace. Moreover, from the point of view of holography, an encoding isometry has physical significance as the \textit{bulk to boundary map}. The downside is that it does add more notational baggage to the theorem statements and proofs which we present. The three theorems are in increasing generality; the first describes \textit{conventional erasure correction}, the second \textit{subsystem erasure correction}, and the third \textit{operator-algebra error correction}. They all characterise whether an erasure is correctable in the sense of \textit{complete} state recovery, rather than approximate recovery. Note that this chapter assumes an understanding of \textit{von Neumann entropy}, \textit{Schmidt decompositions}, and \textit{purifications}. See Appendices \ref{apb} and \ref{apc} for brief summaries of these concepts.
+\section{Notation}
+For easy reference, we first present a list of the notational choices we make. The theorems and proofs below can be a little dense and hard to read due to the large number of objects to keep track of. Physical systems are labelled by \textit{Roman} letters (e.g. $a,\,A,\,R$, etc.), and their associated Hilbert spaces by $\mathcal{H}_{a},\,\mathcal{H}_{A},\,\mathcal{H}_{R}$, etc. We use the shorthand $|A|$ to mean the dimensionality of the underlying Hilbert space, so $|A|\equiv|\mathcal{H}_{A}|$ etc. We use subscripts to indicate which system a state or operator is in or acts on; for example, $\ket{\psi}_{A}\in\mathcal{H}_{A}$ and $O_{A}\in\mathcal{L}(\mathcal{H}_{A})$. We also use $\mathcal{L}(\mathcal{H})$ to denote the set of linear operators on $\mathcal{H}$. We single out elements of and operators acting on the logical Hilbert space $\mathcal{H}_{L}$ by marking them with a tilde symbol, so $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ and $\tilde{O}\in\mathcal{L}(\mathcal{H}_{L})$, for example. For density operators corresponding to pure states, we use square brackets to indicate the state the operator corresponds to. So, for example, $\rho[\psi]=\ketbras{\psi}$. Moreover, reduced density matrices are indicated by a subscript; so if $\ket{\psi}_{A\ol{A}}\in\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, then $\rho_{A}[\psi]\equiv\tr_{\ol{A}}(\ketbras{\psi})$. We also will often neglect tensor products with identity operators which are technically necessary to lift an operator to act on a full Hilbert space where the meaning is clear. For example, $O_{A}\ket{\psi}_{A\ol{A}}$ formally means $(O_{A}\otimes I_{\ol{A}})\ket{\psi}_{A\ol{A}}$. Finally, when we say an operator ``acts within a subspace'', we really mean that both the operator \textit{and} its Hermitian conjugate act within the subspace.
 \section{Conventional Erasure Correction}
-We start presenting theorem 3.1 of \cite{Harlow} from the encoding isometry point of view.
+We start by presenting Theorem 3.1 of \cite{Harlow} in the language of encoding isometries.
 \begin{theorem}\label{t1}
-	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $\Hcode\subseteq\mathcal{H}$ is the image of $V$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
+	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and $\Hcode\subseteq\mathcal{H}$ is the image of $V$. Define an orthonormal basis $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{L}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\ket{i}_{R}(V\ket{\tilde{i}})_{A\ol{A}}$, where $R$ is an auxiliary system such that $\mathcal{H}_{R}=\mathcal{H}_{L}$, and $\{\ket{i}_{R}\}$ is an orthonormal basis of $\mathcal{H}_{R}$. The following statements are then equivalent:
 	\begin{enumerate}
-		\item $|R|\leq|A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a state $\ket{\chi}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that 
+		\item \label{c1} $|R|\leq|A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}|=|R|$ and $|A_{3}|<|R|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a fixed state $\ket{\chi}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that 
 		\begin{equation}\label{C1}
 			(U_{A}\otimes I_{\ol{A}})(V\ket{\tilde{i}})_{A\ol{A}}=\ket{i}_{A_{1}}\otimes\ket{\chi}_{A_{2}\ol{A}},
 		\end{equation}
 		where $\ket{i}_{A_{1}}$ is an orthonormal basis for $\mathcal{H}_{A_{1}}$.
-		\item For any operator $\tilde{O}$ acting within $\mathcal{H}_{L}$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+		\item \label{c2} For any operator $\tilde{O}$ acting within $\mathcal{H}_{L}$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
 		\begin{equation}\label{C2}
 			\begin{aligned}
 				O_{A}V\ket{\tilde{\psi}}&=V\tilde{O}\ket{\tilde{\psi}}\\
 				O_{A}^{\dagger}V\ket{\tilde{\psi}}&=V\tilde{O}^{\dagger}\ket{\tilde{\psi}}.
 			\end{aligned}
 		\end{equation}
-		\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
+		\item \label{c3} For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
 		\begin{equation}\label{C3}
 			\Pc X_{\ol{A}}\Pc\propto\Pc
 		\end{equation}
 		where $\Pc$ is the projector onto $\Hcode$. Alternatively, if $P_{L}=\sum_{i}\ketbras{\tilde{i}}$ is the projector onto $\mathcal{H}_{L}$, then $\Pc=VP_{L}V^{\dagger}$ is its image under $V$.
-		\item In the state $\ket{\phi}$, we have
+		\item \label{c4} In the state $\ket{\phi}$, we have
 		\begin{equation}\label{C4}
 			\rho_{R\ol{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\ol{A}}[\phi].
 		\end{equation}
-		Here, $\rho_{R}[\phi]=\tr_{A\ol{A}}(\ketbras{\phi})$ etc. are the reduced density matrices for $\ket{\phi}$.
 	\end{enumerate}
 \end{theorem}
-Before proving this, let's go over some of the intuition behind each statement, and what all the objects in this theorem refer to. $\ol{A}$ is the erased subsystem, and $A$ is preserved under erasure. \ref{C1} is the statement of full state recovery; we can recover any state on $\mathcal{H}_{L}$ in full on subsystem $A_{1}$ by applying some unitary $U_{A}$ which does not need access to $\ol{A}$. We can visualise this by means of a circuit diagram:
+Before proving this, we discuss some of the intuition behind each condition, and what all the objects in this theorem refer to. $\ol{A}$ is the erased subsystem, and $A$ is preserved under erasure. Condition \ref{c1} is the statement of full state recovery; we can recover any state on $\mathcal{H}_{L}$ in full on subsystem $A_{1}$ by applying some unitary operator $U_{A}$ which does not need access to $\ol{A}$. We can visualise this by means of a circuit diagram:
 \begin{figure}[H] 
 	\centering
 	\scalebox{1.2}{%
 		\begin{quantikz}
-			\lstick{$\ket{\psi}$} & \qw & \gate[wires = 2]{U_{A}^{\dagger}} & \qw \rstick{$A_{1}$}\\
-			\makeebit{$\ket{\chi}$} & \qw & & \qw \rstick{$A_{2}$} \\
-			& \qw & \qw & \qw \rstick{$\overline{A}$}
+			\lstick{$\ket{\psi}$} & \qw & \gate[wires = 2]{U_{A}^{\dagger}} & \qw \rstick{$A_{1}$} && \rstick[wires = 3]{$V\ket{\tilde{\psi}}$}\\
+			\makeebit{$\ket{\chi}$} & \qw & & \qw \rstick{$A_{2}$} &&\\
+			& \qw & \qw & \qw \rstick{$\overline{A}$}&&
 	\end{quantikz}}
 \end{figure}
-Here, $\ket{\psi}$ is a state on $\mathcal{H}_{A_{1}}$, and we would recover a state $V\ket{\tilde{\psi}}$ on the right hand side over $A_{1}$ and $A_{2}$, where $\ket{\tilde{\psi}}$ has the same matrix elements as $\ket{\psi}$. A natural question about \ref{C1} is asking what the significance of $\ket{\chi}$ is. This is elucidated in the proof, but essentially it turns out that $\ket{\chi}$ is an arbitrary purification of $\rho_{\ol{A}}[\phi]$ on $A_{2}$. \ref{C2} says that any logical operator on $\mathcal{H}_{L}$ can be equivalently represented by an operator acting on the $A$ subsystem only. This makes sense as a condition for erasure correction: if we can reconstruct a state without access to $\ol{A}$, all the information about the state is in some sense `contained' in $A$, so we should be able to operate on this information by just acting within $\mathcal{H}_{A}$. We derived \ref{C3} earlier, as \ref{EC}; it is just the quantum error correction conditions for erasures. In a more physically intuitive way, this says that performing a measurement of any operator on the erased subsystem $\ol{A}$ cannot disturb the encoded information - a plausible condition for erasure to be correctable. In some sense, this means that all information about the original state is contained in the $A$ system, as mentioned before. \ref{C4} states that operators on the auxiliary system $R$ and operators on the erased subsystem $\ol{A}$ are not correlated.\\
+Here, $\ket{\psi}$ is a state on $\mathcal{H}_{A_{1}}$ with the same matrix elements as $\ket{\tilde{\psi}}$ has on $\mathcal{H}_{L}$. A natural question to ask about Equation \ref{C1} is what the significance of $\ket{\chi}$ is. This is elucidated in the proof, but essentially it turns out that $\ket{\chi}$ is an arbitrary purification of $\rho_{\ol{A}}[\phi]$ on $A_{2}$. Condition \ref{c2} says that any logical operator on $\mathcal{H}_{L}$ can be equivalently represented by an operator acting on the $A$ subsystem only. This makes sense as a condition for erasure correction: if we can reconstruct a state without access to $\ol{A}$, all the information about the state is in some sense `contained' in $A$, so we should be able to operate on this information by just acting within $\mathcal{H}_{A}$. We derived Condition \ref{c3} earlier, as Equation \ref{EC}; it is just the quantum error correction conditions adapted to erasures. In a more physically intuitive way, this says that performing a measurement of any operator on the erased subsystem $\ol{A}$ cannot disturb the encoded information - a plausible condition for erasure to be correctable. In some sense, this means that all information about the original state is contained in the $A$ system, as mentioned before. Condition \ref{c4} states that operators on the auxiliary system $R$ and operators on the erased subsystem $\ol{A}$ are not correlated.\\
 We now present the proof of this theorem. This follows Harlow's proof in \cite{Harlow}, with details filled in.
 \newcommand{\Xabar}{X_{\overline{A}}}
 \begin{proof}
@@ -430,26 +396,26 @@ We now present the proof of this theorem. This follows Harlow's proof in \cite{H
 	\begin{equation*}
 		\braket{\tilde{i}|\tilde{O}|\tilde{j}}_{A\ol{A}}=\braket{i|O_{A_{1}}|j}_{A_{1}}
 	\end{equation*}
-	which is always possible since $|A_{1}|=|R|=|\mathcal{H}_{L}|$. Now, note that \ref{C2} can be alternatively phrased as the statement that for any $\tilde{O}$, there exists a corresponding $O_{A}$ with
+	which is always possible since $|A_{1}|=|R|=|\mathcal{H}_{L}|$. Now, note that Equation \ref{C2} can be alternatively phrased as the statement that for any $\tilde{O}$, there exists a corresponding $O_{A}$ with
 	\begin{equation}
 		\begin{aligned}
 			\braket{\tilde{i}|V^{\dagger}O_{A}V|\tilde{j}}&=\braket{\tilde{i}|\tilde{O}|\tilde{j}}\\
 			\braket{\tilde{i}|V^{\dagger}O_{A}^{\dagger}V|\tilde{j}}&=\braket{\tilde{i}|\tilde{O}^{\dagger}|\tilde{j}}.
 		\end{aligned}
 	\end{equation}
-	We can then just check these are satisfied by our $O_{A}$:
+	We can then check these are satisfied by our $O_{A}$:
 	\begin{equation}
 		\begin{aligned}
 			\braket{\tilde{i}|V^{\dagger}O_{A}V|\tilde{j}}&=\braket{\tilde{i}|V^{\dagger}U_{A}^{\dagger}O_{A_{1}}U_{A}V|\tilde{j}}\\&=\left(\bra{i}_{A_{1}}\otimes\bra{\chi}_{A_{2}\ol{A}}\right)O_{A_{1}}\left(\ket{j}_{A_{1}}\otimes\ket{\chi}_{A_{2}\ol{A}}\right)\\&=\braket{i|O_{A_{1}}|j}_{A_{1}}\braket{\chi|\chi}_{A_{2}\ol{A}}\\&=\braket{\tilde{i}|\tilde{O}|\tilde{j}}
 		\end{aligned}
 	\end{equation}
 	with similar for $O_{A}^{\dagger}$, as claimed.\\
-	$(2)\implies(3)$: This implication is by contradiction. We can rewrite \ref{C3} as the statement that $P_{L}V^{\dagger}\Xabar VP_{L}\propto P_{L}$. So suppose there was some $X_{\ol{A}}$ such that $P_{L}V^{\dagger} X_{\ol{A}}VP_{L} \not\propto P_{L}$. Now, Schur's lemma in this context states that the only non-trivial operators commuting with all other operators on $\mathcal{H}_{L}$ are scalar multiples of the identity. Since $V^{\dagger}X_{\ol{A}}V$ is not the identity, there must be some $\tilde{O}$ on $\mathcal{H}_{L}$ which doesn't commute with $V^{\dagger}X_{\ol{A}}V$, and some $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ such that:
+	$(2)\implies(3)$: This implication is by contradiction. We can rewrite Equation \ref{C3} as the statement that $P_{L}V^{\dagger}\Xabar VP_{L}\propto P_{L}$. So suppose there was some $X_{\ol{A}}$ such that $P_{L}V^{\dagger} X_{\ol{A}}VP_{L} \not\propto P_{L}$. Now, Schur's lemma in this context states that the only non-trivial operators commuting with all other operators on $\mathcal{H}_{L}$ are scalar multiples of the identity. Since $V^{\dagger}X_{\ol{A}}V$ is not the identity, there must be some $\tilde{O}$ on $\mathcal{H}_{L}$ which doesn't commute with $V^{\dagger}X_{\ol{A}}V$, and some $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ such that:
 	\begin{equation}
 		\braket{\tilde{\psi}|[P_{L}V^{\dagger} X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}\neq 0.
 	\end{equation}
-	But such an $\tilde{O}$ cannot have a representation $O_{A}$ on $\mathcal{H}_{A}$ as defined in \ref{C2}, since this would by definition commute with $X_{\ol{A}}$; if it had such an $O_{A}$, then $\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,V^{\dagger}O_{A}V]|\tilde{\psi}}=\braket{\tilde{\psi}|V^{\dagger}[X_{\ol{A}},O_{A}]V|\tilde{\psi}}=0$, which is a contradiction.\\
-	$(3)\implies (4)$: Consider arbitrary operators $O_{R}$ on $\mathcal{H}_{R}$ and $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$. If we denote the constant of proportionality in \ref{C3} as $\lambda\in\mathbb{C}$, we have
+	But such an $\tilde{O}$ cannot have a representation $O_{A}$ on $\mathcal{H}_{A}$ as defined in Equation \ref{C2}, since this would by definition commute with $X_{\ol{A}}$; if it had such an $O_{A}$, then $\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}X_{\ol{A}}V,V^{\dagger}O_{A}V]|\tilde{\psi}}=\braket{\tilde{\psi}|V^{\dagger}[X_{\ol{A}},O_{A}]V|\tilde{\psi}}=0$, which is a contradiction.\\
+	$(3)\implies (4)$: Consider arbitrary operators $O_{R}$ on $\mathcal{H}_{R}$ and $X_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$. If we denote the constant of proportionality in Equation \ref{C3} as $\lambda\in\mathbb{C}$, we have
 	\begin{equation}
 		\Pc\Xabar\Pc=\lambda\Pc,
 	\end{equation}
@@ -464,18 +430,18 @@ We now present the proof of this theorem. This follows Harlow's proof in \cite{H
 		\end{aligned}
 	\end{equation} 
 	since $\Pc\ket{\phi}=\ket{\phi}$. Therefore, so long as $\braket{\phi|O_{R}|\phi}$ and $\braket{\phi|\Xabar|\phi}$ are non-zero for any such $O_{R}$ and $\Xabar$, we have $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$.\\
-	$(4)\implies (1)$: First, note that by definition, $\ket{\phi}$ is a purification of $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$ on subsystem $A$. Also note that $\ket{\phi}$ maximally entangles $R$ with $A$:
+	$(4)\implies (1)$: First, note that by definition $\ket{\phi}$ is a purification of $\rho_{R\overline{A}}[\phi]=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi]$ on subsystem $A$. Also note that $\ket{\phi}$ maximally entangles $R$ with $A$:
 	\begin{equation}
 		\rho_{R}[\phi]=\text{Tr}_{A\overline{A}}\left(\frac{1}{|R|}\sum_{ij}\ketbra{i}{j}_{R}(V\ketbra{\tilde{i}}{\tilde{j}}V^{\dagger})_{A\overline{A}}\right)=\frac{1}{|R|}\sum_{i}\ketbras{i}_{R}=\frac{I_{R}}{|R|}
 	\end{equation}
-	since $\rho_{R}[\phi]=I_{R}/|R|$ is the maximally mixed state. This means that \ref{C4} becomes
+	since $\rho_{R}[\phi]=I_{R}/|R|$ is the maximally mixed state. This means that Equation \ref{C4} becomes
 	\begin{equation}\label{C5}
 		\rho_{R\overline{A}}[\phi]=\frac{I_{R}}{|R|}\otimes\rho_{\overline{A}}[\phi].
 	\end{equation}
 	Next, we perform long division on $A$. Say $k$ is the largest integer such that $|A|=k|R|+r$ and $r<|R|$. Then, there exists a factorisation $\mathcal{H}_{A}=\left(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}}\right)\oplus\mathcal{H}_{A_{3}}$ such that $|A_{1}|=|R|$, $|A_{2}|=k$, and $|A_{3}|=r$.\\
 	We now define the following state:
 	\begin{equation}
-		\ket{\Psi}_{RA_{1}}\equiv\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i}_{A_{1}},
+		\ket{\Psi}_{RA_{1}}\equiv\frac{1}{\sqrt{|R|}}\sum_{i}\ket{i}_{R}\ket{i}_{A_{1}}
 	\end{equation}
 	which is a purification of $\rho_{R}[\phi]$ on $A_{1}$. We also define $\ket{\chi}_{A_{2}\ol{A}}$ to be an arbitrary purification of $\rho_{\ol{A}}[\phi]$ on $A_{2}$. Note that the state
 	\begin{equation}
@@ -487,7 +453,7 @@ We now present the proof of this theorem. This follows Harlow's proof in \cite{H
 			\text{Tr}_{A_{1}A_{2}}\left(\ketbras{\Psi}_{RA_{1}}\otimes\ketbras{\chi}_{A_{2}\overline{A}}\right)&=\text{Tr}_{A_{1}}\left(\ketbras{\Psi}_{RA_{1}}\right)\text{Tr}_{A_{2}}\left(\ketbras{\chi}_{A_{2}\overline{A}}\right)\\&=\rho_{R}[\phi]\otimes\rho_{\overline{A}}[\phi].
 		\end{aligned}
 	\end{equation}
-	Such a factorisation exists since the $R$ and $\ol{A}$ registers are unentangled in \ref{C5}. In a purification, the dimension of the purifying system $A_{1}$ needs to be at least as big as the rank of the state being purified, so we therefore have $|A_{1}|=|R|$ (since $\rho_{R}[\phi]$ is maximally mixed), and $\text{rank}\left(\rho_{\overline{A}}[\phi]\right)\leq|A_{2}|$.\\
+	Such a factorisation exists since the $R$ and $\ol{A}$ registers are unentangled in Equation \ref{C5}. In a purification, the dimension of the purifying system $A_{1}$ needs to be at least as big as the rank of the state being purified, so we therefore have $|A_{1}|=|R|$ (since $\rho_{R}[\phi]$ is maximally mixed), and $\text{rank}\left(\rho_{\overline{A}}[\phi]\right)\leq|A_{2}|$.\\
 	However, purifications are unitarily equivalent on the purifying system - $A$ in our case - so there exists a unitary $U_{A}$ on $\mathcal{H}_{A}$ taking $\ket{\phi}=U_{A}\ket{\phi'}$. Overall, we therefore have:
 	\begin{equation}
 		\begin{aligned}
@@ -499,7 +465,7 @@ We now present the proof of this theorem. This follows Harlow's proof in \cite{H
 \end{proof}
 One important facet of this theorem is that it does not specify the full set of subsystems $\ol{A}$ which can be erased and still corrected. It may be that some choices of $\ol{A}$ are not correctable; we need to apply the theorem to each choice in turn and check. Note as well that $\ket{\chi}_{A_{2}\ol{A}}$ has to have entanglement here for the code to function robustly. If $\ket{\chi}_{A_{2}\ol{A}}$ was a product state, for example, then we can get rid of $\ol{A}$ entirely as it is extemporaneous. Entanglement is what allows a subsystem of $A$ together with $\ol{A}$ to access information which $A$ cannot access on its own.\\
 We now present an example of conventional erasure correction: the toy model of \cite{Harlow}.
-\subsubsection{An Example}
+\subsubsection{Example}
 In this example, we refer to \textit{qutrits}. A qutrit is exactly analogous to a qubit, except the underlying Hilbert space has three basis elements, which we denote $\{\ket{0},\ket{1},\ket{2}\}$. An arbitrary qutrit can then be written
 \begin{equation}
 	\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
@@ -534,7 +500,7 @@ which explicitly shows state recovery is possible given access to only the first
 \begin{equation}\label{staterec}
 	(U_{12}\otimes I_{3})V\ket{{\psi}}=\ket{{\psi}}_{1}\otimes\ket{\chi}_{23}.
 \end{equation}
-This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to \ref{unitary} acting on the remaining two qutrits. We can also phrase this in terms of operator reconstructability \ref{C2}. Suppose ${O}$ acts on the space of a single qutrit as
+This procedure holds irrelevant of which qutrit has been erased; we can just define a unitary operator with equivalent action to \ref{unitary} acting on the remaining two qutrits. We can also phrase this in terms of operator reconstructability as in Condition\ref{c2}. Suppose ${O}$ acts on the space of a single qutrit as
 \begin{equation}
 	{O}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}.
 \end{equation}
@@ -547,10 +513,10 @@ This is done by just defining
 	O_{12}\equiv U_{12}^{\dagger}OU_{12}
 \end{equation}
 where we take $\tilde{O}$ to act on the first qutrit only.
-\section{Subsystem Error Correction}
-The generalisation of conventional erasure correction which encompasses situations where we can recover some information on $A$ and some on $\ol{A}$ is called \textit{subsystem error correction}. This is theorem 4.1 of \cite{Harlow}, and can be stated as follows.
-\begin{theorem}
-	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$ and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Define orthonormal bases $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{a}$ and $\{\ket{\tilde{j}}\}$ of $\mathcal{H}_{\ol{a}}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R||\ol{R}|}}\sum_{i,j}\ket{i}_{R}\ket{j}_{\ol{R}}(V\ket{\widetilde{ij}})_{A\ol{A}}$ where $R$ and $\ol{R}$ are auxiliary systems with $\mathcal{H}_{R}=\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{R}}=\mathcal{H}_{\ol{a}}$. The following statements are then equivalent:
+\section{Subsystem Erasure Correction}
+The generalisation of conventional erasure correction which encompasses situations where we can recover some information on $A$ and some on $\ol{A}$ is called \textit{subsystem erasure correction}. This is Theorem 4.1 of \cite{Harlow}, and can be stated as follows; again, in the language of encoding isometries.
+\begin{theorem}\label{t2}
+	Let $V\;:\;\mathcal{H}_{L}\to\mathcal{H}$ be an encoding isometry, where $\mathcal{H}_{L}=\mathcal{H}_{a}\otimes\mathcal{H}_{\ol{a}}$ and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Define orthonormal bases $\{\ket{\tilde{i}}\}$ of $\mathcal{H}_{a}$ and $\{\ket{\tilde{j}}\}$ of $\mathcal{H}_{\ol{a}}$, and let $\ket{\phi}\equiv\frac{1}{\sqrt{|R||\ol{R}|}}\sum_{i,j}\ket{i}_{R}\ket{j}_{\ol{R}}(V\ket{\widetilde{ij}})_{A\ol{A}}$ where $R$ and $\ol{R}$ are auxiliary systems with $\mathcal{H}_{R}=\mathcal{H}_{a}$ and $\mathcal{H}_{\ol{R}}=\mathcal{H}_{\ol{a}}$, and orthonormal bases $\{\ket{i}_{R}\}$ and $\{\ket{j}_{\ol{R}}\}$ respectively. The following statements are then equivalent:
 	\begin{enumerate}
 		\item $|a|\leq|A|$, and if we decompose $\mathcal{H}_{A}=(\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}})\oplus\mathcal{H}_{A_{3}}$, where $|A_{1}|=|a|$, and $|A_{3}|\leq |a|$, then there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and a set of orthonormal states $\ket{\chi_{j}}_{A_{2}\ol{A}}\in\mathcal{H}_{A_{2}\ol{A}}$ such that
 		\begin{equation}\label{S1}
@@ -575,10 +541,10 @@ The generalisation of conventional erasure correction which encompasses situatio
 		\end{equation}
 	\end{enumerate}
 \end{theorem}
-The proof of this is virtually identical to that of theorem \ref{t1}, only that we must now keep track of the $\mathcal{H}_{a}$ subsystem. Moreover, it is a straightforward special case of \textit{operator-algebra error correction} in the next section, so we do not go through the proof. We just include the theorem here for completeness.
+The proof of this is virtually identical to that of Theorem \ref{t1}, only that we must now keep track of the $\mathcal{H}_{a}$ subsystem. Moreover, it is a straightforward special case of \textit{operator-algebra erasure correction} in the next section, so we do not go through the proof. We just include the theorem here for completeness. In particular, there are some alternative generalisations of Harlow's theorems which build upon subsystem erasure correction rather than operator-algebra erasure correction. For an example, see \cite{QMS}.
 
-\section{Operator-Algebra Error Correction}
-In this section, we present theorem 5.1 of \cite{Harlow}: operator-algebra erasure correction. This is the most general theorem of Harlow, encompassing both conventional and subsystem correction as special cases. However, in order to make sense of this, we need the theory of \textit{von Neumann algebras} on finite-dimensional Hilbert spaces. We present the necessary results here; readers looking for a more detailed exposition of von Neumann algebras should consult appendix A of \cite{Harlow}, or \cite{VNA} for a more `mathematical' set of notes applicable to the infinite dimensional case. Note as well we do not prove the results here; we just present them.
+\section{Operator-Algebra Erasure Correction}
+In this section, we present Theorem 5.1 of \cite{Harlow}: operator-algebra erasure correction. This is Harlow's most general theorem, encompassing both conventional and subsystem correction as special cases. However, in order to make sense of this, we need the theory of \textit{von Neumann algebras} on finite-dimensional Hilbert spaces. We present the necessary results here; readers looking for a more detailed exposition of von Neumann algebras should consult Appendix A of \cite{Harlow}, or \cite{VNA} for a more `mathematical' set of notes applicable to the infinite dimensional case. Note as well we do not prove the results here; we just present them.
 \subsection{von Neumann Algebras}
 \begin{definition}
 	A \textbf{von Neumann algebra} on a finite-dimensional Hilbert space $\mathcal{H}$ is any set of linear operators $M\subseteq\mathcal{L}(\mathcal{H})$ such that:
@@ -589,7 +555,7 @@ In this section, we present theorem 5.1 of \cite{Harlow}: operator-algebra erasu
 		\item $M$ is closed under addition: $\forall x,y\in M$, $x+y\in M$.
 	\end{itemize}
 \end{definition}
-From now on, whenever we refer to a von Neumann algebra, we really mean a von Neumann algebra on a finite-dimensional Hilbert space. Note the notation of operators written in lower case rather than upper case as is common. This is because we are treating the operators as elements of an algebra, rather than individual operators in their own right. We will occasionally refer to a von Neumann algebra by its \textit{generators}: the minimal set of operators which under the operations of conjugation, multiplication, and addition, can construct all other operators in $M$. We write $M=\braket{x,y,\ldots}$ for the algebra generated by $x,y,\ldots$.\\
+From now on, whenever we refer to a von Neumann algebra, we really mean a von Neumann algebra on a finite-dimensional Hilbert space. Note the notation of operators written in lower case rather than upper case as is common. This is because we are treating the operators as \textit{elements} of an algebra, rather than individual operators in their own right. We will occasionally refer to a von Neumann algebra by its \textit{generators}: the minimal set of operators which under the operations of conjugation, multiplication and addition can construct all other operators in $M$. We write $M=\braket{x,y,\ldots}$ for the algebra generated by $x,y,\ldots$.\\
 Any von Neumann algebra induces two `natural' associated algebras: the \textit{commutant} and the \textit{centre}.
 \begin{definition}[Commutant]
 	Given a von Neumann algebra $M$ on $\mathcal{H}$, its \textbf{commutant}, denoted $M'$, is the set of all operators on $\mathcal{H}$ which commute with $M$; that is
@@ -607,27 +573,27 @@ In classifying von Neumann algebras, there is a special role for algebras which 
 \begin{definition}[Factor algebra]
 	A von Neumann algebra $M$ on $\mathcal{H}$ is called a \textbf{factor} if $Z_{M}$ contains only scalar multiples of the identity; that is
 	\begin{equation}
-		Z_{M}\equiv\braket{I}=\{\lambda I\,|\,\lambda\in\mathbb{C}\}
+		Z_{M}\equiv\braket{I}=\{\lambda I\,|\,\lambda\in\mathbb{C}\}.
 	\end{equation}
 \end{definition}
 \subsection{Classification of von Neumann Algebras}
-In order to apply the theory of von Neumann algebras to error correction, we need two powerful classification theorems. We first classify factor algebras.
+In order to apply the theory of von Neumann algebras to erasure correction, we need two powerful classification theorems. We first classify factor algebras.
 \begin{theorem}\label{factorclass}
 	Suppose $M$ is a factor on $\mathcal{H}$. Then there exists a tensor factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$ and $M'=I_{A}\otimes\mathcal{L}(\mathcal{H}_{\ol{A}})$.
 \end{theorem}
 In other words, $M$ induces a tensor factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, and it is then the set of all linear operators on the tensor factor $\mathcal{H}_{A}$. For more general von Neumann algebras, this classification generalises to something called a \textit{Wedderburn decomposition}.
-\begin{theorem}\label{vnclass}
+\begin{theorem}[Wedderburn decomposition]\label{vnclass}
 	Suppose $M$ is a von Neumann algebra on $\mathcal{H}$. Then there exists a block decomposition 
 	\begin{equation} 
-		\mathcal{H}=\big[\oplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}})\big]\oplus \mathcal{H}_{0}
+		\mathcal{H}=\big[\bigoplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}})\big]\oplus \mathcal{H}_{0}
 	\end{equation}
 	in terms of which $M$ and $M'$ are block-diagonal, with corresponding decompositions
 	\begin{equation}\label{wburn}
-		M=\big[\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\ol{A}_{\alpha}})\big]\oplus0,\quad M'=\big[\oplus_{\alpha}(I_{A_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{A}_{\alpha}}))\big]\oplus0.
+		M=\big[\bigoplus_{\alpha}(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\ol{A}_{\alpha}})\big]\oplus0,\quad M'=\big[\bigoplus_{\alpha}(I_{A_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{A}_{\alpha}}))\big]\oplus0.
 	\end{equation}
 	Here, $\mathcal{H}_{0}$ is the null space, and $0$ is the zero operator on $\mathcal{H}_{0}$.
 \end{theorem}
-For ease of notation, we usually drop the direct sum with the null space. These decompositions collectively are Wedderburn decompositions.\\
+For ease of notation, we usually drop the direct sum with the null space.\\
 This is all a bit abstract. We therefore give a series of examples of these classification theorems to build intuition, beginning with the classification of factors.
 \begin{example}
 	The von Neumann algebra $M=\mathcal{L}(\mathbb{C}^{2})\otimes I$ on $\mathcal{H}=\mathbb{C}^{4}$ is a factor. It has Wedderburn decomposition
@@ -638,15 +604,15 @@ This is all a bit abstract. We therefore give a series of examples of these clas
 	\end{equation}
 	where $a,b,c,d\in\mathbb{C}$. The commutant is $M'=I\otimes\mathcal{L}(\mathbb{C}^{2})$, and it induces $\mathcal{H}=\mathbb{C}^{2}\otimes\mathbb{C}^{2}$.
 \end{example}
-Our next example is a more complex one, displaying the block diagonal structure of \ref{wburn}.
+Our next example is a more complex one, displaying the block diagonal structure of Equation \ref{wburn}.
 \begin{example}\label{e1}
 	Consider the von Neumann algebra $M=\braket{Z\otimes I\otimes I,I\otimes X\otimes I,I\otimes Z\otimes I}$, where $X$ and $Z$ are Pauli matrices, over $\mathcal{H}=\mathbb{C}^{8}$. This induces a decomposition of $\mathcal{H}$ as
 	\begin{equation}
-		\mathcal{H}=\oplus_{\alpha=1}^{2}(\mathbb{C}^{2}\otimes \mathbb{C}^{2}),
+		\mathcal{H}=\bigoplus_{\alpha=0}^{1}(\mathbb{C}^{2}\otimes \mathbb{C}^{2}),
 	\end{equation}
 	and $M$ has Wedderburn decomposition
 	\begin{equation}
-		M=\oplus_{\alpha=1}^{2}(\mathcal{L}(\mathbb{C}^{2})\otimes I)=\left(\begin{NiceArray}{cccc|cccc}
+		M=\bigoplus_{\alpha=0}^{1}(\mathcal{L}(\mathbb{C}^{2})\otimes I)=\left(\begin{NiceArray}{cccc|cccc}
 			a&0&b&0&\Block{4-4}{\boldsymbol{0}}&&&\\
 			0&a&0&b&&&&\\
 			c&0&d&0&&&&\\
@@ -663,9 +629,9 @@ Our next example is a more complex one, displaying the block diagonal structure 
 \subsection{The Link to Error Correction}
 To link this mathematical discussion to the language of error correction, suppose we have a von Neumann algebra $M$ on the logical Hilbert space $\mathcal{H}_{L}$. Then we have a decomposition
 \begin{equation}\label{decomp}
-	\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})
+	\mathcal{H}_{L}=\bigoplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})
 \end{equation} 
-such that $M$ is the set of all operators which are block diagonal in $\alpha$, and acts as $\tilde{O}_{L_{\alpha}}\otimes I_{\ol{L}_{\alpha}}$ within each block, where $\tilde{O}_{L_{\alpha}}$ is an arbitrary linear operator on $\mathcal{H}_{L_{\alpha}}$. In matrix form, for some $\tilde{O}\in M$, we can write:
+such that $M$ is the set of all operators which are block diagonal in $\alpha$, where each operator acts as $\tilde{O}_{L_{\alpha}}\otimes I_{\ol{L}_{\alpha}}$ within each block, where $\tilde{O}_{L_{\alpha}}$ is an arbitrary linear operator on $\mathcal{H}_{L_{\alpha}}$. In matrix form, for some $\tilde{O}\in M$, we can write:
 \begin{equation}\label{thing1}
 	\tilde{O}=\begin{pmatrix}
 		\tilde{O}_{L_{1}}\otimes I_{\ol{L}_{1}}&0&\dots\\
@@ -708,53 +674,53 @@ In what follows, we will often wish to compute the expectation values of operato
 	for all $x\in M$.
 \end{theorem}
 This theorem states that in computing expectation values of elements of $M$, we can replace $\rho$ by $\rho_{M}$.\\
-We can actually write down an explicit form for $\rho_{M}$. We do this for factors first. From theorem \ref{factorclass}, we know that if $M$ is a factor on $\mathcal{H}$, then there exists a factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$. Defining the reduced state
+We can actually write down an explicit form for $\rho_{M}$. We do this for factors first. From Theorem \ref{factorclass}, we know that if $M$ is a factor on $\mathcal{H}$, then there exists a factorisation $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ such that $M=\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}}$. Defining the reduced state
 \begin{equation}
 	\rho_{A}\equiv\tr_{\ol{A}}\rho,
 \end{equation} 
-we see that the unique algebraic state obeying theorem \ref{algst} is just
+we see that the unique algebraic state obeying Theorem \ref{algst} is just
 \begin{equation}\label{factalg}
 	\rho_{M}\equiv\rho_{A}\otimes\frac{I_{\ol{A}}}{|\ol{A}|}.
 \end{equation}
-For a general von Neumann algebra, we can do similar. From theorem \ref{vnclass}, we know that if $M$ is a von Neumann algebra on $\mathcal{H}$, then there exists a decomposition
+For a general von Neumann algebra, we can do similar. From Theorem \ref{vnclass}, we know that if $M$ is a von Neumann algebra on $\mathcal{H}$, then there exists a decomposition
 \begin{equation}\label{decomp1}
-	\mathcal{H}=\oplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}}),
+	\mathcal{H}=\bigoplus_{\alpha}(\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{\alpha}}),
 \end{equation}
 in terms of which 
 \begin{equation}
-	M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\ol{A}_{\alpha}}).
+	M=\bigoplus_{\alpha}(\mathcal{L}(\mathcal{H}_{A_{\alpha}})\otimes I_{\ol{A}_{\alpha}}).
 \end{equation}
-Any state $\rho$ can be written in block form with respect to the decomposition \ref{decomp1}, and since $M$ is block-diagonal, only the diagonal blocks of $\rho$ will contribute to expectation values. We denote the $(\alpha,\alpha')$th block of $\rho$ by $\rho_{\alpha\alpha'}$; we can then define
+Any state $\rho$ can be written in block form with respect to the decomposition \ref{decomp1}, and since $M$ is block-diagonal, only the diagonal blocks of $\rho$ will contribute to expectation values. Denoting the $(\alpha,\alpha')^{\text{th}}$ block of $\rho$ by $\rho_{\alpha\alpha'}$, we can then define
 \begin{equation}\label{redst}
 	p_{\alpha}\rho_{A_{\alpha}}\equiv\tr_{\ol{A}_{\alpha}}\rho_{\alpha\alpha},
 \end{equation}
-where $p_{\alpha}\in\mathbb{R}^{+}$, chosen so that $\tr_{A_{\alpha}}\rho_{A_{\alpha}}=1$. Since $\tr\rho=1$, we see that $\sum_{\alpha}p_{\alpha}=1$, so the $p_{\alpha}$ can be interpreted as probabilities. Finally, we can define the unique algebraic state obeying \ref{algst} as
+where $p_{\alpha}\in\mathbb{R}^{+}$, chosen so that $\tr_{A_{\alpha}}\rho_{A_{\alpha}}=1$. Since $\tr\rho=1$, we see that $\sum_{\alpha}p_{\alpha}=1$, so the $p_{\alpha}$ can be interpreted as probabilities. Finally, we can define the unique algebraic state obeying Theorem \ref{algst} as
 \begin{equation}
-	\rho_{M}\equiv\oplus_{\alpha}\left(p_{\alpha}\rho_{A_{\alpha}}\otimes\frac{I_{\ol{A}_{\alpha}}}{|\ol{A}_{\alpha}|}\right),
+	\rho_{M}\equiv\bigoplus_{\alpha}\left(p_{\alpha}\rho_{A_{\alpha}}\otimes\frac{I_{\ol{A}_{\alpha}}}{|\ol{A}_{\alpha}|}\right),
 \end{equation}
-which is clearly Hermitian, non-negative, has trace one, and is of the form \ref{decomp1} and so is in $M$, and gives the same expectation values for any element of $M$.\\
-From \ref{factalg}, we see that when $M$ is a factor, the von Neumann entropy of $\rho_{M}$ is equivalent to the von Neumann entropy of the reduced state $\rho_{A}$. This suggests that we should introduce a generalisation of the von Neumann entropy for a state $\rho$ on an algebra $M$, which we define as follows:
+which is clearly Hermitian, non-negative, has trace one, is of the form given in Equation \ref{decomp1}, and so is in $M$, and gives the same expectation values for any element of $M$.\\
+From Equation \ref{factalg}, we see that when $M$ is a factor, the von Neumann entropy of $\rho_{M}$ is equivalent to the von Neumann entropy of the reduced state $\rho_{A}$. This suggests that we should introduce a generalisation of the von Neumann entropy for a state $\rho$ on an algebra $M$, which we define as follows:
 \begin{definition}[Algebraic entropy]
-	Let $\rho$ be an arbitrary state, and $M$ a von Neumann algebra. The algebraic entropy of $\rho$ with respect to $M$ is
+	Let $\rho$ be an arbitrary state, and $M$ a von Neumann algebra. The \textbf{algebraic entropy} of $\rho$ with respect to $M$ is
 	\begin{equation}
 		S(\rho,M)\equiv-\sum_{\alpha}\tr_{A_{\alpha}}(p_{\alpha}\rho_{A_{\alpha}}\log(p_{\alpha}\rho_{A_{\alpha}}))=-\sum_{\alpha}p_{\alpha}\log p_{\alpha}+\sum_{\alpha}p_{\alpha}S(\rho_{A_{\alpha}})
 	\end{equation}
-	where $S(\rho_{A_{\alpha}})\equiv-\tr_{A}(\rho_{A_{\alpha}}\log\rho_{A_{\alpha}})$ is the von Neumann entropy of the reduced state $\rho_{A_{\alpha}}$ as defined in \ref{redst}.
+	where $S(\rho_{A_{\alpha}})\equiv-\tr_{A}(\rho_{A_{\alpha}}\log\rho_{A_{\alpha}})$ is the von Neumann entropy of the reduced state $\rho_{A_{\alpha}}$ as defined in Equation \ref{redst}.
 \end{definition}
-For some more motivation as to why this is an appropriate definition, we recommend to consult appendix A of \cite{Harlow}. We can interpret this as having two parts: a classical term consisting of the Shannon entropy $-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}$ of the probability distribution $p_{\alpha}$, and a quantum term associated to the von Neumann entropies of each diagonal block of $\rho$, weighted by the probabilities. We clearly see that when $M$ is a factor, this reduces to the standard von Neumann entropy since the classical Shannon entropy of the probabilities $p_{\alpha}$ vanishes.\\
-We can also define the notion of \textit{algebraic relative entropy}.
-\begin{definition}
-	Given two states $\rho,\sigma$ on $M$, the algebraic relative entropy between them is
+For some more motivation as to why this is an appropriate definition, we recommend consulting Appendix A of \cite{Harlow}. We can interpret algebraic entropy as having two parts: a \textit{classical} term consisting of the Shannon entropy $-\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}$ of the probability distribution $p_{\alpha}$, and a \textit{quantum} term associated to the von Neumann entropies of each diagonal block of $\rho$, weighted by the probabilities. We clearly see that when $M$ is a factor, this reduces to the standard von Neumann entropy since the classical Shannon entropy of the probabilities $p_{\alpha}$ vanishes because we only have $p_{0}=1$.\\
+We can also define a notion of \textit{algebraic relative entropy} analogously.
+\begin{definition}[Algebraic relative entropy]
+	Given two states $\rho,\sigma$ on $M$, the \textbf{algebraic relative entropy} between them is
 	\begin{equation}
 		\begin{aligned}
-			S(\rho|\sigma,M)&=-S(\rho,M)-\tr\left(\oplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{A_{\alpha}}\right)\otimes I_{\ol{A}_{\alpha}}\right]\rho\right)\\&=\sum_{\alpha}p_{\alpha}^{\{\rho\}}\log\frac{p_{\alpha}^{\{\rho\}}}{p_{\alpha}^{\{\sigma\}}}+\sum_{\alpha}p_{\alpha}^{\{\rho\}}S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}}),
+			S(\rho|\sigma,M)&\equiv-S(\rho,M)-\tr\left(\bigoplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\sigma\}}\sigma_{A_{\alpha}}\right)\otimes I_{\ol{A}_{\alpha}}\right]\rho\right)\\&=\sum_{\alpha}p_{\alpha}^{\{\rho\}}\log\frac{p_{\alpha}^{\{\rho\}}}{p_{\alpha}^{\{\sigma\}}}+\sum_{\alpha}p_{\alpha}^{\{\rho\}}S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}}),
 		\end{aligned}
 	\end{equation}
-	where $p_{\alpha}^{\{\rho\}}$ and $p_{\alpha}^{\{\sigma\}}$ are the probability distributions corresponding to $\rho$ and $\sigma$ respectively, and $S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}})$ is the relative entropy between $\rho_{A_{\alpha}}$ and $\sigma_{A_{\alpha}}$.
+	where $p_{\alpha}^{\{\rho\}}$ and $p_{\alpha}^{\{\sigma\}}$ are the probability distributions corresponding to $\rho$ and $\sigma$ respectively, and $S(\rho_{A_{\alpha}}|\sigma_{A_{\alpha}})$ is the von Neumann relative entropy between $\rho_{A_{\alpha}}$ and $\sigma_{A_{\alpha}}$.
 \end{definition}
 There's a lot of notation to unpack here, so we present an example.
 \begin{example}
-	Consider the von Neumann algebra and Hilbert space of example \ref{e1}, which has two diagonal blocks given by $\alpha=0,1$. Consider the GHZ state $\ket{\psi}=\frac{1}{\sqrt{2}}(\ket{000}+\ket{111})\in\mathcal{H}$. The density matrix of this state has diagonal blocks
+	Consider the von Neumann algebra and Hilbert space of Example \ref{e1}, which has two diagonal blocks given by $\alpha=0,1$. Consider the GHZ state $\ket{\psi}=\frac{1}{\sqrt{2}}(\ket{000}+\ket{111})\in\mathcal{H}$. The density matrix of this state has diagonal blocks
 	\begin{equation}
 		\rho_{00}=\begin{pmatrix}
 			1&0&0&0\\
@@ -774,32 +740,32 @@ There's a lot of notation to unpack here, so we present an example.
 	\end{equation}
 	and $p_{0}=p_{1}=1/2$. We can then compute
 	\begin{equation}
-		S(\rho,M)=-2\left(\frac{1}{2}\log\frac{1}{2}\right)+\frac{1}{2}S(\rho_{A_{1}})+\frac{1}{2}S(\rho_{A_{2}})=1.
+		S(\rho,M)=-2\left(\frac{1}{2}\log\frac{1}{2}\right)+\frac{1}{2}S(\rho_{A_{0}})+\frac{1}{2}S(\rho_{A_{1}})=1.
 	\end{equation}
 \end{example}
 \section{Operator-Algebra Error Correction}
-We now finally have the machinery to present theorem 5.1 of \cite{Harlow}.
+We now finally have the machinery to present Theorem 5.1 of \cite{Harlow}.
 \begin{theorem}\label{5.1}
-	Let $V\,:\,\mathcal{H}_{L}\to \mathcal{H}$ be an encoding isometry with image $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Say we have a von Neumann algebra $M$ on $\mathcal{H}_{L}$. Define orthonormal basis $\{\ket{\widetilde{\alpha,ij}}\}$ of $\mathcal{H}_{L}$ as in \ref{basis}, which is compatible with the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$ induced by $M$. Let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}(V\ket{\widetilde{\alpha,ij}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
+	Let $V\,:\,\mathcal{H}_{L}\to \mathcal{H}$ be an encoding isometry with image $\Hcode\subseteq\mathcal{H}$, where $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. Say we have a von Neumann algebra $M$ on $\mathcal{H}_{L}$. Define orthonormal basis $\{\ket{\widetilde{\alpha,ij}}\}$ of $\mathcal{H}_{L}$ as in equation \ref{basis}, which is compatible with the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$ induced by $M$. Let $\ket{\phi}\equiv\frac{1}{\sqrt{|R|}}\sum_{\alpha,i,j}\ket{\alpha,ij}_{R}(V\ket{\widetilde{\alpha,ij}})_{A\ol{A}}$, where $R$ is an auxiliary system with $\mathcal{H}_{R}=\mathcal{H}_{L}$. The following statements are then equivalent:
 	\begin{enumerate}
-		\item $\sum_{\alpha}|L_{\alpha}|\leq|A|$, and we can decompose $\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}^{\alpha}|=|L_{\alpha}|$ such that there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and sets of orthonormal states $\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\in\mathcal{H}_{A_{2}^{\alpha}\ol{A}}$ such that
+		\item \label{o1} $\sum_{\alpha}|L_{\alpha}|\leq|A|$, and we can decompose $\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}$ with $|A_{1}^{\alpha}|=|L_{\alpha}|$ such that there exists a unitary transformation $U_{A}$ on $\mathcal{H}_{A}$ and sets of orthonormal states $\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\in\mathcal{H}_{A_{2}^{\alpha}\ol{A}}$ such that
 		\begin{equation}\label{O1}
 			(U_{A}\otimes I_{\ol{A}})V\ket{\widetilde{\alpha,ij}}=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}},
 		\end{equation}
 		where $\{\ket{\alpha,i}_{A_{1}^{\alpha}}\}$ is an orthonormal basis for $\mathcal{H}_{A_{1}^{\alpha}}$.
-		\item For any operator $\tilde{O}\in M$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+		\item \label{o2} For any operator $\tilde{O}\in M$, there exists an operator $O_{A}$ on $\mathcal{H}_{A}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
 		\begin{equation}\label{O2}
 			\begin{aligned}
 				O_{A}V\ket{\tilde{\psi}}&=V\tilde{O}\ket{\tilde{\psi}}\\
 				O_{A}^{\dagger}V\ket{\tilde{\psi}}&=V\tilde{O}^{\dagger}\ket{\tilde{\psi}}.
 			\end{aligned}
 		\end{equation}
-		\item For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
+		\item \label{o3} For any operator $X_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$, we have
 		\begin{equation}\label{O3}
 			\Pc\Xabar\Pc=VX'V^{\dagger}\Pc,
 		\end{equation}
 		where $X'\in M'$ is an element of the commutant, and $\Pc$ is the image of the projector onto $\mathcal{H}_{L}$ under $V$ (or the projector onto $\Hcode$); that is, if $P_{L}=\sum_{\alpha,i,j}\ketbras{\widetilde{\alpha,ij}}$, then $\Pc=VP_{L}V^{\dagger}$.
-		\item For any operator $\tilde{O}\in M$, we have
+		\item \label{o4} For any operator $\tilde{O}\in M$, we have
 		\begin{equation}\label{O4}
 			[O_{R},\rho_{R\ol{A}}[\phi]]=0,
 		\end{equation}
@@ -814,30 +780,30 @@ We now finally have the machinery to present theorem 5.1 of \cite{Harlow}.
 \end{theorem}
 Similar to the last theorem, this characterises in some sense `how well' a code subspace can correct a subalgebra $M$ for the erasure of $\ol{A}$. In fact, it reduces to subsystem erasure correction when $M$ is a factor, and to conventional erasure correction when $M=\mathcal{L}(\mathcal{H}_{L})$ is the full set of linear operators on $\mathcal{H}_{L}$.
 \begin{proof}
-	$(1)\implies (2)$: Define $O_{A}\equiv U_{A}^{\dagger}(\oplus_{\alpha}(O_{A_{1}^{\alpha}}\otimes I_{A_{2}^{\alpha}}))U_{A}$, where $O_{A_{1}^{\alpha}}$ is an operator acting on $\mathcal{H}_{A_{1}^{\alpha}}$ in the same way as $\tilde{O}_{a_{\alpha}}$ from \ref{thing1} does on $\mathcal{H}_{a_{\alpha}}$. \ref{O1} is then immediate, following the same steps as in the proof of conventional erasure correction.\\
+	$(1)\implies (2)$: Define $O_{A}\equiv U_{A}^{\dagger}(\oplus_{\alpha}(O_{A_{1}^{\alpha}}\otimes I_{A_{2}^{\alpha}}))U_{A}$, where $O_{A_{1}^{\alpha}}$ is an operator acting on $\mathcal{H}_{A_{1}^{\alpha}}$ with the same matrix elements as $\tilde{O}_{L_{\alpha}}$ (as in Equation \ref{thing1}) does on $\mathcal{H}_{L_{\alpha}}$. Condition \ref{o2} is then immediate, following the same steps as in the proof of conventional erasure correction.\\
 	$(2)\implies (3)$: This implication is by contradiction. Suppose that $\Pc X_{\ol{A}}\Pc=Vx'V^{\dagger}\Pc$, where $x'\in\mathcal{L}(\mathcal{H}_{L})$ but $x'\notin M'$. Therefore there must be some operator $\tilde{O}\in M$ which does not commute with $x'$, and so there must be a state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$ such that
 	\begin{equation}
 		\braket{\tilde{\psi}|[x',\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}\Pc X_{\ol{A}}\Pc V,\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|V^{\dagger}[X_{\ol{A}},V\tilde{O}V^{\dagger}]V|\tilde{\psi}}\neq 0.
 	\end{equation}
-	However, such an $\tilde{O}$ cannot have a corresponding $O_{A}$ as this would automatically commute with $X_{\ol{A}}$, which contradicts \ref{O2}.\\
-	$(3)\implies (4)$: Say $\tilde{O}\in M$, and $X_{\ol{A}}$ and $Y_{R}$ are arbitrary operators on $\mathcal{H}_{\ol{A}}$ and $\mathcal{H}_{R}$ respectively. We then have:
+	However, such an $\tilde{O}$ cannot have a corresponding $O_{A}$ as this would automatically commute with $X_{\ol{A}}$, which contradicts Condition \ref{o2}.\\
+	$(3)\implies (4)$: Say $\tilde{O}\in M$, and suppose $X_{\ol{A}}$ and $Y_{R}$ are arbitrary operators on $\mathcal{H}_{\ol{A}}$ and $\mathcal{H}_{R}$ respectively. We then have:
 	\begin{equation}
 		\begin{aligned}
-			\tr_{R\ol{A}}(O_{R}\rho_{R\ol{A}}[\phi]X_{\ol{A}}Y_{R})&=\braket{\phi|X_{\ol{A}}Y_{R}O_{R}|\phi}\\&=\braket{\phi|X_{\ol{A}}Y_{R}V\tilde{O}V^{\dagger}|\phi}\\&=\braket{\phi|V\tilde{O}V^{\dagger}X_{\ol{A}}Y_{R}|\phi}\\&=\braket{\phi|O_{R}X_{\ol{A}}Y_{R}|\phi}\\&=\tr_{R\ol{A}}(\rho_{R\ol{A}}[\phi]O_{R}X_{\ol{A}}Y_{R}),
+			\tr_{R\ol{A}}\left(O_{R}\rho_{R\ol{A}}[\phi]X_{\ol{A}}Y_{R}\right)&=\braket{\phi|X_{\ol{A}}Y_{R}O_{R}|\phi}\\&=\braket{\phi|X_{\ol{A}}Y_{R}V\tilde{O}V^{\dagger}|\phi}\\&=\braket{\phi|V\tilde{O}V^{\dagger}X_{\ol{A}}Y_{R}|\phi}\\&=\braket{\phi|O_{R}X_{\ol{A}}Y_{R}|\phi}\\&=\tr_{R\ol{A}}\left(\rho_{R\ol{A}}[\phi]O_{R}X_{\ol{A}}Y_{R}\right),
 		\end{aligned}
 	\end{equation}
-	where the first equality is by substituting in the definition of $\rho[\phi]$ and expanding, the second is by definition of $O_{R}$, the third is due to $V\tilde{O}V^{\dagger}$ commuting with $Y_{R}$ trivially and with $X_{\ol{A}}$ by \ref{O3}, and the last two by similar logic in reverse. This can only hold for arbitrary $X_{\ol{A}}$ and $Y_{R}$ if $[O_{R},\rho_{R\ol{A}}[\phi]]=0$ as claimed.\\
+	where the first equality is by substituting in the definition of $\rho[\phi]$ and expanding, the second is by definition of $O_{R}$, the third is due to $V\tilde{O}V^{\dagger}$ commuting with $Y_{R}$ trivially and with $X_{\ol{A}}$ by Equation \ref{O3}, and the last two by similar logic in reverse. This can only hold for arbitrary $X_{\ol{A}}$ and $Y_{R}$ if $[O_{R},\rho_{R\ol{A}}[\phi]]=0$ as claimed.\\
 	$(4)\implies (1)$: Our basis $\{\ket{\widetilde{\alpha,ij}}_{R}\}$ for $\mathcal{H}_{R}$ gives a decomposition
 	\begin{equation}
-		\mathcal{H}_{R}=\oplus_{\alpha}(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}})
+		\mathcal{H}_{R}=\bigoplus_{\alpha}(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}})
 	\end{equation}
 	and so $\mathcal{H}_{R\ol{A}}=\mathcal{H}_{R}\otimes\mathcal{H}_{\ol{A}}$ can be decomposed as
 	\begin{equation}
-		\mathcal{H}_{R\ol{A}}=\oplus_{\alpha}(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}}\otimes\mathcal{H}_{\ol{A}}).
+		\mathcal{H}_{R\ol{A}}=\bigoplus_{\alpha}(\mathcal{H}_{R_{\alpha}}\otimes\mathcal{H}_{\ol{R}_{\alpha}}\otimes\mathcal{H}_{\ol{A}}).
 	\end{equation}
-	From \ref{O4}, we know that $[O_{R},\rho_{R\ol{A}}[\phi]]=0$ for all $O_{R}$ as defined in \ref{O5}. This means that $\rho_{R}[\phi]=I_{R}/|R|$ is the maximally mixed state on $R$. We therefore have that, in terms of this decomposition
+	From Equation \ref{O4}, we know that $[O_{R},\rho_{R\ol{A}}[\phi]]=0$ for all $O_{R}$ as defined in Equation \ref{O5}. This means that $\rho_{R}[\phi]=I_{R}/|R|$ is the maximally mixed state on $R$. We therefore have that, in terms of this decomposition
 	\begin{equation}
-		\rho_{R\ol{A}}[\phi]=\oplus_{\alpha}\left[\frac{|R_{\alpha}||\ol{R}_{\alpha}|}{|R|}\left(\frac{I_{R_{\alpha}}}{|R_{\alpha}|}\otimes\rho_{\ol{R}_{\alpha}\ol{A}}\right)\right],
+		\rho_{R\ol{A}}[\phi]=\bigoplus_{\alpha}\left[\frac{|R_{\alpha}||\ol{R}_{\alpha}|}{|R|}\left(\frac{I_{R_{\alpha}}}{|R_{\alpha}|}\otimes\rho_{\ol{R}_{\alpha}\ol{A}}\right)\right],
 	\end{equation}
 	for some states $\rho_{\ol{R}_{\alpha}\ol{A}}$. The coefficient out the front can be computed by requiring that $\rho_{R\ol{A}}[\phi]$ is a valid density operator tracing to 1. Since $\rho_{R}[\phi]=I_{R}/|R|$, we must have also that $\tr_{\ol{A}}(\rho_{\ol{R}_{\alpha}\ol{A}})=I_{\ol{R}_{\alpha}}/|\ol{R}_{\alpha}|$.\\
 	By definition, $\ket{\phi}_{RA\ol{A}}$ is a purification of $\rho_{R\ol{A}}[\phi]$ on $A$, and in a purification the dimension of the purifying system is necessarily as big as the rank of the state being purified (this is immediate from the Schmidt decomposition). So, denoting $\text{rank}(\rho_{\ol{R}_{\alpha}\ol{A}})\equiv|\rho_{\ol{R}_{\alpha}\ol{A}}|$, we can write
@@ -846,7 +812,7 @@ Similar to the last theorem, this characterises in some sense `how well' a code 
 	\end{equation}
 	This means that we can indeed decompose
 	\begin{equation}
-		\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}
+		\mathcal{H}_{A}=\bigoplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}}
 	\end{equation}
 	where $|A_{1}^{\alpha}|=|R_{\alpha}|=|L_{\alpha}|$ and $|A_{2}^{\alpha}|\geq|\rho_{\ol{R}_{\alpha}\ol{A}}|$ by long division. For each $\alpha$, we can then purify $\rho_{\ol{R}_{\alpha}\ol{A}}$ on $A_{2}^{\alpha}$; since $\tr_{\ol{A}}(\rho_{\ol{R}_{\alpha}\ol{A}})=I_{\ol{R}_{\alpha}}/|\ol{R}_{\alpha}|$, such a purification has the form
 	\begin{equation}
@@ -868,37 +834,37 @@ Similar to the last theorem, this characterises in some sense `how well' a code 
 	which finishes the proof.
 \end{proof}
 \section{Holographic Properties of Erasure Codes}
-So far in this chapter, we have stated and proved the three theorems of \cite{Harlow}. These are of increasing generality, and characterise the correctability of certain subsystems. However, we have yet to define what actually makes a code \textit{holographic}. In high-energy physics, a holographic theory is one which posits a quantitative relationship between a gravitational theory and a non-gravitational theory `on the boundary'. The most well known example of a holographic theory is the \textit{AdS/CFT correspondence} \cite{Maldacena}, which describes a correspondence between a string theory on $D$-dimensional \textit{anti-de Sitter space}, and a \textit{conformal field theory} on its $D-1$-dimensional boundary. There is a so-called `holographic dictionary', which precisely defines the links between objects in the gravitational bulk and the boundary CFT. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula}, which describes the correspondence between the entropy of a boundary subregion $A$, and the entropy of the degrees of freedom in the gravitational bulk which are `visible' from $A$:
-\begin{equation}
+So far in this chapter, we have stated and proved the three theorems of \cite{Harlow}. These are of increasing generality, and characterise the correctability of certain subsystems. However, we have yet to define what actually makes a code \textit{holographic}. In high-energy physics, a holographic theory is one which posits a quantitative relationship between a gravitational theory and a non-gravitational theory `on the boundary'. The most well known example of a holographic theory is the \textit{AdS/CFT correspondence} \cite{Maldacena}, which describes a correspondence between a string theory on $D$-dimensional \textit{Anti-de Sitter space}, and a \textit{conformal field theory} on its $D-1$-dimensional boundary. There is a so-called `holographic dictionary', which precisely defines the links between objects in the gravitational bulk and the boundary CFT. One entry in this dictionary is the \textit{Ryu-Takayanagi (RT) formula}, which describes the correspondence between the entropy of a state $\rho$ on a boundary subregion $A$, and its entropy with respect to the degrees of freedom in the gravitational bulk which are `visible' from $A$:
+\begin{equation}\label{RTreal}
 	S_{A}(\rho)=S_{\text{bulk},A}(\rho)+\tr(\mathcal{L}\rho).
 \end{equation}
-Here, $\mathcal{L}$ is an operator acting on the bulk. It is this formula which can be interpreted in terms of quantum erasure correction. In fact, we can \textit{define} what it means for an erasure correcting code to obey an RT formula as follows.
-\begin{definition}
-	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}_{L}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. The triplet $(V,A,M)$ has an RT formula if there exists an \textbf{area operator} $\mathcal{L}\in\mathcal{L}(\mathcal{H}_{L})$ such that for any state $\rho$ on $\mathcal{H}_{L}$:
+Here, $\mathcal{L}$ is an operator acting on the bulk, which geometrically computes the area of a bulk subregion. It is this formula which can be interpreted in terms of quantum erasure correction. In fact, we can \textit{define} what it means for an erasure correcting code to obey an RT formula as follows.
+\begin{definition}[RT formula]
+	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}_{L}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. The triplet $(V,A,M)$ has an \textbf{RT formula} if there exists an \textbf{area operator} $\mathcal{L}\in\mathcal{L}(\mathcal{H}_{L})$ such that for any state $\rho$ on $\mathcal{H}_{L}$:
 	\begin{equation}\label{RT3}
 		S(\tr_{\ol{A}}(V\rho V^{\dagger}))=S(M,\rho)+\tr(\rho\mathcal{L}).
 	\end{equation}
-	Moreover, if $\mathcal{L}\propto I$, we say the RT formula is trivial.
+	Moreover, if $\mathcal{L}\propto I$, we say the RT formula is \textit{trivial}.
 \end{definition}
-It turns out that \textit{any} operator-algebra erasure code obeying an additional condition called \textit{complementary recovery} has an RT formula, with the converse also true. We say a triplet $(V,A,M)$ has complementary recovery if not only does \ref{O2} hold for elements of $M$ on $\mathcal{H}_{A}$, but also for elements of $M'$ on $\mathcal{H}_{\ol{A}}$. That is, for any operator $\tilde{O}'\in M'$, there exists an operator $O_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
+We can see the form of Equation \ref{RT3} roughly matches that of Equation \ref{RTreal}, where in a very loose sense, the logical Hilbert space $\mathcal{H}_{L}$ corresponds to the gravitational bulk, and the physical Hilbert space $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ corresponds to the boundary CFT. It turns out that \textit{any} operator-algebra erasure code obeying an additional condition called \textit{complementary recovery} has an RT formula, with the converse also true. We say a triplet $(V,A,M)$ has complementary recovery if not only does Condition \ref{o2} of Theorem \ref{5.1} hold for elements of $M$ on $\mathcal{H}_{A}$, but also for elements of $M'$ on $\mathcal{H}_{\ol{A}}$. That is, for any operator $\tilde{O}'\in M'$, there exists an operator $O_{\ol{A}}$ on $\mathcal{H}_{\ol{A}}$ such that for any state $\ket{\tilde{\psi}}\in\mathcal{H}_{L}$, we have
 \begin{equation}
 	\begin{aligned}
 		O_{\ol{A}}V\ket{\tilde{\psi}}&=V\tilde{O}'\ket{\tilde{\psi}}\\
 		O_{\ol{A}}^{\dagger}V\ket{\tilde{\psi}}&=V\tilde{O}'^{\dagger}\ket{\tilde{\psi}}.
 	\end{aligned}
 \end{equation}
-We can then state and prove the following theorem:
+We can then state and prove the following theorem, inspired by theorems in \cite{Harlow} and \cite{Pollack}.
 \begin{theorem}\label{bij}
-	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. Also say that $(V,A,M)$ has complementary recovery. Then, $(V,A,M)$ and $(V,\ol{A},M')$ both have an RT formula with the same area operator $\mathcal{L}$, and $\mathcal{L}\in Z_{M}$ is in the centre. Moreover, if $(V,A,M)$ and $(V,\ol{A},M)$ both have an RT formula with the same $\mathcal{L}$, then $(V,A,M)$ have complementary recovery.
+	Say $V\,:\,\mathcal{H}_{L}\to\mathcal{H}$ is an encoding isometry, $M$ is a von Neumann algebra on $\mathcal{H}_{L}$, and $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ factorises. Also say that $(V,A,M)$ has complementary recovery. Then, $(V,A,M)$ and $(V,\ol{A},M')$ both have an RT formula with the same area operator $\mathcal{L}$, and $\mathcal{L}\in Z_{M}$ is in the centre. Moreover, if $(V,A,M)$ and $(V,\ol{A},M)$ both have an RT formula with the same $\mathcal{L}$, then $(V,A,M)$ have complementary recovery.
 \end{theorem}
 \begin{proof}
 	($\implies$): Suppose $M$ induces the decomposition $\mathcal{H}_{L}=\oplus_{\alpha}(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}})$, so $M$ and $M'$ have Wedderburn decompositions
 	\begin{equation}
-		M=\oplus_{\alpha}(\mathcal{L}(\mathcal{H}_{L_{\alpha}})\otimes I_{\ol{L}_{\alpha}}),\quad M'=\oplus_{\alpha}(I_{L_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{L}_{\alpha}})).
+		M=\bigoplus_{\alpha}(\mathcal{L}(\mathcal{H}_{L_{\alpha}})\otimes I_{\ol{L}_{\alpha}}),\quad M'=\bigoplus_{\alpha}(I_{L_{\alpha}}\otimes\mathcal{L}(\mathcal{H}_{\ol{L}_{\alpha}})).
 	\end{equation}
-	Let $\{\ket{\widetilde{\alpha,ij}}\}=\{\ket{{\alpha,i}}_{L_{\alpha}}\otimes\ket{{\alpha,j}}_{\ol{L}_{\alpha}}\}$ be the basis of $\mathcal{H}_{L}$ which is compatible with $M$ in the sense of \ref{basis}. By the equivalence of \ref{O1} and \ref{O2} in theorem \ref{5.1} and complementary recovery, we know there exist factorisations
+	Let $\{\ket{\widetilde{\alpha,ij}}\}=\{\ket{\widetilde{\alpha,i}}_{L_{\alpha}}\otimes\ket{\widetilde{\alpha,j}}_{\ol{L}_{\alpha}}\}$ be the basis of $\mathcal{H}_{L}$ which is compatible with the decomposition of $M$ in the sense of Equation \ref{basis}. By the equivalence of Conditions \ref{o1} and \ref{o2} in Theorem \ref{5.1} and complementary recovery, there exist factorisations
 	\begin{equation}
-		\mathcal{H}_{A}=\oplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}},\quad\mathcal{H}_{\ol{A}}=\oplus_{\alpha}(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}})\oplus\mathcal{H}_{\ol{A}_{3}}
+		\mathcal{H}_{A}=\bigoplus_{\alpha}(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}})\oplus\mathcal{H}_{A_{3}},\quad\mathcal{H}_{\ol{A}}=\bigoplus_{\alpha}(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}})\oplus\mathcal{H}_{\ol{A}_{3}}
 	\end{equation}
 	and unitaries $U_{A}\in\mathcal{L}(\mathcal{H}_{A})$ and $U_{\ol{A}}\in\mathcal{L}(\mathcal{H}_{\ol{A}})$ such that (dropping the tensor factors with identity operators)
 	\begin{equation}
@@ -911,7 +877,7 @@ We can then state and prove the following theorem:
 	\begin{equation}\label{333}
 		\begin{aligned}
 			U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes U_{\ol{A}}\ket{\chi_{\alpha,j}}_{A_{2}^{\alpha}\ol{A}}\\
-			U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}&=U_{A}\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}
+			U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}&=U_{A}\ket{\ol{\chi}_{\alpha,i}}_{A\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
 		\end{aligned}
 	\end{equation}
 	Equating the right hand sides, we see there must be states $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$ and $\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$ such that
@@ -921,7 +887,7 @@ We can then state and prove the following theorem:
 			U_{A}\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}&=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}.
 		\end{aligned}
 	\end{equation}
-	However, the equality of the right hand sides of equation \ref{333} tells us that $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}=\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$. We therefore obtain that
+	However, the equality of the right hand sides of Equation \ref{333} tells us that $\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}=\ket{\ol{\chi}_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}$. We therefore obtain that
 	\begin{equation}\label{imp}
 		U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}_{A_{1}^{\alpha}}\otimes\ket{\chi_{\alpha}}_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\otimes\ket{\alpha,j}_{\ol{A}_{1}^{\alpha}}.
 	\end{equation}
@@ -929,7 +895,7 @@ We can then state and prove the following theorem:
 	\begin{equation}
 		U_{A}U_{\ol{A}}V\tilde{\rho}V^{\dagger}U_{A}^{\dagger}U_{\ol{A}}^{\dagger}=\bigoplus_{\alpha}\left[p_{\alpha}\rho_{A_{1}^{\alpha}\ol{A}_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}\ol{A}_{2}^{\alpha}}\right].
 	\end{equation}
-	Here, $\rho_{A_{1}^{\alpha}\ol{A}_{1}^{\alpha}}$ is a state acting on $\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}^{\alpha}}$ in the same way as $\tilde{\rho}_{L_{\alpha}\ol{L}_{\alpha}}$ does on $\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}$ (recall that $p_{\alpha}\rho_{L_{\alpha}\ol{L}_{\alpha}}$ are the diagonal blocks of $\tilde{\rho}$ in $\alpha$ with the $p_{\alpha}$ chosen to ensure $\tr(\rho_{L_{\alpha}\ol{L}_{\alpha}})=1$), and $\chi_{\alpha}\equiv\ketbras{\chi_{\alpha}}$. We therefore have that
+	Here, $\rho_{A_{1}^{\alpha}\ol{A}_{1}^{\alpha}}$ is a state acting on $\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}^{\alpha}}$ in the same way as $\tilde{\rho}_{L_{\alpha}\ol{L}_{\alpha}}$ does on $\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}$ (recall that $p_{\alpha}\tilde{\rho}_{L_{\alpha}\ol{L}_{\alpha}}$ are the diagonal blocks of $\tilde{\rho}$ in $\alpha$ with the $p_{\alpha}$ chosen to ensure $\tr(\tilde{\rho}_{L_{\alpha}\ol{L}_{\alpha}})=1$), and $\chi_{\alpha}\equiv\ketbras{\chi_{\alpha}}$. We therefore have that
 	\begin{equation}\label{asdfgh}
 		\tr_{\ol{A}}\left(U_{A}U_{\ol{A}}V\tilde{\rho}V^{\dagger}U_{A}^{\dagger}U_{\ol{A}}^{\dagger}\right)=U_{A}\tr_{\ol{A}}\left(V\tilde{\rho}V^{\dagger}\right)U_{A}^{\dagger}=\bigoplus_{\alpha}\left[p_{\alpha}\rho_{A_{1}^{\alpha}}\otimes\left(\chi_{\alpha}\right)_{A_{2}^{\alpha}}\right].
 	\end{equation}
@@ -942,9 +908,9 @@ We can then state and prove the following theorem:
 			&=S(\tilde{\rho},M)+\sum_{\alpha}p_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right).
 		\end{aligned}
 	\end{equation}
-	On the first line, we use the fact that von Neumann entropy is invariant under unitary transformations and \ref{asdfgh}, the second uses that $\log(O_{A}\otimes O_{B})=\log(O_{A})\otimes I_{B}+I_{A}\otimes\log(O_{B})$, and the third uses the fact that $\rho_{A_{1}^{\alpha}}$ and $\tilde{\rho}_{L_{\alpha}}$ have the same matrix elements on their corresponding Hilbert spaces. So, if we define
+	On the first line, we use the fact that von Neumann entropy is invariant under unitary transformations and Equation \ref{asdfgh}, the second uses that $\log(O_{A}\otimes O_{B})=\log(O_{A})\otimes I_{B}+I_{A}\otimes\log(O_{B})$, and the third uses the fact that $\rho_{A_{1}^{\alpha}}$ and $\tilde{\rho}_{L_{\alpha}}$ have the same matrix elements on their corresponding Hilbert spaces. So, if we define
 	\begin{equation}
-		\mathcal{L}\equiv \oplus_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)I_{L_{\alpha}\ol{L}_{\alpha}},
+		\mathcal{L}\equiv \bigoplus_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)I_{L_{\alpha}\ol{L}_{\alpha}},
 	\end{equation}
 	we see that
 	\begin{equation}
@@ -957,17 +923,17 @@ We can then state and prove the following theorem:
 	for $(V,A,M)$. Since we can repeat these arguments with $A\leftrightarrow\ol{A}$ and $M\leftrightarrow M'$ (i.e. with $i\leftrightarrow j$), we see that $(V,\ol{A},M')$ obeys an RT formula. Moreover, since $S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)=S\left(\tr_{A}\left(\chi_{\alpha}\right)\right)$, the area operator $\mathcal{L}$ is indeed the same for both RT formulae; since it is in $M$ and $M'$, it is in the centre as well.\\
 	$(\impliedby)$: Recall the definition of algebraic relative entropy
 	\begin{equation}
-		S(\tilde{\rho}|\tilde{\sigma},M)=-S(\tilde{\rho},M)-\tr\left(\oplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right]\tilde{\rho}\right).
+		S(\tilde{\rho}|\tilde{\sigma},M)=-S(\tilde{\rho},M)-\tr\left(\bigoplus_{\alpha}\left[\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right]\tilde{\rho}\right).
 	\end{equation}
 	Consider taking a small perturbation $\delta\tilde{\rho}$ about a state $\tilde{\sigma}$; to first order in $\delta\tilde{\rho}$, we have that
 	\begin{equation}
 		S(\tilde{\sigma}+\delta\tilde{\rho}|\tilde{\sigma},M)=0.
 	\end{equation}
-	We similarly find that
+	We similarly have that
 	\begin{equation}
 		S\left(\tr_{\ol{A}}\left(V\left(\tilde{\sigma}+\delta\tilde{\rho}\right)V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma}V^{\dagger}\right)\right)=0
 	\end{equation}
-	to first order\footnote{These can be proved by using the Baker-Campbell-Hausdorf formula, and noting that $\tr(A[B,C])=0$ if $A$ and $B$ are simultaneously diagonalisable.}. Using these facts, we take the same variation on \ref{RTyay}:
+	to first order. Using these facts, we take the same variation on Equation \ref{RTyay}:
 	\begin{equation}
 		\begin{aligned}
 			S\left(\tr_{\ol{A}}\left(V\left(\tilde{\sigma}+\delta\tilde{\rho}\right)V^{\dagger}\right)\right)&=S(\tilde{\sigma}+\delta\tilde{\rho},M)+\tr\left(\left(\tilde{\sigma}+\delta\tilde{\rho}\right)\mathcal{L}\right)\\
@@ -981,10 +947,10 @@ We can then state and prove the following theorem:
 	The next step is to calculate the relative entropy:
 	\begin{equation}
 		\begin{aligned}
-			S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)\right)\\&\phantom{==}-\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left(\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)\right)\\&=-S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right)\\&=-S(\tilde{\rho},M)-\sum_{\alpha}\tr\left(\tilde{\rho}\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)\right)\\&=S(\tilde{\rho}|\tilde{\sigma},M),
+			S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)|\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right)&=\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left[\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right]\right)\\&\qquad-\tr\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\log\left[\tr_{\ol{A}}\left(V\tilde{\sigma} V^{\dagger}\right)\right]\right)\\&=-S\left(\tr_{\ol{A}}\left(V\tilde{\rho} V^{\dagger}\right)\right)-\sum_{\alpha}\tr\left(\tilde{\rho}\left[\left(\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right)-\mathcal{L}\right]\right)\\&=-S(\tilde{\rho},M)-\sum_{\alpha}\tr\left(\tilde{\rho}\left[\log\left(p_{\alpha}^{\{\tilde{\sigma}\}}\tilde{\sigma}_{L_{\alpha}}\right)\otimes I_{\ol{L}_{\alpha}}\right]\right)\\&=S(\tilde{\rho}|\tilde{\sigma},M),
 		\end{aligned}
 	\end{equation}
-	where we use \ref{ph} in the second line, and the RT formula in the third. We can perform the same argument with ${A}\leftrightarrow \ol{A}$ and $M\leftrightarrow M'$, and we find similarly that
+	where we use Equation \ref{ph} in the second line, and the RT formula \ref{RTyay} in the third. We can perform the same argument with ${A}\leftrightarrow \ol{A}$ and $M\leftrightarrow M'$, and we find similarly that
 	\begin{equation}\label{asd}
 		S(\tr_{{A}}(V\tilde{\rho} V^{\dagger})|\tr_{\ol{A}}(V\tilde{\sigma} V^{\dagger}))=S(\tilde{\rho}|\tilde{\sigma},M').
 	\end{equation}
@@ -1000,24 +966,28 @@ We can then state and prove the following theorem:
 	\begin{equation}
 		S(\tilde{\psi}(\lambda)|\tilde{\psi}(\lambda'),M')=0.
 	\end{equation}
-	So, from \ref{asd}, we have
+	So, from Equation \ref{asd}, we have
 	\begin{equation}
 		0=S(\tilde{\psi}(\lambda)|\tilde{\psi}(\lambda'),M')=S(\tr_{{A}}(V\tilde{\psi}(\lambda) V^{\dagger})|\tr_{\ol{A}}(V\tilde{\psi}(\lambda') V^{\dagger})),
 	\end{equation}
-	which further implies that $\tr_{A}(V\tilde{\psi}(\lambda)V^{\dagger})$ is independent of $\lambda$, which itself implies that $\ket{\tilde{\psi}(\lambda)}$ itself is independent of $\lambda$. Returning to \ref{asd1}, we see that it is independent of $\lambda$, and so in particular its first variation with respect to $\lambda$ must vanish. This is proportional to $\braket{\tilde{\psi}|[P_{L}V^{\dagger}X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}$, so we have
+	which further implies that $\tr_{A}(V\tilde{\psi}(\lambda)V^{\dagger})$ is independent of $\lambda$, which itself implies that $\ket{\tilde{\psi}(\lambda)}$ is independent of $\lambda$. Returning to Equation \ref{asd1}, we see that it is independent of $\lambda$, and so in particular its first variation with respect to $\lambda$ must vanish. This is proportional to $\braket{\tilde{\psi}|[P_{L}V^{\dagger}X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}$, so we have
 	\begin{equation}
 		0=\braket{\tilde{\psi}|[P_{L}V^{\dagger}X_{\ol{A}}VP_{L},\tilde{O}]|\tilde{\psi}}=\braket{\tilde{\psi}|[V^{\dagger}\Pc X_{\ol{A}}\Pc V,\tilde{O}]|\tilde{\psi}}
 	\end{equation}
-	which just implies \ref{O3} and hence \ref{O2}. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed.
+	which just implies Condition \ref{o3} of Theorem \ref{5.1} and hence Condition \ref{o2} too. Since we can repeat this argument again with $M\leftrightarrow M'$ and $A\leftrightarrow \ol{A}$, we establish complementary recovery as claimed, which completes the proof.
 \end{proof}
-This theorem establishes equivalence of a code obeying complementary recovery, and satisfying an RT formula, and hence being holographic. There is one subtlety, though. If $(V,A,M)$ and $(V,\ol{A},M')$ both satisfy an RT formula with the \textit{same} area operator $\mathcal{L}$, then we have complementary recovery too. This suggests that complementary recovery may actually be stronger of a condition than it first appears.  
-\chapter{Examples}
-The notation in the previous chapter is rather dense and difficult to understand. We therefore present some simple examples to try and elucidate the structure of the proof of theorem \ref{bij}. First, we recall some basic facts we've talked about so far to keep them all for easy reference.\\
+This theorem establishes equivalence of a code obeying complementary recovery, and satisfying an RT formula, and hence being holographic. Note as well that this proof provides a constructive definition of the area operator for an operator-algebra code with complementary recovery, namely
+\begin{equation}
+	\mathcal{L}\equiv \bigoplus_{\alpha}S\left(\tr_{\ol{A}}\left(\chi_{\alpha}\right)\right)I_{L_{\alpha}\ol{L}_{\alpha}}.
+\end{equation}
+In other words, the area operator has eigenvalues equal to the entanglement entropies of the states $\ket{\chi_{\alpha}}$ across the bipartition $A$ and $\ol{A}$.
+\chapter{Examples}\label{chap4}
+The notation in the previous chapter is rather dense and difficult to understand. We therefore present some simple examples to try and elucidate the structure of the proof of Theorem \ref{bij}. First, we recall some basic facts we've talked about so far to keep them all for easy reference.\\
 We say a triplet $(V,A,M)$ of an encoding isometry $V:\mathcal{H}_{L}\to\mathcal{H}\cong\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$, a subregion $A$, and von Neumann algebra $M$ on $\mathcal{H}_{L}$ has an \textit{RT formula} if
 \begin{equation}
 	S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)=S(\rho,M)+\tr\left(\rho\mathcal{L}\right)
 \end{equation}
-for any state $\rho$ on $\mathcal{H}_{L}$ and some \textit{area operator} $\mathcal{L}\in\mathcal{L}(\mathcal{H}_{L}$. The \textit{algebraic entropy} $S(\rho,M)$ is defined as
+for any state $\rho$ on $\mathcal{H}_{L}$ and some \textit{area operator} $\mathcal{L}\in\mathcal{L}(\mathcal{H}_{L})$. The \textit{algebraic entropy} $S(\rho,M)$ is defined as
 \begin{equation}
 	S(\rho,M)=-\sum_{\alpha}p_{\alpha}\log\left(p_{\alpha}\right)+\sum_{\alpha}p_{\alpha}S\left(\rho_{L_{\alpha}}\right).
 \end{equation} 
@@ -1025,33 +995,33 @@ In some sense, this splits the algebraic entropy into a `classical' part $S_{c}\
 \begin{equation}
 	\underbrace{S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)}_{S_{A}}=\underbrace{-\sum_{\alpha}p_{\alpha}\log\left(p_{\alpha}\right)}_{S_{c}}+\underbrace{\sum_{\alpha}p_{\alpha}S\left(\rho_{L_{\alpha}}\right)}_{S_{q}}+\tr\left(\rho\mathcal{L}\right).
 \end{equation}
-Following \cite{Pollack}, we present some examples of operator-algebra erasure codes which one, two, or all three of the classical, quantum, and area terms in their RT formula. We express all the isometries as \textit{quantum circuits}, and familiarity with these is assumed; for a summary, see appendix ????.\\
+Following \cite{Pollack}, we present some examples of operator-algebra erasure codes which contain one, two, or all three of the classical, quantum, and area terms in their RT formula. We express all the encoding isometries as \textit{quantum circuits}, and familiarity with these is assumed; for a summary, see Appendix \ref{apa}.\\
 To analyse the codes, we need to make use of a uniqueness theorem of \cite{Pollack}, which we state without proof. 
 \begin{theorem}
 	Suppose $V\,:\,\mathcal{H}_{L}\to\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$ is an encoding isometry, and $A$ is a subregion. Let $M\equiv V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ be the image of operators on $\mathcal{H}_{A}$ projected back onto $\mathcal{H}_{L}$ under $V$. If $M$ is a von Neumann algebra, then it is the \textbf{unique} von Neumann algebra such that $(V,A,M)$ satisfy complementary recovery. If not, then no such von Neumann algebra exists.
 \end{theorem}
-Combined with theorem \ref{bij}, this gives a series of steps to compute the area operator of the RT formula for a given code. These are
+Combined with Theorem \ref{bij}, this gives a series of steps to compute the area operator of the RT formula for a given code. These are
 \begin{enumerate}
 	\item Calculate $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})V$ and check it is a von Neumann algebra to verify that we have complementary recovery.
-	\item Compute the Wedderburn decomposition of $\mathcal{H}_{L}$ induced by $M$, and follow \ref{5.1} to define a basis $\ket{\widetilde{\alpha,i,j}}$ which lines up with $M$.
-	\item Apply \ref{5.1} twice to obtain unitaries $U_{A}$ and $U_{\ol{A}}$ such that $U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}\otimes\ket{\chi_{\alpha}}\otimes\ket{\alpha,j}$.
-	\item Following theorem \ref{bij}, obtain the states $\ket{\chi_{\alpha}}$ and compute their entanglement entropies across $A_{2}$ and $\ol{A}_{2}$; these are the eigenvalues of $\mathcal{L}$.
+	\item Compute the Wedderburn decomposition of $\mathcal{H}_{L}$ induced by $M$, and follow Theorem \ref{5.1} to define a basis $\ket{\widetilde{\alpha,i,j}}$ which lines up with $M$.
+	\item Apply Theorem \ref{5.1} twice to obtain unitaries $U_{A}$ and $U_{\ol{A}}$ such that $U_{A}U_{\ol{A}}V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}\otimes\ket{\chi_{\alpha}}\otimes\ket{\alpha,j}$.
+	\item Following Theorem \ref{bij}, obtain the states $\ket{\chi_{\alpha}}$ and compute their entanglement entropies across $A_{2}$ and $\ol{A}_{2}$; these are the eigenvalues of $\mathcal{L}$.
 \end{enumerate}
 \section{Codes with one term}
 We start with some codes which have only a single term on the right hand side of the RT formula. To make sense of these, recall that the von Neumann algebra $M$ on $\mathcal{H}_{L}$ induces a decomposition
 \begin{equation}
 	\mathcal{H}_{L}=\bigoplus_{\alpha}\left(\mathcal{H}_{L_{\alpha}}\otimes\mathcal{H}_{\ol{L}_{\alpha}}\right).
 \end{equation}
-This expression takes into account the fact that the tensor factors $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ may vary in dimensionality with $\alpha$. To keep these examples simple, we don't consider cases such as these. We therefore relabel
+This expression takes into account the fact that the tensor factors $\mathcal{H}_{L_{\alpha}}$ and $\mathcal{H}_{\ol{L}_{\alpha}}$ may vary in dimensionality with $\alpha$. To keep these examples simple, we will not consider cases such as these, and choose these factors to have constant dimensionality 2. We therefore relabel
 \begin{equation}
 	\mathcal{H}_{L_{\alpha}}\to\mathcal{H}_{i},\quad\mathcal{H}_{\ol{L}_{\alpha}}\to\mathcal{H}_{j},
 \end{equation}
-so both of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ are encoded by a qubit, or are not present at all. Moreover, we limit $\alpha$ to take at most two values, so $\alpha=0$ or $\alpha\in\{0,1\}$ depending on our specific example. When $\alpha$ has two degrees of freedom, we encode it in its own Hilbert space $\mathcal{H}_{\alpha}=\mathbb{C}^{2}$, where each element of the computational basis keeps track of which $\alpha$-block of the decomposition we are in. Essentially, in this case we are expressing the Hilbert space isomorphism
+so both of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ are represented by a qubit, or are not present at all. Moreover, we limit $\alpha$ to take at most two values, so $\alpha=0$ or $\alpha\in\{0,1\}$ depending on our specific example. When $\alpha$ has two degrees of freedom, we encode it in its own Hilbert space $\mathcal{H}_{\alpha}=\mathbb{C}^{2}$, where each element of the computational basis keeps track of which $\alpha$-block of the decomposition we are in. Essentially, in this case we are expressing the Hilbert space isomorphism
 \begin{equation}
 	\mathcal{H}_{L}=\bigoplus_{\alpha=0}^{1}\left(\mathcal{H}_{i}\otimes\mathcal{H}_{j}\right)\cong \mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}.
 \end{equation}
-The benefit of doing this is that we can specify the encoding isometry $V$ as quantum circuits as stated, acting on qubits.
-\subsubsection{Example 1}
+The benefit of doing this is that we can specify the encoding isometry $V$ as quantum circuits as stated, acting on qubits $\alpha$, $i$, and $j$, which are labelled as such on the left of each circuit.
+\subsubsection{Example 1}\label{E1}
 In this example, we choose $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ to not be present, but allow $\alpha\in\{0,1\}$ to have its own qubit. The logical space is then
 \begin{equation}
 	\mathcal{H}_{L}=\mathcal{H}_{\alpha}=\mathbb{C}^{2}.
@@ -1072,7 +1042,7 @@ Following the uniqueness theorem, we compute the von Neumann algebra by calculat
 \begin{equation}
 	O=\alpha(I_{A}\otimes I_{\ol{A}})+\beta(X_{A}\otimes I_{\ol{A}})+\gamma(Y_{A}\otimes I_{\ol{A}})+\delta(Z_{A}\otimes I_{\ol{A}}),
 \end{equation}
-where $\alpha,\ldots,\delta\in\mathbb{C}$, and then
+where $\alpha,\beta,\gamma,\delta\in\mathbb{C}$, and then
 \begin{equation}
 	V^{\dagger}OV=\alpha I+\delta Z.
 \end{equation}
@@ -1080,13 +1050,13 @@ $M$ is therefore the von Neumann algebra of diagonal operators on $\mathcal{H}_{
 \begin{equation}
 	\rho_{M}=p_{0}\ketbras{0}+p_{1}\ketbras{1}
 \end{equation}
-for some constants $p_{0}$ and $p_{1}$ summing to 1. Classically, we cannot say which of the two states the system is in, so observables in $M$ can only measure a classical uncertainty in the state corresponding to the probabilities $p_{0}$ and $p_{1}$, and cannot distinguish any superposition over $\alpha$ from this. The algebraic entropy therefore reduces to just the classical term $S(\rho,M)=S_{c}$. Moreover, we calculate that $\tr_{\ol{A}}(V\rho V^{\dagger})=p_{0}\ketbras{0}+p_{1}\ketbras{1}$. So the entropy $S_{A}$ exactly matches $S_{c}$, and the full RT formula is just
+for some constants $p_{0}$ and $p_{1}$ summing to 1. Classically, we cannot say which of the two states the system is in, so observables in $M$ can only measure a classical uncertainty in the state corresponding to the probabilities $p_{0}$ and $p_{1}$, and cannot distinguish any superposition over $\alpha$ from this. The algebraic entropy therefore reduces to just the classical term $S(\rho,M)=S_{c}$. Moreover, we calculate that $\tr_{\ol{A}}(V\rho V^{\dagger})=p_{0}\ketbras{0}+p_{1}\ketbras{1}$. So the entropy $S_{A}$ exactly matches $S_{c}$, and the full RT formula is
 \begin{equation}
 	S(\tr_{\ol{A}}(V\rho V^{\dagger}))=-\sum_{\alpha=0}^{1}p_{\alpha}\log{p_{\alpha}}.
 \end{equation}
 This means we have a trivial area operator $\mathcal{L}=0$. Interestingly, $M$ is its own centre and is non-trivial, so even an algebra with a non-trivial centre can have a trivial area operator.
-\subsubsection{Example 2}
-We now present a slightly degenerate example. We choose $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ to not be present again, but also restrict $\alpha=0$. The logical Hilbert space is therefore one-dimensional, with $\mathcal{H}_{L}=\mathbb{C}$. We can still however define a single state: $\rho=1$. Our encoding isometry is
+\subsubsection{Example 2}\label{E2}
+We now present a slightly degenerate example. We choose $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ not to be present again, and also restrict $\alpha=0$. The logical Hilbert space is therefore one-dimensional, with $\mathcal{H}_{L}=\mathbb{C}$. We can still however define a single state: $\rho=1$. Our encoding isometry is
 \begin{equation}
 	V\equiv\begin{quantikz}
 		\lstick{$\ket{+}$} & \ctrl{1} & \qw\rstick{$A$}\\
@@ -1098,7 +1068,7 @@ which just prepares a Bell state:
 	V=\ket{\Phi}\equiv\frac{1}{\sqrt{2}}(\ket{00}+\ket{11}).
 \end{equation}
 $S_{A}$ is therefore $S(\ketbras{\Phi})=\log{2}$, and the von Neumann algebra is just the set of scalars, so $S(\rho,M)=0$. The RT formula is therefore achieved by choosing $\mathcal{L}=\log{2}$, as then $S_{A}=\log{2}=\tr(\rho\mathcal{L})$ as required.
-\subsubsection{Example 3}
+\subsubsection{Example 3}\label{E3}
 In this example, we choose $\alpha=0$, but allow each of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ to be qubits, so $\mathcal{H}_{i}=\mathcal{H}_{j}=\mathbb{C}^{2}$. In full, $\mathcal{H}_{L}=\mathcal{H}_{i}\otimes\mathcal{H}_{j}=\mathbb{C}^{2}\otimes\mathbb{C}^{2}$. Our encoding isometry is simply the identity
 \begin{equation}
 	V\equiv\begin{quantikz}
@@ -1108,7 +1078,7 @@ In this example, we choose $\alpha=0$, but allow each of $\mathcal{H}_{i}$ and $
 \end{equation}
 We have $\mathcal{H}_{i}=\mathcal{H}_{A}$ and $\mathcal{H}_{j}=\mathcal{H}_{\ol{A}}$, so $S_{A}=S(\tr_{j}(\rho))$ for arbitrary state $\rho$. Moreover, $M=\mathcal{L}(\mathcal{H}_{i})\otimes I_{j}$, so the distribution over blocks is trivial with $p_{0}=1$, and the classical part of $S(\rho,M)$ vanishes, leaving us with $S(\rho,M)=S_{q}=S(\tr_{j}(\rho))$. Therefore, we necessarily have $\mathcal{L}=0$ for the area operator.
 \section{Codes with two terms}
-In this section, we present some codes in which the RT formula has two terms on the right hand side. These examples are built up by combining the single term examples in various ways. There's a bit more complexity in the physical Hilbert space though, so we go through this first. Recall that in theorem \ref{bij}, $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ were decomposed into
+In this section, we present some codes in which the RT formula has two terms on the right hand side. These examples are built up by combining the single term examples in various ways. There is a bit more complexity in the physical Hilbert space though, so we go through this first. Recall that in Theorem \ref{bij}, $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ were decomposed into
 \begin{equation}
 	\mathcal{H}_{A}=\bigoplus_{\alpha}\left(\mathcal{H}_{A_{1}^{\alpha}}\otimes\mathcal{H}_{A_{2}^{\alpha}}\right)\oplus\mathcal{H}_{A_{3}},\quad\mathcal{H}_{\ol{A}}=\bigoplus_{\alpha}\left(\mathcal{H}_{\ol{A}_{1}^{\alpha}}\otimes\mathcal{H}_{\ol{A}_{2}^{\alpha}}\right)\oplus\mathcal{H}_{\ol{A}_{3}}.
 \end{equation}
@@ -1117,12 +1087,12 @@ As with the decomposition of $\mathcal{H}_{L}$, the $\alpha$-dependence allows d
 	\mathcal{H}_{A}=\mathcal{H}_{A_{\alpha}}\otimes\mathcal{H}_{A_{1}}\otimes\mathcal{H}_{A_{2}},\quad\mathcal{H}_{\ol{A}}=\mathcal{H}_{\ol{A}_{\alpha}}\otimes\mathcal{H}_{\ol{A}_{1}}\otimes\mathcal{H}_{\ol{A}_{2}},
 \end{equation}
 with the $\mathcal{H}_{A_{\alpha}}$ and $\mathcal{H}_{\ol{A}_{\alpha}}$ factors only present if we have an example with two $\alpha$-blocks. The fact that the $\alpha$ degree of freedom is visible from both $A$ and $\ol{A}$ is where the pseudo-classical behaviour of the codes comes from. In these examples, we label the right hand side of our circuits with the associated decomposition of $\mathcal{H}_{A}$ and $\mathcal{H}_{\ol{A}}$ as well.\\
-Recall as well in \ref{bij} that the decompositions above allowed us to show that there exist unitaries $U_{A}$ and $U_{\ol{A}}$ such that for codes with complementary recovery
+Recall as well in Theorem \ref{bij} that the decompositions above allowed us to show that there exist unitaries $U_{A}$ and $U_{\ol{A}}$ such that for codes with complementary recovery
 \begin{equation}\label{CR}
 	U_{A}U_{\ol{A}}V\ket{\alpha,i,j}=\ket{\alpha,i}_{A_{\alpha}A_{1}}\otimes\ket{\chi_{\alpha}}_{A_{2}\ol{A}_{2}}\otimes\ket{\alpha,j}_{\ol{A}_{\alpha}\ol{A}_{1}}
 \end{equation}
 in our new notation. In our examples, $U_{A}$ and $U_{\ol{A}}$ will always be the identity.
-\subsubsection{Example 4}
+\subsubsection{Example 4}\label{E4}
 This example is perhaps the most intuitive so far, as all three of the tensor factors of $\mathcal{H}_{L}=\mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}$ are qubits. Our encoding isometry is the circuit
 \begin{equation}
 	V=\begin{quantikz}
@@ -1132,17 +1102,17 @@ This example is perhaps the most intuitive so far, as all three of the tensor fa
 		\lstick{$j$} & \qw & \qw \rstick{$\ol{A}_{1}$}
 	\end{quantikz}
 \end{equation}
-We have chosen $A$ to be the first two qubits, and $\ol{A}$ to be the last two. We begin by computing $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})$. Analogously to example 1, $M$ has access to all diagonal operators on $\mathcal{H}_{\alpha}$ (via $\mathcal{H}_{A_{\alpha}}$), and analogously to example 3, it also has full access to all operators on $\mathcal{H}_{i}$. $M$ also must necessarily act as the identity on $\mathcal{H}_{j}$. The centre $Z_{M}$ is non-trivial: while it must act as the identity on $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$, it can act non-trivially on $\mathcal{H}_{\alpha}$ as a diagonal operator.\\
+We have chosen $A$ to be the first two qubits, and $\ol{A}$ to be the last two. We begin by computing $M=V^{\dagger}(\mathcal{L}(\mathcal{H}_{A})\otimes I_{\ol{A}})$. Analogously to Example \ref{E1}, $M$ has access to all diagonal operators on $\mathcal{H}_{\alpha}$ (via $\mathcal{H}_{A_{\alpha}}$), and analogously to Example \ref{E3}, it also has full access to all operators on $\mathcal{H}_{i}$. $M$ also must necessarily act as the identity on $\mathcal{H}_{j}$. The centre $Z_{M}$ is non-trivial: while it must act as the identity on $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$, it can act non-trivially on $\mathcal{H}_{\alpha}$ as a diagonal operator.\\
 Since we have decomposition $\mathcal{H}_{L}=\mathcal{H}_{\alpha}\otimes\mathcal{H}_{i}\otimes\mathcal{H}_{j}$, we note that the basis $\{\ket{\widetilde{\alpha,i,j}}\}$ of $\mathcal{H}_{L}$ which lines up with $M$ is just $\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}\ket{i}\ket{j}$. Considering how our isometry acts on such a basis element, we explicitly have
 \begin{equation}
 	V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}_{A_{\alpha}}\ket{i}_{A_{1}}\ket{\alpha}_{\ol{A}_{\alpha}}\ket{j}_{\ol{A}_{1}}.
 \end{equation}
-Comparing with \ref{CR}, we see that we can clearly pick both unitaries $U_{A}$ and $U_{\ol{A}}$ to be identities, and the states $\ket{\alpha,i}_{A_{\alpha}A_{1}}=\ket{\alpha}_{A_{\alpha}}\ket{i}_{A_{1}}$ and $\ket{\alpha,j}_{\ol{A}_{\alpha}\ol{A}_{1}}=\ket{\alpha}_{\ol{A}_{\alpha}}\ket{j}_{\ol{A}_{1}}$ also factorise cleanly. We do not however have any $\ket{\chi_{\alpha}}$ states (as we have no $A_{2}$ and $\ol{A}_{2}$ subsystems), so we see that $\mathcal{L}=0$ as it only has zero eigenvalues and the RT formula has no area term.\\
+Comparing with Equation \ref{CR}, we see that we can clearly pick both unitaries $U_{A}$ and $U_{\ol{A}}$ to be identities, and the states $\ket{\alpha,i}_{A_{\alpha}A_{1}}=\ket{\alpha}_{A_{\alpha}}\ket{i}_{A_{1}}$ and $\ket{\alpha,j}_{\ol{A}_{\alpha}\ol{A}_{1}}=\ket{\alpha}_{\ol{A}_{\alpha}}\ket{j}_{\ol{A}_{1}}$ also factorise cleanly. We do not however have any $\ket{\chi_{\alpha}}$ states (as we have no $A_{2}$ and $\ol{A}_{2}$ subsystems), so we see that $\mathcal{L}=0$ as it only has zero eigenvalues and the RT formula has no area term.\\
 Now, the $\alpha$ degree of freedom is visible from both $A$ and $\ol{A}$, so acts as though it has been measured from the point of view of $A$, giving the classical term $S_{c}$ on the right hand side. The $i$ and $j$ qubits may be entangled with $\mathcal{H}_{\alpha}$, so after measurement it will collapse to one of the $\rho_{\alpha}$ states from the decomposition $\rho_{M}=p_{0}\rho_{0}+p_{1}\rho_{1}$. The quantum term $S_{q}$ then reduces to the probability $p_{\alpha}$ corresponding to $\rho_{\alpha}$, multiplied by the von Neumann entropy of $\rho_{\alpha}$ reduced to $\mathcal{H}_{i}$. In full, the RT formula is
 \begin{equation}
 	S\left(\tr_{\ol{A}}\left(V\rho V^{\dagger}\right)\right)=-\sum_{\alpha}p_{\alpha}\log\left(p_{\alpha}\right)+\sum_{\alpha}p_{\alpha}S\left(\tr_{j}\left(\rho_{\alpha}\right)\right).
 \end{equation}
-\subsubsection{Example 5}
+\subsubsection{Example 5}\label{E5}
 In this next code, we have the full $\mathcal{H}_{\alpha}$ system, but no $\mathcal{H}_{i}$ or $\mathcal{H}_{j}$. Our encoding isometry is
 \begin{equation}
 	V=\begin{quantikz}
@@ -1152,8 +1122,8 @@ In this next code, we have the full $\mathcal{H}_{\alpha}$ system, but no $\math
 		\lstick{$\ket{0}$} & \qw & \targ{} & \qw \rstick{$\ol{A}_{2}$}
 	\end{quantikz}
 \end{equation}
-As in example 1, the von Neumann algebra $M$ is just the set of diagonal operators on $\mathcal{H}_{\alpha}$. The algebraic entropy $S(\rho,M)$ will therefore again just be the classical Shannon entropy of the distribution $\{p_{\alpha}\}$.\\
-We can actually be even more explicit with this example by considering a logical pure state $\ket{\psi}=a\ket{0}+b\ket{1}$, where $|a|^{2}=p_{0}$ and $|b|^{2}=p_{1}$. We calculate $V\ket{\psi}$ as
+As in Example \ref{E1}, the von Neumann algebra $M$ is just the set of diagonal operators on $\mathcal{H}_{\alpha}$. The algebraic entropy $S(\rho,M)$ will therefore again just be the classical Shannon entropy of the distribution $\{p_{\alpha}\}$.\\
+We can be even more explicit with this example by considering a logical pure state $\ket{\psi}=a\ket{0}+b\ket{1}$, where $|a|^{2}=p_{0}$ and $|b|^{2}=p_{1}$. We calculate $V\ket{\psi}$ as
 \begin{equation}
 	V\ket{\psi}=a\ket{0+00}+\frac{b}{\sqrt{2}}(\ket{1010}+\ket{1111}),
 \end{equation}
@@ -1169,12 +1139,12 @@ Therefore, the entropy $S_{A}$ is
 		\end{pmatrix}\right).
 	\end{aligned}
 \end{equation}
-So for this pure case, the area operator is explicitly $\mathcal{L}=\log{2}\cdot\ketbras{1}$. This matches what we expect: comparing with \ref{CR}, we see that we have for this isometry
+So for this pure case, the area operator is explicitly $\mathcal{L}=\log{2}\cdot\ketbras{1}$. This matches what we expect: comparing with Equation \ref{CR}, we see that we have for this isometry
 \begin{equation}
 	V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}_{A_{\alpha}}\otimes\ket{\chi_{\alpha}}_{A_{2}\ol{A}_{2}}\otimes\ket{\alpha}_{\ol{A}_{\alpha}}
 \end{equation}
 where $\ket{\chi_{0}}=\ket{+0}$ and $\ket{\chi_{1}}=\frac{1}{\sqrt{2}}(\ket{00}+\ket{11})$ is a Bell state. So since $S(\tr_{\ol{A}}(\ketbras{\chi_{0}}))=0$ and $S(\tr_{\ol{A}}(\ketbras{\chi_{0}}))=\log{2}$, $\mathcal{L}=\sum_{\alpha=0}^{1}S(\tr_{\ol{A}}(\ketbras{\chi_{\alpha}}))\cdot I_{\alpha}$ matches what we found.
-\subsubsection{Example 6}
+\subsubsection{Example 6}\label{E6}
 This example has $\alpha=1$, and each of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$ are qubits. Our encoding isometry is
 \begin{equation}
 	V=\begin{quantikz}
@@ -1184,8 +1154,8 @@ This example has $\alpha=1$, and each of $\mathcal{H}_{i}$ and $\mathcal{H}_{j}$
 		\lstick{$\ket{0}$} & \targ{} & \qw \rstick{$\ol{A}_{2}$}
 	\end{quantikz}
 \end{equation}
-Analogously to example 3 again, $M=\mathcal{L}(\mathcal{H}_{i})\otimes I_{j}$. Since there is only one value of $\alpha$, the classical part $S_{q}=0$, and the only contribution to the algebraic entropy $S(\rho,M)$ is the entropy of the reduced state on $\mathcal{H}_{i}$, so $S(\tr_{j}(\rho))$.\\
-However, since there is a Bell state shared across $A_{2}$ and $\ol{A}_{2}$, its entropy contributes to $S_{A}$. Explicitly, comparing with \ref{CR}, we have
+Analogously to Example \ref{E3} again, $M=\mathcal{L}(\mathcal{H}_{i})\otimes I_{j}$. Since there is only one value of $\alpha$, the classical part $S_{q}=0$, and the only contribution to the algebraic entropy $S(\rho,M)$ is the entropy of the reduced state on $\mathcal{H}_{i}$, so $S(\tr_{j}(\rho))$.\\
+However, since there is a Bell state shared across $A_{2}$ and $\ol{A}_{2}$, its entropy contributes to $S_{A}$. Explicitly, comparing with Equation \ref{CR}, we have
 \begin{equation}
 	V\ket{\widetilde{\alpha,i,j}}=\ket{i}_{A_{1}}\otimes\ket{\chi_{0}}_{A_{2}\ol{A}_{2}}\otimes\ket{j}_{\ol{A}_{1}},
 \end{equation}
@@ -1202,31 +1172,102 @@ We now present an example of a code in which \textit{all} terms of the RT formul
 		\lstick{$\ket{0}$} & \qw & \targ{} & \qw \rstick{$\ol{A}_{2}$}
 	\end{quantikz}
 \end{equation}
-Analogously to example 4, $M$ has full access to operators on $\mathcal{H}_{i}$ (via $\mathcal{H}_{A_{1}}$); analogously to example 1, it has full access to diagonal operators on $\mathcal{H}_{\alpha}$ (via $\mathcal{H}_{A_{\alpha}}$); and it has no access to $\mathcal{H}_{j}$, so must act as the identity on it. The basis lining up with $M$ therefore decomposes as $\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}\ket{i}\ket{j}$. Applying the isometry to this basis state, we get the full form of \ref{CR}
+Analogously to Example \ref{E4}, $M$ has full access to operators on $\mathcal{H}_{i}$ (via $\mathcal{H}_{A_{1}}$); analogously to Example \ref{E1}, it has full access to diagonal operators on $\mathcal{H}_{\alpha}$ (via $\mathcal{H}_{A_{\alpha}}$); and it has no access to $\mathcal{H}_{j}$, so must act as the identity on it. The basis lining up with $M$ therefore decomposes as $\ket{\widetilde{\alpha,i,j}}=\ket{\alpha}\ket{i}\ket{j}$. Applying the isometry to this basis state, we get the full form of Equation \ref{CR}
 \begin{equation}
 	V\ket{\widetilde{\alpha,i,j}}=\ket{\alpha,i}_{A_{\alpha}A_{1}}\otimes \ket{\chi_{\alpha}}_{A_{2}\ol{A}_{2}}
 \end{equation}
-where $\ket{\alpha,i}=\ket{\alpha}\ket{i}$, $\ket{\alpha,j}=\ket{\alpha}\ket{j}$ both decompose, and the $\ket{\chi_{\alpha}}$ are
+where $\ket{\alpha,i}=\ket{\alpha}_{A_{\alpha}}\ket{i}_{A_{1}}$, $\ket{\alpha,j}=\ket{\alpha}_{\ol{A}_{\alpha}}\ket{j}_{\ol{A}_{1}}$ both decompose, and the $\ket{\chi_{\alpha}}$ are
 \begin{equation}
 	\ket{\chi_{0}}_{A_{2}\ol{A}_{2}}=\ket{+}_{A_{2}}\ket{0}_{\ol{A}_{2}},\quad\ket{\chi_{1}}_{A_{2}\ol{A}_{2}}=\frac{1}{\sqrt{2}}(\ket{00}_{A_{2}\ol{A}_{2}}+\ket{11}_{A_{2}\ol{A}_{2}}).
 \end{equation}
-Following example 5, we see that we again prepare a Bell state on $\mathcal{H}_{A_{2}}\otimes\mathcal{H}_{\ol{A}_{2}}$, so the same calculation implies that the area operator is $\mathcal{L}=\log{2}\ketbras{1}_{\alpha}$. However, we also have all the pieces of example 4, so the algebraic entropy has both a classical and a quantum term, and so we have all three terms on the left hand side of the RT formula.
+Following Example \ref{E5}, we see that we again prepare a Bell state on $\mathcal{H}_{A_{2}}\otimes\mathcal{H}_{\ol{A}_{2}}$, so the same calculation implies that the area operator is $\mathcal{L}=\log{2}\ketbras{1}_{\alpha}$. However, we also have all the pieces of Example \ref{E4}, so the algebraic entropy has both a classical and a quantum term, and so we have all three terms on the right hand side of the RT formula.\\
+These examples, while simple, provide a good demonstration of all the ingredients of the various theorems presented in this paper. In particular, we have provided examples of \textit{all} possible combinations of terms on the right hand side of the RT formula. We also note that we had examples in which a von Neumann algebra with non-trivial centre still has a trivial area operator $\mathcal{L}$, which is not immediately obvious as a possibility. 
+
 \chapter{Conclusions}
 
 \section{Summary of Project}
 Throughout this dissertation, we explored holographic error correction, describing what it means for a code to be holographic. We began with introducing the background theory, discussing two simple examples of error correction in the classical and quantum bit-flip. We then discussed how to model noise via quantum operations, before specialising to error correction. We discussed the quantum error correction conditions, defining what it means for a set of errors to be correctable. We then adapted these conditions for the case of quantum erasures.\\
 We then moved onto describing the defining theorems of holographic erasure correction, following \cite{Harlow}. We stated and proved theorems on conventional, subsystem, and operator-algebra erasure correction, providing an example in the conventional case. We then defined what it means for a code to be holographic, by requiring that it obeys an algebraic version of the RT formula, and then showed that if a code obeys complementary recovery, then it must have an RT formula and vice versa. Finally, we presented some basic examples of operator-algebra error correction, describing the encoding isometries via quantum circuits.\\
-Our presentation of results throughout closely mirrored results in \cite{Harlow} and \cite{Pollack}, but we did not present all of the results they describe. In particular, we did not present a detailed discussion on holography, focussing more on the quantum information point of view.
+Our presentation of results throughout closely mirrored  \cite{Harlow} and \cite{Pollack}, but we did not present all of the results they describe. In particular, we did not present a detailed discussion on holography, focussing more on the quantum information point of view.
 \section{Future Research Directions}
-While we presented the basic theory of holographic error correction in this project, the field has vastly widened since Harlow's original publication in 2016, with a vast set of research directions being undertaken. Moreover, Harlow's work is rather restrictive in making lots of assumptions about the structure of underlying Hilbert spaces. For example, it assumes that the physical Hilbert space decomposes as $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. This is often not possible, and from the point of view of holography, is often undesirable. Generalising the results would have been a natural direction for this project to have take, if time constraints allowed it. We would have liked to consider, for example, allowing $\mathcal{H}$ to have a von Neumann algebra acting on it in place of it having a tensor factorisation, and seeing if an analogous theorem to \ref{5.1} would hold if the commutant was erased.\\
+While we presented the basic theory of holographic error correction in this project, the field has vastly widened since Harlow's original publication in 2016, with a vast set of research directions being undertaken. Moreover, Harlow's work is rather restrictive in making lots of assumptions about the structure of underlying Hilbert spaces. For example, it assumes that the physical Hilbert space decomposes as $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\ol{A}}$. This is often not possible, and from the point of view of holography, is often undesirable. Generalising the results would have been a natural direction for this project to have take, if time constraints allowed it. We would have liked to consider, for example, allowing $\mathcal{H}$ to have general von Neumann algebra acting on it rather than a factor (inducing the decomposition), and seeing if an analogous theorem to \ref{5.1} would hold if the commutant was erased.\\
 Another direction we would have liked to explore more is that of approximate and state-specific erasure correction, as discussed in \cite{QMS}. This provides a vast generalisation of the results of \cite{Harlow} to situations where we allow the code to only \textit{approximately} correct an erasure. This paper also discusses non-isometric encodings, generalising the results even further.\\
-However, the most active area of research in holographic error correction is one we've neglected to mention: \textit{tensor networks} \cite{Jahn_2021}. These are much more relevant from a holographer's point of view, and link error correction to the structure of AdS space much more concretely. Had we had a significant longer period of time to write this report, tensor network models of holography would likely have been our focus.
+However, the most active area of research in holographic error correction is one we've neglected to mention: \textit{tensor networks} \cite{Jahn_2021}. These are much more relevant from a holographer's point of view, and link error correction and entanglement to the geometry of AdS space much more concretely. Had we had a significant longer period of time to write this report, tensor network models of holography would likely have been our focus.
 
 \appendix
 % the appendix command just changes heading styles for appendices.
 
-\chapter{Quantum Information and Entropy}
-In this appendix, we present the necessary background in information theory to understand this dissertation. We will begin with some \textit{classical} information theory to present the subject and build some intuition, before describing the quantum generalisations. We follow the textbook of Nielsen and Chuang\cite{NielsenChuang} in presentation. Note that there are several other information-theoretic quantities which we don't describe here. We limit ourselves to only those definitions which are directly relevant to this dissertation.
+\chapter{Quantum Circuit Notation}\label{apa}
+In this appendix, we will introduce the graphical quantum circuit notation for quantum computations. This is adapted from Nielsen and Chuang \cite{NielsenChuang}. We only describe the minimal set of features of a quantum circuit to understand our examples; for a more detailed explanation, we recommend consulting the above textbook.
+\section{Quantum Gates}
+Generally, a quantum computation consists of taking a string of qubits $\ket{\psi_{1}}\otimes\cdots\otimes\ket{\psi_{n}}$ as an input, applying a series of unitary operators to specified qubits in turn, and outputting a string of qubits. In computing jargon, we call a unitary operator a \textit{quantum gate} in this context. These can be as simple or as complex as we want; the \textit{only} constraint is unitarity.
+\begin{example}
+	Consider the qubit $\ket{\psi}=a\ket{0}+b\ket{1}$, with computational basis elements $\{\ket{0},\ket{1}\}$.The quantum $NOT$ gate, denoted $X$, is defined by its action on the computational basis as follows
+	\begin{equation}
+		X\ket{0}=\ket{1},\quad X\ket{1}=\ket{0}.
+	\end{equation}
+	In matrix notation, $X$ can be expressed as
+	\begin{equation}
+		X=\begin{pmatrix}
+			0&1\\1&0
+		\end{pmatrix}
+	\end{equation}
+	Another quantum gate is the Hadamard gate, denoted $H$. This is defined by
+	\begin{equation}
+		H\ket{0}=\frac{1}{\sqrt{2}}(\ket{0}+\ket{1})\equiv\ket{+},\quad H\ket{1}=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})\equiv\ket{-}.
+	\end{equation}
+	In some sense, this rotates the computational basis elements by $\pi/4$. In matrix notation, it can be written
+	\begin{equation}
+		H=\frac{1}{\sqrt{2}}\begin{pmatrix}
+			1&1\\1&-1
+		\end{pmatrix}.
+	\end{equation}
+\end{example}
+Both of these single-qubit gates are clearly unitary. However, gates don't have to act on only a single qubit. There are \textit{multi-qubit gates}, which we give an example of too.
+\begin{example}
+	Consider the space of two qubits, with computational basis $\{\ket{00},\ket{01},\ket{10},\ket{11}\}$. The $CX$ (or controlled-$X$) gate is defined by
+	\begin{equation}
+		\begin{aligned}
+			CX\ket{00}&=\ket{00},\quad CX\ket{10}=\ket{11}\\
+			CX\ket{01}&=\ket{01},\quad CX\ket{11}=\ket{10}.
+		\end{aligned}
+	\end{equation}
+	This can be seen to act as a $X$ gate on the second qubit if the first (or control) qubit is in the $\ket{1}$ state, and as the identity if the control qubit is a $\ket{0}$. In matrix notation, it can be written as
+	\begin{equation}
+		CX=\begin{pmatrix}
+			1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0
+		\end{pmatrix}.
+	\end{equation}
+\end{example}
+\section{Quantum Circuits}
+Now we have defined a quantum gate, we can define a quantum circuit. Formally, a quantum circuit is an ordered sequence of quantum gates, measurements, and resets, all of which may be conditioned on the outcome of classical computations. In the simple examples in this dissertation, we do not consider any circuits involving measurements and resets; only quantum gates. Circuits are diagrammatically represented by quantum circuit notation, with the benefit being that it is far clearer to see which individual qubits a multiple-qubit gate may be acting on. The diagram below demonstrates a simple example.
+\begin{equation}
+	\begin{quantikz}
+		\lstick{$\ket{\psi}$} & \ctrl{1} & \gate{X} & \qw\rstick{}\\
+		\lstick{$\ket{0}$} & \targ{} &\qw &\qw\rstick{}
+	\end{quantikz}
+\end{equation}
+We go through the pieces of this circuit step-by-step. We read the diagram from left to right; the circuit takes an input state $\ket{\psi}$ on the left, and adjoins on an ancillary qubit in the $\ket{0}$ state. Moving to the right, the symbol connecting the two wires signifies a $CX$ gate, with the first qubit as control (denoted by the filled-in dot), and the second as the target (denoted by the circle with a cross). Finally, the $X$ in a box signifies that the circuit acts on the first qubit with an $X$ gate. We can be even more specific by considering the action of this circuit on an arbitrary input state $\ket{\psi}=a\ket{0}+b\ket{1}$. We have
+\begin{equation}
+	\begin{aligned}
+		a\ket{0}+b\ket{1}\xrightarrow{\ket{0}}a\ket{00}+b\ket{10}
+		\xrightarrow{CX}a\ket{00}+b\ket{11}
+		\xrightarrow{X_{1}}a\ket{10}+b\ket{01}.
+	\end{aligned}
+\end{equation}
+While this example doesn't really illustrate how powerful this notation is due to its simplicity, the salient features of a quantum circuit diagram are all present. Essentially, it is just a graphical notation for adjoining on ancillary qubits to a state, and then applying a series of unitary operators.\\
+One gate which we haven't mentioned in our discussion is the \textit{Toffoli gate}, which features in our examples. This is a three-qubit gate, which can be thought of as a ``doubly controlled $X$ gate". It acts as an $X$ gate on the third qubit if and only if the first two qubits are in the $\ket{11}$ state. In a quantum circuit diagram, this is denoted by the symbol
+\begin{equation}
+	\begin{quantikz}
+		\qw&\ctrl{2}&\qw\\
+		\qw&\ctrl{1}&\qw\\
+		\qw&\targ{}&\qw
+	\end{quantikz}
+\end{equation}
+analogously to the $CNOT$ gate.
+
+\chapter{Quantum Information and Entropy}\label{apb}
+In this appendix, we present the necessary background in information theory to understand this dissertation. We will begin with some \textit{classical} information theory to present the subject and build some intuition, before describing the quantum generalisations. We follow the textbook of Nielsen and Chuang \cite{NielsenChuang} in presentation. Note that there are several other information-theoretic quantities which we do not describe here. We limit ourselves to only those definitions which are directly relevant to this dissertation.
 \section{Classical Information}
 \subsection{Shannon Entropy}
 The key concept of classical information theory is the \textit{Shannon entropy} of a random variable $X$. Intuitively, this is a way of quantifying the information gained when we learn the value of $X$, or alternatively, the uncertainty about $X$ before we learn its value. To define Shannon entropy, suppose we wish to quantify how much information is provided by an event $E$ which may occur in a probabilistic experiment. To do this, we define an `information function' $I(E)$, which we intuitively suppose should obey the following axioms:
@@ -1242,13 +1283,13 @@ With these axioms, it's not hard to show that $I(p)=k\log{p}$, where $k$ is a re
 		H(X)\equiv-\sum_{n}p_{n}\log{p_{n}}.
 	\end{equation}
 \end{definition}
-When Claude Shannon defined this, he chose the logarithm to be with base 2. This is arbitrary, and we choose the convention that the definition involves the \textit{natural logarithm}, with base $e$.
+When Claude Shannon defined this in \cite{6773024}, he chose the logarithm to be with base 2. This is arbitrary, and we choose the convention that the definition involves the \textit{natural logarithm}, with base $e$.
 \begin{example}[Binary entropy]
 	Suppose $X$ is a Bernoulli random variable, taking values $x_{0}$ and $x_{1}$ with probabilities $p$ and $1-p$ respectively. The Shannon entropy of $X$ is then
 	\begin{equation}
 		H(X)\equiv H_{\text{bin}}(p)=-p\log{p}-(1-p)\log{(1-p)}.
 	\end{equation}
-	Note that this attains its maximum value for $p=1/2$. This matches our intuition that entropy should be a measure of uncertainty in $X$ before we measure it: if $p=1/2$, we have maximum uncertainty as to whether a measurement of $X$ will return $x_{0}$ or $x_{1}$. To the contrary, if $p=0.999$, even before measuring $X$ we could say with some degree of certainty that $X$ will return $x_{0}$.
+	Note that this attains its maximum value for $p=1/2$. This matches our intuition that entropy should be a measure of uncertainty in $X$ before we measure it: if $p=1/2$, we have maximum uncertainty as to whether a measurement of $X$ will return $x_{0}$ or $x_{1}$. To the contrary, if $p=0.999$, even before measuring $X$ we could say with some degree of certainty that $X$ will return $x_{0}$. Explicitly, $H_{\text{bin}}(1/2)=\log{2}\approx 0.693$, and $H_{\text{bin}}(0.999)=\approx 0.008$.
 \end{example}
 \subsection{Relative Entropy}
 The \textit{relative entropy} is a measure of the `closeness' of two probability distributions $p(x)$ and $q(x)$, over the same index set $x$. 
@@ -1268,7 +1309,7 @@ It is not immediately obvious why this is a good definition for a distance betwe
 	\begin{equation}
 		H(p(x)\Vert q(x))=-H(X)-\sum_{x}p(x)\log\frac{1}{d}=\log{d}-H(X).
 	\end{equation}
-	Note that non-negativity therefore implies that $H(X)\leq\log{d}$; an occasionally useful fact about entropy.
+	Note that non-negativity therefore implies that $H(X)\leq\log{d}$; an occasionally useful fact about entropy. In particular, it quantifies the maximum amount of information which can be contained in a $d$-bit.
 \end{example}
 \section{Quantum Information}
 \subsection{von Neumann Entropy}
@@ -1278,13 +1319,13 @@ Shannon entropy measures the uncertainty of random variables associated with cla
 \end{equation}
 If the set of states $\{\rho_{n}\}$ are all orthogonal, this ensemble should behave exactly like a classical random variable following probability distribution $\{p_{n}\}$. A quantum measure of entropy should therefore reduce to $H(p_{n})$ in this case. With this idea in mind, we can define the so-called \textit{von Neumann entropy}, which satisfies this intuition.
 \begin{definition}
-	Given a quantum state described by density operator $\rho$ on $\mathcal{H}$, its \textbf{von Neumann entropy} is defined as
+	Given a quantum state described by density operator $\rho$ on Hilbert space $\mathcal{H}$, its \textbf{von Neumann entropy} is defined as
 	\begin{equation}
 		S(\rho)\equiv -\tr_{\mathcal{H}}\left(\rho\log{\rho}\right),
 	\end{equation}
-	where $\log$ refers to the natural matrix logarithm.
+	where $\log$ denotes the natural matrix logarithm.
 \end{definition}
-The matrix logarithm is often quite computationally difficult to calculate. However, if we write $\rho$ in terms of its eigenvectors $\{\ket{i}\}$ and corresponding eigenvalues $\{\eta_{i}\}$ as $\rho=\sum_{i}\eta_{i}\ketbras{i}$, the von Neumann entropy is simply
+The matrix logarithm is often computationally difficult to calculate. However, if we write $\rho$ in terms of its eigenvectors $\{\ket{i}\}$ and corresponding (real) eigenvalues $\{\eta_{i}\}$ as $\rho=\sum_{i}\eta_{i}\ketbras{i}$ (which can always be done because $\rho$ is Hermitian), the von Neumann entropy is simply
 \begin{equation}
 	S(\rho)=-\sum_{i}\eta_{i}\log\eta_{i}.
 \end{equation}
@@ -1295,7 +1336,7 @@ The matrix logarithm is often quite computationally difficult to calculate. Howe
 			1&0\\0&1
 		\end{pmatrix}.
 	\end{equation}
-	The states $\ketbras{0}$ and $\ketbras{1}$ are orthogonal, so perfectly distinguishable; we therefore cannot say classically which of the two states the system is in, so we expect the von Neumann entropy to reduce to $H_{\text{bin}}(1/2)=\log{2}$. This is exactly what we observe:
+	The states $\ketbras{0}$ and $\ketbras{1}$ are orthogonal, so perfectly distinguishable; we therefore cannot say classically which state the system is in, so we expect the von Neumann entropy to reduce to $H_{\text{bin}}(1/2)=\log{2}$. This is exactly what we observe:
 	\begin{equation}
 		S(\rho)=-\tr(\rho\log\rho)=-\frac{1}{2}\log\frac{1}{2}-\frac{1}{2}\log\frac{1}{2}=\log{2}.
 	\end{equation}
@@ -1357,7 +1398,7 @@ We now state some generic properties of von Neumann entropy, without proof. See 
 \begin{itemize}
 	\item $S(\rho)=0$ if and only if $\rho$ is a pure state.
 	\item $S(\rho)=\log{d}$ is maximal for a $d$-dimensional Hilbert space if and only if $\rho$ is a maximally mixed state (e.g. $\rho$ is proportional to the identity).
-	\item $S(\rho)=S(U\rho U^{\dagger})$ is invariant under unitary transformations $U$; this is just the statement that entropy is invariant under a change of basis.
+	\item $S(\rho)=S(U\rho U^{\dagger})$ is invariant under unitary transformations $U$; this is the statement that entropy is invariant under a change of basis.
 	\item $S(\rho)$ is \textit{concave}: given an ensemble of density operators $\{\rho_{i}\}$ and probabilities $\{p_{i}\}$, we have
 	\begin{equation}
 		S\left(\sum_{i}p_{i}\rho_{i}\right)\geq\sum_{i}p_{i}S(\rho_{i}).
@@ -1377,7 +1418,7 @@ We now state some generic properties of von Neumann entropy, without proof. See 
 	\end{equation}
 \end{itemize}
 \subsection{Entropy as a Measure of Entanglement}
-Entanglement between quantum systems is notoriously a \textit{very} hard quantity to quantify, particularly for more than two systems. However, for entanglement between precisely two systems, the von Neumann entropy can be used as a way to quantify the entanglement.\\
+Entanglement between quantum systems is notoriously \textit{very} hard to quantify, particularly for more than two systems. However, for entanglement between precisely two systems, the von Neumann entropy can be used as a way to quantify the entanglement.\\
 To build some intuition, suppose that we have a separable state of two systems $A$ and $B$: $\ket{\Psi_{AB}}=\ket{\psi_{A}}\otimes\ket{\psi_{B}}$. Consider the reduced density matrices on either system $A$ or $B$:
 \begin{equation}
 	\begin{aligned}
@@ -1393,7 +1434,7 @@ Both of these are pure states, so $S(\rho_{A})=S(\rho_{B})=0$. This is a result 
 	\end{equation}
 	where $\rho_{A}=\tr_{B}\left(\rho_{AB}\right)$ is the reduced state to subsystem $A$ and similarly for $\rho_{B}$.
 \end{definition}
-Note that this is not a unique definition of entanglement entropy. Some other common definitions include the \textit{Renyi entanglement entropy}\cite{Renyi}, or even simply relative entropy.
+Note that this is not a unique definition of entanglement entropy. Some other common definitions include the \textit{Renyi entanglement entropy} \cite{Renyi}, or even simply relative entropy.
 \begin{example}
 	Consider the Bell state $\ket{\Phi}=\frac{1}{\sqrt{2}}(\ket{0}_{A}\otimes\ket{1}_{B}+\ket{1}_{A}\otimes\ket{0}_{B})$. This has density matrix
 	\begin{equation}
@@ -1414,74 +1455,63 @@ Note that this is not a unique definition of entanglement entropy. Some other co
 	 which have $S(\rho_{A})=S(\rho_{B})=\log{2}$. This reflects the fact that the Bell states maximally entangle subsystems $A$ and $B$.
 \end{example}
 
-\chapter{Quantum Circuit Notation}
-In this appendix, we will introduce the graphical quantum circuit notation for quantum computations. This is adapted from Nielsen and Chuang\cite{NielsenChuang}. We only describe the minimal set of features of a quantum circuit to understand our examples; for a more detailed explanation, we recommend consulting the above textbook.
-\section{Quantum Gates}
-Generally, a quantum computation consists of taking a string of qubits $\ket{\psi_{1}}\otimes\ldots\otimes\ket{\psi_{n}}$ as an input, applying a series of unitary operators to specified qubits in turn, and outputting a string of qubits. In computing jargon, we call a unitary operator a \textit{quantum gate} in this context. These can be as simple or as complex as we want; the \textit{only} constraint is unitarity.
+\chapter{The Schmidt Decomposition and Purifications}\label{apc}
+In this appendix, we present the concepts of \textit{Schmidt decomposition} and \textit{purifications}. These are two constructions which we make use of in several of our proofs, and they are central results in quantum information theory. Our discussion will follow Nielsen and Chuang \cite{NielsenChuang}.
+\section{The Schmidt Decomposition}
+The Schmidt decomposition is characterised by the following theorem.
+\begin{theorem}[Schmidt decomposition]\label{Schmidt}
+	Suppose $\ket{\psi}$ is a pure state of composite system $AB$, with Hilbert space $\mathcal{H}_{A}\otimes\mathcal{H}_{B}$. Then, there exist sets of orthonormal states $\{\ket{i_{A}}\}\in\mathcal{H}_{A}$ and $\{\ket{i_{B}}\}\in\mathcal{H}_{B}$ called \textbf{Schmidt bases} such that
+	\begin{equation}\label{schmidt}
+		\ket{\psi}=\sum_{i}\lambda_{i}\ket{i_{A}}\ket{i_{B}},
+	\end{equation}
+	where the $\lambda_{i}$ are non-negative, real numbers, satisfying $\sum_{i}\lambda_{i}^{2}=1$. They are called \textbf{Schmidt numbers}, and the decomposition \ref{schmidt} is called the \textbf{Schmidt decomposition}.
+\end{theorem}
+The proof of this is a straightforward corollary of the existence of the singular value decomposition. As an example of why this is useful, consider the reduced density operators of $\ket{\psi}$ as defined in Theorem \ref{Schmidt}. Denoting $\rho=\ketbras{\psi}$, the Schmidt decomposition immediately tells us
+\begin{equation}
+	\rho_{A}=\sum_{i}\lambda_{i}^{2}\ketbras{i_{A}},\quad\rho_{B}=\sum_{i}\lambda_{i}^{2}\ketbras{i_{B}}.
+\end{equation}
+In other words, the eigenvalues of these reduced states are equivalent, which is not immediately obvious by other means. Moreover, the number of $\lambda_{i}\neq 0$ is called the \textit{Schmidt number} of $\ket{\psi}$. This can be used as a rudimentary measure of the entanglement of $\ket{\psi}$, since $\ket{\psi}$ is a product state if and only if it has Schmidt number equal to 1.
 \begin{example}
-	Consider the qubit $\ket{\psi}=a\ket{0}+b\ket{1}$, with computational basis elements $\{\ket{0},\ket{1}\}$.The quantum $NOT$ gate, denoted $X$, is defined by its action on the computational basis as follows
+	Consider the two-qubit state $\ket{\psi}=(\ket{00}+\ket{01}+\ket{10})/\sqrt{3}\in\mathbb{C}^{2}\otimes\mathbb{C}^{2}$. We can compute its reduced density operators as
 	\begin{equation}
-		X\ket{0}=\ket{1},\quad X\ket{1}=\ket{0}.
+		\rho_{A}=\rho_{B}=\frac{1}{3}(2\ketbras{0}+\ketbra{0}{1}+\ketbra{1}{0}+\ketbras{1}).
 	\end{equation}
-	In matrix notation, $X$ can be expressed as
-	\begin{equation}
-		X=\begin{pmatrix}
-			0&1\\1&0
-		\end{pmatrix}
-	\end{equation}
-	Another quantum gate is the Hadamard gate, denoted $H$. This is defined by
-	\begin{equation}
-		H\ket{0}=\frac{1}{\sqrt{2}}(\ket{0}+\ket{1})\equiv\ket{+},\quad H\ket{1}=\frac{1}{\sqrt{2}}(\ket{0}-\ket{1})\equiv\ket{-}.
-	\end{equation}
-	In some sense, this rotates the computational basis elements by $\pi/4$. In matrix notation, it can be written
-	\begin{equation}
-		H=\frac{1}{\sqrt{2}}\begin{pmatrix}
-			1&1\\1&-1
-		\end{pmatrix}.
-	\end{equation}
-\end{example}
-Both of these single-qubit gates are clearly unitary. However, gates don't have to act on only a single qubit. There are \textit{multiple qubit gates}, which we give an example of too.
-\begin{example}
-	Consider the space of two qubits, with computational basis $\{\ket{00},\ket{01},\ket{10},\ket{11}\}$. The $CNOT$ (or controlled-$NOT$) gate is defined by
+	These have eigenvectors and eigenvalues
 	\begin{equation}
 		\begin{aligned}
-			CNOT\ket{00}&=\ket{00},\quad CNOT\ket{10}=\ket{11}\\
-			CNOT\ket{01}&=\ket{01},\quad CNOT\ket{11}=\ket{10}.
+			\lambda_{0}=\frac{1}{6}(3+\sqrt{5}),&\quad\ket{v_{1}}=\frac{1}{2}(1+\sqrt{5})\ket{0}+\ket{1}\\
+			\lambda_{1}=\frac{1}{6}(3-\sqrt{5}),&\quad\ket{v_{1}}=\frac{1}{2}(1-\sqrt{5})\ket{0}+\ket{1}.
 		\end{aligned}
 	\end{equation}
-This can be seen to act as a $NOT$ gate on the second qubit if the first (or control) qubit is in the $\ket{1}$ state, and as the identity if the control qubit is a $\ket{0}$. In matrix notation, it can be written as
-\begin{equation}
-	CNOT=\begin{pmatrix}
-		1&0&0&0\\0&1&0&0\\0&0&0&1\\0&0&1&0
-	\end{pmatrix}.
-\end{equation}
+	Normalising the eigenvectors gives the Schmidt bases, and the Schmidt coefficients are $\sqrt{\lambda_{i}}$.
 \end{example}
-\section{Quantum Circuits}
-Now we have defined a quantum gate, we can define a quantum circuit. Formally, a quantum circuit is an ordered sequence of quantum gates, measurements, and resets, all of which may be conditioned on the outcome of classical computations. In the simple examples in this dissertation, we do not consider any circuits involving measurements and resets; only quantum gates. Circuits are diagrammatically represented by quantum circuit notation, with the benefit being that it is far clearer to see which individual qubits a multiple-qubit gate may be acting on. The below diagram demonstrates a simple example.
-\begin{equation}
-	\begin{quantikz}
-		\lstick{$\ket{\psi}$} & \ctrl{1} & \gate{X} & \qw\rstick{}\\
-		\lstick{$\ket{0}$} & \targ{} &\qw &\qw\rstick{}
-	\end{quantikz}
-\end{equation}
-We go through the pieces of this circuit step-by-step. The circuit takes an input state $\ket{\psi}$ on the left, and adjoins on an ancillary qubit in the $\ket{0}$ state. Moving to the right, the symbol connecting the two wires signifies a $CNOT$ gate, with the first qubit as control (denoted by the filled-in dot), and the second as the target (denoted by the circle with a cross). Finally, the $X$ in a box signifies that the circuit acts on the first qubit with an $X$ gate. We can be even more specific by considering the action of this circuit on an arbitrary input state $\ket{\psi}=a\ket{0}+b\ket{1}$. We have
-\begin{equation}
-	\begin{aligned}
-		a\ket{0}+b\ket{1}\xrightarrow{\ket{0}}a\ket{00}+b\ket{10}
-		\xrightarrow{CNOT}a\ket{00}+b\ket{11}
-		\xrightarrow{X_{1}}a\ket{10}+b\ket{01}.
-	\end{aligned}
-\end{equation}
-While this example doesn't really illustrate how powerful this notation is due to its simplicity, the salient features of a quantum circuit diagram are all present. Essentially, it is just a graphical notation for adjoining on ancillary qubits to a state, and then applying a series of unitary operators.\\
-One gate which we haven't mentioned in our discussion is the \textit{Toffoli gate}, which features in our examples. This is a three-qubit gate, which can be thought of as a "doubly controlled $X$ gate". It acts as an $X$ gate on the third qubit if and only if the first two qubits are in the $\ket{11}$ state. In a quantum circuit diagram, this is denoted by the symbol
-\begin{equation}
-	\begin{quantikz}
-		\qw&\ctrl{2}&\qw\\
-		\qw&\ctrl{1}&\qw\\
-		\qw&\targ{}&\qw
-	\end{quantikz}
-\end{equation}
-analogously to the $CNOT$ gate.
+\section{Purifications}
+Purifications are characterised by the following theorem.
+\begin{theorem}[Purifications]\label{P}
+	Suppose $\rho_{A}$ is a reduced state of system $A$. Introducing a new system $R$, we can always define a pure state $\ket{AR}$ for the composite system $AR$ such that $\rho_{A}=\tr_{R}(\ketbras{AR})$. Such a state is called a \textbf{purification} of $\rho_{A}$ on $R$.
+\end{theorem}
+The proof of this is constructive, so we go through it.
+\begin{proof}
+	Write $\rho_{A}$ in terms of an orthonormal basis $\{\ket{i_{A}}\}$ of $\mathcal{H}_{A}$ as
+	\begin{equation}
+		\rho_{A}=\sum_{i}p_{i}\ketbras{i_{A}},
+	\end{equation}
+	which is always possible since $\rho_{A}$ is Hermitian. Introduce a system $R$ with the same state space as $A$, and orthonormal basis $\{\ket{i_{R}}\}$. Define a pure state for the combined system as
+	\begin{equation}
+		\ket{AR}\equiv\sum_{i}\sqrt{p_{i}}\ket{i_{A}}\ket{i_{R}}
+	\end{equation}
+	We now calculate the reduced density operator for $A$ corresponding to $\ket{AR}$:
+	\begin{equation}
+		\begin{aligned}
+			\text{Tr}_{R}\left(\ketbras{AR}\right)&=\sum_{ij}\sqrt{p_{i}p_{j}}\ketbra{i_{A}}{j_{A}}\text{Tr}\left(\ketbra{i_{R}}{j_{R}}\right)\\&=\sum_{ij}\sqrt{p_{i}p_{j}}\ketbra{i_{A}}{j_{A}}\delta_{ij}\\
+			&=\sum_{i}p_{i}\ketbras{i_{A}}\\&=\rho_{A}
+		\end{aligned}
+	\end{equation}
+	and so $\ket{AR}$ is a purification of $\rho_{A}$.
+\end{proof}
+Note the link between purifications and the Schmidt decomposition: the process of purifying a mixed state $\rho_{A}$ of system $A$ is to define a pure state with a Schmidt basis for subsystem $A$ being the basis in which the mixed state $\rho_{A}$ is diagonal. The Schmidt coefficients are then just the square roots of the eigenvalues of $\rho_{A}$. Moreover, we can also think of purifications `in the other direction'; that is, if we have a mixed state $\rho_{A}$ of system $A$, we can think of it as being a subsystem of some larger pure state $\rho_{AB}$ of composite system $AB$, where the `mixedness' of $A$ comes from $A$ being entangled with $B$ and measurement of $B$ being non-deterministic.
+
+
 
 \bibliographystyle{siam}
 \bibliography{refs}
