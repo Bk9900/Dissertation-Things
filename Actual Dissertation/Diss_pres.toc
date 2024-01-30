@@ -1,0 +1,4 @@
+\beamer@sectionintoc {1}{Introduction}{2}{0}{1}
+\beamer@sectionintoc {2}{Quantum Erasures}{17}{0}{2}
+\beamer@sectionintoc {3}{Operator-Algebras}{35}{0}{3}
+\beamer@sectionintoc {4}{Conclusions}{48}{0}{4}

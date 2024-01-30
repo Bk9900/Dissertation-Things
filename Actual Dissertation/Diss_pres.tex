@@ -1,0 +1,281 @@
+\documentclass[11pt]{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage{braket}
+\usepackage{tikz}
+\usetikzlibrary{quantikz}
+\usetikzlibrary{decorations.pathreplacing}
+\usetheme{Madrid}
+\AtBeginSection[]
+{
+	\begin{frame}
+		\frametitle{Table of Contents}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
+\newcommand{\ketbra}[2]{\ket{#1}\bra{#2}}
+\newcommand{\ketbras}[1]{\ketbra{#1}{#1}}
+\begin{document}
+	\author{Ben Karsberg}
+	\title{Operator-Algebra Quantum Erasure Correction and Holography}
+	%\subtitle{Presentation 1 for research skills in theoretical physics}
+	%\logo{\includegraphics[width=0.2\linewidth]{C:/Users/nebka/Downloads/University_of_Edinburgh_ceremonial_roundel.svg}}
+	%\institute{The University of Edinburgh}
+	\date{22/06/2023}
+	%\subject{}
+	%\setbeamercovered{transparent}
+	%\setbeamertemplate{navigation symbols}{}
+	\begin{frame}[plain]
+		\maketitle
+	\end{frame}
+	
+	\section[Introduction]{Introduction}
+	
+	\begin{frame}
+		\frametitle{Quantum Error Correction}
+		\begin{itemize}[<+->]
+			\item Quantum computers can provide an \textbf{exponential} speed-up over classical computers
+			\item Qubits are very sensitive to changes in the environment - suffer \textbf{decoherence}
+			\item \textbf{Quantum error correction}: finds ways to correct errors at every stage of a computation
+			\item Potential approach to \textbf{fault-tolerant} quantum computers
+			\item Rough idea: spread information of a single (\textbf{logical}) quantum state across a highly entangled (\textbf{physical}) composite state
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Holography}
+		\begin{itemize}[<+->]
+			\item Holographic principle: property of \textbf{quantum gravity}
+			\item Information contained in a \textbf{gravitational} bulk volume is `encoded' on the boundary
+			\item Famous example: \textbf{AdS/CFT correspondence}
+			\item Relationship between gravitational theory on an \textbf{Anti-de Sitter space} and a \textbf{conformal field theory} on its boundary
+			\item \textbf{Holographic dictionary}: provides 1-to-1 correspondence between bulk and boundary
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Holographic Error Correction}
+		\begin{itemize}[<+->]
+			\item 2015: Ahmed Almheiri, Xi Dong, and Daniel Harlow publish paper describing certain aspects of AdS/CFT in the language of error correction\footnote{\textit{Bulk Locality and Quantum Error Correction in AdS/CFT}, 2015, arXiv:1411.7041 [hep-th]}
+			\item Quantum \textbf{erasure} correcting codes satisfy algebraic version of the \textbf{Ryu-Takayanagi (RT) formula}
+			\item Links \textbf{entropy} of a boundary CFT state on subregion $A$, and the entropy in the gravitational region `visible' from $A$
+			\item Unexpected link between entanglement properties of quantum error correcting codes and geometry of spacetime
+		\end{itemize}
+	\end{frame}
+	
+%	\begin{frame}
+%		\frametitle{My Project}
+%		\begin{itemize}[<+->]
+%			\item Aim: present self-contained introduction to the subject from \underline{\textbf{quantum information}} perspective
+%			\item Focus on Harlow's paper\footnote{The Ryu-Takayanagi Formula from Quantum Error Correction, 2016, arXiv:1607.03901 [hep-th]} and Pollack et al.\footnote{Understanding holographic error correction via unique algebras and atomic examples, 2022, 	arXiv:2110.14691 [quant-ph]}
+%			\item Holography included for motivation/intuition
+%			\item Today: example of erasure, operator-algebras, link to RT formula
+%		\end{itemize}
+%	\end{frame}
+
+	\section{Quantum Erasures}
+	
+	\begin{frame}
+		\frametitle{An Example}
+		\begin{itemize}[<+->]
+			\item \textbf{Qutrit:} 3-dimensional Hilbert space, basis elements $\{\ket{0},\ket{1},\ket{2}\}$
+			\item Alice wishes to send Bob the logical qutrit 
+			\begin{equation}
+				\ket{\psi}=\sum_{i=0}^{2}a_{i}\ket{i}
+			\end{equation}
+			\item Problem: every third qutrit is erased with \textbf{certainty}
+			\item Solution: Alice sends \textbf{three} physical qutrits in \textbf{code subspace}, spanned by
+			\begin{equation}
+				\begin{aligned}
+					\ket{\tilde{0}}&=\frac{1}{\sqrt{3}}(\ket{{000}}+\ket{{111}}+\ket{{222}})\\
+					\ket{\tilde{1}}&=\frac{1}{\sqrt{3}}(\ket{{012}}+\ket{{120}}+\ket{{201}})\\
+					\ket{\tilde{2}}&=\frac{1}{\sqrt{3}}(\ket{{021}}+\ket{{102}}+\ket{{210}})
+				\end{aligned}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{An Example}
+		\begin{itemize}[<+->]
+			\item Alice does this, and the third physical qutrit is erased
+			\item Bob can define a unitary on the first two physical qutrits \textbf{only} by
+			\begin{equation}
+				\begin{aligned}
+					U_{12}\equiv&\ketbras{{00}}+\ketbra{{01}}{{11}}+\ketbra{{02}}{{22}}+\ketbra{{12}}{{01}}+\ketbra{{10}}{{12}}+\ketbra{{11}}{{20}}\\&+\ketbra{{21}}{{02}}+\ketbra{{22}}{{10}}+\ketbra{{20}}{{21}}
+				\end{aligned}
+			\end{equation}
+			\item Has property
+			\begin{equation}
+				(U_{12}\otimes I_{3})\ket{\tilde{i}}=\ket{i}_{1}\otimes\frac{1}{\sqrt{3}}(\ket{00}+\ket{11}+\ket{22})_{23}
+			\end{equation}
+			\item With access to only first two physical qutrits, Bob can construct intended logical qutrit in the first physical register!
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{An Example}
+		\begin{itemize}[<+->]
+			\item Correctability can be re-phrased in terms of operators
+			\item $\tilde{O}$ acts on a single qutrit as
+			\begin{equation}
+				\tilde{O}\ket{i}=\sum_{j=0}^{2}(O)_{ji}\ket{j}
+			\end{equation}
+			\item Can define an operator on the first two physical qutrits which acts identically on code subspace basis:
+			\begin{equation}
+				O_{12}\ket{\tilde{i}}=\sum_{j=0}^{2}(O)_{ji}\ket{\tilde{j}}
+			\end{equation}
+			\item Given by
+			\begin{equation}
+				O_{12}=U_{12}^{\dagger}\tilde{O}U_{12}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Generalities}
+		\begin{itemize}[<+->]
+			\item \textbf{Logical} states encoded into a \textbf{code subspace} of a larger, \textbf{physical Hilbert space}
+			\item In example, code subspace was
+			\begin{equation}
+				\mathcal{H}_{\text{code}}=\text{span}(\ket{\tilde{0}},\ket{\tilde{1}},\ket{\tilde{2}})\subseteq \mathcal{H}=\bigotimes_{\alpha=1}^{3}\mathbb{C}^{3}
+			\end{equation}
+			\item Physical Hilbert space has \textbf{tensor product structure} $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$, and $\overline{A}$ system is erased
+			\item In example, $\mathcal{H}=\mathcal{H}_{12}\otimes\mathcal{H}_{3}$
+			\item Correctability phrased in terms of operators (Heisenberg picture) or states (Schrodinger picture)
+		\end{itemize}
+	\end{frame}
+
+	\section{Operator-Algebras}
+	
+	\begin{frame}
+		\frametitle{Operator-Algebras}
+		\begin{itemize}[<+->]
+			\item General theory needs \textbf{von Neumann algebras}
+			\item von Neumann algebra $M$: subset of linear operators on a Hilbert space $\mathcal{H}$, closed under addition, multiplication, Hermitian conjugation, and contains all scalar multiples of the identity
+			\item Also have \textbf{commutant} algebra $M'$: algebra of operators commuting with $M$
+			\item Can generalise (a lot of) objects `on $M$', such as generalised \textbf{algebraic entropy} or even an algebraic version of the holographic RT formula
+%			\item Often want to compute a generalised \textbf{algebraic entropy} of an arbitrary state $\rho\in\mathcal{H}$ on $M$; denote this $S(\rho,M)$
+%			\item von Neumann algebra $M$ on $\mathcal{H}$ induces decomposition
+%			\begin{equation}
+%				\mathcal{H}=\bigoplus_{\alpha}\left(\mathcal{H}_{a_{\alpha}}\otimes\mathcal{H}_{\overline{a}_{\alpha}}\right)
+%			\end{equation}
+%			and $M$ itself decomposes as
+%			\begin{equation}
+%				M=\bigoplus_{\alpha}\left(\mathcal{L}(\mathcal{H}_{a_{\alpha}})\otimes I_{\overline{a}_{\alpha}}\right)
+%			\end{equation}
+		\end{itemize}
+	\end{frame}
+	
+%	\begin{frame}
+%		\frametitle{Operator-Algebras}
+%		\begin{itemize}[<+->]
+%			\item Operators $\tilde{O}\in M$ have block structure
+%			\begin{equation}
+%				\tilde{O}=\begin{pmatrix}
+%					\tilde{O}_{a_{1}}\otimes I_{\overline{a}_{1}}&0&\dots\\
+%					0&\tilde{O}_{a_{2}}\otimes I_{\overline{a}_{2}}&\dots\\
+%					\vdots&\vdots&\ddots
+%				\end{pmatrix}
+%			\end{equation}
+%			\item Associated \textbf{commutant} algebra $M'$: all operators commuting with $M$
+%			\item Operators $\tilde{O}'\in M$ have block structure
+%			\begin{equation}
+%				\tilde{O}'=\begin{pmatrix}
+%					I_{a_{1}}\otimes\tilde{O}'_{\overline{a}_{1}}&0&\dots\\
+%					0&I_{a_{2}}\otimes\tilde{O}'_{\overline{a}_{2}}&\dots\\
+%					\vdots&\vdots&\ddots
+%				\end{pmatrix}
+%			\end{equation}
+%		\end{itemize}
+%	\end{frame}
+%
+%	\begin{frame}
+%		\frametitle{Entropy}
+%		\begin{itemize}[<+->]
+%			\item Can define notion of \textbf{entropy} of a state $\rho$ on an algebra
+%			\item Denote diagonal blocks of $\rho$ as $\rho_{\alpha\alpha}$, then define
+%			\begin{equation}
+%				p_{\alpha}\rho_{a_{\alpha}}\equiv\text{Tr}_{\overline{a}_{\alpha}}\rho_{\alpha\alpha}
+%			\end{equation}
+%			where $p_{\alpha}$ found by requiring $\text{Tr}\rho_{a_{\alpha}}=1$
+%			\item \textbf{Algebraic entropy} then defined by
+%			\begin{equation}
+%				S(\rho,M)\equiv -\sum_{\alpha}p_{\alpha}\log{p_{\alpha}}+\sum_{\alpha}p_{\alpha}S(\rho_{a_{\alpha}})
+%			\end{equation}
+%			\item Have a `classical' Shannon entropy of probability distribution $\{p_{\alpha}\}$, and a `quantum' von Neumann entropy $S(\rho_{a_{\alpha}})$ of the reduced states weighted by the probabilities
+%		\end{itemize}
+%	\end{frame}
+
+	\begin{frame}
+		\frametitle{Operator-Algebra Correctability}
+		\begin{itemize}[<+->]
+			\item $\mathcal{H}=\mathcal{H}_{A}\otimes \mathcal{H}_{\overline{A}}$ is physical Hilbert space, with code subspace $\mathcal{H}_{\text{code}}\subseteq\mathcal{H}$
+			\item von Neumann algebra $M$ on $\mathcal{H}_{\text{code}}$
+			%, so have factorisation
+%			\begin{equation}
+%				\mathcal{H}_{\text{code}}=\bigoplus_{\alpha}(\mathcal{H}_{a_{\alpha}}\otimes\mathcal{H}_{\overline{a}_{\alpha}})
+%			\end{equation}
+			\item Correctability of $M$ on $A$:
+				for any $\tilde{O}\in M$, there is a $O_{A}$ on $\mathcal{H}_{A}$ such that for any $\ket{\tilde{\psi}}\in\mathcal{H}_{\text{code}}$, we have
+				\begin{equation}
+					O_{A}\ket{\tilde{\psi}}=\tilde{O}\ket{\tilde{\psi}},\quad O_{A}^{\dagger}\ket{\tilde{\psi}}=\tilde{O}^{\dagger}\ket{\tilde{\psi}}
+				\end{equation}
+				\item \textbf{Complementary recovery} $M'$ is correctable on $\overline{A}$; for any $\tilde{O}'\in M'$, there is an $O_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$ such that
+			\begin{equation}
+				O_{\overline{A}}\ket{\tilde{\psi}}=\tilde{O}'\ket{\tilde{\psi}},\quad O_{\overline{A}}^{\dagger}\ket{\tilde{\psi}}=\tilde{O}'^{\dagger}\ket{\tilde{\psi}}
+			\end{equation}
+		\end{itemize}
+	\end{frame}
+
+%	\begin{frame}
+%		\frametitle{Complementary Recovery and the RT Formula}
+%		\begin{itemize}[<+->]
+%			\item \textbf{Complementary recovery} $M'$ is correctable on $\overline{A}$; for any $\tilde{O}'\in M'$, there is an $O_{\overline{A}}$ on $\mathcal{H}_{\overline{A}}$ such that
+%			\begin{equation}
+%				O_{\overline{A}}\ket{\tilde{\psi}}=\tilde{O}'\ket{\tilde{\psi}},\quad O_{\overline{A}}^{\dagger}\ket{\tilde{\psi}}=\tilde{O}'^{\dagger}\ket{\tilde{\psi}}
+%			\end{equation}
+%			\item \textbf{RT formula:}
+%			\begin{equation}
+%				S_{A}(\rho)=S_{\text{bulk,A}}(\rho)+\text{Tr}(\mathcal{L}\rho)
+%			\end{equation}
+%			\item $\mathcal{L}$ called \textbf{area operator}, which in some sense has areas in AdS space as its eigenvalues
+%			\item Can \textit{define} an algebraic version; $(A,M)$ has an RT formula if there exists an $\mathcal{L}$ such that
+%			\begin{equation}
+%				S(\text{Tr}_{\overline{A}}(\rho))=S(\rho,M)+\text{Tr}(\rho\mathcal{L})
+%			\end{equation}
+%		\end{itemize}
+%	\end{frame}
+
+	\begin{frame}
+		\frametitle{Complementary Recovery $\iff$ RT Formula}
+		\begin{itemize}[<+->]
+			\item Culmination of my dissertation was presenting a self contained proof of the following
+			\begin{theorem}
+				Suppose $\mathcal{H}=\mathcal{H}_{A}\otimes\mathcal{H}_{\overline{A}}$ has a code subspace $\mathcal{H}_{\text{code}}$, which has a von Neumann algebra $M$ acting on it. Moreover, suppose that $(A,M)$ has complementary recovery. Then, the pairs $(A,M)$ and $(\overline{A},M')$ both have the same RT formula. The converse also holds.
+			\end{theorem}
+			\item This is a \textbf{very} strong statement: any operator-algebra correcting code with complementary recovery has a structure mirroring holography
+			\item Sometimes phrased as `\textit{spacetime is an error correcting code}'
+		\end{itemize}
+	\end{frame}
+
+	\section{Conclusions}
+	
+	\begin{frame}
+		\frametitle{Summary}
+		\begin{itemize}[<+->]
+			\item My project described a class of quantum error correcting procedures, following Harlow et al
+			\item Presented an entirely self-contained exposition of the subject, relying on no holographic preliminaries
+			\item Many generalisations: \textbf{approximate} erasure correction, \textbf{non-isometric} codes etc.
+			\item Most prolific area: \textbf{tensor networks}, which are more interesting from holography point of view
+			\item AdS space is directly `tiled' with erasure correcting codes based on contracting tensors - provides concrete link between entanglement of codes and geometry of spacetime
+		\end{itemize}
+	\end{frame}
+
+%	\begin{frame}
+%		\centering \Huge{Thank you for listening}\\\huge{Any questions?}
+%	\end{frame}
+	
+\end{document}

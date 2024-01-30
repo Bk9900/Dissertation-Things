@@ -1,4 +1,4 @@
-This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  18 AUG 2022 18:20
+This is LuaHBTeX, Version 1.15.0 (MiKTeX 22.3) (format=lualatex 2022.8.12)  21 JUN 2023 14:47
  restricted system commands enabled.
 **Diss_1.tex
 (./Diss_1.tex
@@ -1313,6 +1313,11 @@ m/n/12 = []([] + [])$ \TU/lmr/m/n/12 is a Bell state. So since $\OML/cmm/m/it/1
 
 [41] [42] [43]
 Chapter 5.
+
+Underfull \hbox (badness 10000) in paragraph at lines 1193--1196
+
+ []
+
 [44
 
 ] [45]
@@ -1331,16 +1336,16 @@ Appendix C.
 
 ]) [60] (./Diss_1.aux)
 Package rerunfilecheck Info: File `Diss_1.out' has not changed.
-(rerunfilecheck)             Checksum: 170F4C13174E026762DC1BF90947C08D;7547.
+(rerunfilecheck)             Checksum: 790CACCEA0EC1F9DD1BEF65FC70C36F5;7542.
 )
 
 Here is how much of LuaTeX's memory you used:
  36769 strings out of 477742
  125177,1144653 words of node,token memory allocated
- 2709 words of node memory still in use:
-   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 77 sub_mlist, 1 glyph, 491 attribut
-e, 61 glue_spec, 491 attribute_list, 2 write, 1 pdf_action nodes
-   avail lists: 1:12,2:6869,3:2805,4:280,5:654,6:94,7:8897,8:99,9:2405,10:17,11:
+ 2737 words of node memory still in use:
+   6 hlist, 2 vlist, 2 rule, 2 glue, 4 kern, 81 sub_mlist, 1 glyph, 495 attribut
+e, 61 glue_spec, 495 attribute_list, 2 write, 1 pdf_action nodes
+   avail lists: 1:12,2:6857,3:2798,4:280,5:654,6:91,7:8839,8:99,9:2402,10:17,11:
 557
  55758 multiletter control sequences out of 65536+600000
  60 fonts using 4505575 bytes
@@ -1369,9 +1374,9 @@ ms/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/nebka/AppData/Loca
 l/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/nebka/AppDa
 ta/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/nebk
 a/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on Diss_1.pdf (68 pages, 600637 bytes).
+Output written on Diss_1.pdf (68 pages, 599183 bytes).
 
-PDF statistics: 1124 PDF objects out of 1200 (max. 8388607)
+PDF statistics: 1115 PDF objects out of 1200 (max. 8388607)
  399 named destinations out of 1000 (max. 131072)
  360 words of extra memory for PDF output out of 10000 (max. 100000000)
 

@@ -13,12 +13,12 @@
 \contentsline {section}{\numberline {3.2}Conventional Erasure Correction}{13}{section.3.2}%
 \contentsline {subsubsection}{Example}{17}{section*.3}%
 \contentsline {section}{\numberline {3.3}Subsystem Erasure Correction}{18}{section.3.3}%
-\contentsline {section}{\numberline {3.4}Operator-Algebra Erasure Correction}{20}{section.3.4}%
+\contentsline {section}{\numberline {3.4}Operator-Algebras}{20}{section.3.4}%
 \contentsline {subsection}{\numberline {3.4.1}von Neumann Algebras}{20}{subsection.3.4.1}%
 \contentsline {subsection}{\numberline {3.4.2}Classification of von Neumann Algebras}{21}{subsection.3.4.2}%
 \contentsline {subsection}{\numberline {3.4.3}The Link to Error Correction}{22}{subsection.3.4.3}%
 \contentsline {subsection}{\numberline {3.4.4}Algebraic States and Entropy}{23}{subsection.3.4.4}%
-\contentsline {section}{\numberline {3.5}Operator-Algebra Error Correction}{26}{section.3.5}%
+\contentsline {section}{\numberline {3.5}Operator-Algebra Erasure Correction}{26}{section.3.5}%
 \contentsline {section}{\numberline {3.6}Holographic Properties of Erasure Codes}{29}{section.3.6}%
 \contentsline {chapter}{\numberline {4}Examples}{35}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Codes with one term}{36}{section.4.1}%
@@ -32,7 +32,7 @@
 \contentsline {section}{\numberline {4.3}A Complete Example}{42}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Conclusions}{44}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Summary of Project}{44}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Future Research Directions}{45}{section.5.2}%
+\contentsline {section}{\numberline {5.2}Future Research Directions and Discussion}{45}{section.5.2}%
 \contentsline {chapter}{\numberline {A}Quantum Circuit Notation}{46}{appendix.A}%
 \contentsline {section}{\numberline {A.1}Quantum Gates}{46}{section.A.1}%
 \contentsline {section}{\numberline {A.2}Quantum Circuits}{47}{section.A.2}%
